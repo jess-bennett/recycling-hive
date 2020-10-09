@@ -91,8 +91,8 @@ rubbish from landfill.
 
 ### :earth_africa: Scope Plane
 ---
-* :loop: **Site Logic**
-**Membership types**
+* :loop: **Site Logic**\
+**Membership types**\
 Membership | Approval | Notes
 --------------------|------------|----------------------
 SuperUser | N/A | There is only one SU - ME!
@@ -113,6 +113,12 @@ Item collection | CRUD for own Hive | CRUD for own collection(s) | R
 Recyclables collection | CR | CR | R
 Category collection | CR | CR | R
 
+### :rainbow: Surface Plane/Design Choices
+---
+:pencil2: **Font families**
 
+I decided to go for a 'handwritten' style of font for the entirety of the site. I chose this as I felt it would contribute to the 'community noticeboard' feel I was aiming for.
 
+[Neucha](https://fonts.google.com/specimen/Neucha)
+![Montserrat Alternates Font](/wireframes/font-family.png)
 
