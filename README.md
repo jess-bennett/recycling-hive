@@ -92,7 +92,7 @@ rubbish from landfill.
 ### :earth_africa: Scope Plane
 ---
 * :loop: **Site Logic**\
-**Membership types**\
+**Membership types**
 Membership | Approval | Notes
 -----------|----------|-------
 SuperUser | N/A | There is only one SU - ME!
@@ -127,3 +127,12 @@ I decided to go for a 'handwritten' style of font for the entirety of the site. 
 I chose fairly typical colours for a site revolving around recycling and the environment, based on a recycling image that I particularly liked from [here](https://blog.ferrovial.com/en/2016/11/recycling-began-when-greeks-discovered-landfills/)
 
 ![Site Colours](/wireframes/site-colours.jpg)
+
+### :clipboard: Wireframes
+---
+The site was designed with a mobile-first approach. 
+
+[Wireframe document can be seen here](/wireframes/data-centric-wireframe.pdf)
+
+
+:bulb: **Deviation from wireframe**
