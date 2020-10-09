@@ -92,7 +92,8 @@ rubbish from landfill.
 ### :earth_africa: Scope Plane
 ---
 * :loop: **Site Logic**\
-**Membership types**\
+**Membership types**
+
 | Membership | Approval                                                   | Notes                                                                                                                                           |
 |------------|------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | SuperUser  | N/A                                                        | There is only one SU - ME!                                                                                                                      |
