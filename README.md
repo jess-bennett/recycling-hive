@@ -94,7 +94,7 @@ rubbish from landfill.
 * :loop: **Site Logic**\
 **Membership types**\
 Membership | Approval | Notes
---------------------|------------|----------------------
+-----------|----------|-------
 SuperUser | N/A | There is only one SU - ME!
 Queen Bees | First person to request a Hive location is given QB access | A current QB can request additional QBs (up to a max of 4 per Hive) to the SU
 | | QBs cannot be deleted. A request must be made to the SU to first demote them and the profile can then be kept (as WB or BB) or deleted entirely
@@ -105,7 +105,7 @@ Busy Bees | Approved by QBs on completion of registration | Each Hive will set t
 
 **Site accessibility**
 Collection | QB Access | WB Access | BB Access
--------|-----------|-----------|-----------
+-----------|-----------|-----------|-----------
 Hive collection | :x: | :x: | :x:
 Member collection | CRUD for own Hive | CRUD for own profile | CRUD for own profile
 Location collection | CRUD for own Hive | CRUD for own location(s) | R
@@ -120,5 +120,10 @@ Category collection | CR | CR | R
 I decided to go for a 'handwritten' style of font for the entirety of the site. I chose this as I felt it would contribute to the 'community noticeboard' feel I was aiming for.
 
 [Neucha](https://fonts.google.com/specimen/Neucha)
-![Montserrat Alternates Font](/wireframes/font-family.png)
+![Neucha Font](/wireframes/font-family.jpg)
 
+:art: **Colour choices**
+
+I chose fairly typical colours for a site revolving around recycling and the environment, based on a recycling image that I particularly liked from [here](https://blog.ferrovial.com/en/2016/11/recycling-began-when-greeks-discovered-landfills/)
+
+![Site Colours](/wireframes/site-colours.jpg)
