@@ -92,7 +92,7 @@ rubbish from landfill.
 ### :earth_africa: Scope Plane
 ---
 * :loop: **Site Logic**\
-**Membership types**
+**Membership types**\
 | Membership | Approval                                                   | Notes                                                                                                                                           |
 |------------|------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
 | SuperUser  | N/A                                                        | There is only one SU - ME!                                                                                                                      |
@@ -144,3 +144,86 @@ I opted for a document-oriented NoSQL database (MongoDB) and spent a large part 
 I ended up with the following six collections:
 
 ![Database Model](/wireframes/database-model.jpg)
+
+### :crystal_ball: Future Developments
+---
+
+## :construction: Development Process
+
+### :unlock: Technologies Used
+---
+**Languages**
+* [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
+* [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
+* [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+
+**Libraries & Frameworks**
+* [Bootstrap](https://getbootstrap.com/)
+* [Font Awesome](https://fontawesome.com/)
+* [Google Fonts](https://fonts.google.com/)
+* [jQuery](https://jquery.com/)
+* [Popper](https://popper.js.org/)
+
+**Tools**
+* [Gimp (image editing)](https://www.gimp.org/)
+
+
+### :computer: External Sources Used
+---
+
+### :bug: Bugs
+---
+
+### :deciduous_tree: Branches
+---
+
+## :test_tube: Testing  
+
+### :raising_hand: Target User Tests
+---
+
+### :people_holding_hands: Peer Tests
+---
+
+### :sparkle: Jasmine Tests
+---
+
+### :memo: Manual Tests
+---
+Manual testing was carried out on all devices available to me:
+* Google Dev Tools:
+    * Mobile device
+    * iPad vertical
+    * iPad horizontal
+    * Desktop
+
+* Published site:
+    * Samsung Galaxy S8
+    * Desktop
+
+* Browser
+    * Chrome
+    * Edge
+    * Firefox
+    * Safari (Using [Lambdatest](https://www.lambdatest.com/))
+    * Opera 
+
+All tests produced good results with the following exceptions:
+* Issues were found with autoplay in Firefox - see [Bug 4](#bug-bugs) for details and solution
+* Navigation between play and learn pages didn't work in Safari - see [Bug 5](#bug-bugs) for details and solution
+* ABeeZee font not displaying in Safari - see [Bug 6](#bug-bugs) for details
+
+Full testing-frame can be found [here](/testing/manual-testing.pdf)
+
+### :heavy_check_mark: Online Validators
+---
+
+## :flight_departure: Deployment 
+
+## :clapper: Credits
+
+### :movie_camera: Media
+---
+
+### :trophy: Acknowledgements
+---
