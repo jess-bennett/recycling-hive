@@ -1,43 +1,53 @@
-<img src="https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png" style="margin: 0;">
+# Recycling Hive :recycle:
 
-Welcome USER_NAME,
+<p align="center"> :recycle: <strong>Welcome to Recycling Hive!</strong> :recycle: <br>
+Thanks for coming to take a look.
+Recycling Hive is a place for community members to find out what they can recycle locally, and where. This allows the environmentally-conscious of us to recycle above and beyond what our local authority accepts.</p>
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. You can safely delete this README.md file, or change it for your own project.
+## Contents
 
-## Gitpod Reminders
-
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
-
-`python3 -m http.server`
-
-A blue button should appear to click: *Make Public*,
-
-Another blue button should appear to click: *Open Browser*.
-
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
-
-A blue button should appear to click: *Make Public*,
-
-Another blue button should appear to click: *Open Browser*.
-
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the backend lessons.
-
-## Updates Since The Instructional Video
-
-We continually tweak and adjust this template to help give you the best experience. Here are the updates since the original video was made:
-
-**October 08 2020:** Additional large Gitpod files (`core.mongo*` and `core.python*`) are now hidden in the Explorer, and have been added to the `.gitignore` by default.
-
-**September 22 2020:** Gitpod occasionally creates large `core.Microsoft` files. These are now hidden in the Explorer. A `.gitignore` file has been created to make sure these files will not be committed, along with other common files.
-
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
-
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
-
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
-
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
-
---------
-
-Happy coding!
+[:sparkles: UX](#sparkles-ux)\
+\
+              [:books: User Stories](#books-user-stories)\
+\
+              [:earth_africa: Scope Plane](#earth_africa-scope-plane)\
+\
+              [:rainbow: Surface Plane/Design Choices](#rainbow-surface-planedesign-choices)\
+\
+              [:clipboard: Wireframes](#clipboard-wireframes)\
+\
+              [:dvd: Database Design](#dvd-database-design)\
+\
+              [:crystal_ball: Future Developments](#crystal_ball-future-developments)\
+\
+[:construction: Development Process](#construction-development-process)\
+\
+              [:unlock: Technologies Used](#unlock-technologies-used)\
+\
+              [:computer: External Sources Used](#computer-external-sources-used)\
+\
+              [:bug: Bugs](#bug-bugs)\
+\
+              [:broom: Clean-Up](#broom-clean-up)\
+\
+              [:deciduous_tree: Branches](#deciduous_tree-branches)\
+\
+[:test_tube: Testing](#test_tube-testing)\
+\
+              [:raising_hand: Target-User Tests](#raising_hand-target-user-tests)\
+\
+              [:people_holding_hands: Peer Tests](#people_holding_hands-peer-tests)\
+\
+              [:sparkle: Jasmine Tests](#sparkle-jasmine-tests)\
+\
+              [:memo: Manual Tests](#memo-manual-tests)\
+\
+              [:heavy_check_mark: W3C Tests](#heavy_check_mark-w3c-tests)\
+\
+[:flight_departure: Deployment](#flight_departure-deployment)\
+\
+[:clapper: Credits](#clapper-credits)\
+\
+              [:movie_camera: Media](#movie_camera-media)\
+\
+              [:trophy: Acknowledgements](#trophy-acknowledgements)
