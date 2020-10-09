@@ -93,25 +93,25 @@ rubbish from landfill.
 ---
 * :loop: **Site Logic**\
 **Membership types**
-Membership | Approval | Notes
------------|----------|-------
-SuperUser | N/A | There is only one SU - ME!
-Queen Bees | First person to request a Hive location is given QB access | A current QB can request additional QBs (up to a max of 4 per Hive) to the SU
-| | QBs cannot be deleted. A request must be made to the SU to first demote them and the profile can then be kept (as WB or BB) or deleted entirely
-| | If a Hive has only one QB, they must find and approve another QB before they can be removed
-Worker Bee | Approved by QBs upon adding a new recycling location | Once WB status has been given, all future locations are automatically approved
-| | Each newly added location will have a <strong>NEW</strong> flag for 7 days so that QBs can monitor
-Busy Bees | Approved by QBs on completion of registration | Each Hive will set their own security questions for registration so they can monitor new member requests
+| Membership | Approval                                                   | Notes                                                                                                                                           |
+|------------|------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
+| SuperUser  | N/A                                                        | There is only one SU - ME!                                                                                                                      |
+| Queen Bees | First person to request a Hive location is given QB access | A current QB can request additional QBs (up to a max of 4 per Hive) to the SU                                                                   |
+|            |                                                            | QBs cannot be deleted. A request must be made to the SU to first demote them and the profile can then be kept (as WB or BB) or deleted entirely |
+|            |                                                            | If a Hive has only one QB, they must find and approve another QB before they can be removed                                                     |
+| Worker Bee | Approved by QBs upon adding a new recycling location       | Once WB status has been given, all future locations are automatically approved                                                                  |
+|            |                                                            | Each newly added location will have a <strong>NEW</strong> flag for 7 days so that QBs can monitor                                              |
+| Busy Bees  | Approved by QBs on completion of registration              | Each Hive will set their own security questions for registration so they can monitor new member requests                                        |
 
 **Site accessibility**
-Collection | QB Access | WB Access | BB Access
------------|-----------|-----------|-----------
-Hive collection | :x: | :x: | :x:
-Member collection | CRUD for own Hive | CRUD for own profile | CRUD for own profile
-Location collection | CRUD for own Hive | CRUD for own location(s) | R
-Item collection | CRUD for own Hive | CRUD for own collection(s) | R
-Recyclables collection | CR | CR | R
-Category collection | CR | CR | R
+| Collection             | QB Access         | WB Access                  | BB Access            |
+|------------------------|-------------------|----------------------------|----------------------|
+| Hive collection        | :x:               | :x:                        | :x:                  |
+| Member collection      | CRUD for own Hive | CRUD for own profile       | CRUD for own profile |
+| Location collection    | CRUD for own Hive | CRUD for own location(s)   | R                    |
+| Item collection        | CRUD for own Hive | CRUD for own collection(s) | R                    |
+| Recyclables collection | CR                | CR                         | R                    |
+| Category collection    | CR                | CR                         | R                    |
 
 ### :rainbow: Surface Plane/Design Choices
 ---
@@ -136,3 +136,11 @@ The site was designed with a mobile-first approach.
 
 
 :bulb: **Deviation from wireframe**
+
+### :dvd: Database Design
+---
+I opted for a document-oriented NoSQL database (MongoDB) and spent a large part of my planning time designing the database.
+
+I ended up with the following six collections:
+
+![Database Model](/wireframes/database-model.jpg)
