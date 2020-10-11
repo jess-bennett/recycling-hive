@@ -13,6 +13,7 @@ body {
 }
 .navbar {
     font-size: 1.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .navbar-light .navbar-toggler {
@@ -25,18 +26,56 @@ body {
 }
 
 .navbar-light .navbar-nav .active>.nav-link {
-    color: #333;
+    color: #fafafa;
+    text-decoration: underline;
 }
 
 .honeycomb-green {
 background:
-radial-gradient(circle farthest-side at 0% 50%,#d2d914 23.5%,rgba(240,166,17,0) 0)10.5px 15px,
-radial-gradient(circle farthest-side at 0% 50%,#dfe45a 24%,rgba(240,166,17,0) 0)9.5px 15px,
-linear-gradient(#d2d914 14%,rgba(240,166,17,0) 0, rgba(240,166,17,0) 85%,#d2d914 0)0 0,
-linear-gradient(150deg,#d2d914 24%,#dfe45a 0,#dfe45a 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#dfe45a 0,#dfe45a 76%,#d2d914 0)0 0,
-linear-gradient(30deg,#d2d914 24%,#dfe45a 0,#dfe45a 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#dfe45a 0,#dfe45a 76%,#d2d914 0)0 0,
-linear-gradient(90deg,#dfe45a 3%,#d2d914 0,#d2d914 98%,#dfe45a 0%)0 0 #d2d914;
+radial-gradient(circle farthest-side at 0% 50%,#6c8c26 23.5%,rgba(240,166,17,0) 0)10.5px 15px,
+radial-gradient(circle farthest-side at 0% 50%,#98ae67 24%,rgba(240,166,17,0) 0)9.5px 15px,
+linear-gradient(#6c8c26 14%,rgba(240,166,17,0) 0, rgba(240,166,17,0) 85%,#6c8c26 0)0 0,
+linear-gradient(150deg,#6c8c26 24%,#98ae67 0,#98ae67 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#98ae67 0,#98ae67 76%,#6c8c26 0)0 0,
+linear-gradient(30deg,#6c8c26 24%,#98ae67 0,#98ae67 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#98ae67 0,#98ae67 76%,#6c8c26 0)0 0,
+linear-gradient(90deg,#98ae67 3%,#6c8c26 0,#6c8c26 98%,#98ae67 0%)0 0 #6c8c26;
 background-size: 20px 30px;
+}
+
+.flashes {
+    text-align: center;
+    color: #fafafa;
+    background-color: #6c8c26;
+    margin-bottom: 1.5rem;
+}
+
+/* Register */
+.card-header {
+    color: #333;
+    background-color: #d2d914;
+}
+
+.input-group-text {
+    color: #333;
+    background-color: #d2d914;
+}
+
+.btn-outline-primary {
+    color: #333;
+    font-size: 1.3rem;
+    border-color: #d2d914;
+    border-width: 0.2rem;
+}
+
+.btn-outline-primary:hover {
+    color: #333;
+    background-color: #d2d914;
+    border-color: #d2d914;
+}
+
+.btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
+    color: #333;
+    background-color: #6c8c26;
+    border-color: #6c8c26;
 }
 
 /* Footer */
