@@ -7,6 +7,10 @@ body {
 }
 
 /* Navbar */
+
+.text-shadow {
+    text-shadow: 1px 1px 1px #154d14
+}
 .navbar {
     font-size: 1.5rem;
 }
@@ -20,30 +24,31 @@ body {
     text-align: center;
 }
 
-.navbar-nav .nav-link {
-    padding-bottom: 3rem;
-}
-
 .navbar-light .navbar-nav .active>.nav-link {
     color: #333;
 }
 
-/* Brushstrokes */
-.highlight-green {
-background: url("../images/brush-stroke-banner-lightgreen.png");
-background-repeat: no-repeat;
-background-size: 100% 100%;
-padding: 0.2rem 3rem 0.2rem 1rem;
-}
-.highlight-brown {
-background: url("../images/brush-stroke-banner-brown.png");
-background-repeat: no-repeat;
-background-size: 100% 100%;
-padding: 8px 50px;
+.honeycomb-green {
+background:
+radial-gradient(circle farthest-side at 0% 50%,#d2d914 23.5%,rgba(240,166,17,0) 0)10.5px 15px,
+radial-gradient(circle farthest-side at 0% 50%,#dfe45a 24%,rgba(240,166,17,0) 0)9.5px 15px,
+linear-gradient(#d2d914 14%,rgba(240,166,17,0) 0, rgba(240,166,17,0) 85%,#d2d914 0)0 0,
+linear-gradient(150deg,#d2d914 24%,#dfe45a 0,#dfe45a 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#dfe45a 0,#dfe45a 76%,#d2d914 0)0 0,
+linear-gradient(30deg,#d2d914 24%,#dfe45a 0,#dfe45a 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#dfe45a 0,#dfe45a 76%,#d2d914 0)0 0,
+linear-gradient(90deg,#dfe45a 3%,#d2d914 0,#d2d914 98%,#dfe45a 0%)0 0 #d2d914;
+background-size: 20px 30px;
 }
 
 /* Footer */
 footer {
+background:
+radial-gradient(circle farthest-side at 0% 50%,#733924 23.5%,rgba(240,166,17,0) 0)10.5px 15px,
+radial-gradient(circle farthest-side at 0% 50%,#9d7465 24%,rgba(240,166,17,0) 0)9.5px 15px,
+linear-gradient(#733924 14%,rgba(240,166,17,0) 0, rgba(240,166,17,0) 85%,#733924 0)0 0,
+linear-gradient(150deg,#733924 24%,#9d7465 0,#9d7465 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#9d7465 0,#9d7465 76%,#733924 0)0 0,
+linear-gradient(30deg,#733924 24%,#9d7465 0,#9d7465 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#9d7465 0,#9d7465 76%,#733924 0)0 0,
+linear-gradient(90deg,#9d7465 3%,#733924 0,#733924 98%,#9d7465 0%)0 0 #733924;
+background-size: 20px 30px;
   color: #fafafa;
   position: fixed;
   left: 0;
@@ -52,14 +57,12 @@ footer {
   text-align: center;
 }
 
+/* Media queries */
 @media screen and (min-width: 992px) {
   .navbar-light .navbar-nav .nav-link {
     text-align: right;
 }
   .navbar-nav .nav-link {
     padding-bottom: 0rem;
-}
-  .highlight-green {
-padding: 0 5rem 0.2rem 1rem;
 }
 }
