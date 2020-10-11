@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Register</h4>
+                    <h5>You are applying to join the XXX Hive</h5>
+                </div>
+                <form class="card-body" method="POST" action="{{ url_for('register') }}">
+                    <!-- Name -->
+					<div class="form-group row">
+						<label class="sr-only" for="name">Name</label>
+						<div class="input-group mb-2">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fab fa-forumbee"></i></div>
+							</div>
+							<input type="text" class="form-control" id="name" name="name" placeholder="Name">
+                        </div>
+                    </div>
+                    <!-- Email -->
+                    <div class="form-group row">
+						<label class="sr-only" for="email">Email</label>
+						<div class="input-group mb-2">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-at"></i></div>
+							</div>
+							<input type="text" class="form-control" id="email" name="email" placeholder="email">
+                        </div>
+                    </div>
+                    <!-- Password -->
+                    <div class="form-group row">
+						<label class="sr-only" for="password">Password</label>
+						<div class="input-group mb-2">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-lock-open"></i></div>
+							</div>
+							<input type="text" class="form-control" id="password" name="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <!-- Repeat Password -->
+                    <div class="form-group row">
+						<label class="sr-only" for="password-repeat">Repeat Password</label>
+						<div class="input-group mb-2">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-lock"></i></div>
+							</div>
+							<input type="text" class="form-control" id="password-repeat" name="password-repeat" placeholder="Repeat Password">
+                        </div>
+                    </div>
+                    <!-- Security Question -->
+                    <div class="form-group row">
+						<label class="sr-only" for="security-question">Security question</label>
+						<div class="input-group mb-2">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-passport"></i></div>
+							</div>
+							<textarea type="text" class="form-control" id="security-question" name="security-question" placeholder="Security question"></textarea>
+                        </div>
+                    </div>
+                    <!-- Marketing -->
+                    <div class="form-group row">
+						<label class="sr-only" for="marketing">Where did you hear about Recycling Hive?</label>
+						<div class="input-group mb-2">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-recycle"></i></div>
+							</div>
+							<input type="text" class="form-control" id="marketing" name="marketing" placeholder="Where did you hear about Recycling Hive?">
+                        </div>
+                    </div>
+                    <!-- Submit -->
+                    <div class="form-group row">
+                        <button class="btn btn-outline-primary col" type="submit">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
