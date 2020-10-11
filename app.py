@@ -27,6 +27,27 @@ def get_recycling_items():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    if request.method == "POST":
+        # check whether email already exists in db
+        existing_user = mongo.db.hiveMembers.find_one(
+            {"email": request.form.get("email").lower()})
+
+        if existing_user:
+            flash("Email already exists")
+            return redirect(url_for("register"))
+
+        register = {
+            "name": request.form.get("name").lower(),
+            "email": request.form.get("email").lower(),
+            "password": generate_password_hash(request.form.get("password")),
+            "securityQuestion": request.form.get("security_question"),
+            "marketing": request.form.get("marketing")
+        }
+        mongo.db.hiveMembers.insert_one(register)
+
+        # put the new user into 'session' cookie
+        session["user"] = request.form.get("name").lower()
+        flash("Registration Successful!")
     return render_template("register.html")
 
 
