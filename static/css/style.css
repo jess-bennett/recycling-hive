@@ -11,6 +11,11 @@ body {
     font-weight: bold;
 }
 
+.green-background {
+    color: #333;
+    background-color: #d2d914;
+}
+
 /* Navbar */
 
 .text-shadow {
@@ -56,11 +61,6 @@ background-size: 20px 30px;
 /* Register */
 .card {
     margin-bottom: 1.5rem;
-}
-
-.card-header {
-    color: #333;
-    background-color: #d2d914;
 }
 
 .input-group-text {
