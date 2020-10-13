@@ -53,6 +53,27 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if request.method == "POST":
+        # check if user exists in db
+        existing_user = mongo.db.hiveMembers.find_one(
+            {"email": request.form.get("email").lower()})
+
+        if existing_user:
+            # ensure hashed password matches user input
+            if check_password_hash(
+                    existing_user["password"], request.form.get("password")):
+                session["user"] = request.form.get("email").lower()
+                flash("Welcome, {}".format(request.form.get("email")))
+            else:
+                # invalid password match
+                flash("Incorrect email and/or password")
+                return redirect(url_for("login"))
+
+        else:
+            # email doesn't exist
+            flash("Incorrect email and/or password")
+            return redirect(url_for("login"))
+
     return render_template("login.html")
 
 
