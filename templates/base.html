@@ -24,7 +24,7 @@
 						<a class="nav-link" href="#">Demo</a>
 					</li>
 					<li class="nav-item {% block nav_login %}{% endblock %}">
-						<a class="nav-link" href="#">Login</a>
+						<a class="nav-link" href="{{ url_for('login') }}">Login</a>
 					</li>
 					<li class="nav-item {% block nav_register %}{% endblock %}">
 						<a class="nav-link" href="{{ url_for('register') }}">Register</a>
