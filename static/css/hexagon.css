@@ -91,6 +91,10 @@
   transform: translateZ(0) translateX(-25%);
 }
 
+#grid li:hover {
+    filter: brightness(75%);
+}
+
 
 
 h3.hexagon-text {

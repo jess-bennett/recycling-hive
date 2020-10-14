@@ -87,9 +87,20 @@ background-size: 20px 30px;
     border-color: #6c8c26;
 }
 
-/* Hexagons */
+/* Hive */
 
+.page-switch {
+    margin-bottom: 2rem;
+}
 
+.page-switch a {
+    color: #333;
+    font-size: 1.5rem;
+}
+
+.page-selected {
+    text-decoration: underline;
+}
 
 /* Footer */
 footer {
