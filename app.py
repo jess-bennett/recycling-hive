@@ -21,7 +21,7 @@ mongo = PyMongo(app)
 @app.route("/")
 @app.route("/hive")
 def get_recycling_categories():
-    categories = list(mongo.db.itemCategory.find())
+    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
     items = list(mongo.db.recyclableItems.find())
     return render_template("hive.html", categories=categories, items=items)
 
