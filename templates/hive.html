@@ -29,32 +29,32 @@
 <!-- Show all items -->
 <div id="viewall-layout">
 	<div class="accordion" id="accordionExample">
+    {% for category in categories %}
 		<div class="card">
 			<div class="card-header green-background" id="headingOne">
 				<div class="mb-0 row">
-					<button class="btn btn-link col-11 text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Collapsible Group Item #1
-        </button>
+					<button class="btn btn-link col-11 text-left" type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{counter}}">
+                    {{ category.categoryName }}
+                    </button>
 					<i class="fas fa-chevron-down col-1 text-right"></i>
 				</div>
 			</div>
 
-			<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+			<div id="collapse{{ loop.index }}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 				<div class="card-body">
 					<ul id="grid" class="clr">
-						{% for item in items %}
 						<li>
 							<a href="#item2">
 								<div class="hexagon">
-									<h3 class="hexagon-text">{{ item.typeOfWaste }}</h3>
+									<h3 class="hexagon-text"></h3>
 								</div>
 							</a>
 						</li>
-						{% endfor %}
 					</ul>
 				</div>
 			</div>
 		</div>
+    {% endfor %}
 	</div>
 </div>
 {% endblock %}

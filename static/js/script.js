@@ -19,6 +19,7 @@ $("#registrationSubmit").click(function(event) {
 $(document).ready(function(){
     $("#category-layout").show();
     $("#viewall-layout").hide();
+    $('.collapse').collapse()
 });
 
 /* Function to switch page view on Hive */
