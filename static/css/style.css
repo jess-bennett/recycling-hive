@@ -98,6 +98,11 @@ background-size: 20px 30px;
     background-color: #d2d914;
 }
 
+#viewall-layout {
+    width: 75%;
+    margin: 0 auto;
+}
+
 /* Footer */
 footer {
 background:
