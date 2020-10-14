@@ -1,0 +1,609 @@
+/* Fonts */
+
+@font-face {
+    font-family: 'poppinsbold';
+    src: url('../fonts/poppins-bold-webfont.eot');
+    src: url('../fonts/poppins-bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/poppins-bold-webfont.woff2') format('woff2'),
+         url('../fonts/poppins-bold-webfont.woff') format('woff'),
+         url('../fonts/poppins-bold-webfont.ttf') format('truetype'),
+         url('../fonts/poppins-bold-webfont.svg#poppinsbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'poppinslight';
+    src: url('../fonts/poppins-light-webfont.eot');
+    src: url('../fonts/poppins-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/poppins-light-webfont.woff2') format('woff2'),
+         url('../fonts/poppins-light-webfont.woff') format('woff'),
+         url('../fonts/poppins-light-webfont.ttf') format('truetype'),
+         url('../fonts/poppins-light-webfont.svg#poppinslight') format('svg');
+    font-weight: 100;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'poppinsmedium';
+    src: url('../fonts/poppins-medium-webfont.eot');
+    src: url('../fonts/poppins-medium-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/poppins-medium-webfont.woff2') format('woff2'),
+         url('../fonts/poppins-medium-webfont.woff') format('woff'),
+         url('../fonts/poppins-medium-webfont.ttf') format('truetype'),
+         url('../fonts/poppins-medium-webfont.svg#poppinsmedium') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'poppinsregular';
+    src: url('../fonts/poppins-regular-webfont.eot');
+    src: url('../fonts/poppins-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/poppins-regular-webfont.woff2') format('woff2'),
+         url('../fonts/poppins-regular-webfont.woff') format('woff'),
+         url('../fonts/poppins-regular-webfont.ttf') format('truetype'),
+         url('../fonts/poppins-regular-webfont.svg#poppinsregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'poppinssemibold';
+    src: url('../fonts/poppins-semibold-webfont.eot');
+    src: url('../fonts/poppins-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/poppins-semibold-webfont.woff2') format('woff2'),
+         url('../fonts/poppins-semibold-webfont.woff') format('woff'),
+         url('../fonts/poppins-semibold-webfont.ttf') format('truetype'),
+         url('../fonts/poppins-semibold-webfont.svg#poppinssemibold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Layout */
+
+body {
+	position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #FFFFFF;
+  font-size: 16px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.clr:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 30%;
+  z-index: 998;
+  -o-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 40px 1%;
+  background: #323232;
+  text-align: center;
+}
+
+#sidebar__portrait {
+  height: auto;
+  width: 70%;
+  overflow: hidden;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: #FFFFFF;
+}
+
+#sidebar__portrait img {
+  height: auto;
+  width: 100%;
+}
+
+#sidebar__social-icons {
+  display: block;
+  height: auto;
+  width: 60%;
+  margin: 10px auto;
+  background: none;
+}
+
+.sidebar__social-icon {
+  overflow: hidden;
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+  margin: 0 5px;
+  border-radius: 5px;
+  background: #484747;
+  -o-transition: all 0.3s linear 0s; 
+  -moz-transition: all 0.3s linear 0s; 
+  -ms-transition: all 0.3s linear 0s; 
+  -webkit-transition: all 0.3s linear 0s; 
+  transition: all 0.3s linear 0s;
+  cursor: pointer;
+}
+
+.sidebar__social-icon:hover {
+  background: #5f5f5f;
+}
+
+.sidebar__social-icon img {
+  height: 30px;
+  width: 30px;
+}
+
+#title {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100px;
+  width: 70%;
+  z-index: 995;
+  -o-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 10px 0 0 6%;
+  background: #FFFFFF;
+  text-align: center;
+}
+
+#item1, #item2, #item3, #item4, #item5, #item6, #item7, #item8, #item9, #item10, #item11, #item12, #item13, #item14, #item15 {
+  overflow: hidden;
+  z-index: 999;
+  display: block;
+  position: fixed;
+  top: 0;
+  right: -100%;
+  height: 0;
+  width: 100%;
+  background: #FFFFFF;
+  -o-transition: transform 0.6s linear 0s, height 0s linear 0.6s; 
+  -moz-transition: transform 0.6s linear 0s, height 0s linear 0.6s; 
+  -ms-transition: transform 0.6s linear 0s, height 0s linear 0.6s; 
+  -webkit-transition: transform 0.6s linear 0s, height 0s linear 0.6s; 
+  transition: transform 0.6s linear 0s, height 0s linear 0.6s;
+}
+
+#item1:target, #item2:target, #item3:target, #item4:target, #item5:target, #item6:target, #item7:target, #item8:target, 
+#item9:target, #item10:target, #item11:target, #item12:target, #item13:target, #item14:target, #item15:target {
+  height: 100%;
+  overflow: auto;
+  -o-transition: transform 0.6s linear 0s, height 0s linear 0s; 
+  -moz-transition: transform 0.6s linear 0s, height 0s linear 0s; 
+  -ms-transition: transform 0.6s linear 0s, height 0s linear 0s; 
+  -webkit-transition: transform 0.6s linear 0s, height 0s linear 0s; 
+  transition: transform 0.6s linear 0s, height 0s linear 0s;
+  -o-transform: translateZ(0) translateX(-100%);
+  -moz-transform: translateZ(0) translateX(-100%);
+  -webkit-transform: translateZ(0) translateX(-100%);
+  -ms-transform: translateZ(0) translateX(-100%);
+  transform: translateZ(0) translateX(-100%);
+}
+
+#contact {
+  z-index: 997;
+  position: fixed;
+  top: 0;
+  left: -100%;
+  display: block;
+  height: 0;
+  width: 100%;
+  -o-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 0 0 30%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: #4a4a4a;
+  -o-transition: transform 0.6s linear 0s, height 0s linear 0.6s; 
+  -moz-transition: transform 0.6s linear 0s, height 0s linear 0.6s; 
+  -ms-transition: transform 0.6s linear 0s, height 0s linear 0.6s; 
+  -webkit-transition: transform 0.6s linear 0s, height 0s linear 0.6s; 
+  transition: transform 0.6s linear 0s, height 0s linear 0.6s;
+}
+
+#contact:target {
+  height: 100%;
+  overflow: auto;
+  -o-transition: transform 0.6s linear 0s, height 0s linear 0s; 
+  -moz-transition: transform 0.6s linear 0s, height 0s linear 0s; 
+  -ms-transition: transform 0.6s linear 0s, height 0s linear 0s; 
+  -webkit-transition: transform 0.6s linear 0s, height 0s linear 0s; 
+  transition: transform 0.6s linear 0s, height 0s linear 0s;
+  -o-transform: translateZ(0) translateX(100%);
+  -moz-transform: translateZ(0) translateX(100%);
+  -webkit-transform: translateZ(0) translateX(100%);
+  -ms-transform: translateZ(0) translateX(100%);
+  transform: translateZ(0) translateX(100%);
+}
+
+#contact form {
+  position: relative;
+  height: auto;
+  width: 80%;
+  margin: 0 auto;
+  background: none;
+  text-align: center;
+}
+
+#contact label {
+  display: inline-block;
+  width: 20%;
+  padding: 0 10px 0 0;
+  -o-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  text-align: right;
+}
+
+#contact input[type="text"] {
+  height: 30px;
+  width: 50%;
+  border: 0;
+  padding: 0 10px;
+  -o-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+#contact input[type="submit"] {
+  border: 0;
+  margin: 15px 0 15px 20%;
+}
+
+#contact label[for="message"] {
+  height: 300px;
+  padding: 120px 10px 0 10px;
+  -o-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: top;
+}
+
+#contact textarea {
+  height: 300px;
+  width: 50%;
+  padding: 5px 10px;
+  border: 0;
+  resize: none;
+  overflow-y: auto;
+  -o-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.left, .right {
+  position: absolute;
+  left: 0;
+  height: 100%;
+  width: 50%;
+  overflow: auto;
+  background: none;
+}
+
+.right {
+  left: 50%;
+  overflow: hidden;
+}
+
+.right img {
+  height: auto;
+  width: 120%;
+}
+
+.button {
+  display: inline-block;
+  height: auto;
+  width: auto;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin: 5px;
+  -o-transition: all 0.3s linear 0s; 
+  -moz-transition: all 0.3s linear 0s; 
+  -ms-transition: all 0.3s linear 0s; 
+  -webkit-transition: all 0.3s linear 0s; 
+  transition: all 0.3s linear 0s;
+  background: #fd005f;
+}
+
+.button:hover {
+  background: #fc5191;
+}
+
+/* Hexagonal Grid */
+
+#grid {
+  width: 70%;
+  margin: 100px 0 0 30%;
+  padding: 20px 2%;
+  -o-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#grid li {
+  position: relative;
+  float: left;
+  width: 27.85714285714286%;
+  padding: 0 0 32.16760145166612% 0;
+  list-style-type: none;
+  -o-transform: rotate(-60deg) skewY(30deg);
+  -moz-transform: rotate(-60deg) skewY(30deg);
+  -webkit-transform: rotate(-60deg) skewY(30deg);
+  -ms-transform: rotate(-60deg) skewY(30deg);
+  transform: rotate(-60deg) skewY(30deg);
+  overflow: hidden;
+  visibility: hidden;
+  cursor: pointer;
+}
+
+#grid li * {
+  visibility: visible;
+}
+
+#grid li .hexagon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  -o-transform: skewY(-30deg) rotate(60deg);
+  -moz-transform: skewY(-30deg) rotate(60deg);
+  -webkit-transform: skewY(-30deg) rotate(60deg);
+  -ms-transform: skewY(-30deg) rotate(60deg);
+  transform: skewY(-30deg) rotate(60deg);
+  overflow: hidden;
+  background: none;
+}
+
+#grid li:nth-child(3n+2) {
+  margin: 0 1%;
+}
+
+#grid li:nth-child(6n+4), #grid li:nth-child(6n+5), #grid li:nth-child(6n+6) {
+  margin-top: -6.9285714285%;
+  margin-bottom: -6.9285714285%;
+}
+
+#grid li:nth-child(6n+1), #grid li:nth-child(6n+2), #grid li:nth-child(6n+3) {
+  -o-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  -moz-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  -webkit-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  -ms-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  transform: translateX(50%) rotate(-60deg) skewY(30deg);
+}
+
+#grid li:nth-child(6n+1) { 
+  margin-left: 0.5%;
+}
+
+#grid li .hexagon img {
+  left:-100%;
+  right:-100%;
+  height:100%;
+  width: auto;
+  margin: 0 auto;
+  -o-transition: all 0.6s linear 0s; 
+  -moz-transition: all 0.6s linear 0s; 
+  -ms-transition: all 0.6s linear 0s; 
+  -webkit-transition: all 0.6s linear 0s; 
+  transition: all 0.6s linear 0s;
+}
+
+#grid li:hover img {
+  height: 150%;
+  -o-transform: translateZ(0) translateX(-25%);
+  -moz-transform: translateZ(0) translateX(-25%);
+  -webkit-transform: translateZ(0) translateX(-25%);
+  -ms-transform: translateZ(0) translateX(-25%);
+  transform: translateZ(0) translateX(-25%);
+}
+
+#grid li .hexagon .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(255,255,255,0);
+}
+
+#grid li:hover .overlay {
+  -o-transition: all 0.6s linear 0s; 
+  -moz-transition: all 0.6s linear 0s; 
+  -ms-transition: all 0.6s linear 0s; 
+  -webkit-transition: all 0.6s linear 0s; 
+  transition: all 0.6s linear 0s;
+  background: rgba(255,255,255,0.6);
+}
+
+/* Text */
+
+#sidebar p.name, #sidebar p.jobrole {
+  height: auto;
+  width: auto;
+  margin: 0;
+  font-family: poppinslight;
+  font-size: 1.5em;
+  line-height: 1.5em;
+  color: #FFFFFF;
+}
+
+label {
+  font-family: poppinslight;
+  font-size: 1.5em;
+  line-height: 1.5em;
+  color: #FFFFFF;
+}
+
+#sidebar p.name {
+  margin: 20px 0 0 0;
+  font-family: poppinssemibold;
+  color: #0ea4fd;
+}
+
+.left h2 {
+  font-family: poppinssemibold;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.left p {
+  font-family: poppinsregular;
+  padding: 0 10px;
+  font-size: 1em;
+}
+
+#title h1 {
+  font-family: poppinssemibold;
+  font-size: 36px;
+  font-weight: 200;
+  color: #575757;
+}
+
+.button p, input[type="submit"].button {
+  margin: 0;
+  font-family: poppinssemibold;
+  color: #FFFFFF;
+  font-size: 1em;
+}
+
+/* Media Queries */
+
+@media only screen and (max-width: 1100px) {
+  /* Layout */
+  #contact form {
+    width: 100%;
+  }
+}
+
+@media only screen and (max-width: 870px) {
+  /* Layout */
+  #contact label {
+    display: block;
+    width: 100%;
+    text-align: center;
+  }
+
+  #contact input[type="text"] {
+    height: 30px;
+  }
+
+  #contact input[type="submit"] {
+    border: 0;
+    margin: 10px auto;
+  }
+
+  #contact label[for="message"] {
+    height: auto;
+    padding: 0;
+  }
+
+  #contact textarea {
+    height: 200px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  /* layout */
+  #sidebar {
+    z-index: 0;
+    position: relative;
+    height: auto;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  #sidebar__portrait {
+    position: relative;
+    display: inline-block;
+    width: 20%;
+    margin: 0 0 0 10px;
+    border-radius: 50%;
+    vertical-align: middle;
+    overflow: hidden;
+    background: #FFFFFF;
+  }
+
+  #sidebar__portrait img {
+    height: auto;
+    width: 100%;
+  }
+
+  #title {
+    position: relative;
+    height: auto;
+    width: 100%;
+    padding: 0;
+  }
+
+  #title h1 {
+    margin: 10px 0;
+  }
+
+  #contact {
+    padding: 0;
+  }
+
+  .left, .right {
+    position: relative;
+    left: 0;
+    height: auto;
+    width: 100%;
+  }
+
+  .right img {
+    height: auto;
+    width: 100%;
+  }
+
+  /* Grid */
+  #grid {
+    margin: 0 auto;
+    width: 95%;
+  }
+}
+
+
+@media only screen and (max-width: 550px) {
+  /* Layout */
+  body {
+    font-size: 14px;
+  }
+
+  #contact input[type="text"], #contact textarea {
+    width: 80%;
+  }

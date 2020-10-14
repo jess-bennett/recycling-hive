@@ -37,7 +37,7 @@ def register():
             return redirect(url_for("register"))
 
         register = {
-            "name": request.form.get("name").lower(),
+            "username": request.form.get("username"),
             "email": request.form.get("email").lower(),
             "password": generate_password_hash(request.form.get("password")),
             "securityQuestion": request.form.get("security_question"),
@@ -46,8 +46,10 @@ def register():
         mongo.db.hiveMembers.insert_one(register)
 
         # put the new user into 'session' cookie
-        session["user"] = request.form.get("name").lower()
+        session["user"] = request.form.get("username")
         flash("Registration Successful!")
+        return redirect(url_for("home", username=session["user"]))
+
     return render_template("register.html")
 
 
@@ -62,8 +64,8 @@ def login():
             # ensure hashed password matches user input
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
-                session["user"] = request.form.get("email").lower()
-                flash("Welcome, {}".format(request.form.get("email")))
+                session["user"] = existing_user["username"]
+                return redirect(url_for("home", username=session["user"]))
             else:
                 # invalid password match
                 flash("Incorrect email and/or password")
@@ -75,6 +77,14 @@ def login():
             return redirect(url_for("login"))
 
     return render_template("login.html")
+
+
+@app.route("/home/<username>", methods=["GET", "POST"])
+def home(username):
+    # grab the session user's username from db
+    username = mongo.db.hiveMembers.find_one(
+        {"username": session["user"]})["username"]
+    return render_template("index.html", username=username)
 
 
 if __name__ == "__main__":
