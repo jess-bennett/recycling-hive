@@ -1,9 +1,13 @@
 
 #grid {
     position: relative;
-    width: 80%;
-    margin: 0 auto;
+    width: 75%;
+    margin: 0 10%;
     padding: 0; /* Clears unordered list default of 40px */
+}
+
+#grid.home {
+    margin: 0 15%;
 }
 
 .clear:after {
@@ -50,13 +54,6 @@
   margin: 0.5%;
 }
 
-#grid li:nth-child(8n+8) {
-  margin: -8%;
-}
-
-#grid li .hexagon.hide-hexagon, #grid li:nth-child(8n+8) {
-    background: rgba(0,0,0,0);
-}
 
 #grid li:nth-child(8n+5), #grid li:nth-child(8n+6), #grid li:nth-child(8n+7), #grid li:nth-child(8n+8) {
     margin-top: -6.1%;

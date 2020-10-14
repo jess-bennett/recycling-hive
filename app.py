@@ -22,8 +22,8 @@ mongo = PyMongo(app)
 @app.route("/recyclingCategory")
 def get_recycling_categories():
     categories = mongo.db.itemCategory.find()
-    return render_template("hive.html", category=categories)
-
+    return render_template("hive.html", categories=categories)
+    
 
 @app.route("/register", methods=["GET", "POST"])
 def register():

@@ -1,8 +1,17 @@
 {% extends "base.html" %}
 {% block nav_hive %}active{% endblock %}
 {% block content %}
+    
+<ul id="grid" class="clr">
     {% for category in categories %}
-        {{ category.categoryName }}
+	<li>
+		<a href="#item2">
+			<div class="hexagon">
+				<h3 class="hexagon-text">{{ category.categoryName }}</h3>
+			</div>
+		</a>
+	</li>
     {% endfor %}
+</ul>
 
 {% endblock %}
