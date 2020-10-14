@@ -103,6 +103,20 @@ background-size: 20px 30px;
     margin: 0 auto;
 }
 
+.btn-link {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.btn-link:hover {
+    text-decoration: none;
+    color: #fafafa;
+}
+
+.fa-chevron-down {
+    padding-top: 1rem;
+}
+
 /* Footer */
 footer {
 background:
