@@ -5,14 +5,15 @@
 <div class="container-fluid page-switch">
     <div class="row">
         <div class="col-3 offset-3 text-center">
-            <a href="" class=" page-selected">Explore categories</a>
+            <button id="btn-categories" class="btn btn-outline-primary col page-selected">Explore categories</button>
         </div>
         <div class="col-3 text-center">
-            <a href="">View all</a>
+            <button id="btn-viewall" class="btn btn-outline-primary col">View all</button>
         </div>
     </div>
 </div>
 
+<div class="category-layout">
 <ul id="grid" class="clr">
     {% for category in categories %}
 	<li>
@@ -24,5 +25,5 @@
 	</li>
     {% endfor %}
 </ul>
-
+</div>
 {% endblock %}

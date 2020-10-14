@@ -12,3 +12,10 @@ $("#registrationSubmit").click(function(event) {
         event.preventDefault();
     }           
 });
+
+ $("#btn-categories").click(function(){
+    $(".category-layout").show();
+  });
+  $("#btn-viewall").click(function(){
+    $(".category-layout").hide();
+  });

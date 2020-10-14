@@ -93,13 +93,9 @@ background-size: 20px 30px;
     margin-bottom: 2rem;
 }
 
-.page-switch a {
-    color: #333;
-    font-size: 1.5rem;
-}
 
 .page-selected {
-    text-decoration: underline;
+    background-color: #d2d914;
 }
 
 /* Footer */
