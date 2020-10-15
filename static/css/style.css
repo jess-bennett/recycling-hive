@@ -61,6 +61,7 @@ background-size: 20px 30px;
 /* Register */
 .card {
     margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
 }
 
 .input-group-text {
@@ -101,6 +102,10 @@ background-size: 20px 30px;
 #viewall-layout {
     width: 75%;
     margin: 0 auto;
+}
+
+.space-below {
+    margin-bottom: 1.5rem;
 }
 
 .btn-link {
