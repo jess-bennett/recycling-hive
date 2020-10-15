@@ -4,6 +4,7 @@ body {
     font-family: "Neucha";
     background-color: #fafafa;
     color: #333;
+    margin-bottom: 3rem;
 }
 
 .internal-link {
@@ -72,14 +73,14 @@ background-size: 20px 30px;
 .btn-outline-primary {
     color: #333;
     font-size: 1.3rem;
-    border-color: #d2d914;
+    border-color: #6c8c26;
     border-width: 0.2rem;
 }
 
 .btn-outline-primary:hover {
-    color: #333;
-    background-color: #d2d914;
-    border-color: #d2d914;
+    color: #fafafa;
+    background-color: #6c8c26;
+    border-color: #6c8c26;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
@@ -96,7 +97,8 @@ background-size: 20px 30px;
 
 
 .page-selected {
-    background-color: #d2d914;
+    background-color: #6c8c26;
+    color: #fafafa
 }
 
 #viewall-layout {
@@ -123,6 +125,17 @@ background-size: 20px 30px;
     position: absolute;
     right: 1.5rem;
     top: 0.8rem;
+}
+
+/* Modals */
+.modal-content {
+    border: 0.5rem solid #6c8c26;
+}
+
+@media (min-width: 576px) {
+.modal-dialog {
+    max-width: 70%;
+}
 }
 
 /* Footer */
