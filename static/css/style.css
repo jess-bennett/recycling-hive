@@ -120,6 +120,9 @@ background-size: 20px 30px;
 
 .fa-chevron-down {
     padding-top: 1rem;
+    position: absolute;
+    right: 1.5rem;
+    top: 0.8rem;
 }
 
 /* Footer */
