@@ -15,6 +15,12 @@ $("#registrationSubmit").click(function(event) {
     }           
 });
 
+/* Hide viewall on page load */
+$(document).ready(function(){
+    $('.collapse').collapse()
+});
+
+
 
   /* Change list of recycling items on dropdown change */
   $("#itemCategory").change(function () {

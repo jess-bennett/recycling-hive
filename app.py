@@ -47,13 +47,16 @@ def get_recycling_items(categoryID):
         mongo.db.itemCollections.insert_one(newLocation)
         flash("New location added")
         return redirect(url_for("recycling"))
+
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+    categoryItems = list(mongo.db.recyclableItems.find(
+        {"categoryID": categoryID}).sort("typeOfWaste"))
     items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
     locations = list(mongo.db.collectionLocations.find(
         {"memberID": memberID}).sort("nickname"))
     return render_template(
         "hive-category.html", categories=categories, items=items,
-        locations=locations)
+        locations=locations, categoryItems=categoryItems)
 
 
 @app.route("/register", methods=["GET", "POST"])
