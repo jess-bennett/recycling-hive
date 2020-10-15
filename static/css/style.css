@@ -120,6 +120,11 @@ background-size: 20px 30px;
     color: #fafafa;
 }
 
+.btn-wide {
+    width: 100%;
+    text-align: left;
+}
+
 .fa-chevron-down {
     padding-top: 1rem;
     position: absolute;
