@@ -15,23 +15,8 @@ $("#registrationSubmit").click(function(event) {
     }           
 });
 
-/* Hide viewall on page load */
-$(document).ready(function(){
-    $("#category-layout").show();
-    $("#viewall-layout").hide();
-    $('.collapse').collapse()
-});
 
-/* Function to switch page view on Hive */
- $("#btn-categories").click(function(){
-    $("#category-layout").show();
-    $("#viewall-layout").hide();
-    $("#btn-categories").addClass("page-selected")
-    $("#btn-viewall").removeClass("page-selected")
-  });
-  $("#btn-viewall").click(function(){
-    $("#viewall-layout").show();
-    $("#category-layout").hide();
-    $("#btn-viewall").addClass("page-selected")
-    $("#btn-categories").removeClass("page-selected")
-  });
+  /* Change list of recycling items on dropdown change */
+  $("#itemCategory").change(function () {
+        let itemCategory = this.value;
+    });

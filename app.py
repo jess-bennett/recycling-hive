@@ -20,8 +20,15 @@ mongo = PyMongo(app)
 
 
 @app.route("/")
-@app.route("/hive", methods=["GET", "POST"])
-def recycling():
+@app.route("/hive")
+def get_recycling_categories():
+    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+    return render_template(
+        "hive.html", categories=categories)
+
+
+@app.route("/hive/<categoryID>", methods=["GET", "POST"])
+def get_recycling_items(categoryID):
     memberID = mongo.db.hiveMembers.find_one(
                 {"email": session["user"]})["_id"]
     if request.method == "POST":
@@ -45,7 +52,8 @@ def recycling():
     locations = list(mongo.db.collectionLocations.find(
         {"memberID": memberID}).sort("nickname"))
     return render_template(
-        "hive.html", categories=categories, items=items, locations=locations)
+        "hive-category.html", categories=categories, items=items,
+        locations=locations)
 
 
 @app.route("/register", methods=["GET", "POST"])
