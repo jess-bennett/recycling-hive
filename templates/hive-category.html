@@ -8,11 +8,10 @@
 			<a class="btn btn-outline-primary btn-wide" href="{{ url_for('get_recycling_categories') }}">Explore categories</a>
 		</div>
 		<div class="col-3 text-center">
-			<a class="btn btn-outline-primary btn-wide" href="{{ url_for('get_recycling_items', categoryID='5f8054dd4361cd9f497a63dd') }}">View all</a>
+			<a class="btn btn-outline-primary btn-wide page-selected" href="{{ url_for('get_recycling_items', categoryID='5f8054dd4361cd9f497a63dd') }}">View all</a>
 		</div>
 	</div>
 </div>
-
 <!-- Show all items -->
 <div id="viewall-layout">
 	<!-- Add item button -->
@@ -38,13 +37,16 @@
                     </div>
                 </form>
 	<!-- Item collection accordion -->
+    
+    <div>
+    </div>
 	<div class="accordion" id="accordionExample">
-		{% for categoryItem in categoryItems %}
+		{% for catitem in catitems %}
 		<div class="card">
 			<div class="card-header green-background" id="headingOne">
 				<div class="mb-0 row">
 					<button class="btn btn-link row btn-wide" type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{counter}}">
-                    {{ categoryItem.typeOfWaste }}<i class="fas fa-chevron-down"></i>
+                    {{ catitem.typeOfWaste }}<i class="fas fa-chevron-down"></i>
                     </button>
 				</div>
 			</div>
@@ -86,7 +88,7 @@
 				</p>
 				<!-- Input form -->
 
-				<form class="card-body" method="POST" action="">
+				<form class="card-body" method="POST" action="{{ url_for('get_recycling_items', categoryID='5f8054dd4361cd9f497a63dd') }}">
 
 					<div class="form-row">
 						<!-- Type of Waste -->
