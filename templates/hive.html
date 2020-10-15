@@ -75,11 +75,11 @@
 			</div>
 			<div class="modal-body">
 				<p><em>Please note, this option is to add your own <strong>personal</strong> location to the database. If you would like to suggest a local/national 
-        <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
+                <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
 				</p>
 				<!-- Input form -->
 
-				<form class="card-body" method="POST" action="">
+				<form class="card-body" method="POST" action="{{ url_for('add_location') }}">
 
 					<div class="form-row">
 						<!-- Type of Waste -->
@@ -99,16 +99,15 @@
 						</div>
 						<!-- Location -->
 						<div class="form-group col-md-6">
-							<label class="sr-only" for="locationID">Location</label>
+							<label class="sr-only" for="locationID">Type of Waste</label>
 							<div class="input-group mb-2">
 								<div class="input-group-prepend">
 									<div class="input-group-text"><i class="fas fa-home"></i></div>
 								</div>
 								<select class="form-control" id="locationID" name="locationID" required>
 							      <option value="" selected disabled>Location</option>
-                                  {% for location in locations %}
-							        <option value="{{ location.nickname }}">{{ location.nickname }}</option>
-                                  {% endfor %}
+                                    <option value="TEST">TEST</option>
+                                  
                             </select>
 							</div>
 						</div>

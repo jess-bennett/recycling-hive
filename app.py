@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
@@ -47,7 +48,7 @@ def register():
         mongo.db.hiveMembers.insert_one(register)
 
         # put the new user into 'session' cookie
-        session["user"] = request.form.get("username")
+        session["user"] = request.form.get("email")
         flash("Registration Successful!")
         return redirect(url_for("home", username=session["user"]))
 
@@ -65,7 +66,7 @@ def login():
             # ensure hashed password matches user input
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
-                session["user"] = existing_user["username"]
+                session["user"] = existing_user["email"]
                 return redirect(url_for("home", username=session["user"]))
             else:
                 # invalid password match
@@ -84,7 +85,7 @@ def login():
 def home(username):
     # grab the session user's username from db
     username = mongo.db.hiveMembers.find_one(
-        {"username": session["user"]})["username"]
+        {"email": session["user"]})["username"]
 
     if session["user"]:
         return render_template("index.html", username=username)
@@ -100,7 +101,23 @@ def logout():
     return redirect(url_for("login"))
 
 
+@app.route("/hive", methods=["GET", "POST"])
 def add_location():
+    if request.method == "POST":
+        newLocation = {
+            "itemID": mongo.db.recyclableItems.find_one(
+                {"typeOfWaste": request.form.get("typeOfWaste")})["_id"],
+            "conditionNotes": request.form.get("conditionNotes"),
+            "charityScheme": request.form.get("charityScheme", None),
+            "memberID": mongo.db.hiveMembers.find_one(
+                {"email": session["user"]})["_id"],
+            "locationID": "TEST",
+            "isNational": "no",
+            "dateAdded": datetime.now().strftime("%d %b %Y")
+        }
+        mongo.db.itemCollections.insert_one(newLocation)
+        flash("New location added")
+        return redirect(url_for("get_recycling_categories"))
     items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
     locations = list(mongo.db.collectionLocations.find().sort("nickname"))
     return render_template("hive.html", items=items, locations=locations)
