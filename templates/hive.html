@@ -29,7 +29,7 @@
 <!-- Show all items -->
 <div id="viewall-layout">
 	<!-- Add item button -->
-	<button type="button" id="addLocation" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#exampleModalCenter">Add new recycling location</button>
+	<button type="button" id="addLocation" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#locationModal">Add new recycling location</button>
 	<!-- Item collection accordion -->
 	<div class="accordion" id="accordionExample">
 		{% for category in categories %}
@@ -62,7 +62,7 @@
 </div>
 
 <!-- Add new location modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+<div class="modal fade" id="locationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
 	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
@@ -77,9 +77,12 @@
 				<p><em>Please note, this option is to add your own <strong>personal</strong> location to the database. If you would like to suggest a local/national 
                 <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
 				</p>
+                {% for item in items %}
+                    {{ item.typeOfWaste }}
+                {% endfor %}
 				<!-- Input form -->
 
-				<form class="card-body" method="POST" action="{{ url_for('add_location') }}">
+				<form class="card-body" method="POST" action="{{ url_for('recycling') }}">
 
 					<div class="form-row">
 						<!-- Type of Waste -->
@@ -106,8 +109,9 @@
 								</div>
 								<select class="form-control" id="locationID" name="locationID" required>
 							      <option value="" selected disabled>Location</option>
-                                    <option value="TEST">TEST</option>
-                                  
+                                  {% for location in locations %}
+							        <option value="{{ location.nickname }}">{{ location.nickname }}</option>
+                                  {% endfor %}
                             </select>
 							</div>
 						</div>
