@@ -70,8 +70,11 @@ def register():
 
         # put the new user into 'session' cookie
         session["user"] = request.form.get("email")
+        # grab the session user's username from db
+        session["username"] = mongo.db.hiveMembers.find_one(
+            {"email": session["user"]})["username"]
         flash("Registration Successful!")
-        return redirect(url_for("home", username=session["user"]))
+        return redirect(url_for("home", username=session["username"]))
 
     return render_template("register.html")
 
@@ -88,7 +91,10 @@ def login():
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
                 session["user"] = existing_user["email"]
-                return redirect(url_for("home", username=session["user"]))
+                # grab the session user's username from db
+                session["username"] = mongo.db.hiveMembers.find_one(
+                    {"email": session["user"]})["username"]
+                return redirect(url_for("home", username=session["username"]))
             else:
                 # invalid password match
                 flash("Incorrect email and/or password")
