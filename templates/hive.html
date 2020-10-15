@@ -3,36 +3,36 @@
 {% block content %}
 <!-- Button to switch between page views -->
 <div class="container-fluid page-switch">
-    <div class="row">
-        <div class="col-3 offset-3 text-center">
-            <button id="btn-categories" class="btn btn-outline-primary col page-selected">Explore categories</button>
-        </div>
-        <div class="col-3 text-center">
-            <button id="btn-viewall" class="btn btn-outline-primary col">View all</button>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-3 offset-3 text-center">
+			<button id="btn-categories" class="btn btn-outline-primary col page-selected">Explore categories</button>
+		</div>
+		<div class="col-3 text-center">
+			<button id="btn-viewall" class="btn btn-outline-primary col">View all</button>
+		</div>
+	</div>
 </div>
 <!-- Show all categories -->
 <div id="category-layout">
-<ul id="grid" class="clr">
-    {% for category in categories %}
-	<li>
-		<a href="#item2">
-			<div class="hexagon">
-				<h3 class="hexagon-text">{{ category.categoryName }}</h3>
-			</div>
-		</a>
-	</li>
-    {% endfor %}
-</ul>
+	<ul id="grid" class="clr">
+		{% for category in categories %}
+		<li>
+			<a href="#item2">
+				<div class="hexagon">
+					<h3 class="hexagon-text">{{ category.categoryName }}</h3>
+				</div>
+			</a>
+		</li>
+		{% endfor %}
+	</ul>
 </div>
 <!-- Show all items -->
 <div id="viewall-layout">
-    <!-- Add item button -->
-    <button type="button" id="addLocation" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#exampleModalCenter">Add new recycling location</button>
-    <!-- Item collection accordion -->
+	<!-- Add item button -->
+	<button type="button" id="addLocation" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#exampleModalCenter">Add new recycling location</button>
+	<!-- Item collection accordion -->
 	<div class="accordion" id="accordionExample">
-    {% for category in categories %}
+		{% for category in categories %}
 		<div class="card">
 			<div class="card-header green-background" id="headingOne">
 				<div class="mb-0 row">
@@ -42,7 +42,8 @@
 				</div>
 			</div>
 
-			<div id="collapse{{ loop.index }}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+			<div id="collapse{{ loop.index }}" class="collapse show" aria-labelledby="headingOne"
+				data-parent="#accordionExample">
 				<div class="card-body">
 					<ul id="grid" class="clr">
 						<li>
@@ -56,90 +57,91 @@
 				</div>
 			</div>
 		</div>
-    {% endfor %}
+		{% endfor %}
 	</div>
 </div>
 
 <!-- Add new location modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="exampleModalLongTitle">Add New Recycling Location</h4>
-        
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h4 class="modal-title w-100" id="exampleModalLongTitle">Add New Recycling Location</h4>
+
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
-      <div class="modal-body">
-        <p><em>Please note, this option is to add your own <strong>personal</strong> location to the database. If you would like to suggest a local/national 
-        <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em></p>
-        <!-- Input form -->
-        
-                <form class="card-body" method="POST" action="{{ url_for('register') }}">
-                    
+			</div>
+			<div class="modal-body">
+				<p><em>Please note, this option is to add your own <strong>personal</strong> location to the database. If you would like to suggest a local/national 
+        <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
+				</p>
+				<!-- Input form -->
+
+				<form class="card-body" method="POST" action="">
+
 					<div class="form-row">
-                        <!-- Type of Waste -->
-                        <div class="form-group col-md-6">
-						<label class="sr-only" for="typeOfWaste">Type of Waste</label>
-						<div class="input-group mb-2">
-							<div class="input-group-prepend">
-								<div class="input-group-text"><i class="fas fa-recycle"></i></div>
-							</div>
-							<select class="form-control" id="typeOfWaste" name="typeOfWaste" required>
+						<!-- Type of Waste -->
+						<div class="form-group col-md-6">
+							<label class="sr-only" for="typeOfWaste">Type of Waste</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-recycle"></i></div>
+								</div>
+								<select class="form-control" id="typeOfWaste" name="typeOfWaste" required>
 							      <option value="" selected disabled>Type of Waste</option>
-							      <option>2</option>
-							      <option>3</option>
-							      <option>4</option>
-							      <option>5</option>
+                                  {% for item in items %}
+							        <option value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}</option>
+                                  {% endfor %}
                             </select>
-                        </div>
-                        </div>
-                        <!-- Location -->
-                        <div class="form-group col-md-6">
-						<label class="sr-only" for="locationID">Location</label>
-						<div class="input-group mb-2">
-							<div class="input-group-prepend">
-								<div class="input-group-text"><i class="fas fa-home"></i></div>
 							</div>
-							<select class="form-control" id="locationID" name="locationID" required>
+						</div>
+						<!-- Location -->
+						<div class="form-group col-md-6">
+							<label class="sr-only" for="locationID">Location</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-home"></i></div>
+								</div>
+								<select class="form-control" id="locationID" name="locationID" required>
 							      <option value="" selected disabled>Location</option>
-							      <option>2</option>
-							      <option>3</option>
-							      <option>4</option>
-							      <option>5</option>
+                                  {% for location in locations %}
+							        <option value="{{ location.nickname }}">{{ location.nickname }}</option>
+                                  {% endfor %}
                             </select>
-                        </div>
-                        </div>
-                    </div>
-                    <!-- Condition Notes -->
-                    <div class="form-group">
+							</div>
+						</div>
+					</div>
+					<!-- Condition Notes -->
+					<div class="form-group">
 						<label class="sr-only" for="conditionNotes">What condition should this item be in?</label>
 						<div class="input-group mb-2">
 							<div class="input-group-prepend">
 								<div class="input-group-text"><i class="far fa-question-circle"></i></div>
 							</div>
-							<textarea type="text" class="form-control" id="conditionNotes" name="conditionNotes" placeholder="What condition should this item be in? (E.g. Washed/As it is)" minlength="8" required></textarea>
-                        </div>
-                    </div>
-                    <!-- Charity -->
+							<textarea type="text" class="form-control" id="conditionNotes" name="conditionNotes"
+                            placeholder="What condition should this item be in? (E.g. Washed/As it is)" minlength="4" required></textarea>
+						</div>
+					</div>
+					<!-- Charity -->
 					<div class="form-group">
 						<label class="sr-only" for="charityScheme">Charity (optional)</label>
 						<div class="input-group mb-2">
 							<div class="input-group-prepend">
 								<div class="input-group-text"><i class="fas fa-hand-holding-heart"></i></div>
 							</div>
-							<input type="text" class="form-control" id="charityScheme" name="charityScheme" placeholder="Charity (optional)" minlength="3">
+							<input type="text" class="form-control" id="charityScheme" name="charityScheme" placeholder="Charity (optional)" minlength="2">
                         </div>
-                    </div>
-                    <!-- Submit -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-                        <button id="locationSubmit" class="btn btn-outline-primary" type="submit">Submit new location</button>
-                    </div>
-                </form>
-      </div>
-    </div>
-  </div>
+						</div>
+						<!-- Submit -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+							<button id="locationSubmit" class="btn btn-outline-primary" type="submit">Submit new location</button>
+						</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 {% endblock %}

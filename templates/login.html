@@ -3,15 +3,15 @@
 {% block content %}
 
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <div class="card">
-                <div class="card-header text-center green-background">
-                    <h4>Log In</h4>
-                </div>
-                <form class="card-body" method="POST" action="{{ url_for('login') }}">
-                    <!-- Email -->
-                    <div class="form-group row">
+	<div class="row">
+		<div class="col-md-8 offset-md-2">
+			<div class="card">
+				<div class="card-header text-center green-background">
+					<h4>Log In</h4>
+				</div>
+				<form class="card-body" method="POST" action="{{ url_for('login') }}">
+					<!-- Email -->
+					<div class="form-group row">
 						<label class="sr-only" for="email">Email</label>
 						<div class="input-group mb-2">
 							<div class="input-group-prepend">
@@ -19,39 +19,39 @@
 							</div>
 							<input type="email" class="form-control" id="email" name="email" placeholder="email" required>
                         </div>
-                    </div>
-                    <!-- Password -->
-                    <div class="form-group row">
-						<label class="sr-only" for="password">Password</label>
-						<div class="input-group mb-2">
-							<div class="input-group-prepend">
-								<div class="input-group-text"><i class="fas fa-lock-open"></i></div>
-							</div>
-							<input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$" required>
-                            <small id="passwordValidation" class="form-text col-12">
+						</div>
+						<!-- Password -->
+						<div class="form-group row">
+							<label class="sr-only" for="password">Password</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-lock-open"></i></div>
+								</div>
+								<input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$" required>
+								<small id="passwordValidation" class="form-text col-12">
                                 Your password must be at least 8 characters and contain at least 1 uppercase letter, 1 lowercase letter, and 1 number
                             </small>
-                        </div>
-                    </div>
-                    <!-- Submit -->
-                    <div class="form-group row">
-                        <button id="loginSubmit" class="btn btn-outline-primary col" type="submit">Log In</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+							</div>
+						</div>
+						<!-- Submit -->
+						<div class="form-group row">
+							<button id="loginSubmit" class="btn btn-outline-primary col" type="submit">Log In</button>
+						</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- Need to change this to redirect to 'find a hive' page when built -->
 <div class="container-fluid">
-    <div class="row text-center">
-        <div class="col">
-            <p class="">
-                New Here? <a href="{{ url_for('register') }}" class="internal-link">Register Account</a>
-            </p>
-        </div>
-    </div>
+	<div class="row text-center">
+		<div class="col">
+			<p class="">
+				New Here? <a href="{{ url_for('register') }}" class="internal-link">Register Account</a>
+			</p>
+		</div>
+	</div>
 </div>
 
 {% endblock %}

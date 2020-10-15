@@ -100,6 +100,12 @@ def logout():
     return redirect(url_for("login"))
 
 
+def add_location():
+    items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
+    locations = list(mongo.db.collectionLocations.find().sort("nickname"))
+    return render_template("hive.html", items=items, locations=locations)
+
+
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
             port=int(os.environ.get("PORT")),
