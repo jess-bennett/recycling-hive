@@ -2,14 +2,14 @@
 /* Check passwords match */
 $('#password, #confirm_password').on('keyup', function () {
   if ($('#password').val() == $('#confirm_password').val()) {
-    $('#passwordMatch').html('Passwords match').css('color', '#888C1B');
+    $('#password-match').html('Passwords match').css('color', '#888C1B');
   } else 
-    $('#passwordMatch').html('Passwords do not match').css('color', '#8C0A06');
+    $('#password-match').html('Passwords do not match').css('color', '#8C0A06');
     stopSubmission();
 });
 
 /* Prevent submission if passwords do not match */
-$("#registrationSubmit").click(function(event) {
+$("#submit-registration").click(function(event) {
     if ($('#password').val() != $('#confirm_password').val()) {
         event.preventDefault();
     }           

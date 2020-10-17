@@ -76,7 +76,7 @@ def register():
             "username": request.form.get("username"),
             "email": request.form.get("email").lower(),
             "password": generate_password_hash(request.form.get("password")),
-            "securityQuestion": request.form.get("security_question"),
+            "securityQuestion": request.form.get("security-question"),
             "marketing": request.form.get("marketing")
         }
         mongo.db.hiveMembers.insert_one(register)
