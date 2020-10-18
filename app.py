@@ -103,8 +103,9 @@ def get_recycling_items(categoryID):
     locations = list(mongo.db.collectionLocations.find(
         {"memberID": memberID}).sort("nickname"))
     return render_template(
-        "hive-category.html", categoryID=categoryID, categories=categories,
-        items=items, locations=locations, catItems=catItems,
+        "hive-category.html",
+        categoryID=categoryID, categories=categories, items=items,
+        locations=locations, catItems=catItems,
         collectionsDict=collectionsDict)
 
 

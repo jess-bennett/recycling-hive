@@ -17,12 +17,17 @@ $("#submit-registration").click(function(event) {
 
 /* Collapse accordion on page load on Hive category page  */
 $(document).ready(function(){
+    let selectedCategory = sessionStorage.getItem("selectedCategory");
+    console.log(selectedCategory)
+    $("#itemCategory").val(selectedCategory);
     $('.collapse').collapse()
 });
 
 /* Select category in dropdown on page change */
 $( "#select-category" ).click(function() {
-    $("#itemCategory").val($(this).find(".hexagon-text").text());
+    sessionStorage.removeItem("selectedCategory")
+    sessionStorage.setItem("selectedCategory", $(this).find(".hexagon-text").text());
+
 });
 
   /* Change list of recycling items on dropdown change */
