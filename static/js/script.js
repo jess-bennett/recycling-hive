@@ -21,13 +21,12 @@ $(document).ready(function(){
 });
 
 /* Select category in dropdown on page change */
-$("#select-category").click(function(event) {
-    $("select#itemCategory option").filter(function() {
-                    return $(this).val() == $(this).val(); 
-                }).prop('selected', true);         
+$( "#select-category" ).click(function() {
+    $("#itemCategory").val($(this).find(".hexagon-text").text());
 });
 
   /* Change list of recycling items on dropdown change */
   $("#itemCategory").change(function () {
+      console.log($('#itemCategory').val());
         let itemCategory = this.value;
     });

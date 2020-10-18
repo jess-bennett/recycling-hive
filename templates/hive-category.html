@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block nav_hive %}active{% endblock %}
 {% block content %}
+
+{% for item in collectionsDict %}
+{{ item }}
+{% endfor %}
 <!-- Button to switch between page views -->
 <div class="container-fluid page-switch">
 	<div class="row">
@@ -41,12 +45,12 @@
     <div>
     </div>
 	<div class="accordion" id="accordion-recyclable">
-		{% for catitem in catitems %}
+		{% for catItem in catItems %}
 		<div class="card">
 			<div class="card-header green-background" id="accordion-recyclable-heading">
 				<div class="mb-0 row">
 					<button class="btn btn-link row btn-wide" type="button" data-toggle="collapse" data-target="#collapse{{ loop.index }}" aria-expanded="true" aria-controls="collapse{{ loop.index }}">
-                    {{ catitem.typeOfWaste }}<i class="fas fa-chevron-down"></i>
+                    {{ catItem.typeOfWaste }}<i class="fas fa-chevron-down"></i>
                     </button>
 				</div>
 			</div>

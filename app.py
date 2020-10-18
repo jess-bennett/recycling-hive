@@ -48,17 +48,60 @@ def get_recycling_items(categoryID):
         flash("New location added")
         return redirect(url_for("get_recycling_items",
                                 categoryID='5f8054dd4361cd9f497a63dd'))
-
+    # Get list of categories for dropdown menu
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
-    catitems = list(mongo.db.recyclableItems.find(
+    # Get recyclable items that match the selected category for
+    # # accordion headers
+    catItems = list(mongo.db.recyclableItems.find(
         {"categoryID": ObjectId(
             categoryID)}).sort("typeOfWaste"))
+    # Create new dictionary of recyclable items and their matching collections
+    collectionsDict = mongo.db.itemCollections.aggregate([
+        {
+         '$lookup': {
+            'from': 'recyclableItems',
+            'localField': 'itemID',
+            'foreignField': '_id',
+            'as': 'recyclableItems'
+         },
+        },
+        {'$unwind': '$recyclableItems'},
+        {'$project': {
+         'recyclableItems': '$recyclableItems.typeOfWaste',
+         'id': 1,
+         'conditionNotes': 1,
+         'charityScheme': 1,
+         'typeOfWaste': 1
+         }
+         },
+         {
+         '$lookup': {
+            'from': 'recyclableItems',
+            'localField': 'itemID',
+            'foreignField': '_id',
+            'as': 'recyclableItems'
+         },
+        },
+        {'$unwind': '$recyclableItems'},
+        {'$project': {
+         'recyclableItems': '$recyclableItems.typeOfWaste',
+         'id': 1,
+         'conditionNotes': 1,
+         'charityScheme': 1,
+         'typeOfWaste': 1
+         }
+         }
+        ])
+    # Get list of all recyclable items for dropdown in 'Add location' modal
     items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
+    # Get list of locations that match the current user's ID for dropdown in
+    # 'Add location' modal
     locations = list(mongo.db.collectionLocations.find(
         {"memberID": memberID}).sort("nickname"))
     return render_template(
         "hive-category.html", categoryID=categoryID, categories=categories,
-        items=items, locations=locations, catitems=catitems)
+        items=items, locations=locations, catItems=catItems,
+        collectionsDict=collectionsDict)
 
 
 @app.route("/register", methods=["GET", "POST"])
