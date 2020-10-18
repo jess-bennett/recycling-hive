@@ -66,29 +66,33 @@ def get_recycling_items(categoryID):
          },
         },
         {'$unwind': '$recyclableItems'},
-        {'$project': {
-         'recyclableItems': '$recyclableItems.typeOfWaste',
-         'id': 1,
-         'conditionNotes': 1,
-         'charityScheme': 1,
-         'typeOfWaste': 1
-         }
-         },
-         {
+        {
          '$lookup': {
-            'from': 'recyclableItems',
-            'localField': 'itemID',
+            'from': 'hiveMembers',
+            'localField': 'memberID',
             'foreignField': '_id',
-            'as': 'recyclableItems'
+            'as': 'hiveMembers'
          },
         },
-        {'$unwind': '$recyclableItems'},
+        {'$unwind': '$hiveMembers'},
+        {
+         '$lookup': {
+            'from': 'collectionLocations',
+            'localField': 'locationID',
+            'foreignField': '_id',
+            'as': 'collectionLocations'
+         },
+        },
+        {'$unwind': '$hiveMembers'},
         {'$project': {
-         'recyclableItems': '$recyclableItems.typeOfWaste',
+         'typeOfWaste': '$recyclableItems.typeOfWaste',
+         'hiveMembers': '$hiveMembers.username',
+         'street': '$collectionLocations.street',
+         'town': '$collectionLocations.town',
+         'postcode': '$collectionLocations.postcode',
          'id': 1,
          'conditionNotes': 1,
-         'charityScheme': 1,
-         'typeOfWaste': 1
+         'charityScheme': 1
          }
          }
         ])
