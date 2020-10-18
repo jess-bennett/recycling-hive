@@ -4,6 +4,7 @@ body {
     font-family: "Neucha";
     background-color: #fafafa;
     color: #333;
+    margin-bottom: 3rem;
 }
 
 .internal-link {
@@ -61,6 +62,7 @@ background-size: 20px 30px;
 /* Register */
 .card {
     margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
 }
 
 .input-group-text {
@@ -71,14 +73,14 @@ background-size: 20px 30px;
 .btn-outline-primary {
     color: #333;
     font-size: 1.3rem;
-    border-color: #d2d914;
+    border-color: #6c8c26;
     border-width: 0.2rem;
 }
 
 .btn-outline-primary:hover {
-    color: #333;
-    background-color: #d2d914;
-    border-color: #d2d914;
+    color: #fafafa;
+    background-color: #6c8c26;
+    border-color: #6c8c26;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
@@ -87,9 +89,64 @@ background-size: 20px 30px;
     border-color: #6c8c26;
 }
 
-/* Hexagons */
+/* Hive */
+
+.page-switch {
+    margin-bottom: 2rem;
+}
 
 
+.page-selected {
+    background-color: #6c8c26;
+    color: #fafafa
+}
+
+#viewall-layout {
+    width: 75%;
+    margin: 0 auto;
+}
+
+.space-below {
+    margin-bottom: 1.5rem;
+}
+
+.btn-link {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.btn-link:hover {
+    text-decoration: none;
+    color: #fafafa;
+}
+
+.btn-wide {
+    width: 100%;
+}
+
+.fa-chevron-down {
+    padding-top: 1rem;
+    position: absolute;
+    right: 1.5rem;
+    top: 0.8rem;
+}
+
+/* Item collection modal */
+
+.modal-borders {
+    border: solid 2px #d2d914;
+}
+
+/* Modals */
+.modal-content {
+    border: 0.5rem solid #6c8c26;
+}
+
+@media (min-width: 576px) {
+.modal-dialog {
+    max-width: 70%;
+}
+}
 
 /* Footer */
 footer {

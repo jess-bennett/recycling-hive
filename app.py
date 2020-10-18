@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
@@ -19,10 +20,92 @@ mongo = PyMongo(app)
 
 
 @app.route("/")
-@app.route("/recyclingItems")
-def get_recycling_items():
-    items = mongo.db.recyclableItems.find()
-    return render_template("items.html", items=items)
+@app.route("/hive")
+def get_recycling_categories():
+    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+    return render_template(
+        "hive.html", categories=categories)
+
+
+@app.route("/hive/<categoryID>", methods=["GET", "POST"])
+def get_recycling_items(categoryID):
+    memberID = mongo.db.hiveMembers.find_one(
+                {"email": session["user"]})["_id"]
+    if request.method == "POST":
+        newLocation = {
+            "itemID": mongo.db.recyclableItems.find_one(
+                {"typeOfWaste": request.form.get("typeOfWaste")})["_id"],
+            "conditionNotes": request.form.get("conditionNotes"),
+            "charityScheme": request.form.get("charityScheme", None),
+            "memberID": memberID,
+            "locationID": mongo.db.collectionLocations.find_one(
+                {"nickname": request.form.get("locationID"),
+                 "memberID": memberID})["_id"],
+            "isNational": "no",
+            "dateAdded": datetime.now().strftime("%d %b %Y")
+        }
+        mongo.db.itemCollections.insert_one(newLocation)
+        flash("New location added")
+        return redirect(url_for("get_recycling_items",
+                                categoryID='5f8054dd4361cd9f497a63dd'))
+    # Get list of categories for dropdown menu
+    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+    # Get recyclable items that match the selected category for
+    # # accordion headers
+    catItems = mongo.db.recyclableItems.find(
+        {"categoryID": ObjectId(
+            categoryID)}).sort("typeOfWaste")
+    # Create new dictionary of recyclable items and their matching collections
+    collectionsDict = mongo.db.itemCollections.aggregate([
+        {
+         '$lookup': {
+            'from': 'recyclableItems',
+            'localField': 'itemID',
+            'foreignField': '_id',
+            'as': 'recyclableItems'
+         },
+        },
+        {'$unwind': '$recyclableItems'},
+        {
+         '$lookup': {
+            'from': 'hiveMembers',
+            'localField': 'memberID',
+            'foreignField': '_id',
+            'as': 'hiveMembers'
+         },
+        },
+        {'$unwind': '$hiveMembers'},
+        {
+         '$lookup': {
+            'from': 'collectionLocations',
+            'localField': 'locationID',
+            'foreignField': '_id',
+            'as': 'collectionLocations'
+         },
+        },
+        {'$unwind': '$collectionLocations'},
+        {'$project': {
+         'typeOfWaste': '$recyclableItems.typeOfWaste',
+         'hiveMembers': '$hiveMembers.username',
+         'street': '$collectionLocations.street',
+         'town': '$collectionLocations.town',
+         'postcode': '$collectionLocations.postcode',
+         'id': 1,
+         'conditionNotes': 1,
+         'charityScheme': 1
+         }
+         }
+        ])
+    # Get list of all recyclable items for dropdown in 'Add location' modal
+    items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
+    # Get list of locations that match the current user's ID for dropdown in
+    # 'Add location' modal
+    locations = list(mongo.db.collectionLocations.find(
+        {"memberID": memberID}).sort("nickname"))
+    return render_template(
+        "hive-category.html", categoryID=categoryID, categories=categories,
+        items=items, locations=locations, catItems=catItems,
+        collectionsDict=collectionsDict)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -40,15 +123,18 @@ def register():
             "username": request.form.get("username"),
             "email": request.form.get("email").lower(),
             "password": generate_password_hash(request.form.get("password")),
-            "securityQuestion": request.form.get("security_question"),
+            "securityQuestion": request.form.get("security-question"),
             "marketing": request.form.get("marketing")
         }
         mongo.db.hiveMembers.insert_one(register)
 
         # put the new user into 'session' cookie
-        session["user"] = request.form.get("username")
+        session["user"] = request.form.get("email")
+        # grab the session user's username from db
+        session["username"] = mongo.db.hiveMembers.find_one(
+            {"email": session["user"]})["username"]
         flash("Registration Successful!")
-        return redirect(url_for("home", username=session["user"]))
+        return redirect(url_for("home", username=session["username"]))
 
     return render_template("register.html")
 
@@ -64,8 +150,11 @@ def login():
             # ensure hashed password matches user input
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
-                session["user"] = existing_user["username"]
-                return redirect(url_for("home", username=session["user"]))
+                session["user"] = existing_user["email"]
+                # grab the session user's username from db
+                session["username"] = mongo.db.hiveMembers.find_one(
+                    {"email": session["user"]})["username"]
+                return redirect(url_for("home", username=session["username"]))
             else:
                 # invalid password match
                 flash("Incorrect email and/or password")
@@ -83,7 +172,7 @@ def login():
 def home(username):
     # grab the session user's username from db
     username = mongo.db.hiveMembers.find_one(
-        {"username": session["user"]})["username"]
+        {"email": session["user"]})["username"]
 
     if session["user"]:
         return render_template("index.html", username=username)
