@@ -2,9 +2,7 @@
 {% block nav_hive %}active{% endblock %}
 {% block content %}
 
-{% for item in collectionsDict %}
-{{ item }}
-{% endfor %}
+
 <!-- Button to switch between page views -->
 <div class="container-fluid page-switch">
 	<div class="row">
@@ -59,13 +57,15 @@
 				data-parent="#accordion-recyclable">
 				<div class="card-body">
 					<ul id="grid" class="clr">
-						<li>
-							<a href="#item2">
-								<div class="hexagon">
-									<h3 class="hexagon-text"></h3>
-								</div>
-							</a>
-						</li>
+                        {% for collection in collectionsDict %}
+                            {% if collection.typeOfWaste == catItem.typeOfWaste %}
+                                <li>
+                                    <div class="hexagon" data-toggle="modal" data-target="#modal-collection">
+                                        <h3 class="hexagon-text">{{ collection.hiveMembers }} - {{ collection.town }}</h3>
+                                    </div>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
 					</ul>
 				</div>
 			</div>
@@ -74,6 +74,29 @@
 	</div>
 </div>
 
+<!-- Collection details modal -->
+<div class="modal fade" id="modal-collection" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h4 class="modal-title w-100" id="modal-location-title">Collection details</h4>
+
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+			</div>
+			<div class="modal-body">
+				<p><em>Please note, this option is to add your own <strong>personal</strong> location to the database. If you would like to suggest a local/national 
+                <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
+				</p>
+				<!-- Input form -->
+
+				
+			</div>
+		</div>
+	</div>
+</div>
 <!-- Add new location modal -->
 <div class="modal fade" id="modal-location" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
 	aria-hidden="true">

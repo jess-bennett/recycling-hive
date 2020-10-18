@@ -52,9 +52,9 @@ def get_recycling_items(categoryID):
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
     # Get recyclable items that match the selected category for
     # # accordion headers
-    catItems = list(mongo.db.recyclableItems.find(
+    catItems = mongo.db.recyclableItems.find(
         {"categoryID": ObjectId(
-            categoryID)}).sort("typeOfWaste"))
+            categoryID)}).sort("typeOfWaste")
     # Create new dictionary of recyclable items and their matching collections
     collectionsDict = mongo.db.itemCollections.aggregate([
         {
@@ -83,7 +83,7 @@ def get_recycling_items(categoryID):
             'as': 'collectionLocations'
          },
         },
-        {'$unwind': '$hiveMembers'},
+        {'$unwind': '$collectionLocations'},
         {'$project': {
          'typeOfWaste': '$recyclableItems.typeOfWaste',
          'hiveMembers': '$hiveMembers.username',
