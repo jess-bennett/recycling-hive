@@ -2,6 +2,7 @@
 {% block nav_hive %}active{% endblock %}
 {% block content %}
 
+{{ selectedCategory }}
 <!-- Button to switch between page views -->
 <div class="container-fluid page-switch">
 	<div class="row">
@@ -28,9 +29,13 @@
 									<div class="input-group-text"><i class="fas fa-recycle"></i></div>
 								</div>
 								<select class="form-control" id="itemCategory" name="itemCategory" required>
-							      <option value="" selected disabled>Category</option>
+							      <option value="" disabled>Category</option>
                                   {% for category in categories %}
-							        <option value="{{ category.categoryName }}">{{ category.categoryName }}</option>
+                                    {% if category.categoryName == selectedCategory %}
+							            <option value="{{ category.categoryName }}" selected>{{ category.categoryName }}</option>
+                                    {% else %}
+							            <option value="{{ category.categoryName }}">{{ category.categoryName }}</option>
+                                    {% endif %}
                                   {% endfor %}
                             </select>
 							</div>

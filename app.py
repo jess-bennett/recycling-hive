@@ -29,6 +29,8 @@ def get_recycling_categories():
 
 @app.route("/hive/<categoryID>", methods=["GET", "POST"])
 def get_recycling_items(categoryID):
+    selectedCategory = mongo.db.itemCategory.find_one(
+                {"_id": ObjectId(categoryID)})["categoryName"]
     memberID = mongo.db.hiveMembers.find_one(
                 {"email": session["user"]})["_id"]
     if request.method == "POST":
@@ -106,7 +108,7 @@ def get_recycling_items(categoryID):
         "hive-category.html",
         categoryID=categoryID, categories=categories, items=items,
         locations=locations, catItems=catItems,
-        collectionsDict=collectionsDict)
+        collectionsDict=collectionsDict, selectedCategory=selectedCategory)
 
 
 @app.route("/register", methods=["GET", "POST"])
