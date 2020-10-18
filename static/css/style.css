@@ -131,6 +131,12 @@ background-size: 20px 30px;
     top: 0.8rem;
 }
 
+/* Item collection modal */
+
+.modal-borders {
+    border: solid 2px #d2d914;
+}
+
 /* Modals */
 .modal-content {
     border: 0.5rem solid #6c8c26;
