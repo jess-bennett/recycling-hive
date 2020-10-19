@@ -20,11 +20,6 @@ $(document).ready(function(){
     $('.collapse').collapse()
 });
 
-/* Select category in dropdown on page change */
-$( "#select-category" ).click(function() {
-    $("#itemCategory").val($(this).find(".hexagon-text").text());
-});
-
   /* Change list of recycling items on dropdown change */
   $("#itemCategory").change(function () {
       console.log($('#itemCategory').val());
