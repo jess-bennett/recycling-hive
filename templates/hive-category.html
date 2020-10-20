@@ -6,10 +6,12 @@
 <div class="container-fluid page-switch">
 	<div class="row">
 		<div class="col-3 offset-3 text-center">
-			<a class="btn btn-outline-primary btn-wide" href="{{ url_for('get_recycling_categories') }}">Explore categories</a>
+			<a class="btn btn-outline-primary btn-wide" href="{{ url_for('get_recycling_categories') }}">Explore
+				categories</a>
 		</div>
 		<div class="col-3 text-center">
-			<a class="btn btn-outline-primary btn-wide page-selected" href="{{ url_for('get_recycling_items', categoryID='5f8054dd4361cd9f497a63dd') }}">View all</a>
+			<a class="btn btn-outline-primary btn-wide page-selected"
+				href="{{ url_for('get_recycling_items', categoryID='5f8054dd4361cd9f497a63dd') }}">View all</a>
 		</div>
 	</div>
 </div>
@@ -17,22 +19,23 @@
 <div id="viewall-layout">
 	<!-- Add item button -->
 	<button type="button" id="btn-add-location" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#modal-location">Add new recycling location</button>
-                
-                <!-- Type of Waste Dropdown -->
-				<div class="dropdown">
-					<button class="btn btn-outline-primary col space-below dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+	<!-- Type of Waste Dropdown -->
+	<div class="dropdown">
+		<button class="btn btn-outline-primary col space-below dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				    {{ selectedCategory }}
 				  </button>
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        {% for category in categories %}
-						    <a class="dropdown-item" href="{{ url_for('get_recycling_items', categoryID=category._id) }}">{{ category.categoryName }}</a>
-                        {% endfor %}
-					</div>
-				</div>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			{% for category in categories %}
+			<a class="dropdown-item"
+				href="{{ url_for('get_recycling_items', categoryID=category._id) }}">{{ category.categoryName }}</a>
+			{% endfor %}
+		</div>
+	</div>
+
+	<div>
+	</div>
 	<!-- Item collection accordion -->
-    
-    <div>
-    </div>
 	<div class="accordion" id="accordion-recyclable">
 		{% for catItem in catItems %}
 		<div class="card">
@@ -44,74 +47,74 @@
 				</div>
 			</div>
 
-			<div id="collapse{{ loop.index }}" class="collapse show" aria-labelledby="accordion-recyclable-heading"
+			<div id="collapse{{ loop.index }}" class="collapse" aria-labelledby="accordion-recyclable-heading"
 				data-parent="#accordion-recyclable">
 				<div class="card-body">
-					<ul id="grid" class="clr">
-                        {% for collection in collectionsDict %}
-                            {% if collection.typeOfWaste == catItem.typeOfWaste %}
-                                <li>
-                                    <div class="hexagon" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
-                                        <h3 class="hexagon-text">{{ collection.hiveMembers }} - {{ collection.town }}</h3>
-                                    </div>
-                                </li>
-                                <!-- Collection details modal -->
-                                <div class="modal fade" id="modal-collection-{{ collection._id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-                                    aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header text-center">
-                                                <h4 class="modal-title w-100" id="modal-location-title">Collection details</h4>
+					<ul id="grid" class="clr hexagon-large">
+						{% for collection in collectionsDict if collection.typeOfWaste == catItem.typeOfWaste %}
+						<li>
+							<div class="hexagon" data-toggle="modal"
+								data-target="#modal-collection-{{ collection._id }}">
+								<h3 class="hexagon-text">{{ collection.hiveMembers }} - {{ collection.town }}</h3>
+							</div>
+						</li>
+						<!-- Collection details modal -->
+						<div class="modal fade" id="modal-collection-{{ collection._id }}" tabindex="-1" role="dialog"
+							aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered" role="document">
+								<div class="modal-content">
+									<div class="modal-header text-center">
+										<h4 class="modal-title w-100" id="modal-location-title">Collection details</h4>
 
-                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                         </button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                    <div class="col-3 offset-1 modal-borders">
-                                                        <h5>Type of waste:</h5>
-                                                    </div>
-                                                    <div class="col-7 modal-borders">
-                                                        <p>{{ collection.typeOfWaste }}</p>
-                                                    </div>
-                                                </div>	
-                                                <div class="row">
-                                                    <div class="col-2 offset-1 modal-borders">
-                                                        <h5>Worker Bee:</h5>
-                                                    </div>
-                                                    <div class="col-3 modal-borders">
-                                                        <p>{{ collection.hiveMembers }}</p>
-                                                    </div>
-                                                    <div class="col-2 modal-borders">
-                                                        <h5>Charity Scheme:</h5>
-                                                    </div>
-                                                    <div class="col-3 modal-borders">
-                                                        <p>{{ collection.charityScheme }}</p>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-3 offset-1 modal-borders">
-                                                        <h5>Address for dropoff:</h5>
-                                                    </div>
-                                                    <div class="col-7 modal-borders">
-                                                        <p>{{ collection.street }}, {{ collection.town }}, {{ collection.postcode }}</p>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-3 offset-1 modal-borders">
-                                                        <h5>Notes:</h5>
-                                                    </div>
-                                                    <div class="col-7 modal-borders">
-                                                        <p>{{ collection.conditionNotes }}</p>
-                                                    </div>
-                                                </div>												
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        {% endfor %}
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-3 offset-1 modal-borders">
+												<h5>Type of waste:</h5>
+											</div>
+											<div class="col-7 modal-borders">
+												<p>{{ collection.typeOfWaste }}</p>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-2 offset-1 modal-borders">
+												<h5>Worker Bee:</h5>
+											</div>
+											<div class="col-3 modal-borders">
+												<p>{{ collection.hiveMembers }}</p>
+											</div>
+											<div class="col-2 modal-borders">
+												<h5>Charity Scheme:</h5>
+											</div>
+											<div class="col-3 modal-borders">
+												<p>{{ collection.charityScheme }}</p>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-3 offset-1 modal-borders">
+												<h5>Address for dropoff:</h5>
+											</div>
+											<div class="col-7 modal-borders">
+												<p>{{ collection.street }}, {{ collection.town }},
+													{{ collection.postcode }}</p>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-3 offset-1 modal-borders">
+												<h5>Notes:</h5>
+											</div>
+											<div class="col-7 modal-borders">
+												<p>{{ collection.conditionNotes }}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
 					</ul>
 				</div>
 			</div>
@@ -139,7 +142,8 @@
 				</p>
 				<!-- Input form -->
 
-				<form class="card-body" method="POST" action="{{ url_for('get_recycling_items', categoryID='5f8054dd4361cd9f497a63dd') }}">
+				<form class="card-body" method="POST"
+					action="{{ url_for('get_recycling_items', categoryID='5f8054dd4361cd9f497a63dd') }}">
 
 					<div class="form-row">
 						<!-- Type of Waste -->

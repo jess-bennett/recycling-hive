@@ -16,9 +16,9 @@ $("#submit-registration").click(function(event) {
 });
 
 /* Collapse accordion on page load on Hive category page  */
-$(document).ready(function(){
+/* $(document).ready(function(){
     $('.collapse').collapse()
-});
+}); */
 
   /* Change list of recycling items on dropdown change */
   $("#itemCategory").change(function () {

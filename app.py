@@ -54,11 +54,11 @@ def get_recycling_items(categoryID):
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
     # Get recyclable items that match the selected category for
     # # accordion headers
-    catItems = mongo.db.recyclableItems.find(
+    catItems = list(mongo.db.recyclableItems.find(
         {"categoryID": ObjectId(
-            categoryID)}).sort("typeOfWaste")
+            categoryID)}).sort("typeOfWaste"))
     # Create new dictionary of recyclable items and their matching collections
-    collectionsDict = mongo.db.itemCollections.aggregate([
+    collectionsDict = list(mongo.db.itemCollections.aggregate([
         {
          '$lookup': {
             'from': 'recyclableItems',
@@ -97,7 +97,7 @@ def get_recycling_items(categoryID):
          'charityScheme': 1
          }
          }
-        ])
+        ]))
     # Get list of all recyclable items for dropdown in 'Add location' modal
     items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
     # Get list of locations that match the current user's ID for dropdown in

@@ -6,8 +6,12 @@
     padding: 0; /* Clears unordered list default of 40px */
 }
 
+#grid.hexagon-large {
+    width: 95%;
+}
+
 #grid.home {
-    margin: 0 15%;
+    margin: 0 5%;
 }
 
 .clear:after {
