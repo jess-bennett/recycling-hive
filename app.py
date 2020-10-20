@@ -29,34 +29,24 @@ def get_recycling_categories():
 
 @app.route("/hive/<categoryID>", methods=["GET", "POST"])
 def get_recycling_items(categoryID):
-    selectedCategory = mongo.db.itemCategory.find_one(
-                {"_id": ObjectId(categoryID)})["categoryName"]
-    memberID = mongo.db.hiveMembers.find_one(
-                {"email": session["user"]})["_id"]
-    if request.method == "POST":
-        newLocation = {
-            "itemID": mongo.db.recyclableItems.find_one(
-                {"typeOfWaste": request.form.get("typeOfWaste")})["_id"],
-            "conditionNotes": request.form.get("conditionNotes"),
-            "charityScheme": request.form.get("charityScheme", None),
-            "memberID": memberID,
-            "locationID": mongo.db.collectionLocations.find_one(
-                {"nickname": request.form.get("locationID"),
-                 "memberID": memberID})["_id"],
-            "isNational": "no",
-            "dateAdded": datetime.now().strftime("%d %b %Y")
-        }
-        mongo.db.itemCollections.insert_one(newLocation)
-        flash("New location added")
-        return redirect(url_for("get_recycling_items",
-                                categoryID='5f8054dd4361cd9f497a63dd'))
+    if categoryID == 'view-all':
+        # Get selected category for dropdown
+        selectedCategory = 'Select a category'
+        # Get recyclable items that match the selected category for
+        # # accordion headers
+        catItems = list(mongo.db.recyclableItems.find(
+        ).sort("typeOfWaste"))
+    else:
+        # Get selected category for dropdown
+        selectedCategory = mongo.db.itemCategory.find_one(
+                    {"_id": ObjectId(categoryID)})["categoryName"]
+        # Get recyclable items that match the selected category for
+        # # accordion headers
+        catItems = list(mongo.db.recyclableItems.find(
+            {"categoryID": ObjectId(
+                categoryID)}).sort("typeOfWaste"))
     # Get list of categories for dropdown menu
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
-    # Get recyclable items that match the selected category for
-    # # accordion headers
-    catItems = list(mongo.db.recyclableItems.find(
-        {"categoryID": ObjectId(
-            categoryID)}).sort("typeOfWaste"))
     # Create new dictionary of recyclable items and their matching collections
     collectionsDict = list(mongo.db.itemCollections.aggregate([
         {
@@ -98,12 +88,33 @@ def get_recycling_items(categoryID):
          }
          }
         ]))
+    # Get member ID for adding new location
+    memberID = mongo.db.hiveMembers.find_one(
+                {"email": session["user"]})["_id"]
     # Get list of all recyclable items for dropdown in 'Add location' modal
     items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
     # Get list of locations that match the current user's ID for dropdown in
     # 'Add location' modal
     locations = list(mongo.db.collectionLocations.find(
         {"memberID": memberID}).sort("nickname"))
+    # Adding new location
+    if request.method == "POST":
+        newLocation = {
+            "itemID": mongo.db.recyclableItems.find_one(
+                {"typeOfWaste": request.form.get("typeOfWaste")})["_id"],
+            "conditionNotes": request.form.get("conditionNotes"),
+            "charityScheme": request.form.get("charityScheme", None),
+            "memberID": memberID,
+            "locationID": mongo.db.collectionLocations.find_one(
+                {"nickname": request.form.get("locationID"),
+                 "memberID": memberID})["_id"],
+            "isNational": "no",
+            "dateAdded": datetime.now().strftime("%d %b %Y")
+        }
+        mongo.db.itemCollections.insert_one(newLocation)
+        flash("New location added")
+        return redirect(url_for("get_recycling_items",
+                                categoryID='5f8054dd4361cd9f497a63dd'))
     return render_template(
         "hive-category.html",
         categoryID=categoryID, categories=categories, items=items,
