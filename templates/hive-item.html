@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block nav_hive %}active{% endblock %}
+{% block content %}
+
+<div class="heading-buttons">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('get_recycling_categories') }}">Recycling Categories</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Recycling Items</li>
+		</ol>
+	</nav>
+</div>
+<div class="heading-buttons">
+	<!-- Type of Waste Dropdown -->
+	<div class="dropdown">
+		<button class="btn btn-outline-primary col space-below dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    {{ selectedCategory }}
+				  </button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item"
+				href="{{ url_for('get_recycling_items', categoryID='view-all') }}">View all</a>
+			{% for category in categories %}
+			<a class="dropdown-item"
+				href="{{ url_for('get_recycling_items', categoryID=category._id) }}">{{ category.categoryName }}</a>
+			{% endfor %}
+		</div>
+	</div>
+
+	<div>
+	</div>
+</div>
+    
+	<!-- Item collection accordion -->
+	<ul id="grid" class="clr">
+        <li id="select-category" >
+			<a href="{{ url_for('get_recycling_collections', itemID='view-all') }}">
+				<div class="hexagon hexagon-item">
+					<h3 class="hexagon-text hexagon-item">View all collections</h3>
+				</div>
+			</a>
+		</li>
+		{% for catItem in catItems %}
+		<li id="select-category" >
+			<a href="{{ url_for('get_recycling_collections', itemID=catItem._id) }}">
+				<div class="hexagon hexagon-item">
+					<h5 class="hexagon-text hexagon-item">{{ catItem.typeOfWaste }}</h5>
+				</div>
+			</a>
+		</li>
+		{% endfor %}
+	</ul>
+
+{% endblock %}
