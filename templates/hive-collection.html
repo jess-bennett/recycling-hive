@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% block nav_hive %}active{% endblock %}
+{% block content %}
+
+<div class="heading-buttons">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('get_recycling_categories') }}">Recycling Categories</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('get_recycling_items', categoryID='view-all') }}">Recycling Items</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Recycling Collections</li>
+		</ol>
+	</nav>
+</div>
+<div class="heading-buttons">
+	<!-- Add item button -->
+	<button type="button" id="btn-add-location" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#modal-location">Add new recycling location</button>
+
+	<!-- Type of Waste Dropdown -->
+	<div class="dropdown">
+		<button class="btn btn-outline-primary col space-below dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    {{ selectedItem }}
+				  </button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			{% for item in items %}
+			<a class="dropdown-item"
+				href="{{ url_for('get_recycling_collections', itemID=item._id) }}">{{ item.typeOfWaste }}</a>
+			{% endfor %}
+		</div>
+	</div>
+
+	<div>
+	</div>
+</div>
+    
+	<!-- Item collection accordion -->
+	<ul id="grid" class="clr">
+        <li id="select-category" >
+			<a href="">
+				<div class="hexagon hexagon-item">
+					<h3 class="hexagon-text hexagon-item">View all collections</h3>
+				</div>
+			</a>
+		</li>
+		{% for collection in collectionsDict %}
+		<li id="select-category" >
+			<a href="">
+				<div class="hexagon hexagon-item">
+					<h5 class="hexagon-text hexagon-item">{{ collection.hiveMembers }} - {{ collection.town }}</h5>
+				</div>
+			</a>
+		</li>
+		{% endfor %}
+	</ul>
+
+
+
+<!-- Add new location modal -->
+<div class="modal fade" id="modal-location" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h4 class="modal-title w-100" id="modal-location-title">Add New Recycling Location</h4>
+
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+			</div>
+			<div class="modal-body">
+				<p><em>Please note, this option is to add your own <strong>personal</strong> location to the database. If you would like to suggest a local/national 
+                <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
+				</p>
+				<!-- Input form -->
+
+				<form class="card-body" method="POST"
+					action="{{ url_for('get_recycling_items', categoryID='5f8054dd4361cd9f497a63dd') }}">
+
+					<div class="form-row">
+						<!-- Type of Waste -->
+						<div class="form-group col-md-6">
+							<label class="sr-only" for="typeOfWaste">Type of Waste</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-recycle"></i></div>
+								</div>
+								<select class="form-control" id="typeOfWaste" name="typeOfWaste" required>
+							      <option value="" selected disabled>Type of Waste</option>
+                                  {% for item in items %}
+							        <option value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}</option>
+                                  {% endfor %}
+                            </select>
+							</div>
+						</div>
+						<!-- Location -->
+						<div class="form-group col-md-6">
+							<label class="sr-only" for="locationID">Type of Waste</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-home"></i></div>
+								</div>
+								<select class="form-control" id="locationID" name="locationID" required>
+							      <option value="" selected disabled>Location</option>
+                                  {% for location in locations %}
+							        <option value="{{ location.nickname }}">{{ location.nickname }}</option>
+                                  {% endfor %}
+                            </select>
+							</div>
+						</div>
+					</div>
+					<!-- Condition Notes -->
+					<div class="form-group">
+						<label class="sr-only" for="conditionNotes">What condition should this item be in?</label>
+						<div class="input-group mb-2">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="far fa-question-circle"></i></div>
+							</div>
+							<textarea type="text" class="form-control" id="conditionNotes" name="conditionNotes"
+                            placeholder="What condition should this item be in? (E.g. Washed/As it is)" minlength="4" required></textarea>
+						</div>
+					</div>
+					<!-- Charity -->
+					<div class="form-group">
+						<label class="sr-only" for="charityScheme">Charity (optional)</label>
+						<div class="input-group mb-2">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fas fa-hand-holding-heart"></i></div>
+							</div>
+							<input type="text" class="form-control" id="charityScheme" name="charityScheme" placeholder="Charity (optional)" minlength="2">
+                        </div>
+						</div>
+						<!-- Submit -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+							<button id="submit-location" class="btn btn-outline-primary" type="submit">Submit new location</button>
+						</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

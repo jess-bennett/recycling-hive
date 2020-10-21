@@ -24,7 +24,7 @@ mongo = PyMongo(app)
 def get_recycling_categories():
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
     return render_template(
-        "hive.html", categories=categories)
+        "hive-category.html", categories=categories)
 
 
 @app.route("/hive/<categoryID>", methods=["GET", "POST"])
@@ -47,6 +47,32 @@ def get_recycling_items(categoryID):
                 categoryID)}).sort("typeOfWaste"))
     # Get list of categories for dropdown menu
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+    return render_template(
+        "hive-item.html",
+        categoryID=categoryID, categories=categories, catItems=catItems,
+        selectedCategory=selectedCategory)
+
+
+@app.route("/hive/<itemID>", methods=["GET", "POST"])
+def get_recycling_collections(itemID):
+    if itemID == 'view-all':
+        # Get selected item for dropdown
+        selectedItem = 'Select an item'
+        # Get recyclable collections that match the selected item for
+        # # accordion headers
+        itemCollections = list(mongo.db.itemCollections.find(
+        ))
+    else:
+        # Get selected item for dropdown
+        selectedItem = mongo.db.recyclableItems.find_one(
+                    {"_id": ObjectId(itemID)})["typeOfWaste"]
+        # Get recyclable collections that match the selected item for
+        # # accordion headers
+        itemCollections = list(mongo.db.itemCollections.find(
+            {"itemID": ObjectId(
+                itemID)}))
+    # Get list of items for dropdown menu
+    items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
     # Create new dictionary of recyclable items and their matching collections
     collectionsDict = list(mongo.db.itemCollections.aggregate([
         {
@@ -116,10 +142,10 @@ def get_recycling_items(categoryID):
         return redirect(url_for("get_recycling_items",
                                 categoryID='5f8054dd4361cd9f497a63dd'))
     return render_template(
-        "hive-category.html",
-        categoryID=categoryID, categories=categories, items=items,
-        locations=locations, catItems=catItems,
-        collectionsDict=collectionsDict, selectedCategory=selectedCategory)
+        "hive-collection.html",
+        itemID=itemID, items=items,
+        locations=locations, itemCollections=itemCollections,
+        collectionsDict=collectionsDict, selectedItem=selectedItem)
 
 
 @app.route("/register", methods=["GET", "POST"])
