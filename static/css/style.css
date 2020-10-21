@@ -101,11 +101,6 @@ background-size: 20px 30px;
     color: #fafafa
 }
 
-#viewall-layout {
-    width: 75%;
-    margin: 0 auto;
-}
-
 .space-below {
     margin-bottom: 1.5rem;
 }
@@ -129,6 +124,11 @@ background-size: 20px 30px;
     position: absolute;
     right: 1.5rem;
     top: 0.8rem;
+}
+
+.heading-buttons {
+    width: 80%;
+    margin: 0 auto;
 }
 
 /* Item collection modal */
