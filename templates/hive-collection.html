@@ -21,6 +21,8 @@
 				    {{ selectedItem }}
 				  </button>
 		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item"
+				href="{{ url_for('get_recycling_collections', itemID='view-all') }}">View all</a>
 			{% for item in items %}
 			<a class="dropdown-item"
 				href="{{ url_for('get_recycling_collections', itemID=item._id) }}">{{ item.typeOfWaste }}</a>
@@ -34,22 +36,69 @@
     
 	<!-- Item collection accordion -->
 	<ul id="grid" class="clr">
-        <li id="select-category" >
-			<a href="">
-				<div class="hexagon hexagon-item">
-					<h3 class="hexagon-text hexagon-item">View all collections</h3>
+        {% for collection in collectionsDict if collection.typeOfWaste == selectedItem %}
+			<li id="select-category">
+				<div class="hexagon" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
+					<h5 class="hexagon-text">{{ collection.hiveMembers }} - {{ collection.town }}</h5>
 				</div>
-			</a>
-		</li>
-		{% for collection in collectionsDict %}
-		<li id="select-category" >
-			<a href="">
-				<div class="hexagon hexagon-item">
-					<h5 class="hexagon-text hexagon-item">{{ collection.hiveMembers }} - {{ collection.town }}</h5>
-				</div>
-			</a>
-		</li>
-		{% endfor %}
+			</li>
+						<!-- Collection details modal -->
+						<div class="modal fade" id="modal-collection-{{ collection._id }}" tabindex="-1" role="dialog"
+							aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							<div class="modal-dialog modal-dialog-centered" role="document">
+								<div class="modal-content">
+									<div class="modal-header text-center">
+										<h4 class="modal-title w-100" id="modal-location-title">Collection details</h4>
+
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+									</div>
+									<div class="modal-body">
+										<div class="row">
+											<div class="col-3 offset-1 modal-borders">
+												<h5>Type of waste:</h5>
+											</div>
+											<div class="col-7 modal-borders">
+												<p>{{ collection.typeOfWaste }}</p>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-2 offset-1 modal-borders">
+												<h5>Worker Bee:</h5>
+											</div>
+											<div class="col-3 modal-borders">
+												<p>{{ collection.hiveMembers }}</p>
+											</div>
+											<div class="col-2 modal-borders">
+												<h5>Charity Scheme:</h5>
+											</div>
+											<div class="col-3 modal-borders">
+												<p>{{ collection.charityScheme }}</p>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-3 offset-1 modal-borders">
+												<h5>Address for dropoff:</h5>
+											</div>
+											<div class="col-7 modal-borders">
+												<p>{{ collection.street }}, {{ collection.town }},
+													{{ collection.postcode }}</p>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-3 offset-1 modal-borders">
+												<h5>Notes:</h5>
+											</div>
+											<div class="col-7 modal-borders">
+												<p>{{ collection.conditionNotes }}</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+        {% endfor %}
 	</ul>
 
 

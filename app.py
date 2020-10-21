@@ -27,7 +27,7 @@ def get_recycling_categories():
         "hive-category.html", categories=categories)
 
 
-@app.route("/hive/<categoryID>", methods=["GET", "POST"])
+@app.route("/hive/items/<categoryID>", methods=["GET", "POST"])
 def get_recycling_items(categoryID):
     if categoryID == 'view-all':
         # Get selected category for dropdown
@@ -53,7 +53,7 @@ def get_recycling_items(categoryID):
         selectedCategory=selectedCategory)
 
 
-@app.route("/hive/<itemID>", methods=["GET", "POST"])
+@app.route("/hive/collections/<itemID>", methods=["GET", "POST"])
 def get_recycling_collections(itemID):
     if itemID == 'view-all':
         # Get selected item for dropdown
@@ -114,6 +114,7 @@ def get_recycling_collections(itemID):
          }
          }
         ]))
+    print(collectionsDict)
     # Get member ID for adding new location
     memberID = mongo.db.hiveMembers.find_one(
                 {"email": session["user"]})["_id"]
