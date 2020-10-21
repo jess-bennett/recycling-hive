@@ -38,8 +38,8 @@
 	<ul id="grid" class="clr">
         {% for collection in collectionsDict if collection.typeOfWaste == selectedItem %}
 			<li id="select-category">
-				<div class="hexagon" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
-					<h5 class="hexagon-text">{{ collection.hiveMembers }} - {{ collection.town }}</h5>
+				<div class="hexagon hexagon-collection" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
+					<h5 class="hexagon-text hexagon-collection">{{ collection.hiveMembers }} - {{ collection.town }}</h5>
 				</div>
 			</li>
 						<!-- Collection details modal -->
@@ -48,52 +48,68 @@
 							<div class="modal-dialog modal-dialog-centered" role="document">
 								<div class="modal-content">
 									<div class="modal-header text-center">
-										<h4 class="modal-title w-100" id="modal-location-title">Collection details</h4>
+										<h4 class="modal-title w-100" id="modal-collection-title">Collection details</h4>
 
 										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                         </button>
 									</div>
+                                    
 									<div class="modal-body">
-										<div class="row">
-											<div class="col-3 offset-1 modal-borders">
-												<h5>Type of waste:</h5>
-											</div>
-											<div class="col-7 modal-borders">
-												<p>{{ collection.typeOfWaste }}</p>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-2 offset-1 modal-borders">
-												<h5>Worker Bee:</h5>
-											</div>
-											<div class="col-3 modal-borders">
-												<p>{{ collection.hiveMembers }}</p>
-											</div>
-											<div class="col-2 modal-borders">
-												<h5>Charity Scheme:</h5>
-											</div>
-											<div class="col-3 modal-borders">
-												<p>{{ collection.charityScheme }}</p>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-3 offset-1 modal-borders">
-												<h5>Address for dropoff:</h5>
-											</div>
-											<div class="col-7 modal-borders">
-												<p>{{ collection.street }}, {{ collection.town }},
-													{{ collection.postcode }}</p>
-											</div>
-										</div>
-										<div class="row">
-											<div class="col-3 offset-1 modal-borders">
-												<h5>Notes:</h5>
-											</div>
-											<div class="col-7 modal-borders">
-												<p>{{ collection.conditionNotes }}</p>
-											</div>
-										</div>
+                                        <div class="card-body" >
+                                            <!-- Type of waste -->
+                                            <div class="form-group">
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text"><i class="fas fa-recycle"></i></div>
+                                                    </div>
+                                                    <p class="form-control">{{ collection.typeOfWaste }}</p>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <!-- Worker Bee -->
+                                                <div class="form-group col-md-6">
+                                                    <div class="input-group mb-2">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text"><i class="fab fa-forumbee"></i></div>
+                                                        </div>
+                                                        <p class="form-control">{{ collection.hiveMembers }}</p>
+                                                    </div>
+                                                </div>
+                                                <!-- Charity Scheme -->
+                                                <div class="form-group col-md-6">
+                                                    <div class="input-group mb-2">
+                                                        <div class="input-group-prepend">
+                                                            <div class="input-group-text"><i class="fas fa-hand-holding-heart"></i></div>
+                                                        </div>
+                                                        <p class="form-control">{{ collection.charityScheme }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Location -->
+                                            <div class="form-group">
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text"><i class="fas fa-home"></i></div>
+                                                    </div>
+                                                    <p class="form-control">{{ collection.street }}, {{ collection.town }},
+                                                        {{ collection.postcode }}</p>
+                                                </div>
+                                            </div>
+                                            <!-- Condition notes -->
+                                            <div class="form-group">
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text"><i class="fas fa-comment"></i></div>
+                                                    </div>
+                                                    <p class="form-control">{{ collection.conditionNotes }}</p>
+                                                </div>
+                                            </div>
+                                            <!-- Submit -->
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
 									</div>
 								</div>
 							</div>
@@ -161,7 +177,7 @@
 						<label class="sr-only" for="conditionNotes">What condition should this item be in?</label>
 						<div class="input-group mb-2">
 							<div class="input-group-prepend">
-								<div class="input-group-text"><i class="far fa-question-circle"></i></div>
+								<div class="input-group-text"><i class="fas fa-comment"></i></div>
 							</div>
 							<textarea type="text" class="form-control" id="conditionNotes" name="conditionNotes"
                             placeholder="What condition should this item be in? (E.g. Washed/As it is)" minlength="4" required></textarea>
