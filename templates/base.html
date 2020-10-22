@@ -38,6 +38,7 @@
 							<a class="dropdown-item menu-item {% block nav_category %}{% endblock %}" href="{{ url_for('get_recycling_categories') }}">Hive Categories</a>
 							<a class="dropdown-item menu-item {% block nav_item %}{% endblock %}" href="{{ url_for('get_recycling_items', categoryID='view-all') }}">Hive Items</a>
 							<a class="dropdown-item menu-item {% block nav_collection %}{% endblock %}" href="{{ url_for('get_recycling_collections', itemID='view-all') }}">Hive Collections</a>
+							<a class="dropdown-item menu-item {% block nav_member %}{% endblock %}" href="{{ url_for('get_recycling_members', memberType='view-all') }}">Hive Members</a>
 						</div>
 					</li>
 					<li class="nav-item {% block nav_inspiration %}{% endblock %}">
