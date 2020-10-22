@@ -162,8 +162,15 @@ def get_recycling_members(memberType):
         selectedMemberType = memberType
         # Get members that match the selected type for
         # # accordion headers
-        memberGroup = list(mongo.db.hiveMembers.find(
-            {"memberType": memberType}))
+        if memberType == 'Queen Bee':
+            memberGroup = list(mongo.db.hiveMembers.find(
+                {"isQueenBee": True}))
+        elif memberType == 'Worker Bee':
+            memberGroup = list(mongo.db.hiveMembers.find(
+                {"isQueenBee": False, "isWorkerBee": True}))
+        elif memberType == 'Busy Bee':
+            memberGroup = list(mongo.db.hiveMembers.find(
+                {"isQueenBee": False, "isWorkerBee": False}))
     # Create new dictionary of members and their collections
     membersDict = list(mongo.db.itemCollections.aggregate([
         {
@@ -195,8 +202,7 @@ def get_recycling_members(memberType):
         {'$unwind': '$collectionLocations'},
         {'$project': {
          'typeOfWaste': '$recyclableItems.typeOfWaste',
-         'hiveMembers': '$hiveMembers.username',
-         'memberType': '$hiveMembers.memberType',
+         'hiveMembers': '$hiveMembers._id',
          'street': '$collectionLocations.street',
          'town': '$collectionLocations.town',
          'postcode': '$collectionLocations.postcode',
