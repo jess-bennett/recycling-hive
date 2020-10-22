@@ -60,7 +60,7 @@ background-size: 20px 30px;
     background-color: #6c8c26;
 }
 
-.dropdown-item {
+.dropdown-item .menu-item {
     color: #fafafa;
     text-align: center;
 }

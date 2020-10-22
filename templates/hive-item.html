@@ -33,15 +33,6 @@
     
 	<!-- Item collection accordion -->
 	<ul id="grid" class="clr">
-        {% if categoryID == 'view-all' %}
-            <li id="select-category" >
-                <a href="{{ url_for('get_recycling_collections', itemID='view-all') }}">
-                    <div class="hexagon hexagon-item">
-                        <h3 class="hexagon-text hexagon-item">View all collections</h3>
-                    </div>
-                </a>
-            </li>
-        {% endif %}
 		{% for catItem in catItems %}
             <li id="select-category" >
                 <a href="{{ url_for('get_recycling_collections', itemID=catItem._id) }}">

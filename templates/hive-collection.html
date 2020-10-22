@@ -14,16 +14,14 @@
 </div>
 <div class="heading-buttons">
 	<!-- Add item button -->
-	<button type="button" id="btn-add-location" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#modal-location">Add new recycling location</button>
+	<button type="button" id="btn-add-location" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#modal-location">Add New Recycling Collection</button>
 
 	<!-- Type of Waste Dropdown -->
 	<div class="dropdown">
 		<button class="btn btn-outline-primary col space-below dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				    {{ selectedItem }}
-				  </button>
+		</button>
 		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <a class="dropdown-item"
-				href="{{ url_for('get_recycling_collections', itemID='view-all') }}">View all</a>
 			{% for item in items %}
 			<a class="dropdown-item"
 				href="{{ url_for('get_recycling_collections', itemID=item._id) }}">{{ item.typeOfWaste }}</a>
@@ -37,6 +35,13 @@
     
 	<!-- Item collection accordion -->
 	<ul id="grid" class="clr">
+        <li id="select-category" >
+			<a href="">
+				<div class="hexagon hexagon-collection">
+					<h3 class="hexagon-text hexagon-collection">View all members</h3>
+				</div>
+			</a>
+		</li>
         {% for collection in collectionsDict if collection.typeOfWaste == selectedItem %}
 			<li id="select-category">
 				<div class="hexagon hexagon-collection" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
@@ -126,7 +131,7 @@
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header text-center">
-				<h4 class="modal-title w-100" id="modal-location-title">Add New Recycling Location</h4>
+				<h4 class="modal-title w-100" id="modal-location-title">Add New Recycling Collection</h4>
 
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
