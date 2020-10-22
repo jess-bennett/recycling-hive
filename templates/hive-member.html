@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block nav_hive %}active{% endblock %}
-{% block nav_collection %}active{% endblock %}
+{% block nav_member %}active{% endblock %}
 {% block content %}
 
 <div class="heading-buttons">
@@ -8,13 +8,14 @@
 		<ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url_for('get_recycling_categories') }}">Hive Categories</a></li>
             <li class="breadcrumb-item"><a href="{{ url_for('get_recycling_items', categoryID='view-all') }}">Hive Items</a></li>
-			<li class="breadcrumb-item active" aria-current="page">Hive Collections</li>
+            <li class="breadcrumb-item"><a href="{{ url_for('get_recycling_items', categoryID='view-all') }}">Hive Collections</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Hive Members</li>
 		</ol>
 	</nav>
 </div>
 <div class="heading-buttons">
 	<!-- Add item button -->
-	<button type="button" id="btn-add-location" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#modal-location">Add New Hive Collection</button>
+	<button type="button" id="btn-add-location" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#modal-location">Add New Recycling Collection</button>
 
 	<!-- Type of Waste Dropdown -->
 	<div class="dropdown">
@@ -131,7 +132,7 @@
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header text-center">
-				<h4 class="modal-title w-100" id="modal-location-title">Add New Hive Collection</h4>
+				<h4 class="modal-title w-100" id="modal-location-title">Add New Recycling Collection</h4>
 
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
