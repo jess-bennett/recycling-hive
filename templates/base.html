@@ -29,8 +29,16 @@
 						<a class="nav-link" href="{{ url_for('home', username=session['username']) }}">Home</a>
 					</li>
 					{% if session.user %}
-					<li class="nav-item {% block nav_hive %}{% endblock %}">
-						<a class="nav-link" href="{{ url_for('get_recycling_categories') }}">Hive</a>
+					<li class="nav-item dropdown {% block nav_hive %}{% endblock %}">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false">
+							Hive
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item" href="{{ url_for('get_recycling_categories') }}">Recycling Categories</a>
+							<a class="dropdown-item" href="{{ url_for('get_recycling_items', categoryID='view-all') }}">Recycling Items</a>
+							<a class="dropdown-item" href="{{ url_for('get_recycling_collections', itemID='view-all') }}">Recycling Collections</a>
+						</div>
 					</li>
 					<li class="nav-item {% block nav_inspiration %}{% endblock %}">
 						<a class="nav-link" href="#">Inspiration</a>
