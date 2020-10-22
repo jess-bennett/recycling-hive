@@ -177,3 +177,8 @@ background-size: 20px 30px;
     padding-bottom: 0rem;
 }
 }
+
+/* Tooltip */
+.tooltip-inner {
+    background-color: #333;
+}

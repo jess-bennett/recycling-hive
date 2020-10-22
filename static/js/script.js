@@ -25,3 +25,8 @@ $("#submit-registration").click(function(event) {
       console.log($('#itemCategory').val());
         let itemCategory = this.value;
     });
+
+    /* Initialize all tooltips on a page */
+    $(function () {
+  $('[data-toggle="tooltip"]').tooltip()
+})
