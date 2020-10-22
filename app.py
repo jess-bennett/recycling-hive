@@ -114,7 +114,6 @@ def get_recycling_collections(itemID):
          }
          }
         ]))
-    print(collectionsDict)
     # Get member ID for adding new location
     memberID = mongo.db.hiveMembers.find_one(
                 {"email": session["user"]})["_id"]
@@ -147,6 +146,71 @@ def get_recycling_collections(itemID):
         itemID=itemID, items=items,
         locations=locations, itemCollections=itemCollections,
         collectionsDict=collectionsDict, selectedItem=selectedItem)
+
+
+@app.route("/hive/members/<memberType>")
+def get_recycling_members(memberType):
+    if memberType == 'view-all':
+        # Get selected member type for dropdown
+        selectedMemberType = 'Select a Member Group'
+        # Get members that match the selected type for
+        # # accordion headers
+        memberGroup = list(mongo.db.hiveMembers.find(
+        ))
+    else:
+        # Get selected member type for dropdown
+        selectedMemberType = memberType
+        # Get members that match the selected type for
+        # # accordion headers
+        memberGroup = list(mongo.db.hiveMembers.find(
+            {"memberType": memberType}))
+    # Create new dictionary of members and their collections
+    membersDict = list(mongo.db.itemCollections.aggregate([
+        {
+         '$lookup': {
+            'from': 'recyclableItems',
+            'localField': 'itemID',
+            'foreignField': '_id',
+            'as': 'recyclableItems'
+         },
+        },
+        {'$unwind': '$recyclableItems'},
+        {
+         '$lookup': {
+            'from': 'hiveMembers',
+            'localField': 'memberID',
+            'foreignField': '_id',
+            'as': 'hiveMembers'
+         },
+        },
+        {'$unwind': '$hiveMembers'},
+        {
+         '$lookup': {
+            'from': 'collectionLocations',
+            'localField': 'locationID',
+            'foreignField': '_id',
+            'as': 'collectionLocations'
+         },
+        },
+        {'$unwind': '$collectionLocations'},
+        {'$project': {
+         'typeOfWaste': '$recyclableItems.typeOfWaste',
+         'hiveMembers': '$hiveMembers.username',
+         'memberType': '$hiveMembers.memberType',
+         'street': '$collectionLocations.street',
+         'town': '$collectionLocations.town',
+         'postcode': '$collectionLocations.postcode',
+         'id': 1,
+         'conditionNotes': 1,
+         'charityScheme': 1
+         }
+         }
+        ]))
+
+    return render_template(
+        "hive-member.html",
+        memberType=memberType, selectedMemberType=selectedMemberType,
+        memberGroup=memberGroup, membersDict=membersDict)
 
 
 @app.route("/register", methods=["GET", "POST"])
