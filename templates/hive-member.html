@@ -20,15 +20,19 @@
 	<!-- Type of Waste Dropdown -->
 	<div class="dropdown">
 		<button class="btn btn-outline-primary col space-below dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				    {{ selectedMemberType }}
+				    {% if selectedMemberType == 'Queen Bee'%}<i class="fas fa-crown"></i>
+						{% elif selectedMemberType == 'Worker Bee'%}<i class="fas fa-hard-hat"></i>
+						{% elif selectedMemberType == 'Busy Bee' %}<i class="fab fa-forumbee"></i> {% endif %}{{ selectedMemberType }}
 		</button>
 		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item"
+				href="{{ url_for('get_recycling_members', memberType='view-all') }}">View all</a>
 			<a class="dropdown-item"
-				href="{{ url_for('get_recycling_members', memberType='Queen Bee') }}">Queen Bee</a>
+				href="{{ url_for('get_recycling_members', memberType='Queen Bee') }}"><i class="fas fa-crown"></i> Queen Bee</a>
             <a class="dropdown-item"
-				href="{{ url_for('get_recycling_members', memberType='Worker Bee') }}">Worker Bee</a>
+				href="{{ url_for('get_recycling_members', memberType='Worker Bee') }}"><i class="fas fa-hard-hat"></i> Worker Bee</a>
             <a class="dropdown-item"
-				href="{{ url_for('get_recycling_members', memberType='Busy Bee') }}">Busy Bee</a>
+				href="{{ url_for('get_recycling_members', memberType='Busy Bee') }}"><i class="fab fa-forumbee"></i> Busy Bee</a>
 		</div>
 	</div>
 
@@ -38,10 +42,12 @@
     
 	<!-- Item collection accordion -->
 	<ul id="grid" class="clr">
-        {% for member in memberGroup if member.memberType == selectedMemberType %}
+        {% for member in memberGroup %}
 			<li id="select-category">
 				<div class="hexagon hexagon-collection" data-toggle="modal" data-target="#modal-collection-">
-					<h5 class="hexagon-text hexagon-collection">{{ member.username }}</h5>
+					<h5 class="hexagon-text hexagon-collection">{% if member.memberType == 'Queen Bee'%}<i class="fas fa-crown"></i>
+						{% elif member.memberType == 'Worker Bee'%}<i class="fas fa-hard-hat"></i>
+						{% else %}<i class="fab fa-forumbee"></i> {% endif %}{{ member.username }}</h5>
 				</div>
 			</li>
         {% endfor %}
