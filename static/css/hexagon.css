@@ -54,11 +54,11 @@
     overflow: hidden;
 }
 
-#grid li .hexagon.hexagon-item {
+#grid li .hexagon.hexagon-medium {
     background: radial-gradient(circle, #fafafa 0%, #94990e 125%);
 }
 
-#grid li .hexagon.hexagon-collection {
+#grid li .hexagon.hexagon-dark {
     background: radial-gradient(circle, #fafafa 0%, #575908 125%);
 }
 
@@ -129,12 +129,12 @@ left: 50%;
 transform: translate(-50%, -50%);
 }
 
-.hexagon-text.hexagon-item {
+.hexagon-text.hexagon-medium {
 background-color: #94990e;
 color: #fafafa;
 }
 
-.hexagon-text.hexagon-collection {
+.hexagon-text.hexagon-dark {
 background-color: #575908;
 color: #fafafa;
 }

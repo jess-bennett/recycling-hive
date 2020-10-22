@@ -36,8 +36,8 @@
 		{% for catItem in catItems %}
             <li id="select-category" >
                 <a href="{{ url_for('get_recycling_collections', itemID=catItem._id) }}">
-                    <div class="hexagon hexagon-item">
-                        <h5 class="hexagon-text hexagon-item">{{ catItem.typeOfWaste }}</h5>
+                    <div class="hexagon hexagon-medium">
+                        <h5 class="hexagon-text hexagon-medium">{{ catItem.typeOfWaste }}</h5>
                     </div>
                 </a>
             </li>

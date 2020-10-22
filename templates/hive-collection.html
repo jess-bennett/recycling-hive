@@ -37,15 +37,15 @@
 	<ul id="grid" class="clr">
         <li id="select-category" >
 			<a href="{{ url_for('get_recycling_members', memberType='view-all') }}">
-				<div class="hexagon hexagon-collection">
-					<h3 class="hexagon-text hexagon-collection">View all members</h3>
+				<div class="hexagon hexagon-dark">
+					<h3 class="hexagon-text hexagon-dark">View all members</h3>
 				</div>
 			</a>
 		</li>
         {% for collection in collectionsDict if collection.typeOfWaste == selectedItem %}
 			<li id="select-category">
-				<div class="hexagon hexagon-collection" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
-					<h5 class="hexagon-text hexagon-collection">{{ collection.hiveMembers }} - {{ collection.town }}</h5>
+				<div class="hexagon hexagon-dark" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
+					<h5 class="hexagon-text hexagon-dark">{{ collection.hiveMembers }} - {{ collection.town }}</h5>
 				</div>
 			</li>
 						<!-- Collection details modal -->
