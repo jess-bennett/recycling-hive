@@ -151,7 +151,7 @@
 				<!-- Input form -->
 
 				<form class="card-body" method="POST"
-					action="{{ url_for('get_recycling_items', categoryID='5f8054dd4361cd9f497a63dd') }}">
+					action="{{ url_for('get_recycling_collections', itemID='view-all') }}">
 
 					<div class="form-row">
 						<!-- Type of Waste -->
@@ -210,7 +210,7 @@
 						<!-- Submit -->
 						<div class="modal-footer">
 							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-							<button id="submit-location" class="btn btn-outline-primary" type="submit">Submit new location</button>
+							<button id="submit-location" class="btn btn-outline-primary" type="submit" name="submitLocation">Submit new location</button>
 						</div>
 				</form>
 			</div>
@@ -237,7 +237,7 @@
 				</p>
 				<!-- Input form -->
 				<form class="card-body" method="POST"
-					action="{{ url_for('get_recycling_items', categoryID='5f8054dd4361cd9f497a63dd') }}">
+					action="">
 					<div class="form-row">
 						<!-- Category -->
 						<div class="form-group col-md-6">
@@ -269,7 +269,7 @@
                         <!-- Submit -->
 						<div class="modal-footer">
 							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-							<button id="submit-typeOfWaste" class="btn btn-outline-primary" type="submit">Submit New Type of Waste</button>
+							<button id="submit-typeOfWaste" class="btn btn-outline-primary" type="submit" name="action" value="submitWaste">Submit New Type of Waste</button>
 						</div>
 				</form>
 			</div>

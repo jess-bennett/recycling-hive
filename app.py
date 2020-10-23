@@ -133,14 +133,15 @@ def get_recycling_collections(itemID):
             "memberID": memberID,
             "locationID": mongo.db.collectionLocations.find_one(
                 {"nickname": request.form.get("locationID"),
-                 "memberID": memberID})["_id"],
+                "memberID": memberID})["_id"],
             "isNational": "no",
             "dateAdded": datetime.now().strftime("%d %b %Y")
         }
         mongo.db.itemCollections.insert_one(newLocation)
         flash("New location added")
-        return redirect(url_for("get_recycling_items",
-                                categoryID='5f8054dd4361cd9f497a63dd'))
+        return redirect(url_for("get_recycling_collections",
+                                itemID=mongo.db.recyclableItems.find_one(
+                {"typeOfWaste": request.form.get("typeOfWaste")})["_id"]))
     # Get list of all item categories for dropdown in 'Add new type of waste' modal
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
     return render_template(
