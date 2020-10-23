@@ -45,7 +45,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(circle, #fafafa 0%, #b9bf11 125%);
+    background: radial-gradient(circle, #fafafa 0%, #d2d914 125%);
     -o-transform: skewY(-30deg) rotate(60deg);
     -moz-transform: skewY(-30deg) rotate(60deg);
     -webkit-transform: skewY(-30deg) rotate(60deg);
@@ -55,11 +55,11 @@
 }
 
 #grid li .hexagon.hexagon-medium {
-    background: radial-gradient(circle, #fafafa 0%, #94990e 125%);
+    background: radial-gradient(circle, #fafafa 0%, #a8ad10 125%);
 }
 
 #grid li .hexagon.hexagon-dark {
-    background: radial-gradient(circle, #fafafa 0%, #575908 125%);
+    background: radial-gradient(circle, #fafafa 0%, #7e820c 125%);
 }
 
 #grid li * {
@@ -115,7 +115,7 @@
 
 .hexagon-text {
 width: 100%;
-background-color: #b9bf11;
+background-color: #d2d914;
 color: #fafafa;
 text-align: center;
 margin: 0;
@@ -130,11 +130,11 @@ transform: translate(-50%, -50%);
 }
 
 .hexagon-text.hexagon-medium {
-background-color: #94990e;
+background-color: #a8ad10;
 color: #fafafa;
 }
 
 .hexagon-text.hexagon-dark {
-background-color: #575908;
+background-color: #7e820c;
 color: #fafafa;
 }
