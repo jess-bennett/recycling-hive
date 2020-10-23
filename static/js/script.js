@@ -17,7 +17,6 @@ $("#submit-registration").click(function(event) {
 
   /* Change list of recycling items on dropdown change */
   $("#itemCategory").change(function () {
-      console.log($('#itemCategory').val());
         let itemCategory = this.value;
     });
 
@@ -25,3 +24,11 @@ $("#submit-registration").click(function(event) {
     $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
+
+
+$("#type").on("change", function () {        
+    $modal = $('#myModal');
+    if($(this).val() === 'donations'){
+        $modal.modal('show');
+    }
+});
