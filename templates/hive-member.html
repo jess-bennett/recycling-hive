@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block nav_hive %}active{% endblock %}
+{% block nav_member %}active{% endblock %}
+{% block content %}
+
+<div class="heading-buttons">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('get_recycling_categories') }}">Hive Categories</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('get_recycling_items', categoryID='view-all') }}">Hive Items</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('get_recycling_items', categoryID='view-all') }}">Hive Collections</a></li>
+			<li class="breadcrumb-item active" aria-current="page">Hive Members</li>
+		</ol>
+	</nav>
+</div>
+<div class="heading-buttons">
+	<!-- Type of Waste Dropdown -->
+	<div class="dropdown">
+		<button class="btn btn-outline-primary col space-below dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				    {% if selectedMemberType == 'Queen Bee'%}<i class="fas fa-crown"></i>
+						{% elif selectedMemberType == 'Worker Bee'%}<i class="fas fa-hard-hat"></i>
+						{% elif selectedMemberType == 'Busy Bee' %}<i class="fas fa-user"></i> {% endif %}{{ selectedMemberType }}
+		</button>
+		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item"
+				href="{{ url_for('get_recycling_members', memberType='view-all') }}">View all</a>
+			<a class="dropdown-item"
+				href="{{ url_for('get_recycling_members', memberType='Queen Bee') }}"><i class="fas fa-crown"></i> Queen Bee</a>
+            <a class="dropdown-item"
+				href="{{ url_for('get_recycling_members', memberType='Worker Bee') }}"><i class="fas fa-hard-hat"></i> Worker Bee</a>
+            <a class="dropdown-item"
+				href="{{ url_for('get_recycling_members', memberType='Busy Bee') }}"><i class="fas fa-user"></i> Busy Bee</a>
+		</div>
+	</div>
+
+	<div>
+	</div>
+</div>
+    
+	<!-- Item collection accordion -->
+	<ul id="grid" class="clr">
+        {% for member in memberGroup %}
+			<li id="select-category">
+				<div class="hexagon {% if ((member.isQueenBee == False) and (member.isWorkerBee == False)) %}hexagon-dark{% elif ((member.isQueenBee == False) and (member.isWorkerBee == True)) %}hexagon-medium{% endif %}" data-toggle="modal" data-target="#modal-collection-{{ member._id }}">
+					<h5 class="hexagon-text {% if ((member.isQueenBee == False) and (member.isWorkerBee == False)) %}hexagon-dark{% elif ((member.isQueenBee == False) and (member.isWorkerBee == True)) %}hexagon-medium{% endif %}">{% if member.isQueenBee == True %}<i class="fas fa-crown"></i>
+						{% elif member.isWorkerBee == True %}<i class="fas fa-hard-hat"></i>
+						{% else %}<i class="fas fa-user"></i> {% endif %}{{ member.username }}</h5>
+				</div>
+			</li>
+                
+        {% endfor %}
+	</ul>
+
+<!-- Collection details modal -->
+                <div class="modal fade" id="modal-collection-" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header text-center">
+                                <h4 class="modal-title w-100" id="modal-collection-title">All Collections for </h4>
+                
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                
+                            <div class="modal-body">
+                                <div class="card-body">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+{% endblock %}

@@ -18,7 +18,7 @@
 
 <body>
 	<header>
-		<nav class="navbar navbar-expand-lg navbar-light honeycomb-green text-shadow">
+		<nav class="navbar navbar-expand-lg navbar-light honeycomb-green">
 			<a class="navbar-brand" href="#">Recycling Hive</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 		    <span class="navbar-toggler-icon"></span>
@@ -29,8 +29,17 @@
 						<a class="nav-link" href="{{ url_for('home', username=session['username']) }}">Home</a>
 					</li>
 					{% if session.user %}
-					<li class="nav-item {% block nav_hive %}{% endblock %}">
-						<a class="nav-link" href="{{ url_for('get_recycling_categories') }}">Hive</a>
+					<li class="nav-item dropdown {% block nav_hive %}{% endblock %}">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false">
+							Hive
+						</a>
+						<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+							<a class="dropdown-item menu-item {% block nav_category %}{% endblock %}" href="{{ url_for('get_recycling_categories') }}">Hive Categories</a>
+							<a class="dropdown-item menu-item {% block nav_item %}{% endblock %}" href="{{ url_for('get_recycling_items', categoryID='view-all') }}">Hive Items</a>
+							<a class="dropdown-item menu-item {% block nav_collection %}{% endblock %}" href="{{ url_for('get_recycling_collections', itemID='view-all') }}">Hive Collections</a>
+							<a class="dropdown-item menu-item {% block nav_member %}{% endblock %}" href="{{ url_for('get_recycling_members', memberType='view-all') }}">Hive Members</a>
+						</div>
 					</li>
 					<li class="nav-item {% block nav_inspiration %}{% endblock %}">
 						<a class="nav-link" href="#">Inspiration</a>
@@ -72,7 +81,7 @@
 		{% endblock %}
 	</main>
 
-	<footer class="highlight-brown">
+	<footer class="honeycomb-green">
 		TEST
 	</footer>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
