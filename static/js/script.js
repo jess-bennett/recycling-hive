@@ -25,10 +25,13 @@ $("#submit-registration").click(function(event) {
   $('[data-toggle="tooltip"]').tooltip()
 })
 
-
-$("#type").on("change", function () {        
-    $modal = $('#myModal');
-    if($(this).val() === 'donations'){
-        $modal.modal('show');
-    }
-});
+/* Show type of waste modal if option selected on dropdown */
+$(function () {
+            $("#typeOfWaste").on("change", function () {
+                let selected = $('#typeOfWaste').find("option:selected").val();
+                if (selected == 'Add New Type of Waste...') {
+                    $("#modal-typeOfWaste").modal("show");
+                    $("#modal-location").modal("hide");
+                } 
+            });
+        });

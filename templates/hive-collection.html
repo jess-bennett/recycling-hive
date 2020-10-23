@@ -166,13 +166,13 @@
                                   {% for item in items %}
 							        <option value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}</option>
                                   {% endfor %}
-								  <option id="new-typeOfWaste" value="">Add New Type of Waste...</option>
+							      <option data-toggle="modal" data-target="#modal-typeOfWaste">Add New Type of Waste...</option>
                             </select>
 							</div>
 						</div>
 						<!-- Location -->
 						<div class="form-group col-md-6">
-							<label class="sr-only" for="locationID">Type of Waste</label>
+							<label class="sr-only" for="locationID">Location</label>
 							<div class="input-group mb-2">
 								<div class="input-group-prepend">
 									<div class="input-group-text"><i class="fas fa-home"></i></div>
@@ -231,72 +231,45 @@
         </button>
 			</div>
 			<div class="modal-body">
-				<p><em>Please note, this option is to add your own <strong>personal</strong> location to the database. If you would like to suggest a local/national 
-                <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
+				<p><em>Please ensure that you are not duplicating a Type of Waste that already appears in the dropdown menu.<br>
+                The Type of Waste that you add here will be accessible by other users, so should be specific (e.g. 'toothbrush' 
+                <strong>not</strong> 'dental care',) and should <strong>not</strong> include any notes that are relevant to your collection (e.g. 'Must be washed' does not belong here!).
 				</p>
 				<!-- Input form -->
-
 				<form class="card-body" method="POST"
 					action="{{ url_for('get_recycling_items', categoryID='5f8054dd4361cd9f497a63dd') }}">
-
 					<div class="form-row">
-						<!-- Type of Waste -->
+						<!-- Category -->
+						<div class="form-group col-md-6">
+							<label class="sr-only" for="itemCategory">Category</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-list"></i></div>
+								</div>
+								<select class="form-control" id="itemCategory" name="itemCategory" required>
+							      <option value="" selected disabled>Category</option>
+                                  {% for category in categories %}
+							        <option value="{{ category.categoryName }}">{{ category.categoryName }}</option>
+                                  {% endfor %}
+							      <!-- <option id="new-typeOfWaste" data-toggle="modal" data-target="#modal-typeOfWaste"><em>Add New Type of Waste...</em></option> -->
+                            </select>
+							</div>
+						</div>
+                        <!-- Type of Waste -->
 						<div class="form-group col-md-6">
 							<label class="sr-only" for="typeOfWaste">Type of Waste</label>
 							<div class="input-group mb-2">
 								<div class="input-group-prepend">
 									<div class="input-group-text"><i class="fas fa-recycle"></i></div>
 								</div>
-								<select class="form-control" id="typeOfWaste" name="typeOfWaste" required>
-							      <option value="" selected disabled>Type of Waste</option>
-                                  {% for item in items %}
-							        <option value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}</option>
-                                  {% endfor %}
-							      <option data-toggle="modal" data-target="#modal-typeOfWaste"><em>Add New Type of Waste...</em></option>
-                            </select>
+								<input type="text" class="form-control" id="typeOfWaste" name="typeOfWaste" placeholder="Type of Waste" minlength="4" required>
+						        </div>
 							</div>
 						</div>
-						<!-- Location -->
-						<div class="form-group col-md-6">
-							<label class="sr-only" for="locationID">Type of Waste</label>
-							<div class="input-group mb-2">
-								<div class="input-group-prepend">
-									<div class="input-group-text"><i class="fas fa-home"></i></div>
-								</div>
-								<select class="form-control" id="locationID" name="locationID" required>
-							      <option value="" selected disabled>Location</option>
-                                  {% for location in locations %}
-							        <option value="{{ location.nickname }}">{{ location.nickname }}</option>
-                                  {% endfor %}
-                            </select>
-							</div>
-						</div>
-					</div>
-					<!-- Condition Notes -->
-					<div class="form-group">
-						<label class="sr-only" for="conditionNotes">What condition should this item be in?</label>
-						<div class="input-group mb-2">
-							<div class="input-group-prepend">
-								<div class="input-group-text"><i class="fas fa-comment"></i></div>
-							</div>
-							<textarea type="text" class="form-control" id="conditionNotes" name="conditionNotes"
-                            placeholder="What condition should this item be in? (E.g. Washed/As it is)" minlength="4" required></textarea>
-						</div>
-					</div>
-					<!-- Charity -->
-					<div class="form-group">
-						<label class="sr-only" for="charityScheme">Charity (optional)</label>
-						<div class="input-group mb-2">
-							<div class="input-group-prepend">
-								<div class="input-group-text"><i class="fas fa-hand-holding-heart"></i></div>
-							</div>
-							<input type="text" class="form-control" id="charityScheme" name="charityScheme" placeholder="Charity (optional)" minlength="2">
-                        </div>
-						</div>
-						<!-- Submit -->
+                        <!-- Submit -->
 						<div class="modal-footer">
 							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-							<button id="submit-location" class="btn btn-outline-primary" type="submit">Submit new location</button>
+							<button id="submit-typeOfWaste" class="btn btn-outline-primary" type="submit">Submit New Type of Waste</button>
 						</div>
 				</form>
 			</div>

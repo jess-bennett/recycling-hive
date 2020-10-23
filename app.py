@@ -141,12 +141,14 @@ def get_recycling_collections(itemID):
         flash("New location added")
         return redirect(url_for("get_recycling_items",
                                 categoryID='5f8054dd4361cd9f497a63dd'))
+    # Get list of all item categories for dropdown in 'Add new type of waste' modal
+    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
     return render_template(
         "hive-collection.html",
-        itemID=itemID, items=items,
+        itemID=itemID, items=items, categories=categories,
         locations=locations, itemCollections=itemCollections,
         collectionsDict=collectionsDict, selectedItem=selectedItem)
-
+    
 
 @app.route("/hive/members/<memberType>")
 def get_recycling_members(memberType):
