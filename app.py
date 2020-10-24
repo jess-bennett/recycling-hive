@@ -136,7 +136,7 @@ def get_recycling_collections(itemID):
                 "memberID": memberID,
                 "locationID": mongo.db.collectionLocations.find_one(
                     {"nickname": request.form.get("locationID"),
-                    "memberID": memberID})["_id"],
+                     "memberID": memberID})["_id"],
                 "isNational": "no",
                 "dateAdded": datetime.now().strftime("%d %b %Y")
             }
@@ -154,7 +154,8 @@ def get_recycling_collections(itemID):
             flash("New Type of Waste added")
             return redirect(url_for("get_recycling_collections",
                                     itemID=itemID))
-    # Get list of all item categories for dropdown in 'Add new type of waste' modal
+    # Get list of all item categories for dropdown
+    # in 'Add new type of waste' modal
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
     return render_template(
         "hive-collection.html",

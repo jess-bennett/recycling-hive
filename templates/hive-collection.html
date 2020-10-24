@@ -149,10 +149,40 @@
                 <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
 				</p>
 				<!-- Input form -->
-
-				<form name="addLocation" class="card-body" method="POST"
+                <!-- Form to add new type of waste -->
+                <form id="addNewTypeOfWaste" name="addTypeOfWaste" class="card-body" method="POST"
 					action="{{ url_for('get_recycling_collections', itemID='view-all') }}">
-
+                    <div class="form-row">
+						<!-- Category -->
+						<div class="form-group col-md-6">
+							<label class="sr-only" for="itemCategory">Category</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-list"></i></div>
+								</div>
+								<select class="form-control" id="itemCategory" name="itemCategory" required>
+							      <option value="" selected disabled>Category</option>
+                                  {% for category in categories %}
+							        <option value="{{ category.categoryName }}">{{ category.categoryName }}</option>
+                                  {% endfor %}
+                            </select>
+							</div>
+						</div>
+                        <!-- Type of Waste -->
+						<div class="form-group col-md-6">
+							<label class="sr-only" for="addTypeOfWaste">Type of Waste</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-recycle"></i></div>
+								</div>
+								<input type="text" class="form-control" id="addTypeOfWaste" name="addTypeOfWaste" placeholder="Type of Waste" minlength="4" required>
+                            </div>
+                        </div>
+					</div>
+                </form>
+                <!-- Form to add new location -->
+				<form id="addLocation" name="addLocation" class="card-body" method="POST"
+					action="{{ url_for('get_recycling_collections', itemID='view-all') }}">
 					<div class="form-row">
 						<!-- Type of Waste -->
 						<div class="form-group col-md-6">
@@ -167,7 +197,7 @@
 							        <option value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}</option>
                                   {% endfor %}
 							      <option data-toggle="modal" data-target="#modal-typeOfWaste">Add New Type of Waste...</option>
-                            </select>
+                                </select>
 							</div>
 						</div>
 						<!-- Location -->
@@ -218,62 +248,4 @@
 	</div>
 </div>
 
-<!-- Add new typeOfWaste modal -->
-<div class="modal fade" id="modal-typeOfWaste" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-	aria-hidden="true">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header text-center">
-				<h4 class="modal-title w-100" id="modal-location-title">Add New Type of Waste</h4>
-
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-			</div>
-			<div class="modal-body">
-				<p><em>Please ensure that you are not duplicating a Type of Waste that already appears in the dropdown menu.<br>
-                The Type of Waste that you add here will be accessible by other users, so should be specific (e.g. 'toothbrush' 
-                <strong>not</strong> 'dental care',) and should <strong>not</strong> include any notes that are relevant to your collection (e.g. 'Must be washed' does not belong here!).
-				</p>
-				<!-- Input form -->
-				<form class="card-body" method="POST"
-					action="{{ url_for('get_recycling_collections', itemID='view-all') }}">
-					<div class="form-row">
-						<!-- Category -->
-						<div class="form-group col-md-6">
-							<label class="sr-only" for="itemCategory">Category</label>
-							<div class="input-group mb-2">
-								<div class="input-group-prepend">
-									<div class="input-group-text"><i class="fas fa-list"></i></div>
-								</div>
-								<select class="form-control" id="itemCategory" name="itemCategory" required>
-							      <option value="" selected disabled>Category</option>
-                                  {% for category in categories %}
-							        <option value="{{ category.categoryName }}">{{ category.categoryName }}</option>
-                                  {% endfor %}
-							      <!-- <option id="new-typeOfWaste" data-toggle="modal" data-target="#modal-typeOfWaste"><em>Add New Type of Waste...</em></option> -->
-                            </select>
-							</div>
-						</div>
-                        <!-- Type of Waste -->
-						<div class="form-group col-md-6">
-							<label class="sr-only" for="addTypeOfWaste">Type of Waste</label>
-							<div class="input-group mb-2">
-								<div class="input-group-prepend">
-									<div class="input-group-text"><i class="fas fa-recycle"></i></div>
-								</div>
-								<input type="text" class="form-control" id="addTypeOfWaste" name="addTypeOfWaste" placeholder="Type of Waste" minlength="4" required>
-						        </div>
-							</div>
-						</div>
-                        <!-- Submit -->
-						<div class="modal-footer">
-							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-							<button id="submit-typeOfWaste" class="btn btn-outline-primary" type="submit" name="action" value="submitWaste">Submit New Type of Waste</button>
-						</div>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
 {% endblock %}

@@ -26,12 +26,16 @@ $("#submit-registration").click(function(event) {
 })
 
 /* Show type of waste modal if option selected on dropdown */
+
+$(document).ready(function(){
+    $("#addNewTypeOfWaste").hide();
+});
 $(function () {
             $("#typeOfWaste").on("change", function () {
                 let selected = $('#typeOfWaste').find("option:selected").val();
                 if (selected == 'Add New Type of Waste...') {
-                    $("#modal-typeOfWaste").modal("show");
-                    $("#modal-location").modal("hide");
+                    $("#addLocation :input").prop("disabled", true);
+                    $("#addNewTypeOfWaste").show();
                 } 
             });
         });

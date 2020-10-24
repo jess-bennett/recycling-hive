@@ -112,6 +112,11 @@ background-size: 40px 60px;
     border-color: #6c8c26;
 }
 
+.btn-outline-primary.disabled, .btn-outline-primary:disabled {
+    color: #e9ecef;
+    background-color: transparent;
+}
+
 /* Hive */
 
 .breadcrumb {
