@@ -14,8 +14,13 @@
 		</div>
 	</div>
 </div>
+<section class="grid">
 <ul id="grid" class="clr home hexagon-large">
 	<li>
+        <div class="hexagon">
+            <img src="../static/images/recycling-items.jpg" alt="Lorem Ipsum"/>
+            <h3 class="hexagon-text">View your profile</h3>
+        </div>
 	</li>
 	<li>
 		<a href="{{ url_for('get_recycling_categories') }}">
@@ -33,6 +38,18 @@
 			</div>
 		</a>
 	</li>
+    <li>
+		<a href="#item3">
+			<div class="hexagon">
+				<img src="../static/images/recycling-symbol.png" alt="Lorem Ipsum"/>
+				<h3 class="hexagon-text">Be inspired!</h3>
+			</div>
+		</a>
+	</li>
 </ul>
+</section>
+<section id="profile">
+    YOUR PROFILE
+</section>
 
 {% endblock %}
