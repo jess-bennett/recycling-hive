@@ -118,10 +118,29 @@ background-size: 40px 60px;
     background-color: #d2d914;
     border-radius: .25rem;
     font-weight: bold;
+    padding: 1rem;
 }
 
 .img-membership {
     font-size: 2rem;
+}
+
+.btn-edit {
+    font-size: 1rem;
+    color: #d2d914;
+}
+
+.btn-delete {
+    font-size: 1rem;
+    color: #8C0A06;
+}
+
+.btn-edit:hover {
+    border: 1px solid #d2d914;
+}
+
+.btn-delete:hover {
+    border: 1px solid #8C0A06;
 }
 
 /* Hive */

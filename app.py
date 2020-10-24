@@ -132,7 +132,7 @@ def get_recycling_collections(itemID):
                 "itemID": mongo.db.recyclableItems.find_one(
                     {"typeOfWaste": request.form.get("typeOfWaste")})["_id"],
                 "conditionNotes": request.form.get("conditionNotes"),
-                "charityScheme": request.form.get("charityScheme", None),
+                "charityScheme": request.form.get("charityScheme", "-"),
                 "memberID": memberID,
                 "locationID": mongo.db.collectionLocations.find_one(
                     {"nickname": request.form.get("locationID"),

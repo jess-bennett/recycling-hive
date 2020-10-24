@@ -123,12 +123,15 @@
                 </div>
                 <!-- Amend details -->
                 <hr>
-                <div class="form-group row">
-                  <div class="col">
-                    <button id="amend-details"
-                      class="btn btn-outline-primary col" type="button">Amend
-                      Details</button>
-                  </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div id="delete-details"
+                        class="btn col-1 offset-10 btn-delete" data-toggle="tooltip" data-placement="top" data-type="info"
+								title="Delete"><i class="fas fa-trash-alt"></i></div>
+                        <div id="amend-details"
+                        class="btn col-1 btn-edit" data-toggle="tooltip" data-placement="top" data-type="info"
+								title="Edit"><i class="fas fa-edit"></i></div>
+                    </div>
                 </div>
               </div>
             </div>
@@ -179,16 +182,19 @@
                     </div>
                   </div>
                 </div>
-                {% endfor %}
-                <!-- Amend locations -->
-                <hr>
-                <div class="form-group row">
-                  <div class="col">
-                    <button id="amend-locations"
-                      class="btn btn-outline-primary col" type="button">Amend
-                      Locations</button>
-                  </div>
+                <!-- Amend location -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div id="delete-location"
+                        class="btn col-1 offset-10 btn-delete" data-toggle="tooltip" data-placement="top" data-type="info"
+								title="Delete"><i class="fas fa-trash-alt"></i></div>
+                        <div id="amend-location"
+                        class="btn col-1 btn-edit" data-toggle="tooltip" data-placement="top" data-type="info"
+								title="Edit"><i class="fas fa-edit"></i></div>
+                    </div>
                 </div>
+                <hr>
+                {% endfor %}
               </div>
             </div>
           </div>
@@ -259,16 +265,19 @@
                     <p class="form-control">{{ collection.conditionNotes }}</p>
                   </div>
                 </div>
+                <!-- Amend collection -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div id="delete-collection"
+                        class="btn col-1 offset-10 btn-delete" data-toggle="tooltip" data-placement="top" data-type="info"
+								title="Delete"><i class="fas fa-trash-alt"></i></div>
+                        <div id="amend-collection"
+                        class="btn col-1 btn-edit" data-toggle="tooltip" data-placement="top" data-type="info"
+								title="Edit"><i class="fas fa-edit"></i></div>
+                    </div>
+                </div>
                 <hr>
                 {% endfor %}
-                <!-- Amend collections -->
-                <div class="form-group row">
-                  <div class="col">
-                    <button id="amend-collections"
-                      class="btn btn-outline-primary col" type="button">Amend
-                      Collections</button>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
