@@ -202,6 +202,12 @@
                 {% else %}
                     <p><strong>You do not currently have any locations saved! Want to add one?</strong></p>
                 {% endif %}
+                <!-- Amend location -->
+                    <div class="container-fluid">
+                        <div class="row">
+                            <button type="button" class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add">Add New Location</button>
+                        </div>
+                    </div>
               </div>
             </div>
           </div>
@@ -220,7 +226,8 @@
             <div id="collapseThree" class="collapse"
               aria-labelledby="headingThree" data-parent="#accordion">
               <div class="card-body">
-              {% if userID in collectionsDict %}
+              {{ collectionsDict }}
+              {% if collectionsDict %}
               {% for collection in collectionsDict if collection.hiveMembers == userID %}
                 <div class="form-row">
                   <!-- Type of waste -->
