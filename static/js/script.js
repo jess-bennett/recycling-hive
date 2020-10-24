@@ -1,3 +1,11 @@
+$(document).ready(function(){
+    $("#formNewTypeOfWaste").hide();/* Hide additional forms on page load */
+    $("#formNewCategory").hide();
+    $("#profile-page").hide(); /* Hide profile page on page load */
+});
+
+/* REGISTER.HTML */
+
 /* https://stackoverflow.com/questions/21727317/how-to-check-confirm-password-field-in-form-without-reloading-page/21727518 */
 /* Check passwords match on Registration page */
 $('#password, #confirm-password').on('keyup', function () {
@@ -16,21 +24,18 @@ $("#submit-registration").click(function(event) {
 });
 
   /* Change list of recycling items on dropdown change */
-  $("#itemCategory").change(function () {
+ /*  $("#itemCategory").change(function () {
         let itemCategory = this.value;
-    });
+    }); */
 
-    /* Initialize all tooltips on a page */
-    $(function () {
+/* HIVE-COLLECTION.HTML */
+
+/* Initialize all tooltips on a page */
+$(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
 
-
-/* Hide additional forms on page load */
-$(document).ready(function(){
-    $("#formNewTypeOfWaste").hide();
-    $("#formNewCategory").hide();
-});
+/* FORMS IN MODALS */
 
 /* Show 'add type of waste' form if option selected on dropdown */
 $(function () {
