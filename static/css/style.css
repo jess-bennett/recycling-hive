@@ -83,6 +83,10 @@ background-size: 40px 60px;
     padding-bottom: 1rem;
 }
 
+.card-body {
+    padding-bottom: 0;
+}
+
 .input-group-text {
     color: #333;
     background-color: #d2d914;

@@ -306,12 +306,69 @@ def login():
 
 @app.route("/home/<username>", methods=["GET", "POST"])
 def home(username):
-    # grab the session user's username from db
+    # grab the session user's details from db
+    userID = mongo.db.hiveMembers.find_one(
+        {"email": session["user"]})["_id"]
     username = mongo.db.hiveMembers.find_one(
-        {"email": session["user"]})["username"]
-
+        {"_id": userID})["username"]
+    email = session["user"]
+    if mongo.db.hiveMembers.find_one(
+            {"_id": userID, "isQueenBee": True}):
+        memberType = "Queen Bee"
+    elif mongo.db.hiveMembers.find_one(
+            {"_id": userID, "isWorkerBee": True}):
+        memberType = "Worker Bee"
+    else:
+        memberType = "Busy Bee"
+    # get user's location details from db
+    locations = list(mongo.db.collectionLocations.find(
+        {"memberID": userID}).sort("nickname"))
+    # Create new dictionary of collections
+    collectionsDict = list(mongo.db.itemCollections.aggregate([
+        {
+         '$lookup': {
+            'from': 'recyclableItems',
+            'localField': 'itemID',
+            'foreignField': '_id',
+            'as': 'recyclableItems'
+         },
+        },
+        {'$unwind': '$recyclableItems'},
+        {
+         '$lookup': {
+            'from': 'hiveMembers',
+            'localField': 'memberID',
+            'foreignField': '_id',
+            'as': 'hiveMembers'
+         },
+        },
+        {'$unwind': '$hiveMembers'},
+        {
+         '$lookup': {
+            'from': 'collectionLocations',
+            'localField': 'locationID',
+            'foreignField': '_id',
+            'as': 'collectionLocations'
+         },
+        },
+        {'$unwind': '$collectionLocations'},
+        {'$project': {
+         'typeOfWaste': '$recyclableItems.typeOfWaste',
+         'hiveMembers': '$hiveMembers._id',
+         'street': '$collectionLocations.street',
+         'town': '$collectionLocations.town',
+         'postcode': '$collectionLocations.postcode',
+         'id': 1,
+         'conditionNotes': 1,
+         'charityScheme': 1
+         }
+         }
+        ]))
     if session["user"]:
-        return render_template("index.html", username=username)
+        return render_template("index.html", userID=userID, username=username,
+                               email=email,
+                               memberType=memberType, locations=locations,
+                               collectionsDict=collectionsDict)
 
     return redirect(url_for("login"))
 
