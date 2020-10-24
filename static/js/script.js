@@ -15,14 +15,8 @@ $("#submit-registration").click(function(event) {
     }           
 });
 
-/* Collapse accordion on page load on Hive category page  */
-/* $(document).ready(function(){
-    $('.collapse').collapse()
-}); */
-
   /* Change list of recycling items on dropdown change */
   $("#itemCategory").change(function () {
-      console.log($('#itemCategory').val());
         let itemCategory = this.value;
     });
 
@@ -30,3 +24,47 @@ $("#submit-registration").click(function(event) {
     $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
+
+
+/* Hide additional forms on page load */
+$(document).ready(function(){
+    $("#formNewTypeOfWaste").hide();
+    $("#formNewCategory").hide();
+});
+
+/* Show 'add type of waste' form if option selected on dropdown */
+$(function () {
+            $("#typeOfWaste").on("change", function () {
+                let selectedTypeOfWaste = $('#typeOfWaste').find("option:selected").val();
+                if (selectedTypeOfWaste == 'Add New Type of Waste...') {
+                    $("#formCollection").hide();
+                    $("#formNewTypeOfWaste").show();
+                } 
+            });
+        });
+
+ /* Show 'add category' form if option selected on dropdown */
+$(function () {
+    $("#itemCategory").on("change", function () {
+        let selectedCategory = $('#itemCategory').find("option:selected").val();
+        if (selectedCategory == 'Add New Category...') {
+            $("#formNewTypeOfWaste").hide();
+            $("#formNewCategory").show();
+        } 
+    });
+});
+
+/* Hide 'add type of waste' form if closed */
+$("#close-typeOfWaste").click(function(){
+  $("#formCollection").show();
+  $("#formNewTypeOfWaste").hide();
+  $('#typeOfWaste>option:eq(0)').prop('selected', true);
+});
+
+/* Hide 'add category' form if closed */
+$("#close-category").click(function(){
+  $("#formNewTypeOfWaste").show();
+  $("#formNewCategory").hide();
+  $('#itemCategory>option:eq(0)').prop('selected', true);
+});
+

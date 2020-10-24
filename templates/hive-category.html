@@ -9,6 +9,11 @@
 		</ol>
 	</nav>
 </div>
+<div class="heading-buttons">
+	<!-- Add category button -->
+	<button type="button" id="btn-add-item" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#modal-category">Add New Hive Category</button>
+
+</div>
 <!-- Show all categories -->
 <div id="category-layout">
 	<ul id="grid" class="clr">
@@ -29,6 +34,50 @@
 		</li>
 		{% endfor %}
 	</ul>
+</div>
+
+<!-- Add new category modal -->
+<div class="modal fade" id="modal-category" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h4 class="modal-title w-100" id="modal-category-title">Add New Hive Category</h4>
+
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+			</div>
+            <div id="formCategory" class="modal-body">
+                <p>Please ensure that you are not duplicating a Category that already appears in the dropdown menu.<br>
+                The Category that you add here will be accessible by other users, so should be fairly general (e.g. 'dental care' 
+                <strong>not</strong> 'toothbrush',) and should <strong>not</strong> include any notes that are relevant to your collection (e.g. 'Must be washed' does not belong here!).
+				</p>
+				<!-- Input form -->
+                <!-- Form to add new category -->
+                <form name="addCategory" class="card-body" method="POST"
+					action="{{ url_for('get_recycling_collections', itemID='view-all') }}">
+                    <div class="form-row">
+						<!-- Category -->
+						<div class="form-group col">
+							<label class="sr-only" for="addCategory">Category</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-list"></i></div>
+								</div>
+								<input type="text" class="form-control" id="addCategory" name="addCategory" placeholder="Category" minlength="4" required>
+							</div>
+						</div>
+					</div>
+						<!-- Submit -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+							<button id="submit-category" class="btn btn-outline-primary" type="submit" name="submit-category">Add New Category</button>
+						</div>
+                </form>
+            </div>
+		</div>
+	</div>
 </div>
 
 {% endblock %}

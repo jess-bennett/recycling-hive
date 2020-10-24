@@ -125,25 +125,50 @@ def get_recycling_collections(itemID):
         {"memberID": memberID}).sort("nickname"))
     # Adding new location
     if request.method == "POST":
-        newLocation = {
-            "itemID": mongo.db.recyclableItems.find_one(
-                {"typeOfWaste": request.form.get("typeOfWaste")})["_id"],
-            "conditionNotes": request.form.get("conditionNotes"),
-            "charityScheme": request.form.get("charityScheme", None),
-            "memberID": memberID,
-            "locationID": mongo.db.collectionLocations.find_one(
-                {"nickname": request.form.get("locationID"),
-                 "memberID": memberID})["_id"],
-            "isNational": "no",
-            "dateAdded": datetime.now().strftime("%d %b %Y")
-        }
-        mongo.db.itemCollections.insert_one(newLocation)
-        flash("New location added")
-        return redirect(url_for("get_recycling_items",
-                                categoryID='5f8054dd4361cd9f497a63dd'))
+        if 'locationID' in request.form:
+            itemID = mongo.db.recyclableItems.find_one(
+                    {"typeOfWaste": request.form.get("typeOfWaste")})["_id"]
+            newCollection = {
+                "itemID": mongo.db.recyclableItems.find_one(
+                    {"typeOfWaste": request.form.get("typeOfWaste")})["_id"],
+                "conditionNotes": request.form.get("conditionNotes"),
+                "charityScheme": request.form.get("charityScheme", None),
+                "memberID": memberID,
+                "locationID": mongo.db.collectionLocations.find_one(
+                    {"nickname": request.form.get("locationID"),
+                     "memberID": memberID})["_id"],
+                "isNational": "no",
+                "dateAdded": datetime.now().strftime("%d %b %Y")
+            }
+            mongo.db.itemCollections.insert_one(newCollection)
+            flash("New location added")
+            return redirect(url_for("get_recycling_collections",
+                                    itemID=itemID))
+        elif 'addTypeOfWaste' in request.form:
+            categoryID = mongo.db.itemCategory.find_one(
+                    {"categoryName": request.form.get("itemCategory")})["_id"]
+            newItem = {
+                "typeOfWaste": request.form.get("addTypeOfWaste"),
+                "categoryID": mongo.db.itemCategory.find_one(
+                    {"categoryName": request.form.get("itemCategory")})["_id"]
+            }
+            mongo.db.recyclableItems.insert_one(newItem)
+            flash("New Type of Waste added")
+            return redirect(url_for("get_recycling_items",
+                                    categoryID=categoryID))
+        elif 'addCategory' in request.form:
+            newCategory = {
+                "categoryName": request.form.get("addCategory")
+            }
+            mongo.db.itemCategory.insert_one(newCategory)
+            flash("New Category added")
+            return redirect(url_for("get_recycling_categories"))
+    # Get list of all item categories for dropdown
+    # in 'Add new type of waste' modal
+    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
     return render_template(
         "hive-collection.html",
-        itemID=itemID, items=items,
+        itemID=itemID, items=items, categories=categories,
         locations=locations, itemCollections=itemCollections,
         collectionsDict=collectionsDict, selectedItem=selectedItem)
 

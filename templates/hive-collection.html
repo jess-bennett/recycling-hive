@@ -13,8 +13,8 @@
 	</nav>
 </div>
 <div class="heading-buttons">
-	<!-- Add item button -->
-	<button type="button" id="btn-add-location" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#modal-location">Add New Hive Collection</button>
+	<!-- Add collection button -->
+	<button type="button" id="btn-add-collection" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#modal-collection">Add New Hive Collection</button>
 
 	<!-- Type of Waste Dropdown -->
 	<div class="dropdown">
@@ -27,9 +27,6 @@
 				href="{{ url_for('get_recycling_collections', itemID=item._id) }}">{{ item.typeOfWaste }}</a>
 			{% endfor %}
 		</div>
-	</div>
-
-	<div>
 	</div>
 </div>
     
@@ -48,104 +45,182 @@
 					<h5 class="hexagon-text hexagon-dark">{{ collection.hiveMembers }} - {{ collection.town }}</h5>
 				</div>
 			</li>
-						<!-- Collection details modal -->
-						<div class="modal fade" id="modal-collection-{{ collection._id }}" tabindex="-1" role="dialog"
-							aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-							<div class="modal-dialog modal-dialog-centered" role="document">
-								<div class="modal-content">
-									<div class="modal-header text-center">
-										<h4 class="modal-title w-100" id="modal-collection-title">Collection details</h4>
-
-										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                        </button>
-									</div>
-                                    
-									<div class="modal-body">
-                                        <div class="card-body" >
-                                            <!-- Type of waste -->
-                                            <div class="form-group">
-                                                <div class="input-group mb-2">
-                                                    <div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info" title="Type of Waste">
-                                                        <div class="input-group-text"><i class="fas fa-recycle"></i></div>
-                                                    </div>
-                                                    <p class="form-control">{{ collection.typeOfWaste }}</p>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <!-- Worker Bee -->
-                                                <div class="form-group col-md-6">
-                                                    <div class="input-group mb-2">
-                                                        <div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info" title="Worker Bee">
-                                                            <div class="input-group-text"><i class="fas fa-hard-hat"></i></div>
-                                                        </div>
-                                                        <p class="form-control">{{ collection.hiveMembers }}</p>
-                                                    </div>
-                                                </div>
-                                                <!-- Charity Scheme -->
-                                                <div class="form-group col-md-6">
-                                                    <div class="input-group mb-2">
-                                                        <div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info" title="Charity Scheme">
-                                                            <div class="input-group-text"><i class="fas fa-hand-holding-heart"></i></div>
-                                                        </div>
-                                                        <p class="form-control">{{ collection.charityScheme }}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- Location -->
-                                            <div class="form-group">
-                                                <div class="input-group mb-2">
-                                                    <div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info" title="Collection Address">
-                                                        <div class="input-group-text"><i class="fas fa-home"></i></div>
-                                                    </div>
-                                                    <p class="form-control">{{ collection.street }}, {{ collection.town }},
-                                                        {{ collection.postcode }}</p>
-                                                </div>
-                                            </div>
-                                            <!-- Condition notes -->
-                                            <div class="form-group">
-                                                <div class="input-group mb-2">
-                                                    <div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info" title="Collection Notes">
-                                                        <div class="input-group-text"><i class="fas fa-comment"></i></div>
-                                                    </div>
-                                                    <p class="form-control">{{ collection.conditionNotes }}</p>
-                                                </div>
-                                            </div>
-                                            <!-- Submit -->
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-                                            </div>
-                                        </div>
-									</div>
-								</div>
-							</div>
-						</div>
+						
         {% endfor %}
 	</ul>
 
+<!-- Collection details modal -->
+{% for collection in collectionsDict if collection.typeOfWaste == selectedItem %}
+<div class="modal fade" id="modal-collection-{{ collection._id }}" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h4 class="modal-title w-100" id="modal-collection-title">Collection details</h4>
 
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+			</div>
 
-<!-- Add new location modal -->
-<div class="modal fade" id="modal-location" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+			<div class="modal-body">
+				<div class="card-body">
+					<!-- Type of waste -->
+					<div class="form-group">
+						<div class="input-group mb-2">
+							<div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info"
+								title="Type of Waste">
+								<div class="input-group-text"><i class="fas fa-recycle"></i></div>
+							</div>
+							<p class="form-control">{{ collection.typeOfWaste }}</p>
+						</div>
+					</div>
+					<div class="form-row">
+						<!-- Worker Bee -->
+						<div class="form-group col-md-6">
+							<div class="input-group mb-2">
+								<div class="input-group-prepend" data-toggle="tooltip" data-placement="top"
+									data-type="info" title="Worker Bee">
+									<div class="input-group-text"><i class="fas fa-hard-hat"></i></div>
+								</div>
+								<p class="form-control">{{ collection.hiveMembers }}</p>
+							</div>
+						</div>
+						<!-- Charity Scheme -->
+						<div class="form-group col-md-6">
+							<div class="input-group mb-2">
+								<div class="input-group-prepend" data-toggle="tooltip" data-placement="top"
+									data-type="info" title="Charity Scheme">
+									<div class="input-group-text"><i class="fas fa-hand-holding-heart"></i></div>
+								</div>
+								<p class="form-control">{{ collection.charityScheme }}</p>
+							</div>
+						</div>
+					</div>
+					<!-- Location -->
+					<div class="form-group">
+						<div class="input-group mb-2">
+							<div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info"
+								title="Collection Address">
+								<div class="input-group-text"><i class="fas fa-home"></i></div>
+							</div>
+							<p class="form-control">{{ collection.street }}, {{ collection.town }},
+								{{ collection.postcode }}</p>
+						</div>
+					</div>
+					<!-- Condition notes -->
+					<div class="form-group">
+						<div class="input-group mb-2">
+							<div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info"
+								title="Collection Notes">
+								<div class="input-group-text"><i class="fas fa-comment"></i></div>
+							</div>
+							<p class="form-control">{{ collection.conditionNotes }}</p>
+						</div>
+					</div>
+					<!-- Submit -->
+					<div class="modal-footer">
+						<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endfor %}
+
+<!-- Add new collection modal -->
+<div class="modal fade" id="modal-collection" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
 	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header text-center">
-				<h4 class="modal-title w-100" id="modal-location-title">Add New Hive Collection</h4>
+				<h4 class="modal-title w-100" id="modal-collection-title">Add New Hive Collection</h4>
 
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
 			</div>
-			<div class="modal-body">
-				<p><em>Please note, this option is to add your own <strong>personal</strong> location to the database. If you would like to suggest a local/national 
-                <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
+            <div id="formNewCategory" class="modal-body">
+                <p>Please ensure that you are not duplicating a Category that already appears in the dropdown menu.<br>
+                The Category that you add here will be accessible by other users, so should be fairly general (e.g. 'dental care' 
+                <strong>not</strong> 'toothbrush',) and should <strong>not</strong> include any notes that are relevant to your collection (e.g. 'Must be washed' does not belong here!).
 				</p>
 				<!-- Input form -->
-
-				<form class="card-body" method="POST"
-					action="{{ url_for('get_recycling_items', categoryID='5f8054dd4361cd9f497a63dd') }}">
-
+                <!-- Form to add new category -->
+                <form name="addCategory" class="card-body" method="POST"
+					action="{{ url_for('get_recycling_collections', itemID='view-all') }}">
+                    <div class="form-row">
+						<!-- Category -->
+						<div class="form-group col">
+							<label class="sr-only" for="addCategory">Category</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-list"></i></div>
+								</div>
+								<input type="text" class="form-control" id="addCategory" name="addCategory" placeholder="Category" minlength="4" required>
+							</div>
+						</div>
+					</div>
+						<!-- Submit -->
+						<div class="modal-footer">
+							<button id="close-category" type="button" class="btn btn-outline-primary">Cancel</button>
+							<button id="submit-category" class="btn btn-outline-primary" type="submit" name="submit-category" data-dismiss="static">Add New Category</button>
+						</div>
+                </form>
+            </div>
+            <div id="formNewTypeOfWaste" class="modal-body">
+                <p>Please ensure that you are not duplicating a Type of Waste that already appears in the dropdown menu.<br>
+                The Type of Waste that you add here will be accessible by other users, so should be specific (e.g. 'toothbrush' 
+                <strong>not</strong> 'dental care',) and should <strong>not</strong> include any notes that are relevant to your collection (e.g. 'Must be washed' does not belong here!).
+				</p>
+				<!-- Input form -->
+                <!-- Form to add new type of waste -->
+                <form name="addTypeOfWaste" class="card-body" method="POST"
+					action="{{ url_for('get_recycling_collections', itemID='view-all') }}">
+                    <div class="form-row">
+						<!-- Category -->
+						<div class="form-group col-md-6">
+							<label class="sr-only" for="itemCategory">Category</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-list"></i></div>
+								</div>
+								<select class="form-control" id="itemCategory" name="itemCategory" required>
+							      <option value="" selected disabled>Category</option>
+                                  {% for category in categories %}
+							        <option value="{{ category.categoryName }}">{{ category.categoryName }}</option>
+                                  {% endfor %}
+							      <option>Add New Category...</option>
+                            </select>
+							</div>
+						</div>
+                        <!-- Type of Waste -->
+						<div class="form-group col-md-6">
+							<label class="sr-only" for="addTypeOfWaste">Type of Waste</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-recycle"></i></div>
+								</div>
+								<input type="text" class="form-control" id="addTypeOfWaste" name="addTypeOfWaste" placeholder="Type of Waste" minlength="4" required>
+                            </div>
+                        </div>
+					</div>
+						<!-- Submit -->
+						<div class="modal-footer">
+							<button id="close-typeOfWaste" type="button" class="btn btn-outline-primary">Cancel</button>
+							<button id="submit-typeOfWaste" class="btn btn-outline-primary" type="submit" name="submit-typeOfWaste" data-dismiss="static">Add New Type of Waste</button>
+						</div>
+                </form>
+            </div>
+			<div id="formCollection" class="modal-body">
+				<p><em>Please note, this option is to add your own <strong>personal</strong> collection to the database. If you would like to suggest a local/national 
+                <strong>public</strong> collection (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
+				</p>
+				<!-- Input form -->
+                <!-- Form to add new collection -->
+				<form name="addCollection" class="card-body" method="POST"
+					action="{{ url_for('get_recycling_collections', itemID='view-all') }}">
 					<div class="form-row">
 						<!-- Type of Waste -->
 						<div class="form-group col-md-6">
@@ -159,12 +234,13 @@
                                   {% for item in items %}
 							        <option value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}</option>
                                   {% endfor %}
-                            </select>
+							      <option>Add New Type of Waste...</option>
+                                </select>
 							</div>
 						</div>
 						<!-- Location -->
 						<div class="form-group col-md-6">
-							<label class="sr-only" for="locationID">Type of Waste</label>
+							<label class="sr-only" for="locationID">Location</label>
 							<div class="input-group mb-2">
 								<div class="input-group-prepend">
 									<div class="input-group-text"><i class="fas fa-home"></i></div>
@@ -202,11 +278,12 @@
 						<!-- Submit -->
 						<div class="modal-footer">
 							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-							<button id="submit-location" class="btn btn-outline-primary" type="submit">Submit new location</button>
+							<button id="submit-collection" class="btn btn-outline-primary" type="submit" name="submit-collection">Add New Collection</button>
 						</div>
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
+
 {% endblock %}
