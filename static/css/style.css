@@ -235,6 +235,10 @@ background-size: 40px 60px;
     border: 0.5rem solid #6c8c26;
 }
 
+.modal-footer {
+    padding: 1rem 0; 
+}
+
 @media (min-width: 576px) {
 .modal-dialog {
     max-width: 70%;

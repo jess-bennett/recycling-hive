@@ -127,11 +127,12 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div id="delete-details"
-                        class="btn col-1 offset-10 btn-delete" data-toggle="tooltip" data-placement="top" data-type="info"
-								title="Delete"><i class="fas fa-trash-alt"></i></div>
+                        class="btn col-1 offset-10 btn-delete"><i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="top" data-type="info"
+								title="Delete"></i></div>
                         <div id="amend-details"
-                        class="btn col-1 btn-edit" data-toggle="tooltip" data-placement="top" data-type="info"
-								title="Edit"><i class="fas fa-edit"></i></div>
+                            class="btn col-1 btn-edit" data-toggle="modal" data-target="#modal-edit-details"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" data-type="info"
+							title="Edit"></i>
+                        </div>
                     </div>
                 </div>
               </div>
@@ -311,5 +312,75 @@
     </div>
   </div>
 </section>
+
+<!-- Edit details modal -->
+<div class="modal fade" id="modal-edit-details" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h4 class="modal-title w-100" id="modal-edit-details-title">Edit Details</h4>
+
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+			</div>
+            <div class="modal-body">
+                <form name="editDetails" class="card-body" method="POST"
+					action="{{ url_for('home', username=username) }}">
+                    <!-- Name -->
+					<div class="form-group row">
+						<label class="sr-only" for="username">Name</label>
+						<div class="input-group mb-2">
+							<div class="input-group-prepend">
+								<div class="input-group-text"><i class="fab fa-forumbee"></i></div>
+							</div>
+							<input type="text" class="form-control" id="username" name="username" placeholder="Name" minlength="3" required>
+                        </div>
+						</div>
+						<!-- Email -->
+						<div class="form-group row">
+							<label class="sr-only" for="email">Email</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-at"></i></div>
+								</div>
+								<input type="email" class="form-control" id="email" name="email" placeholder="email" required>
+                        </div>
+							</div>
+							<!-- Password -->
+							<div class="form-group row">
+								<label class="sr-only" for="password">Password</label>
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+										<div class="input-group-text"><i class="fas fa-lock-open"></i></div>
+									</div>
+									<input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$" required>
+									<small id="passwordValidation" class="form-text col-12">
+                                Your password must be at least 8 characters and contain at least 1 uppercase letter, 1 lowercase letter, and 1 number
+                            </small>
+								</div>
+							</div>
+							<!-- Confirm Password -->
+							<div class="form-group row">
+								<label class="sr-only" for="confirm-password">Confirm Password</label>
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+										<div class="input-group-text"><i class="fas fa-lock"></i></div>
+									</div>
+									<input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm Password"  aria-describedby="passwordHelpBlock" required>
+									<small id="password-match" class="form-text col-12"></small>
+								</div>
+							</div>
+                            <!-- Submit -->
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                                <button id="submit-edit-details" class="btn btn-outline-primary" type="submit" name="submit-edit-details">Save Changes</button>
+                            </div>
+                </form>
+            </div>
+		</div>
+	</div>
+</div>
 
 {% endblock %}

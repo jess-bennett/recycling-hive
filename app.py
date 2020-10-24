@@ -309,8 +309,7 @@ def home(username):
     # grab the session user's details from db
     userID = mongo.db.hiveMembers.find_one(
         {"email": session["user"]})["_id"]
-    username = mongo.db.hiveMembers.find_one(
-        {"_id": userID})["username"]
+    username = username
     email = session["user"]
     if mongo.db.hiveMembers.find_one(
             {"_id": userID, "isQueenBee": True}):
