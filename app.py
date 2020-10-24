@@ -145,6 +145,8 @@ def get_recycling_collections(itemID):
             return redirect(url_for("get_recycling_collections",
                                     itemID=itemID))
         elif 'addTypeOfWaste' in request.form:
+            categoryID = mongo.db.itemCategory.find_one(
+                    {"categoryName": request.form.get("itemCategory")})["_id"]
             newItem = {
                 "typeOfWaste": request.form.get("addTypeOfWaste"),
                 "categoryID": mongo.db.itemCategory.find_one(
@@ -152,8 +154,15 @@ def get_recycling_collections(itemID):
             }
             mongo.db.recyclableItems.insert_one(newItem)
             flash("New Type of Waste added")
-            return redirect(url_for("get_recycling_collections",
-                                    itemID=itemID))
+            return redirect(url_for("get_recycling_items",
+                                    categoryID=categoryID))
+        elif 'addCategory' in request.form:
+            newCategory = {
+                "categoryName": request.form.get("addCategory")
+            }
+            mongo.db.itemCategory.insert_one(newCategory)
+            flash("New Category added")
+            return redirect(url_for("get_recycling_categories"))
     # Get list of all item categories for dropdown
     # in 'Add new type of waste' modal
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
@@ -162,7 +171,7 @@ def get_recycling_collections(itemID):
         itemID=itemID, items=items, categories=categories,
         locations=locations, itemCollections=itemCollections,
         collectionsDict=collectionsDict, selectedItem=selectedItem)
-    
+
 
 @app.route("/hive/members/<memberType>")
 def get_recycling_members(memberType):

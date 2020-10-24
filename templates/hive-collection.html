@@ -144,9 +144,38 @@
           <span aria-hidden="true">&times;</span>
         </button>
 			</div>
+            <div id="addNewCategory" class="modal-body">
+                <p>Please ensure that you are not duplicating a Category that already appears in the dropdown menu.<br>
+                The Category that you add here will be accessible by other users, so should be fairly general (e.g. 'dental care' 
+                <strong>not</strong> 'toothbrush',) and should <strong>not</strong> include any notes that are relevant to your collection (e.g. 'Must be washed' does not belong here!).
+				</p>
+				<!-- Input form -->
+                <!-- Form to add new category -->
+                <form name="addCategory" class="card-body" method="POST"
+					action="{{ url_for('get_recycling_collections', itemID='view-all') }}">
+                    <div class="form-row">
+						<!-- Category -->
+						<div class="form-group col">
+							<label class="sr-only" for="addCategory">Category</label>
+							<div class="input-group mb-2">
+								<div class="input-group-prepend">
+									<div class="input-group-text"><i class="fas fa-list"></i></div>
+								</div>
+								<input type="text" class="form-control" id="addCategory" name="addCategory" placeholder="Category" minlength="4" required>
+							</div>
+						</div>
+					</div>
+						<!-- Submit -->
+						<div class="modal-footer">
+							<button id="close-category" type="button" class="btn btn-outline-primary">Cancel</button>
+							<button id="submit-category" class="btn btn-outline-primary" type="submit" name="submit-category" data-dismiss="static">Add New Category</button>
+						</div>
+                </form>
+            </div>
             <div id="addNewTypeOfWaste" class="modal-body">
-                <p><em>Please note, this option is to add your own <strong>personal</strong> location to the database. If you would like to suggest a local/national 
-                <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
+                <p>Please ensure that you are not duplicating a Type of Waste that already appears in the dropdown menu.<br>
+                The Type of Waste that you add here will be accessible by other users, so should be specific (e.g. 'toothbrush' 
+                <strong>not</strong> 'dental care',) and should <strong>not</strong> include any notes that are relevant to your collection (e.g. 'Must be washed' does not belong here!).
 				</p>
 				<!-- Input form -->
                 <!-- Form to add new type of waste -->
@@ -165,6 +194,7 @@
                                   {% for category in categories %}
 							        <option value="{{ category.categoryName }}">{{ category.categoryName }}</option>
                                   {% endfor %}
+							      <option>Add New Category...</option>
                             </select>
 							</div>
 						</div>
@@ -181,8 +211,8 @@
 					</div>
 						<!-- Submit -->
 						<div class="modal-footer">
-							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-							<button id="submit-typeOfWaste" class="btn btn-outline-primary" type="submit" name="submit-typeOfWaste">Add New Type of Waste</button>
+							<button id="close-typeOfWaste" type="button" class="btn btn-outline-primary">Cancel</button>
+							<button id="submit-typeOfWaste" class="btn btn-outline-primary" type="submit" name="submit-typeOfWaste" data-dismiss="static">Add New Type of Waste</button>
 						</div>
                 </form>
             </div>
@@ -207,7 +237,7 @@
                                   {% for item in items %}
 							        <option value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}</option>
                                   {% endfor %}
-							      <option data-toggle="modal" data-target="#modal-typeOfWaste">Add New Type of Waste...</option>
+							      <option>Add New Type of Waste...</option>
                                 </select>
 							</div>
 						</div>
