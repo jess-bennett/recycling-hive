@@ -325,15 +325,7 @@ def home(username):
         {"memberID": userID}).sort("nickname"))
     # Create new dictionary of collections
     collectionsDict = list(mongo.db.itemCollections.aggregate([
-        {
-         '$lookup': {
-            'from': 'recyclableItems',
-            'localField': 'itemID',
-            'foreignField': '_id',
-            'as': 'recyclableItems'
-         },
-        },
-        {'$unwind': '$recyclableItems'},
+        {'$match': {'memberID': userID}},
         {
          '$lookup': {
             'from': 'hiveMembers',
@@ -343,6 +335,15 @@ def home(username):
          },
         },
         {'$unwind': '$hiveMembers'},
+        {
+         '$lookup': {
+            'from': 'recyclableItems',
+            'localField': 'itemID',
+            'foreignField': '_id',
+            'as': 'recyclableItems'
+         },
+        },
+        {'$unwind': '$recyclableItems'},
         {
          '$lookup': {
             'from': 'collectionLocations',
