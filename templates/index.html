@@ -157,8 +157,15 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
               data-parent="#accordion">
               <div class="card-body">
+              <!-- Add location -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <button type="button" class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add">Add New Location</button>
+                    </div>
+                </div>
                 {% if locations %}
                     {% for location in locations%}
+                    <hr>
                     <div class="form-row">
                     <!-- Nickname -->
                     <div class="form-group col-md-3">
@@ -197,17 +204,10 @@
                                     title="Edit"><i class="fas fa-edit"></i></div>
                         </div>
                     </div>
-                    <hr>
                     {% endfor %}
                 {% else %}
                     <p><strong>You do not currently have any locations saved! Want to add one?</strong></p>
                 {% endif %}
-                <!-- Amend location -->
-                    <div class="container-fluid">
-                        <div class="row">
-                            <button type="button" class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add">Add New Location</button>
-                        </div>
-                    </div>
               </div>
             </div>
           </div>
@@ -226,8 +226,15 @@
             <div id="collapseThree" class="collapse"
               aria-labelledby="headingThree" data-parent="#accordion">
               <div class="card-body">
+              <!-- Add collection -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <button type="button" class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add">Add New Collection</button>
+                    </div>
+                </div>
               {% if collectionsDict %}
               {% for collection in collectionsDict %}
+              <hr>
                 <div class="form-row">
                   <!-- Type of waste -->
                   <div class="form-group col-md-6">
@@ -291,10 +298,9 @@
 								title="Edit"><i class="fas fa-edit"></i></div>
                     </div>
                 </div>
-                <hr>
                 {% endfor %}
                 {% else %}
-                    <p><strong>You do not currently have any locations saved! Want to add one?</strong></p>
+                    <p><strong>You do not currently have any collections saved! Want to add one?</strong></p>
                 {% endif %}
               </div>
             </div>
