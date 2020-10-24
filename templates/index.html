@@ -51,6 +51,7 @@
     <div class="row">
       <div class="col-md-8 offset-md-2">
         <div id="accordion">
+          <!-- Details card -->
           <div class="card">
             <div class="card-header green-background" id="headingOne">
               <h5 class="mb-0">
@@ -136,6 +137,8 @@
               </div>
             </div>
           </div>
+          {% if memberType != 'Busy Bee' %}
+          <!-- Activity card -->
           <div class="card-header green-background space-below">
             <h5 class="mb-0">
               <strong>Your Hive Activity</strong>
@@ -154,50 +157,55 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
               data-parent="#accordion">
               <div class="card-body">
-                {% for location in locations%}
-                <div class="form-row">
-                  <!-- Nickname -->
-                  <div class="form-group col-md-3">
-                    <div class="input-group mb-2">
-                      <div class="input-group-prepend" data-toggle="tooltip"
-                        data-placement="top" data-type="info" title="Nickname">
-                        <div class="input-group-text"><i
-                            class="fas fa-signature"></i></div>
-                      </div>
-                      <p class="form-control">{{ location.nickname }}</p>
+                {% if locations %}
+                    {% for location in locations%}
+                    <div class="form-row">
+                    <!-- Nickname -->
+                    <div class="form-group col-md-3">
+                        <div class="input-group mb-2">
+                        <div class="input-group-prepend" data-toggle="tooltip"
+                            data-placement="top" data-type="info" title="Nickname">
+                            <div class="input-group-text"><i
+                                class="fas fa-signature"></i></div>
+                        </div>
+                        <p class="form-control">{{ location.nickname }}</p>
+                        </div>
                     </div>
-                  </div>
-                  <!-- Address -->
-                  <div class="form-group col-md-9">
-                    <div class="input-group mb-2">
-                      <div class="input-group-prepend" data-toggle="tooltip"
-                        data-placement="top" data-type="info" title="Address">
-                        <div class="input-group-text"><i
-                            class="fas fa-home"></i></div>
-                      </div>
-                      <p class="form-control">
-                        {{ location.street }}, {{ location.town }},
-                        {{ location.postcode }}
-                      </p>
+                    <!-- Address -->
+                    <div class="form-group col-md-9">
+                        <div class="input-group mb-2">
+                        <div class="input-group-prepend" data-toggle="tooltip"
+                            data-placement="top" data-type="info" title="Address">
+                            <div class="input-group-text"><i
+                                class="fas fa-home"></i></div>
+                        </div>
+                        <p class="form-control">
+                            {{ location.street }}, {{ location.town }},
+                            {{ location.postcode }}
+                        </p>
+                        </div>
                     </div>
-                  </div>
-                </div>
-                <!-- Amend location -->
-                <div class="container-fluid">
-                    <div class="row">
-                        <div id="delete-location"
-                        class="btn col-1 offset-10 btn-delete" data-toggle="tooltip" data-placement="top" data-type="info"
-								title="Delete"><i class="fas fa-trash-alt"></i></div>
-                        <div id="amend-location"
-                        class="btn col-1 btn-edit" data-toggle="tooltip" data-placement="top" data-type="info"
-								title="Edit"><i class="fas fa-edit"></i></div>
                     </div>
-                </div>
-                <hr>
-                {% endfor %}
+                    <!-- Amend location -->
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div id="delete-location"
+                            class="btn col-1 offset-10 btn-delete" data-toggle="tooltip" data-placement="top" data-type="info"
+                                    title="Delete"><i class="fas fa-trash-alt"></i></div>
+                            <div id="amend-location"
+                            class="btn col-1 btn-edit" data-toggle="tooltip" data-placement="top" data-type="info"
+                                    title="Edit"><i class="fas fa-edit"></i></div>
+                        </div>
+                    </div>
+                    <hr>
+                    {% endfor %}
+                {% else %}
+                    <p><strong>You do not currently have any locations saved! Want to add one?</strong></p>
+                {% endif %}
               </div>
             </div>
           </div>
+          <!-- Collections card -->
           <div class="card">
             <div class="card-header green-background" id="headingThree">
               <h5 class="mb-0">
@@ -212,6 +220,7 @@
             <div id="collapseThree" class="collapse"
               aria-labelledby="headingThree" data-parent="#accordion">
               <div class="card-body">
+              {% if userID in collectionsDict %}
               {% for collection in collectionsDict if collection.hiveMembers == userID %}
                 <div class="form-row">
                   <!-- Type of waste -->
@@ -278,9 +287,13 @@
                 </div>
                 <hr>
                 {% endfor %}
+                {% else %}
+                    <p><strong>You do not currently have any locations saved! Want to add one?</strong></p>
+                {% endif %}
               </div>
             </div>
           </div>
+          {% endif %}
         </div>
       </div>
     </div>
