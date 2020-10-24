@@ -13,8 +13,8 @@
 	</nav>
 </div>
 <div class="heading-buttons">
-	<!-- Add item button -->
-	<button type="button" id="btn-add-location" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#modal-location">Add New Hive Collection</button>
+	<!-- Add collection button -->
+	<button type="button" id="btn-add-collection" class="btn btn-outline-primary col space-below" data-toggle="modal" data-target="#modal-collection">Add New Hive Collection</button>
 
 	<!-- Type of Waste Dropdown -->
 	<div class="dropdown">
@@ -132,19 +132,19 @@
 </div>
 {% endfor %}
 
-<!-- Add new location modal -->
-<div class="modal fade" id="modal-location" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+<!-- Add new collection modal -->
+<div class="modal fade" id="modal-collection" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
 	aria-hidden="true">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header text-center">
-				<h4 class="modal-title w-100" id="modal-location-title">Add New Hive Collection</h4>
+				<h4 class="modal-title w-100" id="modal-collection-title">Add New Hive Collection</h4>
 
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
 			</div>
-            <div id="addNewCategory" class="modal-body">
+            <div id="formNewCategory" class="modal-body">
                 <p>Please ensure that you are not duplicating a Category that already appears in the dropdown menu.<br>
                 The Category that you add here will be accessible by other users, so should be fairly general (e.g. 'dental care' 
                 <strong>not</strong> 'toothbrush',) and should <strong>not</strong> include any notes that are relevant to your collection (e.g. 'Must be washed' does not belong here!).
@@ -172,7 +172,7 @@
 						</div>
                 </form>
             </div>
-            <div id="addNewTypeOfWaste" class="modal-body">
+            <div id="formNewTypeOfWaste" class="modal-body">
                 <p>Please ensure that you are not duplicating a Type of Waste that already appears in the dropdown menu.<br>
                 The Type of Waste that you add here will be accessible by other users, so should be specific (e.g. 'toothbrush' 
                 <strong>not</strong> 'dental care',) and should <strong>not</strong> include any notes that are relevant to your collection (e.g. 'Must be washed' does not belong here!).
@@ -216,13 +216,13 @@
 						</div>
                 </form>
             </div>
-			<div id="addLocation" class="modal-body">
-				<p><em>Please note, this option is to add your own <strong>personal</strong> location to the database. If you would like to suggest a local/national 
-                <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
+			<div id="formCollection" class="modal-body">
+				<p><em>Please note, this option is to add your own <strong>personal</strong> collection to the database. If you would like to suggest a local/national 
+                <strong>public</strong> collection (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
 				</p>
 				<!-- Input form -->
-                <!-- Form to add new location -->
-				<form name="addLocation" class="card-body" method="POST"
+                <!-- Form to add new collection -->
+				<form name="addCollection" class="card-body" method="POST"
 					action="{{ url_for('get_recycling_collections', itemID='view-all') }}">
 					<div class="form-row">
 						<!-- Type of Waste -->
@@ -281,7 +281,7 @@
 						<!-- Submit -->
 						<div class="modal-footer">
 							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-							<button id="submit-location" class="btn btn-outline-primary" type="submit" name="submit-location">Add New location</button>
+							<button id="submit-collection" class="btn btn-outline-primary" type="submit" name="submit-collection">Add New Collection</button>
 						</div>
 				</form>
 			</div>

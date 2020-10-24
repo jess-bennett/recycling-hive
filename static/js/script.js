@@ -28,8 +28,8 @@ $("#submit-registration").click(function(event) {
 
 /* Hide additional forms on page load */
 $(document).ready(function(){
-    $("#addNewTypeOfWaste").hide();
-    $("#addNewCategory").hide();
+    $("#formNewTypeOfWaste").hide();
+    $("#formNewCategory").hide();
 });
 
 /* Show 'add type of waste' form if option selected on dropdown */
@@ -37,8 +37,8 @@ $(function () {
             $("#typeOfWaste").on("change", function () {
                 let selectedTypeOfWaste = $('#typeOfWaste').find("option:selected").val();
                 if (selectedTypeOfWaste == 'Add New Type of Waste...') {
-                    $("#addLocation").hide();
-                    $("#addNewTypeOfWaste").show();
+                    $("#formCollection").hide();
+                    $("#formNewTypeOfWaste").show();
                 } 
             });
         });
@@ -48,23 +48,23 @@ $(function () {
     $("#itemCategory").on("change", function () {
         let selectedCategory = $('#itemCategory').find("option:selected").val();
         if (selectedCategory == 'Add New Category...') {
-            $("#addNewTypeOfWaste").hide();
-            $("#addNewCategory").show();
+            $("#formNewTypeOfWaste").hide();
+            $("#formNewCategory").show();
         } 
     });
 });
 
 /* Hide 'add type of waste' form if closed */
 $("#close-typeOfWaste").click(function(){
-  $("#addLocation").show();
-  $("#addNewTypeOfWaste").hide();
+  $("#formCollection").show();
+  $("#formNewTypeOfWaste").hide();
   $('#typeOfWaste>option:eq(0)').prop('selected', true);
 });
 
 /* Hide 'add category' form if closed */
 $("#close-category").click(function(){
-  $("#addNewTypeOfWaste").show();
-  $("#addNewCategory").hide();
+  $("#formNewTypeOfWaste").show();
+  $("#formNewCategory").hide();
   $('#itemCategory>option:eq(0)').prop('selected', true);
 });
 
