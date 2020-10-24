@@ -34,7 +34,7 @@ $(function () {
             $("#typeOfWaste").on("change", function () {
                 let selected = $('#typeOfWaste').find("option:selected").val();
                 if (selected == 'Add New Type of Waste...') {
-                    $("#addLocation :input").prop("disabled", true);
+                    $("#addLocation").hide();
                     $("#addNewTypeOfWaste").show();
                 } 
             });

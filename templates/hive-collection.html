@@ -144,13 +144,13 @@
           <span aria-hidden="true">&times;</span>
         </button>
 			</div>
-			<div class="modal-body">
-				<p><em>Please note, this option is to add your own <strong>personal</strong> location to the database. If you would like to suggest a local/national 
+            <div id="addNewTypeOfWaste" class="modal-body">
+                <p><em>Please note, this option is to add your own <strong>personal</strong> location to the database. If you would like to suggest a local/national 
                 <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
 				</p>
 				<!-- Input form -->
                 <!-- Form to add new type of waste -->
-                <form id="addNewTypeOfWaste" name="addTypeOfWaste" class="card-body" method="POST"
+                <form name="addTypeOfWaste" class="card-body" method="POST"
 					action="{{ url_for('get_recycling_collections', itemID='view-all') }}">
                     <div class="form-row">
 						<!-- Category -->
@@ -179,9 +179,20 @@
                             </div>
                         </div>
 					</div>
+						<!-- Submit -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
+							<button id="submit-typeOfWaste" class="btn btn-outline-primary" type="submit" name="submit-typeOfWaste">Add New Type of Waste</button>
+						</div>
                 </form>
+            </div>
+			<div id="addLocation" class="modal-body">
+				<p><em>Please note, this option is to add your own <strong>personal</strong> location to the database. If you would like to suggest a local/national 
+                <strong>public</strong> location (i.e. business or similar), please do so <a href="" class="internal-link">here.</a></em>
+				</p>
+				<!-- Input form -->
                 <!-- Form to add new location -->
-				<form id="addLocation" name="addLocation" class="card-body" method="POST"
+				<form name="addLocation" class="card-body" method="POST"
 					action="{{ url_for('get_recycling_collections', itemID='view-all') }}">
 					<div class="form-row">
 						<!-- Type of Waste -->
@@ -240,7 +251,7 @@
 						<!-- Submit -->
 						<div class="modal-footer">
 							<button type="button" class="btn btn-outline-primary" data-dismiss="modal">Close</button>
-							<button id="submit-location" class="btn btn-outline-primary" type="submit" name="submitLocation">Submit new location</button>
+							<button id="submit-location" class="btn btn-outline-primary" type="submit" name="submit-location">Add New location</button>
 						</div>
 				</form>
 			</div>
