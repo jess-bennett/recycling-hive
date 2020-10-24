@@ -5,16 +5,14 @@
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-8 offset-md-2">
-			<div class="card">
-				<div class="card-body text-center green-background">
+				<div class="card-body text-center green-background space-below">
 					<h4>Welcome back to the XXX Hive,</h4>
 					<h3>{{ username }}!</h3>
 				</div>
-			</div>
 		</div>
 	</div>
 </div>
-<section class="grid">
+<section id="home-hexagons">
 <ul id="grid" class="clr home hexagon-large">
 	<li>
         <div id="btn-profile" class="hexagon">
@@ -49,7 +47,27 @@
 </ul>
 </section>
 <section id="profile-page">
-    YOUR PROFILE
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-8 offset-md-2">
+				<div class="card">
+					<div class="card-header green-background">
+						Your Membership
+					</div>
+					<div class="card-body">
+						<div class="row">
+                            <div class="col-2 img-membership align-self-center">
+                                <i class="fas fa-hard-hat"></i>
+                            </div>
+                            <div class="col-10 align-self-center">
+                                You are currently a Worker Bee
+                            </div>
+                        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </section>
 
 {% endblock %}

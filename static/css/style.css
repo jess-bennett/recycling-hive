@@ -12,11 +12,6 @@ body {
     font-weight: bold;
 }
 
-.green-background {
-    color: #333;
-    background-color: #d2d914;
-}
-
 /* Navbar */
 
 .navbar {
@@ -110,6 +105,19 @@ background-size: 40px 60px;
     color: #333;
     background-color: #6c8c26;
     border-color: #6c8c26;
+}
+
+/* Index */
+
+.green-background {
+    color: #333;
+    background-color: #d2d914;
+    border-radius: .25rem;
+    font-weight: bold;
+}
+
+.img-membership {
+    font-size: 2rem;
 }
 
 /* Hive */

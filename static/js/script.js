@@ -23,6 +23,12 @@ $("#submit-registration").click(function(event) {
     }           
 });
 
+/* INDEX.HTML */
+$("#btn-profile").click(function(){
+  $("#profile-page").show();
+  $("#home-hexagons").hide();
+});
+
   /* Change list of recycling items on dropdown change */
  /*  $("#itemCategory").change(function () {
         let itemCategory = this.value;
