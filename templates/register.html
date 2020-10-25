@@ -3,86 +3,108 @@
 {% block content %}
 
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-8 offset-md-2">
-			<div class="card">
-				<div class="card-header text-center green-background">
-					<h4>Register</h4>
-					<h5>You are applying to join the XXX Hive</h5>
-				</div>
-				<form class="card-body" method="POST" action="{{ url_for('register') }}">
-					<!-- Name -->
-					<div class="form-group row">
-						<label class="sr-only" for="username">Name</label>
-						<div class="input-group mb-2">
-							<div class="input-group-prepend">
-								<div class="input-group-text"><i class="fab fa-forumbee"></i></div>
-							</div>
-							<input type="text" class="form-control" id="username" name="username" placeholder="Name" minlength="3" required>
-                        </div>
-						</div>
-						<!-- Email -->
-						<div class="form-group row">
-							<label class="sr-only" for="email">Email</label>
-							<div class="input-group mb-2">
-								<div class="input-group-prepend">
-									<div class="input-group-text"><i class="fas fa-at"></i></div>
-								</div>
-								<input type="email" class="form-control" id="email" name="email" placeholder="email" required>
-                        </div>
-							</div>
-							<!-- Password -->
-							<div class="form-group row">
-								<label class="sr-only" for="password">Password</label>
-								<div class="input-group mb-2">
-									<div class="input-group-prepend">
-										<div class="input-group-text"><i class="fas fa-lock-open"></i></div>
-									</div>
-									<input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$" required>
-									<small id="passwordValidation" class="form-text col-12">
-                                Your password must be at least 8 characters and contain at least 1 uppercase letter, 1 lowercase letter, and 1 number
-                            </small>
-								</div>
-							</div>
-							<!-- Confirm Password -->
-							<div class="form-group row">
-								<label class="sr-only" for="confirm-password">Confirm Password</label>
-								<div class="input-group mb-2">
-									<div class="input-group-prepend">
-										<div class="input-group-text"><i class="fas fa-lock"></i></div>
-									</div>
-									<input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm Password"  aria-describedby="passwordHelpBlock" required>
-									<small id="password-match" class="form-text col-12"></small>
-								</div>
-							</div>
-							<!-- Security Question -->
-							<div class="form-group row">
-								<label class="sr-only" for="security-question">Security question</label>
-								<div class="input-group mb-2">
-									<div class="input-group-prepend">
-										<div class="input-group-text"><i class="fas fa-passport"></i></div>
-									</div>
-									<textarea type="text" class="form-control" id="security-question" name="security-question" placeholder="Security question" minlength="8" required></textarea>
-								</div>
-							</div>
-							<!-- Marketing -->
-							<div class="form-group row">
-								<label class="sr-only" for="marketing">Where did you hear about Recycling Hive?</label>
-								<div class="input-group mb-2">
-									<div class="input-group-prepend">
-										<div class="input-group-text"><i class="fas fa-recycle"></i></div>
-									</div>
-									<input type="text" class="form-control" id="marketing" name="marketing" placeholder="Where did you hear about Recycling Hive?" minlength="5"  required>
-                        </div>
-								</div>
-								<!-- Submit -->
-								<div class="form-group row">
-									<button id="submit-registration" class="btn btn-outline-primary col" type="submit">Register</button>
-								</div>
-				</form>
-			</div>
-		</div>
-	</div>
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card">
+        <div class="card-header text-center green-background">
+          <h4>Register</h4>
+          <h5>You are applying to join the XXX Hive</h5>
+        </div>
+        <form class="card-body" method="POST"
+          action="{{ url_for('register') }}">
+          <!-- Name -->
+          <div class="form-group row">
+            <label class="sr-only" for="username">Name</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fab fa-forumbee"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" id="username"
+                name="username" placeholder="Name" minlength="3" required>
+            </div>
+          </div>
+          <!-- Email -->
+          <div class="form-group row">
+            <label class="sr-only" for="email">Email</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fas fa-at"></i></div>
+              </div>
+              <input type="email" class="form-control" id="email" name="email"
+                placeholder="email" required>
+            </div>
+          </div>
+          <!-- Password -->
+          <div class="form-group row">
+            <label class="sr-only" for="password">Password</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fas fa-lock-open"></i>
+                </div>
+              </div>
+              <input type="password" class="form-control" id="password"
+                name="password" placeholder="Password" minlength="8"
+                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
+                required>
+              <small id="passwordValidation" class="form-text col-12">
+                Your password must be at least 8 characters and contain at least
+                1 uppercase letter, 1 lowercase letter, and 1 number
+              </small>
+            </div>
+          </div>
+          <!-- Confirm Password -->
+          <div class="form-group row">
+            <label class="sr-only" for="confirm-password">Confirm
+              Password</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fas fa-lock"></i></div>
+              </div>
+              <input type="password" class="form-control" id="confirm-password"
+                name="confirm-password" placeholder="Confirm Password"
+                aria-describedby="passwordHelpBlock" required>
+              <small id="password-match" class="form-text col-12"></small>
+            </div>
+          </div>
+          <!-- Security Question -->
+          <div class="form-group row">
+            <label class="sr-only" for="security-question">Security
+              question</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fas fa-passport"></i>
+                </div>
+              </div>
+              <textarea type="text" class="form-control" id="security-question"
+                name="security-question" placeholder="Security question"
+                minlength="8" required></textarea>
+            </div>
+          </div>
+          <!-- Marketing -->
+          <div class="form-group row">
+            <label class="sr-only" for="marketing">Where did you hear about
+              Recycling Hive?</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fas fa-recycle"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" id="marketing"
+                name="marketing"
+                placeholder="Where did you hear about Recycling Hive?"
+                minlength="5" required>
+            </div>
+          </div>
+          <!-- Submit -->
+          <div class="form-group row">
+            <button id="submit-registration" class="btn btn-outline-primary col"
+              type="submit">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}
