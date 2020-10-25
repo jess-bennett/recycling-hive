@@ -67,7 +67,7 @@
               <div class="card-body">
                 <div class="form-row">
                   <!-- Membership -->
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md">
                     <div class="input-group mb-2">
                       <div class="input-group-prepend" data-toggle="tooltip"
                         data-placement="top" data-type="info"
@@ -86,6 +86,8 @@
                         {{ memberType }}</p>
                     </div>
                   </div>
+                </div>
+                <div class="form-row">
                   <!-- Username -->
                   <div class="form-group col-md-6">
                     <div class="input-group mb-2">
@@ -97,8 +99,6 @@
                       <p class="form-control">{{ username }}</p>
                     </div>
                   </div>
-                </div>
-                <div class="form-row">
                   <!-- Email -->
                   <div class="form-group col-md-6">
                     <div class="input-group mb-2">
@@ -108,17 +108,6 @@
                         </div>
                       </div>
                       <p class="form-control">{{ email }}</p>
-                    </div>
-                  </div>
-                  <!-- Password -->
-                  <div class="form-group col-md-6">
-                    <div class="input-group mb-2">
-                      <div class="input-group-prepend" data-toggle="tooltip"
-                        data-placement="top" data-type="info" title="Password">
-                        <div class="input-group-text"><i
-                            class="fas fa-lock-open"></i></div>
-                      </div>
-                      <p class="form-control">********</p>
                     </div>
                   </div>
                 </div>
@@ -347,30 +336,6 @@
 								</div>
 								<input type="email" class="form-control" id="edit-email" name="edit-email" value="{{ email }}" placeholder="{{ email }}" required>
                         </div>
-							</div>
-							<!-- Password -->
-							<div class="form-group row">
-								<label class="sr-only" for="password">Password</label>
-								<div class="input-group mb-2">
-									<div class="input-group-prepend">
-										<div class="input-group-text"><i class="fas fa-lock-open"></i></div>
-									</div>
-									<input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$">
-									<small id="passwordValidation" class="form-text col-12">
-                                Your password must be at least 8 characters and contain at least 1 uppercase letter, 1 lowercase letter, and 1 number
-                            </small>
-								</div>
-							</div>
-							<!-- Confirm Password -->
-							<div class="form-group row">
-								<label class="sr-only" for="confirm-password">Confirm Password</label>
-								<div class="input-group mb-2">
-									<div class="input-group-prepend">
-										<div class="input-group-text"><i class="fas fa-lock"></i></div>
-									</div>
-									<input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm Password"  aria-describedby="passwordHelpBlock">
-									<small id="password-match" class="form-text col-12"></small>
-								</div>
 							</div>
                             <!-- Submit -->
                             <div class="modal-footer">
