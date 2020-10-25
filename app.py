@@ -114,62 +114,10 @@ def get_recycling_collections(itemID):
          }
          }
         ]))
-    # Get member ID for adding new location
-    memberID = mongo.db.hiveMembers.find_one(
-                {"email": session["user"]})["_id"]
-    # Get list of all recyclable items for dropdown in 'Add location' modal
-    items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
-    # Get list of locations that match the current user's ID for dropdown in
-    # 'Add location' modal
-    locations = list(mongo.db.collectionLocations.find(
-        {"memberID": memberID}).sort("nickname"))
-    # Adding new location
-    if request.method == "POST":
-        if 'locationID' in request.form:
-            itemID = mongo.db.recyclableItems.find_one(
-                    {"typeOfWaste": request.form.get("typeOfWaste")})["_id"]
-            newCollection = {
-                "itemID": mongo.db.recyclableItems.find_one(
-                    {"typeOfWaste": request.form.get("typeOfWaste")})["_id"],
-                "conditionNotes": request.form.get("conditionNotes"),
-                "charityScheme": request.form.get("charityScheme", "-"),
-                "memberID": memberID,
-                "locationID": mongo.db.collectionLocations.find_one(
-                    {"nickname": request.form.get("locationID"),
-                     "memberID": memberID})["_id"],
-                "isNational": "no",
-                "dateAdded": datetime.now().strftime("%d %b %Y")
-            }
-            mongo.db.itemCollections.insert_one(newCollection)
-            flash("New location added")
-            return redirect(url_for("get_recycling_collections",
-                                    itemID=itemID))
-        elif 'addTypeOfWaste' in request.form:
-            categoryID = mongo.db.itemCategory.find_one(
-                    {"categoryName": request.form.get("itemCategory")})["_id"]
-            newItem = {
-                "typeOfWaste": request.form.get("addTypeOfWaste"),
-                "categoryID": mongo.db.itemCategory.find_one(
-                    {"categoryName": request.form.get("itemCategory")})["_id"]
-            }
-            mongo.db.recyclableItems.insert_one(newItem)
-            flash("New Type of Waste added")
-            return redirect(url_for("get_recycling_items",
-                                    categoryID=categoryID))
-        elif 'addCategory' in request.form:
-            newCategory = {
-                "categoryName": request.form.get("addCategory")
-            }
-            mongo.db.itemCategory.insert_one(newCategory)
-            flash("New Category added")
-            return redirect(url_for("get_recycling_categories"))
-    # Get list of all item categories for dropdown
-    # in 'Add new type of waste' modal
-    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+    
     return render_template(
         "hive-collection.html",
-        itemID=itemID, items=items, categories=categories,
-        locations=locations, itemCollections=itemCollections,
+        itemID=itemID, items=items, itemCollections=itemCollections,
         collectionsDict=collectionsDict, selectedItem=selectedItem)
 
 
@@ -306,64 +254,69 @@ def login():
 
 @app.route("/home/<username>", methods=["GET", "POST"])
 def home(username):
-    # grab the session user's details from db
-    userID = mongo.db.hiveMembers.find_one(
-        {"email": session["user"]})["_id"]
-    email = session["user"]
-    if mongo.db.hiveMembers.find_one(
-            {"_id": userID, "isQueenBee": True}):
-        memberType = "Queen Bee"
-    elif mongo.db.hiveMembers.find_one(
-            {"_id": userID, "isWorkerBee": True}):
-        memberType = "Worker Bee"
-    else:
-        memberType = "Busy Bee"
-    # get user's location details from db
-    locations = list(mongo.db.collectionLocations.find(
-        {"memberID": userID}).sort("nickname"))
-    # Create new dictionary of collections
-    collectionsDict = list(mongo.db.itemCollections.aggregate([
-        {'$match': {'memberID': userID}},
-        {
-         '$lookup': {
-            'from': 'hiveMembers',
-            'localField': 'memberID',
-            'foreignField': '_id',
-            'as': 'hiveMembers'
-         },
-        },
-        {'$unwind': '$hiveMembers'},
-        {
-         '$lookup': {
-            'from': 'recyclableItems',
-            'localField': 'itemID',
-            'foreignField': '_id',
-            'as': 'recyclableItems'
-         },
-        },
-        {'$unwind': '$recyclableItems'},
-        {
-         '$lookup': {
-            'from': 'collectionLocations',
-            'localField': 'locationID',
-            'foreignField': '_id',
-            'as': 'collectionLocations'
-         },
-        },
-        {'$unwind': '$collectionLocations'},
-        {'$project': {
-         'typeOfWaste': '$recyclableItems.typeOfWaste',
-         'hiveMembers': '$hiveMembers._id',
-         'street': '$collectionLocations.street',
-         'town': '$collectionLocations.town',
-         'postcode': '$collectionLocations.postcode',
-         'id': 1,
-         'conditionNotes': 1,
-         'charityScheme': 1
-         }
-         }
-        ]))
-    if session["user"]:
+    if session["user"]:   
+        # grab the session user's details from db
+        userID = mongo.db.hiveMembers.find_one(
+            {"email": session["user"]})["_id"]
+        email = session["user"]
+        if mongo.db.hiveMembers.find_one(
+                {"_id": userID, "isQueenBee": True}):
+            memberType = "Queen Bee"
+        elif mongo.db.hiveMembers.find_one(
+                {"_id": userID, "isWorkerBee": True}):
+            memberType = "Worker Bee"
+        else:
+            memberType = "Busy Bee"
+        # get user's location details from db for location accordion
+        locations = list(mongo.db.collectionLocations.find(
+            {"memberID": userID}).sort("nickname"))
+        # Create new dictionary of collections for collection accordion
+        collectionsDict = list(mongo.db.itemCollections.aggregate([
+            {'$match': {'memberID': userID}},
+            {
+            '$lookup': {
+                'from': 'hiveMembers',
+                'localField': 'memberID',
+                'foreignField': '_id',
+                'as': 'hiveMembers'
+            },
+            },
+            {'$unwind': '$hiveMembers'},
+            {
+            '$lookup': {
+                'from': 'recyclableItems',
+                'localField': 'itemID',
+                'foreignField': '_id',
+                'as': 'recyclableItems'
+            },
+            },
+            {'$unwind': '$recyclableItems'},
+            {
+            '$lookup': {
+                'from': 'collectionLocations',
+                'localField': 'locationID',
+                'foreignField': '_id',
+                'as': 'collectionLocations'
+            },
+            },
+            {'$unwind': '$collectionLocations'},
+            {'$project': {
+            'typeOfWaste': '$recyclableItems.typeOfWaste',
+            'hiveMembers': '$hiveMembers._id',
+            'street': '$collectionLocations.street',
+            'town': '$collectionLocations.town',
+            'postcode': '$collectionLocations.postcode',
+            'id': 1,
+            'conditionNotes': 1,
+            'charityScheme': 1
+            }
+            }
+            ]))
+        # Get list of categories for dropdown menu
+        categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+        # Get list of all recyclable items for dropdown in 'Add collection' modal
+        items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
+        # Post method for editing user details
         if request.method == "POST":
             if 'edit-username' in request.form:
                 # check where email already exists in db
@@ -382,10 +335,31 @@ def home(username):
                 mongo.db.hiveMembers.update(filter, editDetails)
                 flash("Your details have been updated")
                 return redirect(url_for("home", username=username))
+
+            if 'locationID' in request.form:
+                itemID = mongo.db.recyclableItems.find_one(
+                        {"typeOfWaste": request.form.get("typeOfWaste")})["_id"]
+                newCollection = {
+                    "itemID": mongo.db.recyclableItems.find_one(
+                        {"typeOfWaste": request.form.get("typeOfWaste")})["_id"],
+                    "conditionNotes": request.form.get("conditionNotes"),
+                    "charityScheme": request.form.get("charityScheme", "-"),
+                    "memberID": userID,
+                    "locationID": mongo.db.collectionLocations.find_one(
+                        {"nickname": request.form.get("locationID"),
+                        "memberID": userID})["_id"],
+                    "isNational": "no",
+                    "dateAdded": datetime.now().strftime("%d %b %Y")
+                }
+                mongo.db.itemCollections.insert_one(newCollection)
+                flash("New location added")
+                return redirect(url_for("get_recycling_collections",
+                                        itemID=itemID))
         return render_template("index.html", userID=userID,
                                username=session["username"], email=email,
                                memberType=memberType, locations=locations,
-                               collectionsDict=collectionsDict)
+                               collectionsDict=collectionsDict, items=items,
+                               categories=categories)
 
     return redirect(url_for("login"))
 
