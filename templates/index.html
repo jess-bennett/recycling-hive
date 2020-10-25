@@ -330,22 +330,22 @@
 					action="{{ url_for('home', username=username) }}">
                     <!-- Name -->
 					<div class="form-group row">
-						<label class="sr-only" for="username">Name</label>
+						<label class="sr-only" for="edit-username">Name</label>
 						<div class="input-group mb-2">
 							<div class="input-group-prepend">
 								<div class="input-group-text"><i class="fab fa-forumbee"></i></div>
 							</div>
-							<input type="text" class="form-control" id="username" name="username" placeholder="Name" minlength="3" required>
+							<input type="text" class="form-control" id="edit-username" name="edit-username" value="{{ username }}" placeholder="{{ username }}" minlength="3" required>
                         </div>
 						</div>
 						<!-- Email -->
 						<div class="form-group row">
-							<label class="sr-only" for="email">Email</label>
+							<label class="sr-only" for="edit-email">Email</label>
 							<div class="input-group mb-2">
 								<div class="input-group-prepend">
 									<div class="input-group-text"><i class="fas fa-at"></i></div>
 								</div>
-								<input type="email" class="form-control" id="email" name="email" placeholder="email" required>
+								<input type="email" class="form-control" id="edit-email" name="edit-email" value="{{ email }}" placeholder="{{ email }}" required>
                         </div>
 							</div>
 							<!-- Password -->
@@ -355,7 +355,7 @@
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-lock-open"></i></div>
 									</div>
-									<input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$" required>
+									<input type="password" class="form-control" id="password" name="password" placeholder="Password" minlength="8" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$">
 									<small id="passwordValidation" class="form-text col-12">
                                 Your password must be at least 8 characters and contain at least 1 uppercase letter, 1 lowercase letter, and 1 number
                             </small>
@@ -368,7 +368,7 @@
 									<div class="input-group-prepend">
 										<div class="input-group-text"><i class="fas fa-lock"></i></div>
 									</div>
-									<input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm Password"  aria-describedby="passwordHelpBlock" required>
+									<input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm Password"  aria-describedby="passwordHelpBlock">
 									<small id="password-match" class="form-text col-12"></small>
 								</div>
 							</div>
@@ -382,5 +382,7 @@
 		</div>
 	</div>
 </div>
+
+
 
 {% endblock %}

@@ -309,7 +309,6 @@ def home(username):
     # grab the session user's details from db
     userID = mongo.db.hiveMembers.find_one(
         {"email": session["user"]})["_id"]
-    username = username
     email = session["user"]
     if mongo.db.hiveMembers.find_one(
             {"_id": userID, "isQueenBee": True}):
@@ -365,8 +364,18 @@ def home(username):
          }
         ]))
     if session["user"]:
-        return render_template("index.html", userID=userID, username=username,
-                               email=email,
+        if request.method == "POST":
+            if 'edit-username' in request.form:
+                filter = {"_id": ObjectId(userID)}
+                session["username"] = request.form.get("edit-username")
+                editDetails = { "$set": { 'username': session["username"],
+                    "email": request.form.get("edit-email").lower() } }
+                print(editDetails)
+                mongo.db.hiveMembers.update(filter, editDetails)
+                flash("Your details have been updated")
+                return redirect(url_for("home", username=session["username"]))
+        return render_template("index.html", userID=userID,
+                               username=session["username"], email=email,
                                memberType=memberType, locations=locations,
                                collectionsDict=collectionsDict)
 
