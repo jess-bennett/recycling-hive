@@ -41,21 +41,36 @@ $(function () {
   $('[data-toggle="tooltip"]').tooltip()
 })
 
-/* FORMS IN MODALS */
+/* FORMS IN ADD NEW COLLECTION MODAL */
+
+/* Change category if type of waste changed */
+
+$("select#typeOfWaste").change(function(){
+        selected = this.options[this.selectedIndex];
+        console.log(selected);
+        $("#itemCategory").attr("placeholder", selected);
+    });
+/* $('select#typeOfWaste').on('change', function (e) {
+    var optionSelected = $("option:selected", this);
+    var valueSelected = this.value;
+    console.log(optionSelected);
+    console.log(valueSelected);
+}); */
 
 /* Show 'add type of waste' form if option selected on dropdown */
-$(function () {
+/* $(function () {
             $("#typeOfWaste").on("change", function () {
                 let selectedTypeOfWaste = $('#typeOfWaste').find("option:selected").val();
+                console.log(selectedTypeOfWaste);
                 if (selectedTypeOfWaste == 'Add New Type of Waste...') {
                     $("#formCollection").hide();
                     $("#formNewTypeOfWaste").show();
                 } 
             });
-        });
+        }); */
 
  /* Show 'add category' form if option selected on dropdown */
-$(function () {
+/* $(function () {
     $("#itemCategory").on("change", function () {
         let selectedCategory = $('#itemCategory').find("option:selected").val();
         if (selectedCategory == 'Add New Category...') {
@@ -63,19 +78,19 @@ $(function () {
             $("#formNewCategory").show();
         } 
     });
-});
+}); */
 
 /* Hide 'add type of waste' form if closed */
-$("#close-typeOfWaste").click(function(){
+/* $("#close-typeOfWaste").click(function(){
   $("#formCollection").show();
   $("#formNewTypeOfWaste").hide();
   $('#typeOfWaste>option:eq(0)').prop('selected', true);
-});
+}); */
 
 /* Hide 'add category' form if closed */
-$("#close-category").click(function(){
+/* $("#close-category").click(function(){
   $("#formNewTypeOfWaste").show();
   $("#formNewCategory").hide();
   $('#itemCategory>option:eq(0)').prop('selected', true);
-});
+}); */
 

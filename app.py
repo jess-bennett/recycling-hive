@@ -316,6 +316,18 @@ def home(username):
         categories = list(mongo.db.itemCategory.find().sort("categoryName"))
         # Get list of all recyclable items for dropdown in 'Add collection' modal
         items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
+        itemsDict = list(mongo.db.recyclableItems.aggregate([
+            {
+            '$lookup': {
+                'from': 'itemCategory',
+                'localField': 'categoryID',
+                'foreignField': '_id',
+                'as': 'itemCategory'
+            },
+            },
+            {'$unwind': '$itemCategory'}
+            
+            ]))
         # Post method for editing user details
         if request.method == "POST":
             if 'edit-username' in request.form:
@@ -359,7 +371,7 @@ def home(username):
                                username=session["username"], email=email,
                                memberType=memberType, locations=locations,
                                collectionsDict=collectionsDict, items=items,
-                               categories=categories)
+                               itemsDict=itemsDict, categories=categories)
 
     return redirect(url_for("login"))
 

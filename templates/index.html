@@ -406,13 +406,7 @@
 								<div class="input-group-prepend">
 									<div class="input-group-text"><i class="fas fa-list"></i></div>
 								</div>
-								<select class="form-control" id="itemCategory" name="itemCategory" required>
-							      <option value="" selected disabled>Item Category</option>
-                                  {% for category in categories %}
-							        <option value="{{ category.categoryName }}">{{ category.categoryName }}</option>
-                                  {% endfor %}
-							      <option>Add New Category...</option>
-                                </select>
+								<input type="text" class="form-control" id="itemCategory" name="itemCategory" placeholder="Item Category" disabled>
 							</div>
 						</div>
                         <!-- Type of Waste -->
@@ -424,8 +418,8 @@
 								</div>
 								<select class="form-control" id="typeOfWaste" name="typeOfWaste" required>
 							      <option value="" selected disabled>Type of Waste</option>
-                                  {% for item in items %}
-							        <option value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}</option>
+                                  {% for item in itemsDict %}
+							        <option data-id="{{ item.categoryName }}" value="{{ item.categoryName }}">{{ item.typeOfWaste }}</option>
                                   {% endfor %}
 							      <option>Add New Type of Waste...</option>
                                 </select>
@@ -450,17 +444,12 @@
 						</div>
                         <!-- Address -->
 						<div class="form-group col-md-9">
-							<label class="sr-only" for="locationID">Location</label>
+							<label class="sr-only" for="locationAddress">Location</label>
 							<div class="input-group mb-2">
 								<div class="input-group-prepend">
 									<div class="input-group-text"><i class="fas fa-home"></i></div>
 								</div>
-								<select class="form-control" id="locationID" name="locationID" required>
-							      <option value="" selected disabled>Location</option>
-                                  {% for location in locations %}
-							        <option value="{{ location.nickname }}">{{ location.street }}</option>
-                                  {% endfor %}
-                            </select>
+                                <input type="text" class="form-control" id="locationAddress" name="locationAddress" placeholder="Street, town, postcode" disabled>
 							</div>
 						</div>
                     </div>
