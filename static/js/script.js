@@ -50,11 +50,8 @@ $(function() {
 
 $("select#select-typeOfWaste").change(function() {
   selectedTypeOfWaste = $(this).find(":selected").val();
-  console.log(selectedTypeOfWaste)
   selectedTypeOfWasteCategory = $(this).find(":selected").data("id");
-  console.log(selectedTypeOfWasteCategory)
   if (selectedTypeOfWaste == "Add New Type of Waste...") {
-    console.log("YES");
     $("#select-typeOfWaste").hide();
     $("#select-typeOfWaste").attr("name", "select-typeOfWaste");
     $("#input-typeOfWaste").show();

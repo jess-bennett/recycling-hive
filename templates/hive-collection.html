@@ -37,7 +37,7 @@
 <!-- Item collection accordion -->
 <div id="collection-layout">
   <ul id="grid" class="clr">
-    <li id="select-category">
+    <li>
       <a href="{{ url_for('get_recycling_members', memberType='view-all') }}">
         <div class="hexagon hexagon-dark">
           <h3 class="hexagon-text hexagon-dark">View all members</h3>
@@ -45,7 +45,7 @@
       </a>
     </li>
     {% for collection in collectionsDict if collection.typeOfWaste == selectedItem %}
-    <li id="select-category">
+    <li>
       <div class="hexagon hexagon-dark" data-toggle="modal"
         data-target="#modal-collection-{{ collection._id }}">
         <h5 class="hexagon-text hexagon-dark">{{ collection.hiveMembers }} -
@@ -59,7 +59,7 @@
 <!-- Collection details modal -->
 {% for collection in collectionsDict if collection.typeOfWaste == selectedItem %}
 <div class="modal fade" id="modal-collection-{{ collection._id }}" tabindex="-1"
-  role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  role="dialog" aria-labelledby="modal-collection-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">

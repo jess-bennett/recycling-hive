@@ -44,10 +44,11 @@
                 </div>
               </div>
               <input type="password" class="form-control" id="password"
-                name="password" placeholder="Password" minlength="8"
+                name="password" placeholder="Password"
+                aria-describedby="password-validation" minlength="8"
                 pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
                 required>
-              <small id="passwordValidation" class="form-text col-12">
+              <small id="password-validation" class="form-text col-12">
                 Your password must be at least 8 characters and contain at least
                 1 uppercase letter, 1 lowercase letter, and 1 number
               </small>
@@ -63,7 +64,7 @@
               </div>
               <input type="password" class="form-control" id="confirm-password"
                 name="confirm-password" placeholder="Confirm Password"
-                aria-describedby="passwordHelpBlock" required>
+                aria-describedby="password-match" required>
               <small id="password-match" class="form-text col-12"></small>
             </div>
           </div>
@@ -76,7 +77,7 @@
                 <div class="input-group-text"><i class="fas fa-passport"></i>
                 </div>
               </div>
-              <textarea type="text" class="form-control" id="security-question"
+              <textarea class="form-control" id="security-question"
                 name="security-question" placeholder="Security question"
                 minlength="8" required></textarea>
             </div>

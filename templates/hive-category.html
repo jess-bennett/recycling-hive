@@ -13,7 +13,7 @@
 <!-- Show all categories -->
 <div id="category-layout">
   <ul id="grid" class="clr">
-    <li id="select-category">
+    <li>
       <a href="{{ url_for('get_recycling_items', categoryID='view-all') }}">
         <div class="hexagon">
           <h3 class="hexagon-text">View all items</h3>
@@ -21,7 +21,7 @@
       </a>
     </li>
     {% for category in categories %}
-    <li id="select-category">
+    <li>
       <a href="{{ url_for('get_recycling_items', categoryID=category._id) }}">
         <div class="hexagon">
           <h5 class="hexagon-text">{{ category.categoryName }}</h5>
@@ -34,7 +34,7 @@
 
 <!-- Add new category modal -->
 <div class="modal fade" id="modal-category" tabindex="-1" role="dialog"
-  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  aria-labelledby="modal-category-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
