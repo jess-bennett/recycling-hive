@@ -1,9 +1,11 @@
 
 #grid {
     position: relative;
+    bottom: 4rem;
     width: 75%;
-    margin: 0 10%;
+    margin: 0 10% 4rem;
     padding: 0; /* Clears unordered list default of 40px */
+    
 }
 
 #grid.hexagon-large {
@@ -11,7 +13,7 @@
 }
 
 #grid.home {
-    margin: 0 5%;
+    margin: 0 5% 4rem;
 }
 
 .clear:after {
