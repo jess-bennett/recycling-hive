@@ -60,7 +60,7 @@ $("select#select-typeOfWaste").change(function() {
     $("#input-itemCategory").hide();
     $("#select-itemCategory").show();
   } else {
-    $("#itemCategory").attr("placeholder", selectedTypeOfWasteCategory);
+    $("#input-itemCategory").attr("placeholder", selectedTypeOfWasteCategory);
   }
 });
 
