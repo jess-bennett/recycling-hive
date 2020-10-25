@@ -347,15 +347,25 @@ def home(username):
                 mongo.db.hiveMembers.update(filter, editDetails)
                 flash("Your details have been updated")
                 return redirect(url_for("home", username=username))
-
-            if 'locationID' in request.form:
+            
+            if 'newItemCategory' in request.form:
+                newItemCategory = {
+                    "categoryName": request.form.get("newItemCategory")
+                }
+                mongo.db.itemCategory.insert_one(newItemCategory)
+                categoryID = mongo.db.itemCategory.find_one(
+                        {"categoryName": request.form.get("newItemCategory")})["_id"]
+                newTypeOfWaste = {
+                    "typeOfWaste": request.form.get("newTypeOfWaste"),
+                    "categoryID": categoryID
+                }
+                mongo.db.recyclableItems.insert_one(newTypeOfWaste)
                 itemID = mongo.db.recyclableItems.find_one(
-                        {"typeOfWaste": request.form.get("typeOfWaste")})["_id"]
+                        {"typeOfWaste": request.form.get("newTypeOfWaste")})["_id"]
                 newCollection = {
-                    "itemID": mongo.db.recyclableItems.find_one(
-                        {"typeOfWaste": request.form.get("typeOfWaste")})["_id"],
+                    "itemID": itemID,
                     "conditionNotes": request.form.get("conditionNotes"),
-                    "charityScheme": request.form.get("charityScheme", "-"),
+                    "charityScheme": request.form.get("charityScheme"),
                     "memberID": userID,
                     "locationID": mongo.db.collectionLocations.find_one(
                         {"nickname": request.form.get("locationID"),
@@ -364,7 +374,51 @@ def home(username):
                     "dateAdded": datetime.now().strftime("%d %b %Y")
                 }
                 mongo.db.itemCollections.insert_one(newCollection)
-                flash("New location added")
+                flash("New collection added")
+                return redirect(url_for("get_recycling_collections",
+                                        itemID=itemID))
+            
+            if 'newTypeOfWaste' in request.form:
+                newTypeOfWaste = {
+                    "typeOfWaste": request.form.get("newTypeOfWaste"),
+                    "categoryID": mongo.db.itemCategory.find_one(
+                        {"categoryName": request.form.get("itemCategory")})["_id"]
+                }
+                mongo.db.recyclableItems.insert_one(newTypeOfWaste)
+                itemID = mongo.db.recyclableItems.find_one(
+                        {"typeOfWaste": request.form.get("newTypeOfWaste")})["_id"]
+                newCollection = {
+                    "itemID": itemID,
+                    "conditionNotes": request.form.get("conditionNotes"),
+                    "charityScheme": request.form.get("charityScheme"),
+                    "memberID": userID,
+                    "locationID": mongo.db.collectionLocations.find_one(
+                        {"nickname": request.form.get("locationID"),
+                        "memberID": userID})["_id"],
+                    "isNational": "no",
+                    "dateAdded": datetime.now().strftime("%d %b %Y")
+                }
+                mongo.db.itemCollections.insert_one(newCollection)
+                flash("New collection added")
+                return redirect(url_for("get_recycling_collections",
+                                        itemID=itemID))
+
+            if 'typeOfWaste' in request.form:
+                itemID = mongo.db.recyclableItems.find_one(
+                        {"typeOfWaste": request.form.get("typeOfWaste")})["_id"]
+                newCollection = {
+                    "itemID": itemID,
+                    "conditionNotes": request.form.get("conditionNotes"),
+                    "charityScheme": request.form.get("charityScheme"),
+                    "memberID": userID,
+                    "locationID": mongo.db.collectionLocations.find_one(
+                        {"nickname": request.form.get("locationID"),
+                        "memberID": userID})["_id"],
+                    "isNational": "no",
+                    "dateAdded": datetime.now().strftime("%d %b %Y")
+                }
+                mongo.db.itemCollections.insert_one(newCollection)
+                flash("New collection added")
                 return redirect(url_for("get_recycling_collections",
                                         itemID=itemID))
         return render_template("index.html", userID=userID,

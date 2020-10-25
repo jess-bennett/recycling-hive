@@ -1,6 +1,8 @@
 $(document).ready(function(){
-    $("#formNewTypeOfWaste").hide();/* Hide additional forms on page load */
-    $("#formNewCategory").hide();
+    $("#input-typeOfWaste").hide();/* Hide additional forms on page load */
+    $("#instructions-addTypeOfWaste").hide();
+    $("#select-itemCategory").hide();
+    $("#instructions-addItemCategory").hide();
     $("#profile-page").hide(); /* Hide profile page on page load */
 });
 
@@ -45,16 +47,41 @@ $(function () {
 
 /* Change category if type of waste changed */
 
-$("select#typeOfWaste").change(function(){
-        selectedTypeOfWaste = $(this).find(':selected').data('id');
-        $("#itemCategory").attr("placeholder", selectedTypeOfWaste);
+$("select#select-typeOfWaste").change(function(){
+        selectedTypeOfWaste = $(this).find(':selected').val();
+        console.log(selectedTypeOfWaste)
+        selectedTypeOfWasteCategory = $(this).find(':selected').data('id');
+        console.log(selectedTypeOfWasteCategory)
+        if (selectedTypeOfWaste == 'Add New Type of Waste...') {
+                console.log("YES");
+                    $("#select-typeOfWaste").hide();
+                    $("#select-typeOfWaste").attr('name', "select-typeOfWaste");
+                    $("#input-typeOfWaste").show();
+                    $("#input-typeOfWaste").attr('name', "newTypeOfWaste");
+                    $("#instructions-addTypeOfWaste").show();
+                    $("#input-itemCategory").hide();
+                    $("#select-itemCategory").show();
+                } else {
+        $("#itemCategory").attr("placeholder", selectedTypeOfWasteCategory);
+                }
     });
-/* $('select#typeOfWaste').on('change', function (e) {
-    var optionSelected = $("option:selected", this);
-    var valueSelected = this.value;
-    console.log(optionSelected);
-    console.log(valueSelected);
-}); */
+
+$("select#select-itemCategory").change(function(){
+        selectedItemCategory = $(this).find(':selected').val();
+        if (selectedItemCategory == 'Add New Item Category...') {
+                    $("#select-itemCategory").hide();
+                    $("#select-itemCategory").attr('name', "select-itemCategory");
+                    $("#input-itemCategory").show();
+                    $("#input-itemCategory").attr('name', "newItemCategory");
+                    $('#input-itemCategory').prop("disabled", false);
+                    $("#instructions-addItemCategory").show();
+                } 
+    });
+
+$("select#locationID").change(function(){
+        selectedLocationID = $(this).find(':selected').data('id');
+        $("#locationAddress").attr("placeholder", selectedLocationID);
+    });
 
 /* Show 'add type of waste' form if option selected on dropdown */
 /* $(function () {

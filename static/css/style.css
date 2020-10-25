@@ -154,6 +154,10 @@ background-size: 40px 60px;
     text-align: center;
 }
 
+small.warning-delete {
+    font-weight: normal;
+}
+
 /* Hive */
 
 .breadcrumb {
