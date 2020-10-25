@@ -46,9 +46,8 @@ $(function () {
 /* Change category if type of waste changed */
 
 $("select#typeOfWaste").change(function(){
-        selected = this.options[this.selectedIndex];
-        console.log(selected);
-        $("#itemCategory").attr("placeholder", selected);
+        selectedTypeOfWaste = $(this).find(':selected').data('id');
+        $("#itemCategory").attr("placeholder", selectedTypeOfWaste);
     });
 /* $('select#typeOfWaste').on('change', function (e) {
     var optionSelected = $("option:selected", this);

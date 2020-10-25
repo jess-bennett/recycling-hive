@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block nav_home %}active{% endblock %}
 {% block content %}
-
+{{ itemsDict[0] }}
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-8 offset-md-2">
@@ -419,9 +419,9 @@
 								<select class="form-control" id="typeOfWaste" name="typeOfWaste" required>
 							      <option value="" selected disabled>Type of Waste</option>
                                   {% for item in itemsDict %}
-							        <option data-id="{{ item.categoryName }}" value="{{ item.categoryName }}">{{ item.typeOfWaste }}</option>
+							        <option data-id="{{ item.itemCategory.categoryName }}" value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}</option>
                                   {% endfor %}
-							      <option>Add New Type of Waste...</option>
+							      <option value="TEST">Add New Type of Waste...</option>
                                 </select>
 							</div>
 						</div>
