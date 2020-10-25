@@ -390,6 +390,17 @@ def home(username):
     return redirect(url_for("login"))
 
 
+@app.route("/delete-profile/<username>")
+def deleteProfile(username):
+    # grab the session user's details from db
+    userID = mongo.db.hiveMembers.find_one(
+        {"email": session["user"]})["_id"]
+    mongo.db.hiveMembers.remove({"_id": ObjectId(userID)})
+    mongo.db.collectionLocations.remove({"memberID": ObjectId(userID)})
+    mongo.db.itemCollections.remove({"memberID": ObjectId(userID)})
+    flash("Your profile has been successfully deleted")
+    return redirect(url_for("logout"))
+
 @app.route("/logout")
 def logout():
     # remove user from session cookies

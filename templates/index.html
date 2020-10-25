@@ -116,7 +116,7 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div id="delete-details"
-                        class="btn col-1 offset-10 btn-delete"><i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="top" data-type="info"
+                        class="btn col-1 offset-10 btn-delete" data-toggle="modal" data-target="#modal-delete-profile"><i class="fas fa-trash-alt" data-toggle="tooltip" data-placement="top" data-type="info"
 								title="Delete"></i></div>
                         <div id="amend-details"
                             class="btn col-1 btn-edit" data-toggle="modal" data-target="#modal-edit-details"><i class="fas fa-edit" data-toggle="tooltip" data-placement="top" data-type="info"
@@ -348,6 +348,33 @@
 	</div>
 </div>
 
+<!-- Delete profile modal -->
+<div class="modal fade" id="modal-delete-profile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+	aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+				<h4 class="modal-title w-100" id="modal-delete-profile-title">Delete Profile</h4>
+
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+			</div>
+            <div class="modal-body">
+                <form name="editDetails" class="card-body"
+					action="{{ url_for('deleteProfile', username=username) }}">
+                    <p class="warning-delete">Are you sure you want to delete your profile?<br>
+                    This will remove all locations and recycling collections associated with your user profile!<p>
+                    <!-- Submit -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Cancel</button>
+                        <button id="submit-delete-profile" class="btn btn-outline-primary" type="submit" name="submit-delete-profile">Delete Profile!</button>
+                    </div>
+                </form>
+            </div>
+		</div>
+	</div>
+</div>
 
 
 {% endblock %}

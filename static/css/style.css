@@ -148,6 +148,12 @@ background-size: 40px 60px;
     border: 1px solid #8C0A06;
 }
 
+.warning-delete {
+    color: #8C0A06;
+    font-weight: bold;
+    text-align: center;
+}
+
 /* Hive */
 
 .breadcrumb {
