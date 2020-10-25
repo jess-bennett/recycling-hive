@@ -366,6 +366,14 @@ def home(username):
     if session["user"]:
         if request.method == "POST":
             if 'edit-username' in request.form:
+                # check where email already exists in db
+                existing_user = mongo.db.hiveMembers.find_one(
+                    {"_id": {"$ne": ObjectId(userID)}, "email": request.form.get("edit-email").lower()}
+                )
+                if existing_user:
+                    flash("Email already exists")
+                    return redirect(url_for("home", username=username))
+
                 filter = {"_id": ObjectId(userID)}
                 session["username"] = request.form.get("edit-username")
                 editDetails = { "$set": { 'username': session["username"],
@@ -373,7 +381,7 @@ def home(username):
                 print(editDetails)
                 mongo.db.hiveMembers.update(filter, editDetails)
                 flash("Your details have been updated")
-                return redirect(url_for("home", username=session["username"]))
+                return redirect(url_for("home", username=username))
         return render_template("index.html", userID=userID,
                                username=session["username"], email=email,
                                memberType=memberType, locations=locations,
