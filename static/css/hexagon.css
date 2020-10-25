@@ -1,71 +1,71 @@
-
 #grid {
-    position: relative;
-    bottom: 4rem;
-    width: 75%;
-    margin: 0 10% 4rem;
-    padding: 0; /* Clears unordered list default of 40px */
-    
+  position: relative;
+  bottom: 4rem;
+  width: 75%;
+  margin: 0 10% 4rem;
+  padding: 0;
+  /* Clears unordered list default of 40px */
+
 }
 
 #grid.hexagon-large {
-    width: 95%;
+  width: 95%;
 }
 
 #grid.home {
-    margin: 0 5% 4rem;
+  margin: 0 5% 4rem;
 }
 
 .clear:after {
-    content: "";
-    display: block;
-    clear: both;
+  content: "";
+  display: block;
+  clear: both;
 }
 
 #grid li {
-    list-style-type: none;
-    position: relative;
-    float: left;
-     width: 22.5%;
-    padding: 0 0 26.03755254041571% 0;
-    -o-transform: rotate(-60deg) skewY(30deg);
-    -moz-transform: rotate(-60deg) skewY(30deg);
-    -webkit-transform: rotate(-60deg) skewY(30deg);
-    -ms-transform: rotate(-60deg) skewY(30deg);
-    transform: rotate(-60deg) skewY(30deg);
-    overflow: hidden;
-    visibility: hidden;
+  list-style-type: none;
+  position: relative;
+  float: left;
+  width: 22.5%;
+  padding: 0 0 26.03755254041571% 0;
+  -o-transform: rotate(-60deg) skewY(30deg);
+  -moz-transform: rotate(-60deg) skewY(30deg);
+  -webkit-transform: rotate(-60deg) skewY(30deg);
+  -ms-transform: rotate(-60deg) skewY(30deg);
+  transform: rotate(-60deg) skewY(30deg);
+  overflow: hidden;
+  visibility: hidden;
 }
 
 .hexagon {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 #grid li .hexagon {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(circle, #fafafa 0%, #d2d914 125%);
-    -o-transform: skewY(-30deg) rotate(60deg);
-    -moz-transform: skewY(-30deg) rotate(60deg);
-    -webkit-transform: skewY(-30deg) rotate(60deg);
-    -ms-transform: skewY(-30deg) rotate(60deg);
-    transform: skewY(-30deg) rotate(60deg);
-    overflow: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #fafafa 0%, #d2d914 125%);
+  -o-transform: skewY(-30deg) rotate(60deg);
+  -moz-transform: skewY(-30deg) rotate(60deg);
+  -webkit-transform: skewY(-30deg) rotate(60deg);
+  -ms-transform: skewY(-30deg) rotate(60deg);
+  transform: skewY(-30deg) rotate(60deg);
+  overflow: hidden;
 }
 
 #grid li .hexagon.hexagon-medium {
-    background: radial-gradient(circle, #fafafa 0%, #a8ad10 125%);
+  background: radial-gradient(circle, #fafafa 0%, #a8ad10 125%);
 }
 
 #grid li .hexagon.hexagon-dark {
-    background: radial-gradient(circle, #fafafa 0%, #7e820c 125%);
+  background: radial-gradient(circle, #fafafa 0%, #7e820c 125%);
 }
 
 #grid li * {
-    visibility: visible;
+  visibility: visible;
 }
 
 #grid li:nth-child(1n+1) {
@@ -73,30 +73,33 @@
 }
 
 
-#grid li:nth-child(8n+5), #grid li:nth-child(8n+6), #grid li:nth-child(8n+7), #grid li:nth-child(8n+8) {
-    margin-top: -6.1%;
-    margin-bottom: -6.1%;
-    -o-transform: translateX(50%) rotate(-60deg) skewY(30deg);
-    -moz-transform: translateX(50%) rotate(-60deg) skewY(30deg);
-    -webkit-transform: translateX(50%) rotate(-60deg) skewY(30deg);
-    -ms-transform: translateX(50%) rotate(-60deg) skewY(30deg);
-    transform: translateX(50%) rotate(-60deg) skewY(30deg);
+#grid li:nth-child(8n+5),
+#grid li:nth-child(8n+6),
+#grid li:nth-child(8n+7),
+#grid li:nth-child(8n+8) {
+  margin-top: -6.1%;
+  margin-bottom: -6.1%;
+  -o-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  -moz-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  -webkit-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  -ms-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  transform: translateX(50%) rotate(-60deg) skewY(30deg);
 }
 
-#grid li:nth-child(8n+5) { 
-    margin-left: 1%;
+#grid li:nth-child(8n+5) {
+  margin-left: 1%;
 }
 
 #grid li .hexagon img {
-  left:-100%;
-  right:-100%;
-  height:100%;
+  left: -100%;
+  right: -100%;
+  height: 100%;
   width: auto;
   margin: 0 auto;
-  -o-transition: all 0.6s linear 0s; 
-  -moz-transition: all 0.6s linear 0s; 
-  -ms-transition: all 0.6s linear 0s; 
-  -webkit-transition: all 0.6s linear 0s; 
+  -o-transition: all 0.6s linear 0s;
+  -moz-transition: all 0.6s linear 0s;
+  -ms-transition: all 0.6s linear 0s;
+  -webkit-transition: all 0.6s linear 0s;
   transition: all 0.6s linear 0s;
 }
 
@@ -110,33 +113,33 @@
 }
 
 #grid li:hover {
-    filter: brightness(75%);
+  filter: brightness(75%);
 }
 
 
 
 .hexagon-text {
-width: 100%;
-background-color: #d2d914;
-color: #fafafa;
-text-align: center;
-margin: 0;
-position: absolute;
-top: 50%;
-left: 50%;
--o-transform: translate(-50%, -50%);
--ms-transform: translate(-50%, -50%);
--moz-transform: translate(-50%, -50%);
--webkit-transform: translate(-50%, -50%);
-transform: translate(-50%, -50%);
+  width: 100%;
+  background-color: #d2d914;
+  color: #fafafa;
+  text-align: center;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
 }
 
 .hexagon-text.hexagon-medium {
-background-color: #a8ad10;
-color: #fafafa;
+  background-color: #a8ad10;
+  color: #fafafa;
 }
 
 .hexagon-text.hexagon-dark {
-background-color: #7e820c;
-color: #fafafa;
+  background-color: #7e820c;
+  color: #fafafa;
 }
