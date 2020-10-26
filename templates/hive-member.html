@@ -89,21 +89,9 @@
       </div>
 
       <div class="modal-body">
-        <div id="collapseThree" class="collapse"
-              aria-labelledby="headingThree" data-parent="#accordion">
-              <div class="card-body">
-                <!-- Add collection -->
-                <div class="container-fluid">
-                  <div class="row">
-                    <button type="button"
-                      class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add"
-                      data-toggle="modal"
-                      data-target="#modal-add-collection">Add New
-                      Collection</button>
-                  </div>
-                </div>
-                {% if collectionsDict %}
-                {% for collection in collectionsDict %}
+        
+                
+                {% for collection in membersDict %}
                 <hr>
                 <div class="form-row">
                   <!-- Type of waste -->
@@ -158,31 +146,12 @@
                     <p class="form-control">{{ collection.conditionNotes }}</p>
                   </div>
                 </div>
-                <!-- Amend collection -->
-                <div class="container-fluid">
-                  <div class="row">
-                    <div id="delete-collection"
-                      class="btn col-1 offset-10 btn-delete"
-                      data-toggle="tooltip" data-placement="top"
-                      data-type="info" title="Delete"><i
-                        class="fas fa-trash-alt"></i></div>
-                    <div id="amend-collection" class="btn col-1 btn-edit"
-                      data-toggle="tooltip" data-placement="top"
-                      data-type="info" title="Edit"><i class="fas fa-edit"></i>
-                    </div>
-                  </div>
-                </div>
                 {% endfor %}
-                {% else %}
-                <p><strong>You do not currently have any collections saved! Want
-                    to add one?</strong></p>
-                {% endif %}
+                
               </div>
             </div>
       </div>
     </div>
-  </div>
-</div>
 {% endfor %}
 
 {% endblock %}

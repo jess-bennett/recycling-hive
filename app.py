@@ -427,7 +427,8 @@ def get_recycling_members(memberType):
          'conditionNotes': 1,
          'charityScheme': 1
          }
-         }
+         },
+        {'$sort': {'typeOfWaste': 1}}
         ]))
 
     return render_template(
@@ -452,7 +453,9 @@ def register():
             "email": request.form.get("email").lower(),
             "password": generate_password_hash(request.form.get("password")),
             "securityQuestion": request.form.get("security-question"),
-            "marketing": request.form.get("marketing")
+            "marketing": request.form.get("marketing"),
+            "isQueenBee": False,
+            "isWorkerBee": False
         }
         mongo.db.hiveMembers.insert_one(register)
 
