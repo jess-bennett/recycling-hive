@@ -127,6 +127,7 @@ def home(username):
             ]))
         # Post method for editing user details
         if request.method == "POST":
+            # Post method for updating user details
             if 'edit-username' in request.form:
                 # check where email already exists in db
                 existing_user = mongo.db.hiveMembers.find_one(
@@ -145,8 +146,16 @@ def home(username):
                 mongo.db.hiveMembers.update(filter, editDetails)
                 flash("Your details have been updated")
                 return redirect(url_for("home", username=username))
-
+            # Post method for adding a new category and type of waste
             if 'newItemCategory' in request.form:
+                # Check whether category already exists
+                existingCategory = mongo.db.itemCategory.find_one(
+                    {"categoryName": request.form.get("newItemCategory").lower()})
+
+                if existingCategory:
+                    flash("Category already exists")
+                    return redirect(url_for("home", username=username))
+
                 newItemCategory = {
                     "categoryName": request.form.get("newItemCategory")
                 }
@@ -154,6 +163,16 @@ def home(username):
                 categoryID = mongo.db.itemCategory.find_one(
                         {"categoryName": request.form.get(
                          "newItemCategory")})["_id"]
+                
+                # Check whether item already exists
+                existingTypeOfWaste = mongo.db.recyclableItems.find_one(
+                    {"typeOfWaste": request.form.get("newTypeOfWaste"),
+                     "categoryID": categoryID}
+                )
+                if existingTypeOfWaste:
+                    flash("Type of Waste already exists for this category")
+                    return redirect(url_for("home", username=username))
+                
                 newTypeOfWaste = {
                     "typeOfWaste": request.form.get("newTypeOfWaste"),
                     "categoryID": categoryID
@@ -177,8 +196,19 @@ def home(username):
                 flash("New collection added")
                 return redirect(url_for("get_recycling_collections",
                                         itemID=itemID))
-
+            # Post method for adding new type of waste with existing category
             if 'newTypeOfWaste' in request.form:
+                # Check whether item already exists
+                existingTypeOfWaste = mongo.db.recyclableItems.find_one(
+                    {"typeOfWaste": request.form.get("newTypeOfWaste"),
+                     "categoryID": mongo.db.itemCategory.find_one(
+                        {"categoryName": request.form.get(
+                         "itemCategory")})["_id"]}
+                )
+                if existingTypeOfWaste:
+                    flash("Type of Waste already exists for this category")
+                    return redirect(url_for("home", username=username))
+                
                 newTypeOfWaste = {
                     "typeOfWaste": request.form.get("newTypeOfWaste"),
                     "categoryID": mongo.db.itemCategory.find_one(
@@ -204,7 +234,8 @@ def home(username):
                 flash("New collection added")
                 return redirect(url_for("get_recycling_collections",
                                         itemID=itemID))
-
+            # Post method for adding new collection with existing type
+            # of waste and category
             if 'typeOfWaste' in request.form:
                 itemID = mongo.db.recyclableItems.find_one(
                         {"typeOfWaste": request.form.get(
