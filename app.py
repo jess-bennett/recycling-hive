@@ -20,209 +20,6 @@ mongo = PyMongo(app)
 
 
 @app.route("/")
-@app.route("/hive")
-def get_recycling_categories():
-    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
-    return render_template(
-        "hive-category.html", categories=categories)
-
-
-@app.route("/hive/items/<categoryID>", methods=["GET", "POST"])
-def get_recycling_items(categoryID):
-    if categoryID == 'view-all':
-        # Get selected category for dropdown
-        selectedCategory = 'Select a category'
-        # Get recyclable items that match the selected category for
-        # # accordion headers
-        catItems = list(mongo.db.recyclableItems.find(
-        ).sort("typeOfWaste"))
-    else:
-        # Get selected category for dropdown
-        selectedCategory = mongo.db.itemCategory.find_one(
-                    {"_id": ObjectId(categoryID)})["categoryName"]
-        # Get recyclable items that match the selected category for
-        # # accordion headers
-        catItems = list(mongo.db.recyclableItems.find(
-            {"categoryID": ObjectId(
-                categoryID)}).sort("typeOfWaste"))
-    # Get list of categories for dropdown menu
-    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
-    return render_template(
-        "hive-item.html",
-        categoryID=categoryID, categories=categories, catItems=catItems,
-        selectedCategory=selectedCategory)
-
-
-@app.route("/hive/collections/<itemID>", methods=["GET", "POST"])
-def get_recycling_collections(itemID):
-    if itemID == 'view-all':
-        # Get selected item for dropdown
-        selectedItem = 'Select an item'
-        # Get recyclable collections that match the selected item for
-        # # accordion headers
-        itemCollections = list(mongo.db.itemCollections.find(
-        ))
-    else:
-        # Get selected item for dropdown
-        selectedItem = mongo.db.recyclableItems.find_one(
-                    {"_id": ObjectId(itemID)})["typeOfWaste"]
-        # Get recyclable collections that match the selected item for
-        # # accordion headers
-        itemCollections = list(mongo.db.itemCollections.find(
-            {"itemID": ObjectId(
-                itemID)}))
-    # Get list of items for dropdown menu
-    items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
-    # Create new dictionary of recyclable items and their matching collections
-    collectionsDict = list(mongo.db.itemCollections.aggregate([
-        {
-         '$lookup': {
-            'from': 'recyclableItems',
-            'localField': 'itemID',
-            'foreignField': '_id',
-            'as': 'recyclableItems'
-         },
-        },
-        {'$unwind': '$recyclableItems'},
-        {
-         '$lookup': {
-            'from': 'hiveMembers',
-            'localField': 'memberID',
-            'foreignField': '_id',
-            'as': 'hiveMembers'
-         },
-        },
-        {'$unwind': '$hiveMembers'},
-        {
-         '$lookup': {
-            'from': 'collectionLocations',
-            'localField': 'locationID',
-            'foreignField': '_id',
-            'as': 'collectionLocations'
-         },
-        },
-        {'$unwind': '$collectionLocations'},
-        {'$project': {
-         'typeOfWaste': '$recyclableItems.typeOfWaste',
-         'hiveMembers': '$hiveMembers.username',
-         'street': '$collectionLocations.street',
-         'town': '$collectionLocations.town',
-         'postcode': '$collectionLocations.postcode',
-         'id': 1,
-         'conditionNotes': 1,
-         'charityScheme': 1
-         }
-         }
-        ]))
-
-    return render_template(
-        "hive-collection.html",
-        itemID=itemID, items=items, itemCollections=itemCollections,
-        collectionsDict=collectionsDict, selectedItem=selectedItem)
-
-
-@app.route("/hive/members/<memberType>")
-def get_recycling_members(memberType):
-    if memberType == 'view-all':
-        # Get selected member type for dropdown
-        selectedMemberType = 'Select a Member Group'
-        # Get members that match the selected type for
-        # # accordion headers
-        memberGroup = list(mongo.db.hiveMembers.find(
-        ))
-    else:
-        # Get selected member type for dropdown
-        selectedMemberType = memberType
-        # Get members that match the selected type for
-        # # accordion headers
-        if memberType == 'Queen Bee':
-            memberGroup = list(mongo.db.hiveMembers.find(
-                {"isQueenBee": True}))
-        elif memberType == 'Worker Bee':
-            memberGroup = list(mongo.db.hiveMembers.find(
-                {"isQueenBee": False, "isWorkerBee": True}))
-        elif memberType == 'Busy Bee':
-            memberGroup = list(mongo.db.hiveMembers.find(
-                {"isQueenBee": False, "isWorkerBee": False}))
-    # Create new dictionary of members and their collections
-    membersDict = list(mongo.db.itemCollections.aggregate([
-        {
-         '$lookup': {
-            'from': 'recyclableItems',
-            'localField': 'itemID',
-            'foreignField': '_id',
-            'as': 'recyclableItems'
-         },
-        },
-        {'$unwind': '$recyclableItems'},
-        {
-         '$lookup': {
-            'from': 'hiveMembers',
-            'localField': 'memberID',
-            'foreignField': '_id',
-            'as': 'hiveMembers'
-         },
-        },
-        {'$unwind': '$hiveMembers'},
-        {
-         '$lookup': {
-            'from': 'collectionLocations',
-            'localField': 'locationID',
-            'foreignField': '_id',
-            'as': 'collectionLocations'
-         },
-        },
-        {'$unwind': '$collectionLocations'},
-        {'$project': {
-         'typeOfWaste': '$recyclableItems.typeOfWaste',
-         'hiveMembers': '$hiveMembers._id',
-         'street': '$collectionLocations.street',
-         'town': '$collectionLocations.town',
-         'postcode': '$collectionLocations.postcode',
-         'id': 1,
-         'conditionNotes': 1,
-         'charityScheme': 1
-         }
-         }
-        ]))
-
-    return render_template(
-        "hive-member.html",
-        memberType=memberType, selectedMemberType=selectedMemberType,
-        memberGroup=memberGroup, membersDict=membersDict)
-
-
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    if request.method == "POST":
-        # check whether email already exists in db
-        existing_user = mongo.db.hiveMembers.find_one(
-            {"email": request.form.get("email").lower()})
-
-        if existing_user:
-            flash("Email already exists")
-            return redirect(url_for("register"))
-
-        register = {
-            "username": request.form.get("username"),
-            "email": request.form.get("email").lower(),
-            "password": generate_password_hash(request.form.get("password")),
-            "securityQuestion": request.form.get("security-question"),
-            "marketing": request.form.get("marketing")
-        }
-        mongo.db.hiveMembers.insert_one(register)
-
-        # put the new user into 'session' cookie
-        session["user"] = request.form.get("email")
-        # grab the session user's username from db
-        session["username"] = mongo.db.hiveMembers.find_one(
-            {"email": session["user"]})["username"]
-        flash("Registration Successful!")
-        return redirect(url_for("home", username=session["username"]))
-
-    return render_template("register.html")
-
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -434,6 +231,209 @@ def home(username):
                                itemsDict=itemsDict, categories=categories)
 
     return redirect(url_for("login"))
+
+
+@app.route("/hive")
+def get_recycling_categories():
+    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+    return render_template(
+        "hive-category.html", categories=categories)
+
+
+@app.route("/hive/items/<categoryID>", methods=["GET", "POST"])
+def get_recycling_items(categoryID):
+    if categoryID == 'view-all':
+        # Get selected category for dropdown
+        selectedCategory = 'Select a category'
+        # Get recyclable items that match the selected category for
+        # # accordion headers
+        catItems = list(mongo.db.recyclableItems.find(
+        ).sort("typeOfWaste"))
+    else:
+        # Get selected category for dropdown
+        selectedCategory = mongo.db.itemCategory.find_one(
+                    {"_id": ObjectId(categoryID)})["categoryName"]
+        # Get recyclable items that match the selected category for
+        # # accordion headers
+        catItems = list(mongo.db.recyclableItems.find(
+            {"categoryID": ObjectId(
+                categoryID)}).sort("typeOfWaste"))
+    # Get list of categories for dropdown menu
+    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+    return render_template(
+        "hive-item.html",
+        categoryID=categoryID, categories=categories, catItems=catItems,
+        selectedCategory=selectedCategory)
+
+
+@app.route("/hive/collections/<itemID>", methods=["GET", "POST"])
+def get_recycling_collections(itemID):
+    if itemID == 'view-all':
+        # Get selected item for dropdown
+        selectedItem = 'Select an item'
+        # Get recyclable collections that match the selected item for
+        # # accordion headers
+        itemCollections = list(mongo.db.itemCollections.find(
+        ))
+    else:
+        # Get selected item for dropdown
+        selectedItem = mongo.db.recyclableItems.find_one(
+                    {"_id": ObjectId(itemID)})["typeOfWaste"]
+        # Get recyclable collections that match the selected item for
+        # # accordion headers
+        itemCollections = list(mongo.db.itemCollections.find(
+            {"itemID": ObjectId(
+                itemID)}))
+    # Get list of items for dropdown menu
+    items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
+    # Create new dictionary of recyclable items and their matching collections
+    collectionsDict = list(mongo.db.itemCollections.aggregate([
+        {
+         '$lookup': {
+            'from': 'recyclableItems',
+            'localField': 'itemID',
+            'foreignField': '_id',
+            'as': 'recyclableItems'
+         },
+        },
+        {'$unwind': '$recyclableItems'},
+        {
+         '$lookup': {
+            'from': 'hiveMembers',
+            'localField': 'memberID',
+            'foreignField': '_id',
+            'as': 'hiveMembers'
+         },
+        },
+        {'$unwind': '$hiveMembers'},
+        {
+         '$lookup': {
+            'from': 'collectionLocations',
+            'localField': 'locationID',
+            'foreignField': '_id',
+            'as': 'collectionLocations'
+         },
+        },
+        {'$unwind': '$collectionLocations'},
+        {'$project': {
+         'typeOfWaste': '$recyclableItems.typeOfWaste',
+         'hiveMembers': '$hiveMembers.username',
+         'street': '$collectionLocations.street',
+         'town': '$collectionLocations.town',
+         'postcode': '$collectionLocations.postcode',
+         'id': 1,
+         'conditionNotes': 1,
+         'charityScheme': 1
+         }
+         }
+        ]))
+
+    return render_template(
+        "hive-collection.html",
+        itemID=itemID, items=items, itemCollections=itemCollections,
+        collectionsDict=collectionsDict, selectedItem=selectedItem)
+
+
+@app.route("/hive/members/<memberType>")
+def get_recycling_members(memberType):
+    if memberType == 'view-all':
+        # Get selected member type for dropdown
+        selectedMemberType = 'Select a Member Group'
+        # Get members that match the selected type for
+        # # accordion headers
+        memberGroup = list(mongo.db.hiveMembers.find(
+        ))
+    else:
+        # Get selected member type for dropdown
+        selectedMemberType = memberType
+        # Get members that match the selected type for
+        # # accordion headers
+        if memberType == 'Queen Bee':
+            memberGroup = list(mongo.db.hiveMembers.find(
+                {"isQueenBee": True}))
+        elif memberType == 'Worker Bee':
+            memberGroup = list(mongo.db.hiveMembers.find(
+                {"isQueenBee": False, "isWorkerBee": True}))
+        elif memberType == 'Busy Bee':
+            memberGroup = list(mongo.db.hiveMembers.find(
+                {"isQueenBee": False, "isWorkerBee": False}))
+    # Create new dictionary of members and their collections
+    membersDict = list(mongo.db.itemCollections.aggregate([
+        {
+         '$lookup': {
+            'from': 'recyclableItems',
+            'localField': 'itemID',
+            'foreignField': '_id',
+            'as': 'recyclableItems'
+         },
+        },
+        {'$unwind': '$recyclableItems'},
+        {
+         '$lookup': {
+            'from': 'hiveMembers',
+            'localField': 'memberID',
+            'foreignField': '_id',
+            'as': 'hiveMembers'
+         },
+        },
+        {'$unwind': '$hiveMembers'},
+        {
+         '$lookup': {
+            'from': 'collectionLocations',
+            'localField': 'locationID',
+            'foreignField': '_id',
+            'as': 'collectionLocations'
+         },
+        },
+        {'$unwind': '$collectionLocations'},
+        {'$project': {
+         'typeOfWaste': '$recyclableItems.typeOfWaste',
+         'hiveMembers': '$hiveMembers._id',
+         'street': '$collectionLocations.street',
+         'town': '$collectionLocations.town',
+         'postcode': '$collectionLocations.postcode',
+         'id': 1,
+         'conditionNotes': 1,
+         'charityScheme': 1
+         }
+         }
+        ]))
+
+    return render_template(
+        "hive-member.html",
+        memberType=memberType, selectedMemberType=selectedMemberType,
+        memberGroup=memberGroup, membersDict=membersDict)
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        # check whether email already exists in db
+        existing_user = mongo.db.hiveMembers.find_one(
+            {"email": request.form.get("email").lower()})
+
+        if existing_user:
+            flash("Email already exists")
+            return redirect(url_for("register"))
+
+        register = {
+            "username": request.form.get("username"),
+            "email": request.form.get("email").lower(),
+            "password": generate_password_hash(request.form.get("password")),
+            "securityQuestion": request.form.get("security-question"),
+            "marketing": request.form.get("marketing")
+        }
+        mongo.db.hiveMembers.insert_one(register)
+
+        # put the new user into 'session' cookie
+        session["user"] = request.form.get("email")
+        # grab the session user's username from db
+        session["username"] = mongo.db.hiveMembers.find_one(
+            {"email": session["user"]})["username"]
+        flash("Registration Successful!")
+        return redirect(url_for("home", username=session["username"]))
+
+    return render_template("register.html")
 
 
 @app.route("/delete-profile/<username>")
