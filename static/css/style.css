@@ -211,6 +211,10 @@ small.warning-delete {
   margin-bottom: 1.5rem;
 }
 
+.space-holder {
+  visibility: hidden;
+}
+
 .btn-link {
   font-size: 1.2rem;
   color: #333;
