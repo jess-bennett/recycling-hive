@@ -174,6 +174,14 @@ I ended up with the following six collections:
 
 ### :bug: Bugs
 ---
+* A main cause of issues during the creation of this project concerned the hexagon grid layout.\
+I didn't want to abandon the css entirely as I am overall very pleased with how it looks and how 
+it ties in with the overall theme of the sight, and so I had to find some workarounds in order for
+it to behave as I needed.
+The spacing on the hive-category page was one such issue, with the hexagon grid overlapping the 
+breadcrumb navbar at the top. 
+My workaround was to include a button as on the other pages (where spacing was not an issue), but
+set the button's visibility to hidden.
 
 ### :deciduous_tree: Branches
 ---
@@ -210,9 +218,7 @@ Manual testing was carried out on all devices available to me:
     * Opera 
 
 All tests produced good results with the following exceptions:
-* Issues were found with autoplay in Firefox - see [Bug 4](#bug-bugs) for details and solution
-* Navigation between play and learn pages didn't work in Safari - see [Bug 5](#bug-bugs) for details and solution
-* ABeeZee font not displaying in Safari - see [Bug 6](#bug-bugs) for details
+
 
 Full testing-frame can be found [here](/testing/manual-testing.pdf)
 
