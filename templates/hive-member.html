@@ -2,7 +2,7 @@
 {% block nav_hive %}active{% endblock %}
 {% block nav_member %}active{% endblock %}
 {% block content %}
-{{ membersDict }}
+
 <div class="heading-buttons">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -89,9 +89,7 @@
       </div>
 
       <div class="modal-body">
-				{% if membersDict[0] == member._id %}
-                <p>YES</p>
-                {% endif %}
+                {% if member._id in membersCollectionValues %}
                 {% for collection in membersDict if collection._id == member._id %}
                 <div class="form-row">
                   <!-- Type of waste -->
@@ -148,6 +146,9 @@
                 </div>
                 <hr>
                 {% endfor %}
+                {% else %}
+                <p>This member does not have any collections.</p>
+                {% endif %}
               </div>
             </div>
       </div>

@@ -390,6 +390,11 @@ def get_recycling_members(memberType):
         elif memberType == 'Busy Bee':
             memberGroup = list(mongo.db.hiveMembers.find(
                 {"isQueenBee": False, "isWorkerBee": False}))
+    # Check if member has collection
+    membersCollection = list(mongo.db.itemCollections.find(
+        {}, {"memberID": 1, "_id": 0}))
+    membersCollectionValues = list(
+        [document["memberID"] for document in membersCollection])
     # Create new dictionary of members and their collections
     membersDict = list(mongo.db.hiveMembers.aggregate([
         {
@@ -421,7 +426,6 @@ def get_recycling_members(memberType):
         {'$unwind': '$collectionLocations'},
         {'$project': {
          'typeOfWaste': '$recyclableItems.typeOfWaste',
-         'hiveMembers': '$hiveMembers._id',
          'street': '$collectionLocations.street',
          'town': '$collectionLocations.town',
          'postcode': '$collectionLocations.postcode',
@@ -431,11 +435,12 @@ def get_recycling_members(memberType):
          },
         {'$sort': {'typeOfWaste': 1}}
         ]))
-
     return render_template(
         "hive-member.html",
         memberType=memberType, selectedMemberType=selectedMemberType,
-        memberGroup=memberGroup, membersDict=membersDict)
+        memberGroup=memberGroup, membersDict=membersDict,
+        membersCollection=membersCollection,
+        membersCollectionValues=membersCollectionValues)
 
 
 @app.route("/register", methods=["GET", "POST"])
