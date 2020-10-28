@@ -1,0 +1,19 @@
+{% extends "layout/base.html" %}
+{% block nav_login %}active{% endblock %}
+{% block content %}
+
+{% include "components/user-form.html" %}
+
+<!-- Need to change this to redirect to 'find a hive' page when built -->
+<div class="container-fluid">
+  <div class="row text-center">
+    <div class="col">
+      <p class="">
+        New Here? <a href="{{ url_for('register') }}"
+          class="internal-link">Register Account</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

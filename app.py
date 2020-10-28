@@ -20,13 +20,15 @@ mongo = PyMongo(app)
 
 
 @app.route("/")
-@app.route("/home/<username>")
-def home(username):
-    if session["user"]:
+def home():
+    try:
+        users = mongo.db.hiveMembers
 
-        return render_template("index.html", username=session["username"])
-
-    return render_template("index.html", username=False)
+        return render_template("pages/index.html",
+                               username=users.find_one(
+                                   {'email': session['user']})["username"])
+    except:
+        return render_template("pages/index.html", username=False)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -44,7 +46,7 @@ def login():
                 # grab the session user's username from db
                 session["username"] = mongo.db.hiveMembers.find_one(
                     {"email": session["user"]})["username"]
-                return redirect(url_for("home", username=session["username"]))
+                return redirect(url_for("home"))
             else:
                 # invalid password match
                 flash("Incorrect email and/or password")
@@ -55,7 +57,7 @@ def login():
             flash("Incorrect email and/or password")
             return redirect(url_for("login"))
 
-    return render_template("login.html")
+    return render_template("pages/login.html", pageID="login")
 
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
@@ -482,7 +484,7 @@ def register():
         flash("Registration Successful!")
         return redirect(url_for("home", username=session["username"]))
 
-    return render_template("register.html")
+    return render_template("pages/register.html", pageID="register")
 
 
 @app.route("/delete-profile/<username>")
@@ -502,6 +504,7 @@ def logout():
     # remove user from session cookies
     flash("Log Out Successful!")
     session.pop("user")
+    session.pop("username")
     return redirect(url_for("login"))
 
 

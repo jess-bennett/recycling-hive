@@ -1,17 +1,18 @@
-{% extends "layout/base.html" %}
-{% block nav_register %}active{% endblock %}
-{% block content %}
-
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-8 offset-md-2">
       <div class="card">
         <div class="card-header text-center green-background">
+          {% if pageID == "register" %}
           <h4>Register</h4>
           <h5>You are applying to join the XXX Hive</h5>
+          {% elif pageID == "login" %}
+          <h4>Log In</h4>
+          {% endif %}
         </div>
         <form class="card-body" method="POST"
-          action="{{ url_for('register') }}">
+          action="{% if pageID == 'register' %}{{ url_for('register') }}{% elif pageID == 'login' %}{{ url_for('login') }}{% endif %}">
+          {% if pageID == "register" %}
           <!-- Name -->
           <div class="form-group row">
             <label class="sr-only" for="username">Name</label>
@@ -24,6 +25,7 @@
                 name="username" placeholder="Name" minlength="3" required>
             </div>
           </div>
+          {% endif %}
           <!-- Email -->
           <div class="form-group row">
             <label class="sr-only" for="email">Email</label>
@@ -54,6 +56,7 @@
               </small>
             </div>
           </div>
+          {% if pageID == "register" %}
           <!-- Confirm Password -->
           <div class="form-group row">
             <label class="sr-only" for="confirm-password">Confirm
@@ -97,15 +100,14 @@
                 minlength="5" required>
             </div>
           </div>
+          {% endif %}
           <!-- Submit -->
           <div class="form-group row">
-            <button id="submit-registration" class="btn btn-outline-primary col"
-              type="submit">Register</button>
+            <button class="btn btn-outline-primary col"
+              type="submit">{% if pageID == "register" %}Register{% elif pageID == "login" %}Log In{% endif %}</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 </div>
-
-{% endblock %}
