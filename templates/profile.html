@@ -1,0 +1,544 @@
+{% extends "layout/base.html" %}
+{% block nav_home %}active{% endblock %}
+{% block content %}
+
+<section id="profile-page">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <div id="accordion">
+          <!-- Details card -->
+          <div class="card">
+            <div class="card-header green-background" id="headingOne">
+              <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse"
+                  data-target="#collapseOne" aria-expanded="true"
+                  aria-controls="collapseOne">
+                  <i class="fab fa-forumbee"></i> <strong>Your Details</strong>
+                </button>
+              </h5>
+            </div>
+            <div id="collapseOne" class="collapse show"
+              aria-labelledby="headingOne" data-parent="#accordion">
+              <div class="card-body">
+                <div class="form-row">
+                  <!-- Membership -->
+                  <div class="form-group col-md">
+                    <div class="input-group mb-2">
+                      <div class="input-group-prepend" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Membership">
+                        <div class="input-group-text">
+                          {% if memberType == "Queen Bee"%}<i
+                            class="fas fa-crown"></i>
+                          {% elif memberType == "Worker Bee"%}<i
+                            class="fas fa-hard-hat"></i>
+                          {% elif memberType == "Busy Bee" %}<i
+                            class="fas fa-user"></i>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <p class="form-control">You are currently a
+                        {{ memberType }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-row">
+                  <!-- Username -->
+                  <div class="form-group col-md-6">
+                    <div class="input-group mb-2">
+                      <div class="input-group-prepend" data-toggle="tooltip"
+                        data-placement="top" data-type="info" title="Username">
+                        <div class="input-group-text"><i
+                            class="fab fa-forumbee"></i></div>
+                      </div>
+                      <p class="form-control">{{ username }}</p>
+                    </div>
+                  </div>
+                  <!-- Email -->
+                  <div class="form-group col-md-6">
+                    <div class="input-group mb-2">
+                      <div class="input-group-prepend" data-toggle="tooltip"
+                        data-placement="top" data-type="info" title="Email">
+                        <div class="input-group-text"><i class="fas fa-at"></i>
+                        </div>
+                      </div>
+                      <p class="form-control">{{ email }}</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Amend details -->
+                <hr>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div id="delete-details"
+                      class="btn col-1 offset-10 btn-delete" data-toggle="modal"
+                      data-target="#modal-delete-profile"><i
+                        class="fas fa-trash-alt" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Delete"></i></div>
+                    <div id="amend-details" class="btn col-1 btn-edit"
+                      data-toggle="modal" data-target="#modal-edit-details"><i
+                        class="fas fa-edit" data-toggle="tooltip"
+                        data-placement="top" data-type="info" title="Edit"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% if memberType != "Busy Bee" %}
+          <!-- Activity card -->
+          <div class="card-header green-background space-below">
+            <h5 class="mb-0">
+              <strong>Your Hive Activity</strong>
+            </h5>
+          </div>
+          <div class="card">
+            <div class="card-header green-background" id="headingTwo">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse"
+                  data-target="#collapseTwo" aria-expanded="false"
+                  aria-controls="collapseTwo">
+                  <i class="fas fa-home"></i> <strong>Your Locations</strong>
+                </button>
+              </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+              data-parent="#accordion">
+              <div class="card-body">
+                <!-- Add location -->
+                <div class="container-fluid">
+                  <div class="row">
+                    <button type="button"
+                      class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add">Add
+                      New Location</button>
+                  </div>
+                </div>
+                {% if locations %}
+                {% for location in locations%}
+                <hr>
+                <div class="form-row">
+                  <!-- Nickname -->
+                  <div class="form-group col-md-3">
+                    <div class="input-group mb-2">
+                      <div class="input-group-prepend" data-toggle="tooltip"
+                        data-placement="top" data-type="info" title="Nickname">
+                        <div class="input-group-text"><i
+                            class="fas fa-signature"></i></div>
+                      </div>
+                      <p class="form-control">{{ location.nickname }}</p>
+                    </div>
+                  </div>
+                  <!-- Address -->
+                  <div class="form-group col-md-9">
+                    <div class="input-group mb-2">
+                      <div class="input-group-prepend" data-toggle="tooltip"
+                        data-placement="top" data-type="info" title="Address">
+                        <div class="input-group-text"><i
+                            class="fas fa-home"></i></div>
+                      </div>
+                      <p class="form-control">
+                        {{ location.street }}, {{ location.town }},
+                        {{ location.postcode }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Amend location -->
+                <div class="container-fluid">
+                  <div class="row">
+                    <div id="delete-location"
+                      class="btn col-1 offset-10 btn-delete"
+                      data-toggle="tooltip" data-placement="top"
+                      data-type="info" title="Delete"><i
+                        class="fas fa-trash-alt"></i></div>
+                    <div id="amend-location" class="btn col-1 btn-edit"
+                      data-toggle="tooltip" data-placement="top"
+                      data-type="info" title="Edit"><i class="fas fa-edit"></i>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p><strong>You do not currently have any locations saved! Want
+                    to add one?</strong></p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <!-- Collections card -->
+          <div class="card">
+            <div class="card-header green-background" id="headingThree">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse"
+                  data-target="#collapseThree" aria-expanded="false"
+                  aria-controls="collapseThree">
+                  <i class="fas fa-recycle"></i> <strong>Your
+                    Collections</strong>
+                </button>
+              </h5>
+            </div>
+            <div id="collapseThree" class="collapse"
+              aria-labelledby="headingThree" data-parent="#accordion">
+              <div class="card-body">
+                <!-- Add collection -->
+                <div class="container-fluid">
+                  <div class="row">
+                    <button type="button"
+                      class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add"
+                      data-toggle="modal"
+                      data-target="#modal-add-collection">Add New
+                      Collection</button>
+                  </div>
+                </div>
+                {% if collectionsDict %}
+                {% for collection in collectionsDict %}
+                <hr>
+                <div class="form-row">
+                  <!-- Type of waste -->
+                  <div class="form-group col-md-6">
+                    <div class="input-group mb-2">
+                      <div class="input-group-prepend" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Type of Waste">
+                        <div class="input-group-text"><i
+                            class="fas fa-recycle"></i></div>
+                      </div>
+                      <p class="form-control">{{ collection.typeOfWaste }}</p>
+                    </div>
+                  </div>
+                  <!-- Charity Scheme -->
+                  <div class="form-group col-md-6">
+                    <div class="input-group mb-2">
+                      <div class="input-group-prepend" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Charity Scheme">
+                        <div class="input-group-text"><i
+                            class="fas fa-hand-holding-heart"></i>
+                        </div>
+                      </div>
+                      <p class="form-control">{{ collection.charityScheme }}</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Location -->
+                <div class="form-group">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend" data-toggle="tooltip"
+                      data-placement="top" data-type="info"
+                      title="Collection Address">
+                      <div class="input-group-text"><i class="fas fa-home"></i>
+                      </div>
+                    </div>
+                    <p class="form-control">{{ collection.street }},
+                      {{ collection.town }}, {{ collection.postcode }}
+                    </p>
+                  </div>
+                </div>
+                <!-- Condition notes -->
+                <div class="form-group">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend" data-toggle="tooltip"
+                      data-placement="top" data-type="info"
+                      title="Collection Notes">
+                      <div class="input-group-text"><i
+                          class="fas fa-comment"></i></div>
+                    </div>
+                    <p class="form-control">{{ collection.conditionNotes }}</p>
+                  </div>
+                </div>
+                <!-- Amend collection -->
+                <div class="container-fluid">
+                  <div class="row">
+                    <div id="delete-collection"
+                      class="btn col-1 offset-10 btn-delete"
+                      data-toggle="tooltip" data-placement="top"
+                      data-type="info" title="Delete"><i
+                        class="fas fa-trash-alt"></i></div>
+                    <div id="amend-collection" class="btn col-1 btn-edit"
+                      data-toggle="tooltip" data-placement="top"
+                      data-type="info" title="Edit"><i class="fas fa-edit"></i>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p><strong>You do not currently have any collections saved! Want
+                    to add one?</strong></p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Edit details modal -->
+<div class="modal fade" id="modal-edit-details" tabindex="-1" role="dialog"
+  aria-labelledby="modal-edit-details-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100" id="modal-edit-details-title">Edit Details
+        </h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="editDetails" class="card-body" method="POST"
+          action="{{ url_for('home', username=username) }}">
+          <!-- Name -->
+          <div class="form-group row">
+            <label class="sr-only" for="edit-username">Name</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fab fa-forumbee"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" id="edit-username"
+                name="edit-username" value="{{ username }}"
+                placeholder="{{ username }}" minlength="3" required>
+            </div>
+          </div>
+          <!-- Email -->
+          <div class="form-group row">
+            <label class="sr-only" for="edit-email">Email</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fas fa-at"></i></div>
+              </div>
+              <input type="email" class="form-control" id="edit-email"
+                name="edit-email" value="{{ email }}" placeholder="{{ email }}"
+                required>
+            </div>
+          </div>
+          <!-- Submit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary"
+              data-dismiss="modal">Cancel</button>
+            <button id="submit-edit-details" class="btn btn-outline-primary"
+              type="submit" name="submit-edit-details">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete profile modal -->
+<div class="modal fade" id="modal-delete-profile" tabindex="-1" role="dialog"
+  aria-labelledby="modal-delete-profile-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100" id="modal-delete-profile-title">Delete
+          Profile</h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="editDetails" class="card-body"
+          action="{{ url_for('deleteProfile', username=username) }}">
+          <p class="warning-delete">Are you sure you want to delete your
+            profile?<br>
+            This will remove all locations and recycling collections associated
+            with your user profile!
+          <p>
+            <!-- Submit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary"
+              data-dismiss="modal">Cancel</button>
+            <button id="submit-delete-profile" class="btn btn-outline-primary"
+              type="submit" name="submit-delete-profile">Delete
+              Profile!</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Add new collection modal -->
+<div class="modal fade" id="modal-add-collection" tabindex="-1" role="dialog"
+  aria-labelledby="modal-add-collection-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100" id="modal-add-collection-title">Add New
+          Hive Collection</h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div id="formCollection" class="modal-body">
+        <p><em>Please note, this option is to add your own
+            <strong>personal</strong> collection to the database. If you would
+            like to suggest a local/national
+            <strong>public</strong> collection (i.e. business or similar),
+            please do so <a href="" class="internal-link">here.</a></em>
+        </p>
+        <!-- Input form -->
+        <!-- Form to add new collection -->
+        <form name="addCollection" class="card-body" method="POST"
+          action="{{ url_for('home', username=username) }}">
+          <div class="form-row">
+            <!-- Item Category -->
+            <div class="form-group col-md-6">
+              <label class="sr-only" for="input-itemCategory">Item Category</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fas fa-list"></i>
+                  </div>
+                </div>
+                <input type="text" class="form-control" id="input-itemCategory"
+                  name="input-itemCategory" placeholder="Item Category"
+                  disabled>
+                <select class="form-control" id="select-itemCategory"
+                  name="itemCategory">
+                  <option value="" selected disabled>Item Category</option>
+                  {% for category in categories %}
+                  <option value="{{ category.categoryName }}">
+                    {{ category.categoryName }}</option>
+                  {% endfor %}
+                  <option>Add New Item Category...</option>
+                </select>
+                <small id="instructions-addItemCategory"
+                  class="form-text col-12 warning-delete">
+                  Please ensure that you are not duplicating a Category that
+                  already appears in the dropdown menu.<br>
+                  The Category that you add here will be accessible by other
+                  users, so should be fairly general (e.g. 'dental care'
+                  <strong>not</strong> 'toothbrush',) and should
+                  <strong>not</strong> include any notes that are relevant to
+                  your collection (e.g. 'Must be washed' does not belong here!).
+                </small>
+              </div>
+            </div>
+            <!-- Type of Waste -->
+            <div class="form-group col-md-6">
+
+              <label class="sr-only" for="select-typeOfWaste">Type of Waste</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fas fa-recycle"></i>
+                  </div>
+                </div>
+                <input type="text" class="form-control" id="input-typeOfWaste"
+                  name="input-typeOfWaste" placeholder="Type of Waste"
+                  minlength="2">
+                <select class="form-control" id="select-typeOfWaste"
+                  name="typeOfWaste" required>
+                  <option value="" selected disabled>Type of Waste</option>
+                  {% for item in itemsDict %}
+                  <option data-id="{{ item.itemCategory.categoryName }}"
+                    value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}
+                  </option>
+                  {% endfor %}
+                  <option>Add New Type of Waste...</option>
+                </select>
+                <small id="instructions-addTypeOfWaste"
+                  class="form-text col-12 warning-delete">
+                  Please ensure that you are not duplicating a Type of Waste
+                  that already appears in the dropdown menu.<br>
+                  The Type of Waste that you add here will be accessible by
+                  other users, so should be specific (e.g. 'toothbrush'
+                  <strong>not</strong> 'dental care',) and should
+                  <strong>not</strong> include any notes that are relevant to
+                  your
+                  collection (e.g. 'Must be washed' does not belong here!).
+                </small>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <!-- Nickname -->
+            <div class="form-group col-md-3">
+              <label class="sr-only" for="locationID">Location</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fas fa-signature"></i>
+                  </div>
+                </div>
+                <select class="form-control" id="locationID" name="locationID"
+                  required>
+                  <option value="" selected disabled>Location</option>
+                  {% for location in locations %}
+                  <option
+                    data-id="{{ location.street }}, {{ location.town }}, {{ location.postcode }}"
+                    value="{{ location.nickname }}">{{ location.nickname }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <!-- Address -->
+            <div class="form-group col-md-9">
+              <label class="sr-only" for="locationAddress">Location</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text"><i class="fas fa-home"></i>
+                  </div>
+                </div>
+                <input type="text" class="form-control" id="locationAddress"
+                  name="locationAddress" placeholder="Street, town, postcode"
+                  disabled>
+              </div>
+            </div>
+          </div>
+          <!-- Condition Notes -->
+          <div class="form-group">
+            <label class="sr-only" for="conditionNotes">What condition should
+              this item be in?</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fas fa-comment"></i>
+                </div>
+              </div>
+              <textarea class="form-control" id="conditionNotes"
+                name="conditionNotes"
+                placeholder="What condition should this item be in? (E.g. Washed/As it is)"
+                minlength="4" required></textarea>
+            </div>
+          </div>
+          <!-- Charity -->
+          <div class="form-group">
+            <label class="sr-only" for="charityScheme">Charity
+              (optional)</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i
+                    class="fas fa-hand-holding-heart"></i></div>
+              </div>
+              <input type="text" class="form-control" id="charityScheme"
+                name="charityScheme" placeholder="Charity (optional)"
+                minlength="2">
+            </div>
+          </div>
+          <!-- Submit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary"
+              data-dismiss="modal">Close</button>
+            <button id="submit-collection" class="btn btn-outline-primary"
+              type="submit" name="submit-collection">Add New Collection</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

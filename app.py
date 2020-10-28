@@ -20,6 +20,15 @@ mongo = PyMongo(app)
 
 
 @app.route("/")
+@app.route("/home/<username>")
+def home(username):
+    if session["user"]:
+
+        return render_template("index.html", username=session["username"])
+
+    return render_template("index.html", username=False)
+
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -49,8 +58,8 @@ def login():
     return render_template("login.html")
 
 
-@app.route("/home/<username>", methods=["GET", "POST"])
-def home(username):
+@app.route("/profile/<username>", methods=["GET", "POST"])
+def profile(username):
     if session["user"]:
         # grab the session user's details from db
         userID = mongo.db.hiveMembers.find_one(
@@ -256,7 +265,7 @@ def home(username):
                 flash("New collection added")
                 return redirect(url_for("get_recycling_collections",
                                         itemID=itemID))
-        return render_template("index.html", userID=userID,
+        return render_template("profile.html", userID=userID,
                                username=session["username"], email=email,
                                memberType=memberType, locations=locations,
                                collectionsDict=collectionsDict, items=items,

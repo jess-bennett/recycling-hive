@@ -3,7 +3,6 @@ $(document).ready(function() {
   $("#instructions-addTypeOfWaste").hide();
   $("#select-itemCategory").hide();
   $("#instructions-addItemCategory").hide();
-  $("#profile-page").hide(); /* Hide profile page on page load */
 });
 
 /* REGISTER.HTML */
@@ -24,12 +23,6 @@ $("#submit-registration").click(function(event) {
   if ($("#password").val() != $("#confirm-password").val()) {
     event.preventDefault();
   }
-});
-
-/* INDEX.HTML */
-$("#btn-profile").click(function() {
-  $("#profile-page").show();
-  $("#home-hexagons").hide();
 });
 
 /* Change list of recycling items on dropdown change */
