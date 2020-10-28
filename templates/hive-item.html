@@ -5,25 +5,8 @@
 
 {% include "components/breadcrumbs.html" %}
 
-<div class="heading-buttons">
-  <!-- Type of Waste Dropdown -->
-  <div class="dropdown">
-    <button class="btn btn-outline-primary col space-below dropdown-toggle"
-      type="button" id="dropdownMenuButton" data-toggle="dropdown"
-      aria-haspopup="true" aria-expanded="false">
-      {{ selectedCategory }}
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item"
-        href="{{ url_for('get_recycling_items', categoryID='view-all') }}">View
-        all</a>
-      {% for category in categories %}
-      <a class="dropdown-item"
-        href="{{ url_for('get_recycling_items', categoryID=category._id) }}">{{ category.categoryName }}</a>
-      {% endfor %}
-    </div>
-  </div>
-</div>
+{% include "components/dropdown.html" %}
+
 
 <!-- Item collection accordion -->
 <div id="item-layout">

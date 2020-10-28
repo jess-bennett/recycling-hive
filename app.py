@@ -259,7 +259,7 @@ def profile(username):
 def get_recycling_categories():
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
     return render_template(
-        "hive-category.html", categories=categories)
+        "hive-category.html", categories=categories, pageID="categories")
 
 
 @app.route("/hive/items/<categoryID>", methods=["GET", "POST"])

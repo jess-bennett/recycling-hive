@@ -5,37 +5,7 @@
 
 {% include "components/breadcrumbs.html" %}
 
-<div class="heading-buttons">
-  <!-- Type of Member Dropdown -->
-  <div class="dropdown">
-    <button class="btn btn-outline-primary col space-below dropdown-toggle"
-      type="button" id="dropdownMenuButton" data-toggle="dropdown"
-      aria-haspopup="true" aria-expanded="false">
-      {% if selectedMemberType == "Queen Bee"%}<i class="fas fa-crown"></i>
-      {% elif selectedMemberType == "Worker Bee"%}<i
-        class="fas fa-hard-hat"></i>
-      {% elif selectedMemberType == "Busy Bee" %}<i class="fas fa-user"></i>
-      {% endif %}{{ selectedMemberType }}
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-      <a class="dropdown-item"
-        href="{{ url_for('get_recycling_members', memberType='view-all') }}">View
-        all</a>
-      <a class="dropdown-item"
-        href="{{ url_for('get_recycling_members', memberType='Queen Bee') }}"><i
-          class="fas fa-crown"></i> Queen Bee</a>
-      <a class="dropdown-item"
-        href="{{ url_for('get_recycling_members', memberType='Worker Bee') }}"><i
-          class="fas fa-hard-hat"></i> Worker Bee</a>
-      <a class="dropdown-item"
-        href="{{ url_for('get_recycling_members', memberType='Busy Bee') }}"><i
-          class="fas fa-user"></i> Busy Bee</a>
-    </div>
-  </div>
-
-  <div>
-  </div>
-</div>
+{% include "components/dropdown.html" %}
 
 
 <div id="member-layout">
