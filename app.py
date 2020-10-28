@@ -259,7 +259,7 @@ def profile(username):
 def get_recycling_categories():
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
     return render_template(
-        "hive-category.html", categories=categories, pageID="categories")
+        "pages/hive-category.html", categories=categories, pageID="categories")
 
 
 @app.route("/hive/items/<categoryID>", methods=["GET", "POST"])
@@ -283,7 +283,7 @@ def get_recycling_items(categoryID):
     # Get list of categories for dropdown menu
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
     return render_template(
-        "hive-item.html",
+        "pages/hive-item.html",
         categoryID=categoryID, categories=categories, catItems=catItems,
         selectedCategory=selectedCategory, pageID="items")
 
@@ -351,7 +351,7 @@ def get_recycling_collections(itemID):
         ]))
 
     return render_template(
-        "hive-collection.html",
+        "pages/hive-collection.html",
         itemID=itemID, items=items, itemCollections=itemCollections,
         collectionsDict=collectionsDict, selectedItem=selectedItem,
         pageID="collections")
@@ -426,7 +426,7 @@ def get_recycling_members(memberType):
         {'$sort': {'typeOfWaste': 1}}
         ]))
     return render_template(
-        "hive-member.html",
+        "pages/hive-member.html",
         memberType=memberType, selectedMemberType=selectedMemberType,
         memberGroup=memberGroup, membersDict=membersDict,
         membersCollection=membersCollection,
