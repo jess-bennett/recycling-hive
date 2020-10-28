@@ -1,19 +1,14 @@
 {% extends "layout/base.html" %}
-{% block nav_hive %}active{% endblock %}
-{% block nav_category %}active{% endblock %}
+{% set active_item = "hive" %}
+{% set active_item = "categories" %}
 {% block content %}
-<div class="heading-buttons">
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item active" aria-current="page">Hive Categories
-      </li>
-    </ol>
-  </nav>
-</div>
+
+{% include "components/breadcrumbs.html" %}
+
 <div class="heading-buttons">
   <!-- Type of Waste Dropdown -->
   <div class="dropdown">
-    <button class="space-holder"
+    <button class="space-holder">
     </button>
     
   </div>

@@ -7,6 +7,7 @@
 
 <body>
   <header>
+    {% set active_item = active_item|default("home") %}
     {% include "components/navbar.html" %}
   </header>
 

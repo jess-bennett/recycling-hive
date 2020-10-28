@@ -1,0 +1,18 @@
+<div class="heading-buttons">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item {% if active_item == 'categories' %}active{% endif %}"><a
+					href="{{ url_for('get_recycling_categories') }}">Hive Categories</a>
+			</li>
+			<li class="breadcrumb-item {% if active_item == 'items' %}active{% endif %}"><a
+					href="{{ url_for('get_recycling_items', categoryID='view-all') }}">Hive
+					Items</a></li>
+			<li class="breadcrumb-item {% if active_item == 'collections' %}active{% endif %}"><a
+					href="{{ url_for('get_recycling_collections', itemID='view-all') }}">Hive
+					Collections</a></li>
+			<li class="breadcrumb-item {% if active_item == 'members' %}active{% endif %}"><a
+					href="{{ url_for('get_recycling_members', memberType='view-all') }}">Hive
+					Members</a></li>
+		</ol>
+	</nav>
+</div>

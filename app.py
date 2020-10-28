@@ -26,38 +26,11 @@ def home():
 
         return render_template("pages/index.html",
                                username=users.find_one(
-                                   {'email': session['user']})["username"])
+                                   {'email': session['user']})["username"],
+                               pageID="home")
     except:
-        return render_template("pages/index.html", username=False)
-
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        # check if user exists in db
-        existing_user = mongo.db.hiveMembers.find_one(
-            {"email": request.form.get("email").lower()})
-
-        if existing_user:
-            # ensure hashed password matches user input
-            if check_password_hash(
-                    existing_user["password"], request.form.get("password")):
-                session["user"] = existing_user["email"]
-                # grab the session user's username from db
-                session["username"] = mongo.db.hiveMembers.find_one(
-                    {"email": session["user"]})["username"]
-                return redirect(url_for("home"))
-            else:
-                # invalid password match
-                flash("Incorrect email and/or password")
-                return redirect(url_for("login"))
-
-        else:
-            # email doesn't exist
-            flash("Incorrect email and/or password")
-            return redirect(url_for("login"))
-
-    return render_template("pages/login.html", pageID="login")
+        return render_template(
+            "pages/index.html", username=False, pageID="home")
 
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
@@ -147,7 +120,8 @@ def profile(username):
                 )
                 if existing_user:
                     flash("Email already exists")
-                    return redirect(url_for("home", username=username))
+                    return redirect(url_for(
+                        "profile", username=session["username"]))
 
                 filter = {"_id": ObjectId(userID)}
                 session["username"] = request.form.get("edit-username")
@@ -156,7 +130,8 @@ def profile(username):
                                "edit-email").lower()}}
                 mongo.db.hiveMembers.update(filter, editDetails)
                 flash("Your details have been updated")
-                return redirect(url_for("home", username=username))
+                return redirect(url_for(
+                    "profile", username=session["username"]))
             # Post method for adding a new category and type of waste
             if 'newItemCategory' in request.form:
                 # Check whether category already exists
@@ -166,7 +141,8 @@ def profile(username):
 
                 if existingCategory:
                     flash("Category already exists")
-                    return redirect(url_for("home", username=username))
+                    return redirect(url_for(
+                        "profile", username=session["username"]))
 
                 newItemCategory = {
                     "categoryName": request.form.get("newItemCategory")
@@ -183,7 +159,8 @@ def profile(username):
                 )
                 if existingTypeOfWaste:
                     flash("Type of Waste already exists for this category")
-                    return redirect(url_for("home", username=username))
+                    return redirect(url_for(
+                        "profile", username=session["username"]))
 
                 newTypeOfWaste = {
                     "typeOfWaste": request.form.get("newTypeOfWaste"),
@@ -219,7 +196,8 @@ def profile(username):
                 )
                 if existingTypeOfWaste:
                     flash("Type of Waste already exists for this category")
-                    return redirect(url_for("home", username=username))
+                    return redirect(url_for(
+                        "profile", username=session["username"]))
 
                 newTypeOfWaste = {
                     "typeOfWaste": request.form.get("newTypeOfWaste"),
@@ -267,12 +245,12 @@ def profile(username):
                 flash("New collection added")
                 return redirect(url_for("get_recycling_collections",
                                         itemID=itemID))
-        return render_template("profile.html", userID=userID,
+        return render_template("/pages/profile.html", userID=userID,
                                username=session["username"], email=email,
                                memberType=memberType, locations=locations,
                                collectionsDict=collectionsDict, items=items,
                                itemsDict=itemsDict, categories=categories,
-                               bob=False)
+                               pageID="profile")
 
     return redirect(url_for("login"))
 
@@ -307,7 +285,7 @@ def get_recycling_items(categoryID):
     return render_template(
         "hive-item.html",
         categoryID=categoryID, categories=categories, catItems=catItems,
-        selectedCategory=selectedCategory)
+        selectedCategory=selectedCategory, pageID="items")
 
 
 @app.route("/hive/collections/<itemID>", methods=["GET", "POST"])
@@ -375,7 +353,8 @@ def get_recycling_collections(itemID):
     return render_template(
         "hive-collection.html",
         itemID=itemID, items=items, itemCollections=itemCollections,
-        collectionsDict=collectionsDict, selectedItem=selectedItem)
+        collectionsDict=collectionsDict, selectedItem=selectedItem,
+        pageID="collections")
 
 
 @app.route("/hive/members/<memberType>")
@@ -451,7 +430,48 @@ def get_recycling_members(memberType):
         memberType=memberType, selectedMemberType=selectedMemberType,
         memberGroup=memberGroup, membersDict=membersDict,
         membersCollection=membersCollection,
-        membersCollectionValues=membersCollectionValues)
+        membersCollectionValues=membersCollectionValues, pageID="members")
+
+
+@app.route("/delete-profile/<username>")
+def deleteProfile(username):
+    # grab the session user's details from db
+    userID = mongo.db.hiveMembers.find_one(
+        {"email": session["user"]})["_id"]
+    mongo.db.hiveMembers.remove({"_id": ObjectId(userID)})
+    mongo.db.collectionLocations.remove({"memberID": ObjectId(userID)})
+    mongo.db.itemCollections.remove({"memberID": ObjectId(userID)})
+    flash("Your profile has been successfully deleted")
+    return redirect(url_for("logout"))
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        # check if user exists in db
+        existing_user = mongo.db.hiveMembers.find_one(
+            {"email": request.form.get("email").lower()})
+
+        if existing_user:
+            # ensure hashed password matches user input
+            if check_password_hash(
+                    existing_user["password"], request.form.get("password")):
+                session["user"] = existing_user["email"]
+                # grab the session user's username from db
+                session["username"] = mongo.db.hiveMembers.find_one(
+                    {"email": session["user"]})["username"]
+                return redirect(url_for("home"))
+            else:
+                # invalid password match
+                flash("Incorrect email and/or password")
+                return redirect(url_for("login"))
+
+        else:
+            # email doesn't exist
+            flash("Incorrect email and/or password")
+            return redirect(url_for("login"))
+
+    return render_template("pages/login.html", pageID="login")
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -485,18 +505,6 @@ def register():
         return redirect(url_for("home", username=session["username"]))
 
     return render_template("pages/register.html", pageID="register")
-
-
-@app.route("/delete-profile/<username>")
-def deleteProfile(username):
-    # grab the session user's details from db
-    userID = mongo.db.hiveMembers.find_one(
-        {"email": session["user"]})["_id"]
-    mongo.db.hiveMembers.remove({"_id": ObjectId(userID)})
-    mongo.db.collectionLocations.remove({"memberID": ObjectId(userID)})
-    mongo.db.itemCollections.remove({"memberID": ObjectId(userID)})
-    flash("Your profile has been successfully deleted")
-    return redirect(url_for("logout"))
 
 
 @app.route("/logout")

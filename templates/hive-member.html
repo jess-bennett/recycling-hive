@@ -1,24 +1,10 @@
 {% extends "layout/base.html" %}
-{% block nav_hive %}active{% endblock %}
-{% block nav_member %}active{% endblock %}
+{% set active_item = "hive" %}
+{% set active_item = "members" %}
 {% block content %}
 
-<div class="heading-buttons">
-  <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a
-          href="{{ url_for('get_recycling_categories') }}">Hive Categories</a>
-      </li>
-      <li class="breadcrumb-item"><a
-          href="{{ url_for('get_recycling_items', categoryID='view-all') }}">Hive
-          Items</a></li>
-      <li class="breadcrumb-item"><a
-          href="{{ url_for('get_recycling_items', categoryID='view-all') }}">Hive
-          Collections</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Hive Members</li>
-    </ol>
-  </nav>
-</div>
+{% include "components/breadcrumbs.html" %}
+
 <div class="heading-buttons">
   <!-- Type of Member Dropdown -->
   <div class="dropdown">
