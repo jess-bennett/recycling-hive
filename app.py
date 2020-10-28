@@ -150,7 +150,8 @@ def home(username):
             if 'newItemCategory' in request.form:
                 # Check whether category already exists
                 existingCategory = mongo.db.itemCategory.find_one(
-                    {"categoryName": request.form.get("newItemCategory").lower()})
+                    {"categoryName": request.form.get(
+                        "newItemCategory")})
 
                 if existingCategory:
                     flash("Category already exists")
@@ -163,7 +164,7 @@ def home(username):
                 categoryID = mongo.db.itemCategory.find_one(
                         {"categoryName": request.form.get(
                          "newItemCategory")})["_id"]
-                
+
                 # Check whether item already exists
                 existingTypeOfWaste = mongo.db.recyclableItems.find_one(
                     {"typeOfWaste": request.form.get("newTypeOfWaste"),
@@ -172,7 +173,7 @@ def home(username):
                 if existingTypeOfWaste:
                     flash("Type of Waste already exists for this category")
                     return redirect(url_for("home", username=username))
-                
+
                 newTypeOfWaste = {
                     "typeOfWaste": request.form.get("newTypeOfWaste"),
                     "categoryID": categoryID
@@ -208,7 +209,7 @@ def home(username):
                 if existingTypeOfWaste:
                     flash("Type of Waste already exists for this category")
                     return redirect(url_for("home", username=username))
-                
+
                 newTypeOfWaste = {
                     "typeOfWaste": request.form.get("newTypeOfWaste"),
                     "categoryID": mongo.db.itemCategory.find_one(
@@ -259,7 +260,8 @@ def home(username):
                                username=session["username"], email=email,
                                memberType=memberType, locations=locations,
                                collectionsDict=collectionsDict, items=items,
-                               itemsDict=itemsDict, categories=categories)
+                               itemsDict=itemsDict, categories=categories,
+                               bob=False)
 
     return redirect(url_for("login"))
 
@@ -388,12 +390,26 @@ def get_recycling_members(memberType):
         elif memberType == 'Busy Bee':
             memberGroup = list(mongo.db.hiveMembers.find(
                 {"isQueenBee": False, "isWorkerBee": False}))
+    # Check if member has collection
+    membersCollection = list(mongo.db.itemCollections.find(
+        {}, {"memberID": 1, "_id": 0}))
+    membersCollectionValues = list(
+        [document["memberID"] for document in membersCollection])
     # Create new dictionary of members and their collections
-    membersDict = list(mongo.db.itemCollections.aggregate([
+    membersDict = list(mongo.db.hiveMembers.aggregate([
+        {
+         '$lookup': {
+            'from': 'itemCollections',
+            'localField': '_id',
+            'foreignField': 'memberID',
+            'as': 'itemCollections'
+         },
+        },
+        {'$unwind': '$itemCollections'},
         {
          '$lookup': {
             'from': 'recyclableItems',
-            'localField': 'itemID',
+            'localField': 'itemCollections.itemID',
             'foreignField': '_id',
             'as': 'recyclableItems'
          },
@@ -401,17 +417,8 @@ def get_recycling_members(memberType):
         {'$unwind': '$recyclableItems'},
         {
          '$lookup': {
-            'from': 'hiveMembers',
-            'localField': 'memberID',
-            'foreignField': '_id',
-            'as': 'hiveMembers'
-         },
-        },
-        {'$unwind': '$hiveMembers'},
-        {
-         '$lookup': {
             'from': 'collectionLocations',
-            'localField': 'locationID',
+            'localField': 'itemCollections.locationID',
             'foreignField': '_id',
             'as': 'collectionLocations'
          },
@@ -419,21 +426,21 @@ def get_recycling_members(memberType):
         {'$unwind': '$collectionLocations'},
         {'$project': {
          'typeOfWaste': '$recyclableItems.typeOfWaste',
-         'hiveMembers': '$hiveMembers._id',
          'street': '$collectionLocations.street',
          'town': '$collectionLocations.town',
          'postcode': '$collectionLocations.postcode',
-         'id': 1,
-         'conditionNotes': 1,
-         'charityScheme': 1
+         'conditionNotes': '$itemCollections.conditionNotes',
+         'charityScheme': '$itemCollections.charityScheme'
          }
-         }
+         },
+        {'$sort': {'typeOfWaste': 1}}
         ]))
-
     return render_template(
         "hive-member.html",
         memberType=memberType, selectedMemberType=selectedMemberType,
-        memberGroup=memberGroup, membersDict=membersDict)
+        memberGroup=memberGroup, membersDict=membersDict,
+        membersCollection=membersCollection,
+        membersCollectionValues=membersCollectionValues)
 
 
 @app.route("/register", methods=["GET", "POST"])
@@ -452,7 +459,9 @@ def register():
             "email": request.form.get("email").lower(),
             "password": generate_password_hash(request.form.get("password")),
             "securityQuestion": request.form.get("security-question"),
-            "marketing": request.form.get("marketing")
+            "marketing": request.form.get("marketing"),
+            "isQueenBee": False,
+            "isWorkerBee": False
         }
         mongo.db.hiveMembers.insert_one(register)
 
@@ -485,6 +494,12 @@ def logout():
     flash("Log Out Successful!")
     session.pop("user")
     return redirect(url_for("login"))
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return render_template('404.html'), 404
 
 
 if __name__ == "__main__":

@@ -56,9 +56,11 @@ $("select#select-typeOfWaste").change(function() {
     $("#select-typeOfWaste").attr("name", "select-typeOfWaste");
     $("#input-typeOfWaste").show();
     $("#input-typeOfWaste").attr("name", "newTypeOfWaste");
+    $("#input-typeOfWaste").attr("required", true);
     $("#instructions-addTypeOfWaste").show();
     $("#input-itemCategory").hide();
     $("#select-itemCategory").show();
+    $("#select-itemCategory").prop('required',true);
   } else {
     $("#input-itemCategory").attr("placeholder", selectedTypeOfWasteCategory);
   }
@@ -69,9 +71,11 @@ $("select#select-itemCategory").change(function() {
   if (selectedItemCategory == "Add New Item Category...") {
     $("#select-itemCategory").hide();
     $("#select-itemCategory").attr("name", "select-itemCategory");
+    $("#select-itemCategory").prop('required',false);
     $("#input-itemCategory").show();
     $("#input-itemCategory").attr("name", "newItemCategory");
     $("#input-itemCategory").prop("disabled", false);
+    $("#input-itemCategory").prop('required',true);
     $("#instructions-addItemCategory").show();
   }
 });
