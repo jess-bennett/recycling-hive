@@ -1,0 +1,65 @@
+<ul id="grid" class="clr">
+    {% if pageID == "categories" %}
+        <li>
+        <a href="{{ url_for('get_recycling_items', categoryID='view-all') }}">
+            <div class="hexagon">
+            <h3 class="hexagon-text">View all items</h3>
+            </div>
+        </a>
+        </li>
+        {% for category in categories %}
+        <li>
+        <a href="{{ url_for('get_recycling_items', categoryID=category._id) }}">
+            <div class="hexagon">
+            <h5 class="hexagon-text">{{ category.categoryName }}</h5>
+            </div>
+        </a>
+        </li>
+        {% endfor %}
+    {% endif %}
+    {% if pageID == "items" %}
+		{% for catItem in catItems %}
+		<li>
+			<a href="{{ url_for('get_recycling_collections', itemID=catItem._id) }}">
+				<div class="hexagon hexagon-medium">
+					<h5 class="hexagon-text hexagon-medium">{{ catItem.typeOfWaste }}</h5>
+				</div>
+			</a>
+		</li>
+		{% endfor %}
+    {% endif %}
+    {% if pageID == "collections" %}
+        <li>
+            <a href="{{ url_for('get_recycling_members', memberType='view-all') }}">
+                <div class="hexagon hexagon-dark">
+                    <h3 class="hexagon-text hexagon-dark">View all members</h3>
+                </div>
+            </a>
+        </li>
+        {% for collection in collectionsDict if collection.typeOfWaste == selectedItem %}
+        <li>
+            <div class="hexagon hexagon-dark" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
+                <h5 class="hexagon-text hexagon-dark">{{ collection.hiveMembers }} -
+                    {{ collection.town }}</h5>
+            </div>
+        </li>
+        
+        {% endfor %}
+    {% endif %}
+    {% if pageID == "members" %}
+		{% for member in memberGroup %}
+		<li>
+			<div class="hexagon {% if ((member.isQueenBee == False) and (member.isWorkerBee == False)) %}hexagon-dark{% elif ((member.isQueenBee == False) and (member.isWorkerBee == True)) %}hexagon-medium{% endif %}"
+				data-toggle="modal" data-target="#modal-collection-{{ member._id }}">
+				<h5
+					class="hexagon-text {% if ((member.isQueenBee == False) and (member.isWorkerBee == False)) %}hexagon-dark{% elif ((member.isQueenBee == False) and (member.isWorkerBee == True)) %}hexagon-medium{% endif %}">
+					{% if member.isQueenBee == True %}<i class="fas fa-crown"></i>
+					{% elif member.isWorkerBee == True %}<i class="fas fa-hard-hat"></i>
+					{% else %}<i class="fas fa-user"></i> {% endif %}{{ member.username }}
+				</h5>
+			</div>
+		</li>
+		
+		{% endfor %}
+    {% endif %}
+  </ul>

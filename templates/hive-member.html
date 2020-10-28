@@ -9,24 +9,7 @@
 
 
 <div id="member-layout">
-<!-- Item collection accordion -->
-<ul id="grid" class="clr">
-  {% for member in memberGroup %}
-  <li id="select-category">
-    <div
-      class="hexagon {% if ((member.isQueenBee == False) and (member.isWorkerBee == False)) %}hexagon-dark{% elif ((member.isQueenBee == False) and (member.isWorkerBee == True)) %}hexagon-medium{% endif %}"
-      data-toggle="modal" data-target="#modal-collection-{{ member._id }}">
-      <h5
-        class="hexagon-text {% if ((member.isQueenBee == False) and (member.isWorkerBee == False)) %}hexagon-dark{% elif ((member.isQueenBee == False) and (member.isWorkerBee == True)) %}hexagon-medium{% endif %}">
-        {% if member.isQueenBee == True %}<i class="fas fa-crown"></i>
-        {% elif member.isWorkerBee == True %}<i class="fas fa-hard-hat"></i>
-        {% else %}<i class="fas fa-user"></i> {% endif %}{{ member.username }}
-      </h5>
-    </div>
-  </li>
-
-  {% endfor %}
-</ul>
+    {% include "components/hexagons.html" %}
 </div>
 <!-- Collection details modal -->
 {% for member in memberGroup %}
