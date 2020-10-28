@@ -1,0 +1,53 @@
+          <div class="form-row">
+                  <!-- Type of waste -->
+                  <div class="form-group col-md-6">
+                    <div class="input-group mb-2">
+                      <div class="input-group-prepend" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Type of Waste">
+                        <div class="input-group-text"><i
+                            class="fas fa-recycle"></i></div>
+                      </div>
+                      <p class="form-control">{{ collection.typeOfWaste }}</p>
+                    </div>
+                  </div>
+                  <!-- Charity Scheme -->
+                  <div class="form-group col-md-6">
+                    <div class="input-group mb-2">
+                      <div class="input-group-prepend" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Charity Scheme">
+                        <div class="input-group-text"><i
+                            class="fas fa-hand-holding-heart"></i>
+                        </div>
+                      </div>
+                      <p class="form-control">{{ collection.charityScheme }}</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Location -->
+                <div class="form-group">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend" data-toggle="tooltip"
+                      data-placement="top" data-type="info"
+                      title="Collection Address">
+                      <div class="input-group-text"><i class="fas fa-home"></i>
+                      </div>
+                    </div>
+                    <p class="form-control">{{ collection.street }},
+                      {{ collection.town }}, {{ collection.postcode }}
+                    </p>
+                  </div>
+                </div>
+                <!-- Condition notes -->
+                <div class="form-group">
+                  <div class="input-group mb-2">
+                    <div class="input-group-prepend" data-toggle="tooltip"
+                      data-placement="top" data-type="info"
+                      title="Collection Notes">
+                      <div class="input-group-text"><i
+                          class="fas fa-comment"></i></div>
+                    </div>
+                    <p class="form-control">{{ collection.conditionNotes }}</p>
+                  </div>
+                </div>
