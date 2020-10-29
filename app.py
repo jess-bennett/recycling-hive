@@ -433,8 +433,8 @@ def get_recycling_members(memberType):
         membersCollectionValues=membersCollectionValues, pageID="members")
 
 
-@app.route("/delete-profile/<username>")
-def deleteProfile(username):
+@app.route("/delete-profile")
+def deleteProfile():
     # grab the session user's details from db
     userID = mongo.db.hiveMembers.find_one(
         {"email": session["user"]})["_id"]
@@ -443,6 +443,14 @@ def deleteProfile(username):
     mongo.db.itemCollections.remove({"memberID": ObjectId(userID)})
     flash("Your profile has been successfully deleted")
     return redirect(url_for("logout"))
+
+
+@app.route("/delete-location/<locationID>")
+def deleteLocation(locationID):
+    mongo.db.collectionLocations.remove({"_id": ObjectId(locationID)})
+    mongo.db.itemCollections.remove({"locationID": ObjectId(locationID)})
+    flash("Your location has been successfully deleted")
+    return redirect(url_for("profile", username=session["username"]))
 
 
 @app.route("/login", methods=["GET", "POST"])
