@@ -17,10 +17,7 @@
           <div class="form-group row">
             <label class="sr-only" for="username">Name</label>
             <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fab fa-forumbee"></i>
-                </div>
-              </div>
+              {% include "components/tooltips/tooltip-name.html" %}
               <input type="text" class="form-control" id="username"
                 name="username" placeholder="Name" minlength="3" required>
             </div>
@@ -30,9 +27,7 @@
           <div class="form-group row">
             <label class="sr-only" for="email">Email</label>
             <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-at"></i></div>
-              </div>
+              {% include "components/tooltips/tooltip-email.html" %}
               <input type="email" class="form-control" id="email" name="email"
                 placeholder="email" required>
             </div>

@@ -22,10 +22,7 @@
             <label class="sr-only" for="addLocationNickname">Location nickname
               (e.g. 'Work')</label>
             <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-signature"></i>
-                </div>
-              </div>
+              {% include "components/tooltips/tooltip-nickname.html" %}
               <input type="text" class="form-control" id="addLocationNickname"
                 name="addLocationNickname"
                 placeholder="Location nickname (e.g. 'Work')" minlength="2"
@@ -37,9 +34,7 @@
             <label class="sr-only" for="addLocationStreet">Location
               address</label>
             <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-home"></i></div>
-              </div>
+              {% include "components/tooltips/tooltip-address.html" %}
               <input type="text" class="form-control" id="addLocationStreet"
                 name="addLocationStreet"
                 placeholder="Location address (e.g. '88 Recycling Street')"
@@ -53,10 +48,7 @@
             <label class="sr-only" for="addLocationTown">Location town
               (e.g. 'Newbury')</label>
             <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-city"></i>
-                </div>
-              </div>
+              {% include "components/tooltips/tooltip-town.html" %}
               <input type="text" class="form-control" id="addLocationTown"
                 name="addLocationTown"
                 placeholder="Location town (e.g. 'Newbury')" minlength="2"
@@ -68,9 +60,7 @@
             <label class="sr-only" for="addLocationPostcode">Location
               postcode</label>
             <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-map-marker-alt"></i></div>
-              </div>
+              {% include "components/tooltips/tooltip-postcode.html" %}
               <input type="text" class="form-control" id="addLocationPostcode"
                 name="addLocationPostcode"
                 placeholder="Location postcode"
@@ -122,10 +112,7 @@
               <label class="sr-only" for="input-itemCategory">Item
                 Category</label>
               <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text"><i class="fas fa-list"></i>
-                  </div>
-                </div>
+                {% include "components/tooltips/tooltip-category.html" %}
                 <input type="text" class="form-control" id="input-itemCategory"
                   name="input-itemCategory" placeholder="Item Category"
                   disabled>
@@ -157,10 +144,7 @@
               <label class="sr-only" for="select-typeOfWaste">Type of
                 Waste</label>
               <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text"><i class="fas fa-recycle"></i>
-                  </div>
-                </div>
+                {% include "components/tooltips/tooltip-waste.html" %}
                 <input type="text" class="form-control" id="input-typeOfWaste"
                   name="input-typeOfWaste" placeholder="Type of Waste"
                   minlength="2">
@@ -193,10 +177,7 @@
             <div class="form-group col-md-3">
               <label class="sr-only" for="locationID">Location</label>
               <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text"><i class="fas fa-signature"></i>
-                  </div>
-                </div>
+                {% include "components/tooltips/tooltip-nickname.html" %}
                 <select class="form-control" id="locationID" name="locationID"
                   required>
                   <option value="" selected disabled>Location</option>
@@ -213,10 +194,7 @@
             <div class="form-group col-md-9">
               <label class="sr-only" for="locationAddress">Location</label>
               <div class="input-group mb-2">
-                <div class="input-group-prepend">
-                  <div class="input-group-text"><i class="fas fa-home"></i>
-                  </div>
-                </div>
+                {% include "components/tooltips/tooltip-address.html" %}
                 <input type="text" class="form-control" id="locationAddress"
                   name="locationAddress" placeholder="Street, town, postcode"
                   disabled>
@@ -228,10 +206,7 @@
             <label class="sr-only" for="conditionNotes">What condition should
               this item be in?</label>
             <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-comment"></i>
-                </div>
-              </div>
+              {% include "components/tooltips/tooltip-notes.html" %}
               <textarea class="form-control" id="conditionNotes"
                 name="conditionNotes"
                 placeholder="What condition should this item be in? (E.g. Washed/As it is)"
@@ -243,10 +218,7 @@
             <label class="sr-only" for="charityScheme">Charity
               (optional)</label>
             <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i
-                    class="fas fa-hand-holding-heart"></i></div>
-              </div>
+              {% include "components/tooltips/tooltip-charity.html" %}
               <input type="text" class="form-control" id="charityScheme"
                 name="charityScheme" placeholder="Charity (optional)"
                 minlength="2">

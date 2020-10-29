@@ -48,21 +48,14 @@
                   <!-- Username -->
                   <div class="form-group col-md-6">
                     <div class="input-group mb-2">
-                      <div class="input-group-prepend" data-toggle="tooltip"
-                        data-placement="top" data-type="info" title="Username">
-                        <div class="input-group-text"><i
-                            class="fab fa-forumbee"></i></div>
-                      </div>
+                      {% include "components/tooltips/tooltip-name.html" %}
                       <p class="form-control">{{ username }}</p>
                     </div>
                   </div>
                   <!-- Email -->
                   <div class="form-group col-md-6">
                     <div class="input-group mb-2">
-                      <div class="input-group-prepend" data-toggle="tooltip"
-                        data-placement="top" data-type="info" title="Email">
-                        <div class="input-group-text"><i class="fas fa-at"></i>
-                        </div>
+                      {% include "components/tooltips/tooltip-email.html" %}
                       </div>
                       <p class="form-control">{{ email }}</p>
                     </div>
@@ -125,22 +118,14 @@
                   <!-- Nickname -->
                   <div class="form-group col-md-3">
                     <div class="input-group mb-2">
-                      <div class="input-group-prepend" data-toggle="tooltip"
-                        data-placement="top" data-type="info" title="Nickname">
-                        <div class="input-group-text"><i
-                            class="fas fa-signature"></i></div>
-                      </div>
+                      {% include "components/tooltips/tooltip-nickname.html" %}
                       <p class="form-control">{{ location.nickname }}</p>
                     </div>
                   </div>
                   <!-- Address -->
                   <div class="form-group col-md-9">
                     <div class="input-group mb-2">
-                      <div class="input-group-prepend" data-toggle="tooltip"
-                        data-placement="top" data-type="info" title="Address">
-                        <div class="input-group-text"><i
-                            class="fas fa-home"></i></div>
-                      </div>
+                      {% include "components/tooltips/tooltip-address.html" %}
                       <p class="form-control">
                         {{ location.street }}, {{ location.town }},
                         {{ location.postcode }}

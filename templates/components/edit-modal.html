@@ -19,10 +19,7 @@
           <div class="form-group row">
             <label class="sr-only" for="edit-username">Name</label>
             <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fab fa-forumbee"></i>
-                </div>
-              </div>
+              {% include "components/tooltips/tooltip-name.html" %}
               <input type="text" class="form-control" id="edit-username"
                 name="edit-username" value="{{ username }}"
                 placeholder="{{ username }}" minlength="3" required>
@@ -32,9 +29,7 @@
           <div class="form-group row">
             <label class="sr-only" for="edit-email">Email</label>
             <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-at"></i></div>
-              </div>
+              {% include "components/tooltips/tooltip-email.html" %}
               <input type="email" class="form-control" id="edit-email"
                 name="edit-email" value="{{ email }}" placeholder="{{ email }}"
                 required>
