@@ -111,27 +111,25 @@ def profile(username):
             ]))
         # Post method for editing user details
         if request.method == "POST":
-            # Post method for updating user details
-            if 'edit-username' in request.form:
-                # check where email already exists in db
-                existing_user = mongo.db.hiveMembers.find_one(
-                    {"_id": {"$ne": ObjectId(userID)},
-                     "email": request.form.get("edit-email").lower()}
-                )
-                if existing_user:
-                    flash("Email already exists")
-                    return redirect(url_for(
-                        "profile", username=session["username"]))
-
-                filter = {"_id": ObjectId(userID)}
-                session["username"] = request.form.get("edit-username")
-                editDetails = {"$set": {'username': session["username"],
-                               "email": request.form.get(
-                               "edit-email").lower()}}
-                mongo.db.hiveMembers.update(filter, editDetails)
-                flash("Your details have been updated")
+            # check where email already exists in db
+            existing_user = mongo.db.hiveMembers.find_one(
+                {"_id": {"$ne": ObjectId(userID)},
+                    "email": request.form.get("edit-email").lower()}
+            )
+            if existing_user:
+                flash("Email already exists")
                 return redirect(url_for(
                     "profile", username=session["username"]))
+
+            filter = {"_id": ObjectId(userID)}
+            session["username"] = request.form.get("edit-username")
+            editDetails = {"$set": {'username': session["username"],
+                           "email": request.form.get(
+                            "edit-email").lower()}}
+            mongo.db.hiveMembers.update(filter, editDetails)
+            flash("Your details have been updated")
+            return redirect(url_for(
+                "profile", username=session["username"]))
 
         return render_template("/pages/profile.html", userID=userID,
                                username=session["username"], email=email,
@@ -261,6 +259,33 @@ def add_new_item():
             flash("New collection added")
             return redirect(url_for("get_recycling_collections",
                                     itemID=itemID))
+    return redirect(url_for("profile", username=session["username"]))
+
+
+@app.route("/add-new-location", methods=["GET", "POST"])
+def add_new_location():
+    userID = mongo.db.hiveMembers.find_one(
+            {'email': session['user']})["_id"]
+    if request.method == "POST":
+        # Check whether nickname already exists
+        existingNickname = mongo.db.collectionLocations.find_one(
+                {"_id": ObjectId(userID),
+                    "nickname": request.form.get("addLocationNickname")}
+        if existingNickname:
+            flash("Location already saved under this nickname")
+            return redirect(url_for(
+                    "profile", username=session["username"]))
+        newLocation = {
+                "nickname": request.form.get("addLocationNickname"),
+                "street": request.form.get("addLocationStreet"),
+                "town": request.form.get("addLocationTown"),
+                "postcode": request.form.get("addLocationPostcode"),
+                "memberID": userID
+            }
+        mongo.db.collectionLocations.insert_one(newLocation)
+        flash("New location added")
+        return redirect(url_for("profile", username=session["username"]))
+
     return redirect(url_for("profile", username=session["username"]))
 
 
