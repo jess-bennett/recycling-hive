@@ -229,60 +229,7 @@
   </div>
 </section>
 
-<!-- Edit details modal -->
-<div class="modal fade" id="modal-edit-profile" tabindex="-1" role="dialog"
-  aria-labelledby="modal-edit-profile-title" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-edit-profile-title">Edit Details
-        </h4>
-
-        <button type="button" class="close" data-dismiss="modal"
-          aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form name="editDetails" class="card-body" method="POST"
-          action="{{ url_for('profile', username=username) }}">
-          <!-- Name -->
-          <div class="form-group row">
-            <label class="sr-only" for="edit-username">Name</label>
-            <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fab fa-forumbee"></i>
-                </div>
-              </div>
-              <input type="text" class="form-control" id="edit-username"
-                name="edit-username" value="{{ username }}"
-                placeholder="{{ username }}" minlength="3" required>
-            </div>
-          </div>
-          <!-- Email -->
-          <div class="form-group row">
-            <label class="sr-only" for="edit-email">Email</label>
-            <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-at"></i></div>
-              </div>
-              <input type="email" class="form-control" id="edit-email"
-                name="edit-email" value="{{ email }}" placeholder="{{ email }}"
-                required>
-            </div>
-          </div>
-          <!-- Submit -->
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-primary"
-              data-dismiss="modal">Cancel</button>
-            <button id="submit-edit-details" class="btn btn-outline-primary"
-              type="submit" name="submit-edit-details">Save Changes</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
+{% include "components/edit-modal.html" %}
 
 {% include "components/delete-modal.html" %}
 
