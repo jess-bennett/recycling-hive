@@ -154,7 +154,8 @@ def profile(username):
              'conditionNotes': 1,
              'charityScheme': 1
              }
-             }
+             },
+            {'$sort': {'typeOfWaste': 1}}
             ]))
         # Get list of categories for dropdown menu
         categories = list(mongo.db.itemCategory.find().sort("categoryName"))
