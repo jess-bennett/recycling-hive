@@ -73,3 +73,8 @@ $("select#locationID").change(function() {
   $("#locationAddress").attr("placeholder", selectedLocationID);
 });
 
+/* FORMS IN EDIT COLLECTION MODAL */
+$("select#editLocation").change(function() {
+  selectedEditLocation = $(this).find(":selected").data("id");
+  $("#editLocationAddress").attr("placeholder", selectedEditLocation);
+});

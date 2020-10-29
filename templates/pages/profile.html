@@ -193,9 +193,10 @@
                       data-toggle="tooltip" data-placement="top"
                       data-type="info" title="Delete"><i
                         class="fas fa-trash-alt"></i></div>
-                    <div id="amend-collection" class="btn col-1 btn-edit"
-                      data-toggle="tooltip" data-placement="top"
-                      data-type="info" title="Edit"><i class="fas fa-edit"></i>
+                    <div id="amend-collection" class="btn col-1 btn-edit" data-toggle="modal"
+                      data-target="#modal-edit-collection-{{ collection._id }}">
+                      <i class="fas fa-edit" data-toggle="tooltip" data-placement="top"
+                      data-type="info" title="Edit"></i>
                     </div>
                   </div>
                 </div>

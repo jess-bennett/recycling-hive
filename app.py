@@ -146,6 +146,7 @@ def profile(username):
             {'$project': {
              'typeOfWaste': '$recyclableItems.typeOfWaste',
              'hiveMembers': '$hiveMembers._id',
+             'nickname': '$collectionLocations.nickname',
              'street': '$collectionLocations.street',
              'town': '$collectionLocations.town',
              'postcode': '$collectionLocations.postcode',
@@ -263,8 +264,8 @@ def delete_location(location_id):
     return redirect(url_for("profile", username=session["username"]))
 
 
-@app.route("/add-new-item", methods=["GET", "POST"])
-def add_new_item():
+@app.route("/add-new-collection", methods=["GET", "POST"])
+def add_new_collection():
     user_id = mongo.db.hiveMembers.find_one(
             {'email': session['user']})["_id"]
     if request.method == "POST":
@@ -381,6 +382,23 @@ def add_new_item():
             flash("New collection added")
             return redirect(url_for("get_recycling_collections",
                                     item_id=item_id))
+    return redirect(url_for("profile", username=session["username"]))
+
+
+@app.route("/edit-collection/<collection_id>", methods=["GET", "POST"])
+def edit_collection(collection_id):
+    if request.method == "POST":
+        filter = {"_id": ObjectId(collection_id)}
+        edit_collection = {"$set":
+                           {"conditionNotes": request.form.get("editNotes"),
+                            "charityScheme": request.form.get("editCharity"),
+                            "locationID": ObjectId(
+                                request.form.get("editLocation"))}}
+        mongo.db.itemCollections.update(filter, edit_collection)
+        flash("Your collection has been updated")
+        return redirect(url_for(
+            "profile", username=session["username"]))
+
     return redirect(url_for("profile", username=session["username"]))
 
 
