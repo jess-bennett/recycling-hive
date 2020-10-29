@@ -240,6 +240,21 @@ def add_new_location():
     return redirect(url_for("profile", username=session["username"]))
 
 
+@app.route("/edit-location/<locationID>", methods=["GET", "POST"])
+def edit_location(locationID):
+    if request.method == "POST":
+        filter = {"_id": ObjectId(locationID)}
+        editLocation = {"$set": {"street": request.form.get("edit-street"),
+                        "town": request.form.get("edit-town"),
+                        "postcode": request.form.get("edit-postcode")}}
+        mongo.db.collectionLocations.update(filter, editLocation)
+        flash("Your location has been updated")
+        return redirect(url_for(
+            "profile", username=session["username"]))
+
+    return redirect(url_for("profile", username=session["username"]))
+
+
 @app.route("/delete-location/<locationID>")
 def deleteLocation(locationID):
     mongo.db.collectionLocations.remove({"_id": ObjectId(locationID)})
