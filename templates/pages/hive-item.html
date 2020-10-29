@@ -1,0 +1,16 @@
+{% extends "layout/base.html" %}
+{% set active_item = "hive" %}
+{% set active_item = "items" %}
+{% block content %}
+
+{% include "components/breadcrumbs.html" %}
+
+{% include "components/dropdown.html" %}
+
+
+<!-- Item collection accordion -->
+<div id="item-layout">
+  {% include "components/hexagons.html" %}
+</div>
+
+{% endblock %}

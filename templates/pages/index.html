@@ -1,0 +1,91 @@
+{% extends "layout/base.html" %}
+{% set active_item = "home" %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card-body text-center green-background space-below">
+        {% if username == False %}
+        <h4>Welcome back to the Recyling Hive</h4>
+        {% else %}
+        <h4>Welcome back to the XXX Hive,</h4>
+        <h3>{{ username }}!</h3>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<section id="home-hexagons">
+  <ul id="grid" class="clr home hexagon-large">
+    {% if username == False %}
+    <li>
+        <a href="">
+        <div id="btn-profile" class="hexagon">
+            <img src="../static/images/bees.jpg" alt="Lorem Ipsum" />
+            <h3 class="hexagon-text">Demo</h3>
+        </div>
+        </a>
+    </li>
+    <li>
+      <a href="{{ url_for('login') }}">
+        <div class="hexagon">
+          <img src="../static/images/recycling-items.jpg" alt="Lorem Ipsum" />
+          <h3 class="hexagon-text">Log In</h3>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="{{ url_for('register') }}">
+        <div class="hexagon">
+          <img src="../static/images/recycling-symbol.png" alt="Lorem Ipsum" />
+          <h3 class="hexagon-text">Register</h3>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="#item3">
+        <div class="hexagon">
+          <img src="../static/images/recycling-symbol.png" alt="Lorem Ipsum" />
+          <h3 class="hexagon-text">Be inspired!</h3>
+        </div>
+      </a>
+    </li>
+    {% else %}
+    <li>
+        <a href="{{ url_for('profile', username=session['username']) }}">
+        <div id="btn-profile" class="hexagon">
+            <img src="../static/images/bees.jpg" alt="Lorem Ipsum" />
+            <h3 class="hexagon-text">View your profile</h3>
+        </div>
+        </a>
+    </li>
+    <li>
+      <a href="{{ url_for('get_recycling_categories') }}">
+        <div class="hexagon">
+          <img src="../static/images/recycling-items.jpg" alt="Lorem Ipsum" />
+          <h3 class="hexagon-text">Search your Hive</h3>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="#item3">
+        <div class="hexagon">
+          <img src="../static/images/recycling-symbol.png" alt="Lorem Ipsum" />
+          <h3 class="hexagon-text">Be inspired!</h3>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="#item3">
+        <div class="hexagon">
+          <img src="../static/images/recycling-symbol.png" alt="Lorem Ipsum" />
+          <h3 class="hexagon-text">Be inspired!</h3>
+        </div>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</section>
+
+{% endblock %}

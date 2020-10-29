@@ -126,6 +126,10 @@ body {
   padding: 1rem;
 }
 
+.green-line {
+    background-color: #d2d914;
+}
+
 .img-membership {
   font-size: 2rem;
 }

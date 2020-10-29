@@ -1,0 +1,209 @@
+<!-- Edit profile modal -->
+<div class="modal fade" id="modal-edit-profile" tabindex="-1" role="dialog"
+  aria-labelledby="modal-edit-profile-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100" id="modal-edit-profile-title">Edit Details
+        </h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="editDetails" class="card-body" method="POST"
+          action="{{ url_for('profile', username=username) }}">
+          <!-- Name -->
+          <div class="form-group row">
+            <label class="sr-only" for="edit-username">Name</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-name.html" %}
+              <input type="text" class="form-control" id="edit-username"
+                name="edit-username" value="{{ username }}"
+                placeholder="{{ username }}" minlength="3" required>
+            </div>
+          </div>
+          <!-- Email -->
+          <div class="form-group row">
+            <label class="sr-only" for="edit-email">Email</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-email.html" %}
+              <input type="email" class="form-control" id="edit-email"
+                name="edit-email" value="{{ email }}" placeholder="{{ email }}"
+                required>
+            </div>
+          </div>
+          <!-- Submit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary"
+              data-dismiss="modal">Cancel</button>
+            <button id="submit-edit-details" class="btn btn-outline-primary"
+              type="submit" name="submit-edit-details">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% for location in locations %}
+<!-- Edit location modal -->
+<div class="modal fade" id="modal-edit-location-{{ location._id }}" tabindex="-1" role="dialog"
+  aria-labelledby="modal-edit-location-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100" id="modal-edit-location-title">Edit {{ location.nickname }} Location
+        </h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="editLocation" class="card-body" method="POST"
+          action="{{ url_for('edit_location', location_id=location._id) }}">
+          <!-- Location street -->
+          <div class="form-group">
+            <label class="sr-only" for="addLocationStreet">Location
+              address</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-address.html" %}
+              <input type="text" class="form-control" id="editStreet"
+                name="editStreet" value="{{ location.street }}"
+                placeholder="{{ location.street }}"
+                minlength="2" required>
+            </div>
+          </div>
+          <div class="form-row">  
+          <!-- Location town -->
+          <div class="form-group col-md-6">
+            <label class="sr-only" for="addLocationTown">Location town
+              (e.g. 'Newbury')</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-town.html" %}
+              <input type="text" class="form-control" id="editTown"
+                name="editTown" value="{{ location.town }}"
+                placeholder="{{ location.town }}" minlength="2"
+                required>
+            </div>
+          </div>
+          <!-- Location postcode -->
+          <div class="form-group col-md-6">
+            <label class="sr-only" for="addLocationPostcode">Location
+              postcode</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-postcode.html" %}
+              <input type="text" class="form-control" id="editPostcode"
+                name="editPostcode" value="{{ location.postcode }}"
+                placeholder="{{ location.postcode }}"
+                minlength="2" required>
+            </div>
+          </div>
+          </div>
+          <!-- Submit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary"
+              data-dismiss="modal">Cancel</button>
+            <button id="submit-edit-location" class="btn btn-outline-primary"
+              type="submit" name="submit-edit-location">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% for collection in collections_dict %}
+<!-- Edit collection modal -->
+<div class="modal fade" id="modal-edit-collection-{{ collection._id }}" tabindex="-1" role="dialog"
+  aria-labelledby="modal-edit-collection-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100" id="modal-edit-collection-title">Edit {{ collection.typeOfWaste }} Collection
+        </h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="editCollection" class="card-body" method="POST"
+          action="{{ url_for('edit_collection', collection_id=collection._id) }}">
+          <div class="form-row">
+            <!-- Nickname -->
+            <div class="form-group col-md-3">
+              <label class="sr-only" for="locationID">Location</label>
+              <div class="input-group mb-2">
+                {% include "components/tooltips/tooltip-nickname.html" %}
+                <select class="form-control" id="editLocation" name="editLocation"
+                  required>
+                  {% for location in locations %}
+                  {% if location.nickname == collection.nickname %}
+                  <option
+                    data-id="{{ location.street }}, {{ location.town }}, {{ location.postcode }}"
+                    value="{{ location._id }}" selected>{{ location.nickname }}
+                  </option>
+                  {% else %}
+                  <option
+                    data-id="{{ location.street }}, {{ location.town }}, {{ location.postcode }}"
+                    value="{{ location._id }}">{{ location.nickname }}
+                  </option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <!-- Address -->
+            <div class="form-group col-md-9">
+              <label class="sr-only" for="editLocationAddress">Location</label>
+              <div class="input-group mb-2">
+                {% include "components/tooltips/tooltip-address.html" %}
+                <input type="text" class="form-control" id="editLocationAddress"
+                  name="editLocationAddress" placeholder="{{ collection.street }}, {{ collection.town }}, {{ collection.postcode }}"
+                  disabled>
+              </div>
+            </div>
+          </div>
+          <!-- Condition Notes -->
+          <div class="form-group">
+            <label class="sr-only" for="editNotes">What condition should
+              this item be in?</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-notes.html" %}
+              <textarea class="form-control" id="editNotes"
+                name="editNotes"
+                placeholder="{{ collection.conditionNotes }}"
+                minlength="4" required>{{ collection.conditionNotes }}</textarea>
+            </div>
+          </div>
+          <!-- Charity -->
+          <div class="form-group">
+            <label class="sr-only" for="editCharity">Charity
+              (optional)</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-charity.html" %}
+              <input type="text" class="form-control" id="editCharity"
+                name="editCharity" placeholder="{{ collection.charityScheme }}" value="{{ collection.charityScheme }}"
+                minlength="2">
+            </div>
+          </div>
+          <!-- Submit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary"
+              data-dismiss="modal">Close</button>
+            <button id="submit-edit-location" class="btn btn-outline-primary"
+              type="submit" name="submit-edit-location">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}

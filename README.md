@@ -174,7 +174,8 @@ I ended up with the following six collections:
 
 ### :bug: Bugs
 ---
-* A main cause of issues during the creation of this project concerned the hexagon grid layout.\
+#### Bug 1
+A main cause of issues during the creation of this project concerned the hexagon grid layout.\
 I didn't want to abandon the css entirely as I am overall very pleased with how it looks and how 
 it ties in with the overall theme of the sight, and so I had to find some workarounds in order for
 it to behave as I needed.
@@ -182,6 +183,78 @@ The spacing on the hive-category page was one such issue, with the hexagon grid 
 breadcrumb navbar at the top. 
 My workaround was to include a button as on the other pages (where spacing was not an issue), but
 set the button's visibility to hidden.
+<hr>
+
+#### Bug 2
+Less of a bug, and more of a complex solution to an issue...
+I was suprised to find that there was no easy solution to displaying text if a jinja 'for loop' was empty.\
+Essentially, on the hive members page, I wanted to display a list of all of the collections relevant to the selected member. 
+The 'for loop' worked perfectly to display their data, but for members without a collection, the list was blank. In this scenario I wanted
+to display some text to signify to the user that this was not an error, but instead that there were no collections to display. 
+
+<strong>Initial working code</strong>
+```html
+{% for collection in membersDict if collection._id == member._id %}
+    {% include "components/collection-details-modal.html" %}
+{% endfor %}
+```
+This first piece of code displayed data, but no text for collection-less members. 
+
+<strong>First adjustment</strong>
+```html
+{% for collection in membersDict %}
+    {% if collection._id == member._id %}
+        {% include "components/collection-details-modal.html" %}
+    {% else %}
+    <p>No collection to display</p>
+    {% endif %}
+{% endfor %}
+```
+After the first adjustment, the data was displayed correctly for members with a collection.
+For members without a collection, the text was repeated by the total number of collections.
+
+I tried many other solutions including variations of:\
+<strong>Second adjustment</strong>
+```html
+{% if member._id in membersDict %}
+    {% for collection in membersDict if collection._id == member._id %}
+        {% include "components/collection-details-modal.html" %}
+    {% endfor %}
+    {% else %}
+    <p>No collection to display</p>
+{% endif %}
+```
+But none of these worked as 'membersDict' is a nested list and so 'member._id' could not be found.
+
+What appeared to be the perfect solution in Python:\
+<strong>Third adjustment</strong>
+```html
+{% if (any(member._id in x for x in membersDict)) %}
+    {% for collection in membersDict if collection._id == member._id %}
+        {% include "components/collection-details-modal.html" %}
+    {% endfor %}
+    {% else %}
+    <p>No collection to display</p>
+{% endif %}
+```
+Did not translate to Jinja and so this adjustment did nothing.
+
+<strong>Solution</strong>
+```html
+{% if member._id in membersCollectionValues %}
+    {% for collection in membersDict if collection._id == member._id %}
+        {% include "components/collection-details-modal.html" %}
+    {% endfor %}
+    {% else %}
+    <p>No collection to display</p>
+{% endif %}
+```
+The only solution that I was able to find that worked, was to create a new <strong>un-nested</strong> list in my
+Flask route, which contained all the member IDs with collections. I was then able to search this list
+to enable my 'if statement'.
+
+I am still not convinced that this is the most elegant solution, but it was the best I was able to come up with for this issue!
+
 
 ### :deciduous_tree: Branches
 ---
