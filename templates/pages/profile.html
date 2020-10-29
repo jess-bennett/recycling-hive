@@ -56,7 +56,6 @@
                   <div class="form-group col-md-6">
                     <div class="input-group mb-2">
                       {% include "components/tooltips/tooltip-email.html" %}
-                      </div>
                       <p class="form-control">{{ email }}</p>
                     </div>
                   </div>
@@ -142,9 +141,10 @@
                         class="fas fa-trash-alt" data-toggle="tooltip"
                         data-placement="top" data-type="info"
                         title="Delete"></i></div>
-                    <div id="amend-location" class="btn col-1 btn-edit"
-                      data-toggle="tooltip" data-placement="top"
-                      data-type="info" title="Edit"><i class="fas fa-edit"></i>
+                    <div id="amend-location" class="btn col-1 btn-edit" data-toggle="modal"
+                      data-target="#modal-edit-location-{{ location._id }}">
+                      <i class="fas fa-edit" data-toggle="tooltip" data-placement="top"
+                      data-type="info" title="Edit"></i>
                     </div>
                   </div>
                 </div>

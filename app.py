@@ -241,12 +241,12 @@ def add_new_location():
 
 
 @app.route("/edit-location/<locationID>", methods=["GET", "POST"])
-def edit_location(locationID):
+def editLocation(locationID):
     if request.method == "POST":
         filter = {"_id": ObjectId(locationID)}
-        editLocation = {"$set": {"street": request.form.get("edit-street"),
-                        "town": request.form.get("edit-town"),
-                        "postcode": request.form.get("edit-postcode")}}
+        editLocation = {"$set": {"street": request.form.get("editStreet"),
+                        "town": request.form.get("editTown"),
+                        "postcode": request.form.get("editPostcode")}}
         mongo.db.collectionLocations.update(filter, editLocation)
         flash("Your location has been updated")
         return redirect(url_for(

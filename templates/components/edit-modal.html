@@ -47,3 +47,73 @@
     </div>
   </div>
 </div>
+
+{% for location in locations %}
+<!-- Edit location modal -->
+<div class="modal fade" id="modal-edit-location-{{ location._id }}" tabindex="-1" role="dialog"
+  aria-labelledby="modal-edit-location-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100" id="modal-edit-location-title">Edit {{ location.nickname }} Location
+        </h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="editLocation" class="card-body" method="POST"
+          action="{{ url_for('editLocation', locationID=location._id) }}">
+          <!-- Location street -->
+          <div class="form-group">
+            <label class="sr-only" for="addLocationStreet">Location
+              address</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-address.html" %}
+              <input type="text" class="form-control" id="editStreet"
+                name="editStreet" value="{{ location.street }}"
+                placeholder="{{ location.street }}"
+                minlength="2" required>
+            </div>
+          </div>
+          <div class="form-row">  
+          <!-- Location town -->
+          <div class="form-group col-md-6">
+            <label class="sr-only" for="addLocationTown">Location town
+              (e.g. 'Newbury')</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-town.html" %}
+              <input type="text" class="form-control" id="editTown"
+                name="editTown" value="{{ location.town }}"
+                placeholder="{{ location.town }}" minlength="2"
+                required>
+            </div>
+          </div>
+          <!-- Location postcode -->
+          <div class="form-group col-md-6">
+            <label class="sr-only" for="addLocationPostcode">Location
+              postcode</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-postcode.html" %}
+              <input type="text" class="form-control" id="editPostcode"
+                name="editPostcode" value="{{ location.postcode }}"
+                placeholder="{{ location.postcode }}"
+                minlength="2" required>
+            </div>
+          </div>
+          </div>
+          <!-- Submit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary"
+              data-dismiss="modal">Cancel</button>
+            <button id="submit-edit-location" class="btn btn-outline-primary"
+              type="submit" name="submit-edit-location">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
