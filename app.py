@@ -33,6 +33,68 @@ def home():
             "pages/index.html", username=False, pageID="home")
 
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        # check whether email already exists in db
+        existing_user = mongo.db.hiveMembers.find_one(
+            {"email": request.form.get("email").lower()})
+
+        if existing_user:
+            flash("Email already exists")
+            return redirect(url_for("register"))
+
+        register = {
+            "username": request.form.get("username"),
+            "email": request.form.get("email").lower(),
+            "password": generate_password_hash(request.form.get("password")),
+            "securityQuestion": request.form.get("security-question"),
+            "marketing": request.form.get("marketing"),
+            "isQueenBee": False,
+            "isWorkerBee": False
+        }
+        mongo.db.hiveMembers.insert_one(register)
+
+        # put the new user into 'session' cookie
+        session["user"] = request.form.get("email")
+        # grab the session user's username from db
+        session["username"] = mongo.db.hiveMembers.find_one(
+            {"email": session["user"]})["username"]
+        flash("Registration Successful!")
+        return redirect(url_for("home", username=session["username"]))
+
+    return render_template("pages/register.html", pageID="register")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        # check if user exists in db
+        existing_user = mongo.db.hiveMembers.find_one(
+            {"email": request.form.get("email").lower()})
+
+        if existing_user:
+            # ensure hashed password matches user input
+            if check_password_hash(
+                    existing_user["password"], request.form.get("password")):
+                session["user"] = existing_user["email"]
+                # grab the session user's username from db
+                session["username"] = mongo.db.hiveMembers.find_one(
+                    {"email": session["user"]})["username"]
+                return redirect(url_for("home"))
+            else:
+                # invalid password match
+                flash("Incorrect email and/or password")
+                return redirect(url_for("login"))
+
+        else:
+            # email doesn't exist
+            flash("Incorrect email and/or password")
+            return redirect(url_for("login"))
+
+    return render_template("pages/login.html", pageID="login")
+
+
 @app.route("/profile/<username>", methods=["GET", "POST"])
 def profile(username):
     if session["user"]:
@@ -139,6 +201,51 @@ def profile(username):
                                pageID="profile")
 
     return redirect(url_for("login"))
+
+
+@app.route("/profile/delete")
+def deleteProfile():
+    # grab the session user's details from db
+    userID = mongo.db.hiveMembers.find_one(
+            {'email': session['user']})["_id"]
+    mongo.db.hiveMembers.remove({"_id": ObjectId(userID)})
+    mongo.db.collectionLocations.remove({"memberID": ObjectId(userID)})
+    mongo.db.itemCollections.remove({"memberID": ObjectId(userID)})
+    flash("Your profile has been successfully deleted")
+    return redirect(url_for("logout"))
+
+
+@app.route("/add-new-location", methods=["GET", "POST"])
+def add_new_location():
+    userID = mongo.db.hiveMembers.find_one({'email': session['user']})["_id"]
+    if request.method == "POST":
+        # Check whether nickname already exists
+        existingNickname = mongo.db.collectionLocations.find_one(
+            {"memberID": ObjectId(userID), "nickname": request.form.get(
+                "addLocationNickname")})
+        if existingNickname:
+            flash("Location already saved under this nickname")
+            return redirect(url_for("profile", username=session["username"]))
+        newLocation = {
+                "nickname": request.form.get("addLocationNickname"),
+                "street": request.form.get("addLocationStreet"),
+                "town": request.form.get("addLocationTown"),
+                "postcode": request.form.get("addLocationPostcode"),
+                "memberID": userID
+            }
+        mongo.db.collectionLocations.insert_one(newLocation)
+        flash("New location added")
+        return redirect(url_for("profile", username=session["username"]))
+
+    return redirect(url_for("profile", username=session["username"]))
+
+
+@app.route("/delete-location/<locationID>")
+def deleteLocation(locationID):
+    mongo.db.collectionLocations.remove({"_id": ObjectId(locationID)})
+    mongo.db.itemCollections.remove({"locationID": ObjectId(locationID)})
+    flash("Your location has been successfully deleted")
+    return redirect(url_for("profile", username=session["username"]))
 
 
 @app.route("/add-new-item", methods=["GET", "POST"])
@@ -259,33 +366,6 @@ def add_new_item():
             flash("New collection added")
             return redirect(url_for("get_recycling_collections",
                                     itemID=itemID))
-    return redirect(url_for("profile", username=session["username"]))
-
-
-@app.route("/add-new-location", methods=["GET", "POST"])
-def add_new_location():
-    userID = mongo.db.hiveMembers.find_one(
-            {'email': session['user']})["_id"]
-    if request.method == "POST":
-        # Check whether nickname already exists
-        existingNickname = mongo.db.collectionLocations.find_one(
-                {"_id": ObjectId(userID),
-                    "nickname": request.form.get("addLocationNickname")}
-        if existingNickname:
-            flash("Location already saved under this nickname")
-            return redirect(url_for(
-                    "profile", username=session["username"]))
-        newLocation = {
-                "nickname": request.form.get("addLocationNickname"),
-                "street": request.form.get("addLocationStreet"),
-                "town": request.form.get("addLocationTown"),
-                "postcode": request.form.get("addLocationPostcode"),
-                "memberID": userID
-            }
-        mongo.db.collectionLocations.insert_one(newLocation)
-        flash("New location added")
-        return redirect(url_for("profile", username=session["username"]))
-
     return redirect(url_for("profile", username=session["username"]))
 
 
@@ -465,88 +545,6 @@ def get_recycling_members(memberType):
         memberGroup=memberGroup, membersDict=membersDict,
         membersCollection=membersCollection,
         membersCollectionValues=membersCollectionValues, pageID="members")
-
-
-@app.route("/delete-profile")
-def deleteProfile():
-    # grab the session user's details from db
-    userID = mongo.db.hiveMembers.find_one(
-            {'email': session['user']})["_id"]
-    mongo.db.hiveMembers.remove({"_id": ObjectId(userID)})
-    mongo.db.collectionLocations.remove({"memberID": ObjectId(userID)})
-    mongo.db.itemCollections.remove({"memberID": ObjectId(userID)})
-    flash("Your profile has been successfully deleted")
-    return redirect(url_for("logout"))
-
-
-@app.route("/delete-location/<locationID>")
-def deleteLocation(locationID):
-    mongo.db.collectionLocations.remove({"_id": ObjectId(locationID)})
-    mongo.db.itemCollections.remove({"locationID": ObjectId(locationID)})
-    flash("Your location has been successfully deleted")
-    return redirect(url_for("profile", username=session["username"]))
-
-
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        # check if user exists in db
-        existing_user = mongo.db.hiveMembers.find_one(
-            {"email": request.form.get("email").lower()})
-
-        if existing_user:
-            # ensure hashed password matches user input
-            if check_password_hash(
-                    existing_user["password"], request.form.get("password")):
-                session["user"] = existing_user["email"]
-                # grab the session user's username from db
-                session["username"] = mongo.db.hiveMembers.find_one(
-                    {"email": session["user"]})["username"]
-                return redirect(url_for("home"))
-            else:
-                # invalid password match
-                flash("Incorrect email and/or password")
-                return redirect(url_for("login"))
-
-        else:
-            # email doesn't exist
-            flash("Incorrect email and/or password")
-            return redirect(url_for("login"))
-
-    return render_template("pages/login.html", pageID="login")
-
-
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    if request.method == "POST":
-        # check whether email already exists in db
-        existing_user = mongo.db.hiveMembers.find_one(
-            {"email": request.form.get("email").lower()})
-
-        if existing_user:
-            flash("Email already exists")
-            return redirect(url_for("register"))
-
-        register = {
-            "username": request.form.get("username"),
-            "email": request.form.get("email").lower(),
-            "password": generate_password_hash(request.form.get("password")),
-            "securityQuestion": request.form.get("security-question"),
-            "marketing": request.form.get("marketing"),
-            "isQueenBee": False,
-            "isWorkerBee": False
-        }
-        mongo.db.hiveMembers.insert_one(register)
-
-        # put the new user into 'session' cookie
-        session["user"] = request.form.get("email")
-        # grab the session user's username from db
-        session["username"] = mongo.db.hiveMembers.find_one(
-            {"email": session["user"]})["username"]
-        flash("Registration Successful!")
-        return redirect(url_for("home", username=session["username"]))
-
-    return render_template("pages/register.html", pageID="register")
 
 
 @app.route("/logout")
