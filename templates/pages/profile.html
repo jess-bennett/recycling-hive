@@ -29,17 +29,17 @@
                         data-placement="top" data-type="info"
                         title="Membership">
                         <div class="input-group-text">
-                          {% if memberType == "Queen Bee"%}<i
+                          {% if member_type == "Queen Bee"%}<i
                             class="fas fa-crown"></i>
-                          {% elif memberType == "Worker Bee"%}<i
+                          {% elif member_type == "Worker Bee"%}<i
                             class="fas fa-hard-hat"></i>
-                          {% elif memberType == "Busy Bee" %}<i
+                          {% elif member_type == "Busy Bee" %}<i
                             class="fas fa-user"></i>
                           {% endif %}
                         </div>
                       </div>
                       <p class="form-control">You are currently a
-                        {{ memberType }}
+                        {{ member_type }}
                       </p>
                     </div>
                   </div>
@@ -80,7 +80,7 @@
               </div>
             </div>
           </div>
-          {% if memberType != "Busy Bee" %}
+          {% if member_type != "Busy Bee" %}
           <!-- Activity card -->
           <div class="card-header green-background space-below">
             <h5 class="mb-0">
@@ -181,8 +181,8 @@
                       Collection</button>
                   </div>
                 </div>
-                {% if collectionsDict %}
-                {% for collection in collectionsDict %}
+                {% if collections_dict %}
+                {% for collection in collections_dict %}
                 <hr class="green-line">
                 {% include "components/collection-details-modal.html" %}
                 <!-- Amend collection -->

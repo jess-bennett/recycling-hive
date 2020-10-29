@@ -151,7 +151,7 @@
                 <select class="form-control" id="select-typeOfWaste"
                   name="typeOfWaste" required>
                   <option value="" selected disabled>Type of Waste</option>
-                  {% for item in itemsDict %}
+                  {% for item in items_dict %}
                   <option data-id="{{ item.itemCategory.categoryName }}"
                     value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}
                   </option>

@@ -1,5 +1,5 @@
 <ul id="grid" class="clr">
-    {% if pageID == "categories" %}
+    {% if page_id == "categories" %}
         <li>
         <a href="{{ url_for('get_recycling_items', categoryID='view-all') }}">
             <div class="hexagon">
@@ -17,7 +17,7 @@
         </li>
         {% endfor %}
     {% endif %}
-    {% if pageID == "items" %}
+    {% if page_id == "items" %}
 		{% for catItem in catItems %}
 		<li>
 			<a href="{{ url_for('get_recycling_collections', itemID=catItem._id) }}">
@@ -28,15 +28,15 @@
 		</li>
 		{% endfor %}
     {% endif %}
-    {% if pageID == "collections" %}
+    {% if page_id == "collections" %}
         <li>
-            <a href="{{ url_for('get_recycling_members', memberType='view-all') }}">
+            <a href="{{ url_for('get_recycling_members', member_type='view-all') }}">
                 <div class="hexagon hexagon-dark">
                     <h3 class="hexagon-text hexagon-dark">View all members</h3>
                 </div>
             </a>
         </li>
-        {% for collection in collectionsDict if collection.typeOfWaste == selectedItem %}
+        {% for collection in collections_dict if collection.typeOfWaste == selectedItem %}
         <li>
             <div class="hexagon hexagon-dark" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
                 <h5 class="hexagon-text hexagon-dark">{{ collection.hiveMembers }} -
@@ -46,7 +46,7 @@
         
         {% endfor %}
     {% endif %}
-    {% if pageID == "members" %}
+    {% if page_id == "members" %}
 		{% for member in memberGroup %}
 		<li>
 			<div class="hexagon {% if ((member.isQueenBee == False) and (member.isWorkerBee == False)) %}hexagon-dark{% elif ((member.isQueenBee == False) and (member.isWorkerBee == True)) %}hexagon-medium{% endif %}"

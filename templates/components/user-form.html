@@ -3,16 +3,16 @@
     <div class="col-md-8 offset-md-2">
       <div class="card">
         <div class="card-header text-center green-background">
-          {% if pageID == "register" %}
+          {% if page_id == "register" %}
           <h4>Register</h4>
           <h5>You are applying to join the XXX Hive</h5>
-          {% elif pageID == "login" %}
+          {% elif page_id == "login" %}
           <h4>Log In</h4>
           {% endif %}
         </div>
         <form class="card-body" method="POST"
-          action="{% if pageID == 'register' %}{{ url_for('register') }}{% elif pageID == 'login' %}{{ url_for('login') }}{% endif %}">
-          {% if pageID == "register" %}
+          action="{% if page_id == 'register' %}{{ url_for('register') }}{% elif page_id == 'login' %}{{ url_for('login') }}{% endif %}">
+          {% if page_id == "register" %}
           <!-- Name -->
           <div class="form-group row">
             <label class="sr-only" for="username">Name</label>
@@ -51,7 +51,7 @@
               </small>
             </div>
           </div>
-          {% if pageID == "register" %}
+          {% if page_id == "register" %}
           <!-- Confirm Password -->
           <div class="form-group row">
             <label class="sr-only" for="confirm-password">Confirm
@@ -68,15 +68,15 @@
           </div>
           <!-- Security Question -->
           <div class="form-group row">
-            <label class="sr-only" for="security-question">Security
+            <label class="sr-only" for="securityQuestion">Security
               question</label>
             <div class="input-group mb-2">
               <div class="input-group-prepend">
                 <div class="input-group-text"><i class="fas fa-passport"></i>
                 </div>
               </div>
-              <textarea class="form-control" id="security-question"
-                name="security-question" placeholder="Security question"
+              <textarea class="form-control" id="securityQuestion"
+                name="securityQuestion" placeholder="Security question"
                 minlength="8" required></textarea>
             </div>
           </div>
@@ -99,7 +99,7 @@
           <!-- Submit -->
           <div class="form-group row">
             <button class="btn btn-outline-primary col"
-              type="submit">{% if pageID == "register" %}Register{% elif pageID == "login" %}Log In{% endif %}</button>
+              type="submit">{% if page_id == "register" %}Register{% elif page_id == "login" %}Log In{% endif %}</button>
           </div>
         </form>
       </div>

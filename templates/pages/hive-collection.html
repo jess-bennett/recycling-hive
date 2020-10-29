@@ -12,7 +12,7 @@
   {% include "components/hexagons.html" %}
 </div>
 <!-- Collection details modal -->
-{% for collection in collectionsDict if collection.typeOfWaste == selectedItem %}
+{% for collection in collections_dict if collection.typeOfWaste == selectedItem %}
 <div class="modal fade" id="modal-collection-{{ collection._id }}" tabindex="-1"
   role="dialog" aria-labelledby="modal-collection-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">

@@ -1,11 +1,11 @@
 <div class="heading-buttons">
   
   <div class="dropdown">
-    {% if pageID == "categories" %}
+    {% if page_id == "categories" %}
         <button class="space-holder">
         </button>
     {% endif %}
-    {% if pageID == "collections" %}
+    {% if page_id == "collections" %}
 		<button class="btn btn-outline-primary col space-below dropdown-toggle"
 		      type="button" data-toggle="dropdown"
 		      aria-haspopup="true" aria-expanded="false">
@@ -18,7 +18,7 @@
 			{% endfor %}
 		</div>
     {% endif %}
-    {% if pageID == "items" %}
+    {% if page_id == "items" %}
 		<button class="btn btn-outline-primary col space-below dropdown-toggle"
 		      type="button" data-toggle="dropdown"
 		      aria-haspopup="true" aria-expanded="false">
@@ -33,7 +33,7 @@
 			{% endfor %}
 		</div>
     {% endif %}
-    {% if pageID == "members" %}
+    {% if page_id == "members" %}
         <button class="btn btn-outline-primary col space-below dropdown-toggle"
         type="button" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
@@ -45,16 +45,16 @@
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item"
-            href="{{ url_for('get_recycling_members', memberType='view-all') }}">View
+            href="{{ url_for('get_recycling_members', member_type='view-all') }}">View
             all</a>
         <a class="dropdown-item"
-            href="{{ url_for('get_recycling_members', memberType='Queen Bee') }}"><i
+            href="{{ url_for('get_recycling_members', member_type='Queen Bee') }}"><i
             class="fas fa-crown"></i> Queen Bee</a>
         <a class="dropdown-item"
-            href="{{ url_for('get_recycling_members', memberType='Worker Bee') }}"><i
+            href="{{ url_for('get_recycling_members', member_type='Worker Bee') }}"><i
             class="fas fa-hard-hat"></i> Worker Bee</a>
         <a class="dropdown-item"
-            href="{{ url_for('get_recycling_members', memberType='Busy Bee') }}"><i
+            href="{{ url_for('get_recycling_members', member_type='Busy Bee') }}"><i
             class="fas fa-user"></i> Busy Bee</a>
         </div>
     {% endif %}
