@@ -402,6 +402,13 @@ def edit_collection(collection_id):
     return redirect(url_for("profile", username=session["username"]))
 
 
+@app.route("/delete-collection/<collection_id>")
+def delete_collection(collection_id):
+    mongo.db.itemCollections.remove({"_id": ObjectId(collection_id)})
+    flash("Your collection has been successfully deleted")
+    return redirect(url_for("profile", username=session["username"]))
+
+
 @app.route("/hive")
 def get_recycling_categories():
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
