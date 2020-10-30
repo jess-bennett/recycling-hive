@@ -80,20 +80,31 @@
               </div>
             </div>
           </div>
-          {% if member_type != "Busy Bee" %}
+          
           <!-- Activity card -->
+          {% if member_type == "Busy Bee" %}
+          <div class="card">
+          {% endif %}
           <div class="card-header green-background space-below">
             <h5 class="mb-0">
               <strong>Your Hive Activity</strong>
             </h5>
           </div>
+          {% if member_type == "Busy Bee" %}
+          <div class="card-body">
+            <p>As a Busy Bee, you are not able to add collection points for the Hive.<br>
+            To become a Worker Bee, please click 'Become a Worker Bee!' below and add your location and details for your first collection. Once this has been approved
+            by the Queen Bee(s), you will be able to add more locations and collections without waiting for approval.</p>
+          </div>
+          </div>
+          <!-- First collection card -->
           <div class="card">
             <div class="card-header green-background" id="headingTwo">
               <h5 class="mb-0">
                 <button class="btn btn-link collapsed" data-toggle="collapse"
                   data-target="#collapseTwo" aria-expanded="false"
                   aria-controls="collapseTwo">
-                  <i class="fas fa-home"></i> <strong>Your Locations</strong>
+                  <i class="fas fa-hard-hat"></i> <strong>Become a Worker Bee!</strong>
                 </button>
               </h5>
             </div>
@@ -156,59 +167,9 @@
               </div>
             </div>
           </div>
-          <!-- Collections card -->
-          <div class="card">
-            <div class="card-header green-background" id="headingThree">
-              <h5 class="mb-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse"
-                  data-target="#collapseThree" aria-expanded="false"
-                  aria-controls="collapseThree">
-                  <i class="fas fa-recycle"></i> <strong>Your
-                    Collections</strong>
-                </button>
-              </h5>
-            </div>
-            <div id="collapseThree" class="collapse"
-              aria-labelledby="headingThree" data-parent="#accordion">
-              <div class="card-body">
-                <!-- Add collection -->
-                <div class="container-fluid">
-                  <div class="row">
-                    <button type="button"
-                      class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add"
-                      data-toggle="modal"
-                      data-target="#modal-add-collection">Add New
-                      Collection</button>
-                  </div>
-                </div>
-                {% if collections_dict %}
-                {% for collection in collections_dict %}
-                <hr class="green-line">
-                {% include "components/collection-details-modal.html" %}
-                <!-- Amend collection -->
-                <div class="container-fluid">
-                  <div class="row">
-                    <div id="delete-collection"
-                      class="btn col-1 offset-10 btn-delete" data-toggle="modal"
-                      data-target="#modal-delete-collection-{{ collection._id }}"><i
-                        class="fas fa-trash-alt" data-toggle="tooltip"
-                        data-placement="top" data-type="info"
-                        title="Delete"></i></div>
-                    <div id="amend-collection" class="btn col-1 btn-edit" data-toggle="modal"
-                      data-target="#modal-edit-collection-{{ collection._id }}">
-                      <i class="fas fa-edit" data-toggle="tooltip" data-placement="top"
-                      data-type="info" title="Edit"></i>
-                    </div>
-                  </div>
-                </div>
-                {% endfor %}
-                {% else %}
-                <p><strong>You do not currently have any collections saved! Want
-                    to add one?</strong></p>
-                {% endif %}
-              </div>
-            </div>
-          </div>
+          {% else %}
+          {% include "components/locations-card.html" %}
+          {% include "components/collections-card.html" %}
           {% endif %}
         </div>
       </div>
@@ -220,7 +181,8 @@
 
 {% include "components/delete-modal.html" %}
 
-{% include "components/add-modal.html" %}
-
+{% if member_type != "Busy Bee" %}
+    {% include "components/add-modal.html" %}
+{% endif %}
 
 {% endblock %}

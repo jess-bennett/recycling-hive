@@ -1,0 +1,70 @@
+<!-- Locations card -->
+          <div class="card">
+            <div class="card-header green-background" id="headingThree">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse"
+                  data-target="#collapseThree" aria-expanded="false"
+                  aria-controls="collapseThree">
+                  <i class="fas fa-home"></i> <strong>Your Locations</strong>
+                </button>
+              </h5>
+            </div>
+            <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+              data-parent="#accordion">
+              <div class="card-body">
+                <!-- Add location -->
+                <div class="container-fluid">
+                  <div class="row">
+                    <button type="button"
+                      class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add"
+                      data-toggle="modal"
+                      data-target="#modal-add-location">Add New
+                      Location</button>
+                  </div>
+                </div>
+                {% if locations %}
+                {% for location in locations %}
+                <hr>
+                <div class="form-row">
+                  <!-- Nickname -->
+                  <div class="form-group col-md-3">
+                    <div class="input-group mb-2">
+                      {% include "components/tooltips/tooltip-nickname.html" %}
+                      <p class="form-control">{{ location.nickname }}</p>
+                    </div>
+                  </div>
+                  <!-- Address -->
+                  <div class="form-group col-md-9">
+                    <div class="input-group mb-2">
+                      {% include "components/tooltips/tooltip-address.html" %}
+                      <p class="form-control">
+                        {{ location.street }}, {{ location.town }},
+                        {{ location.postcode }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Amend location -->
+                <div class="container-fluid">
+                  <div class="row">
+                    <div id="delete-location"
+                      class="btn col-1 offset-10 btn-delete" data-toggle="modal"
+                      data-target="#modal-delete-location-{{ location._id }}"><i
+                        class="fas fa-trash-alt" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Delete"></i></div>
+                    <div id="amend-location" class="btn col-1 btn-edit" data-toggle="modal"
+                      data-target="#modal-edit-location-{{ location._id }}">
+                      <i class="fas fa-edit" data-toggle="tooltip" data-placement="top"
+                      data-type="info" title="Edit"></i>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p><strong>You do not currently have any locations saved! Want
+                    to add one?</strong></p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
