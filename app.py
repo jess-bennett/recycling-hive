@@ -101,7 +101,7 @@ def login():
     return render_template("pages/login.html", page_id="login")
 
 
-@app.route("/hive-management/<username>", methods=["GET", "POST"])
+@app.route("/hive-management/<username>")
 def hive_management(username):
     unapproved_members = list(mongo.db.hiveMembers.find(
             {'approvedMember': False}))
@@ -131,6 +131,78 @@ def approve_member_request(member_id):
 def delete_collection_request(collection_id):
     mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
     flash("Worker Bee request has been successfully deleted")
+    return redirect(url_for("hive_management", username=session["username"]))
+
+
+@app.route("/hive-management/approve-collection-request/<collection_id>",
+           methods=["GET", "POST"])
+def approve_collection_request(collection_id):
+    if request.method == "POST":
+        first_collection = mongo.db.firstCollection.find_one(
+            {'_id': ObjectId(collection_id)})
+        member_id = first_collection["memberID"]
+        # Add location
+        new_location = {
+            "nickname": first_collection["nickname"],
+            "nickname_lower": first_collection["nickname"].lower(),
+            "street": first_collection["street"],
+            "town": first_collection["town"],
+            "postcode": first_collection["postcode"],
+            "memberID": ObjectId(member_id)
+        }
+        mongo.db.collectionLocations.insert_one(new_location)
+        location_id = mongo.db.collectionLocations.find_one(
+                {"nickname_lower": first_collection["nickname"].lower(
+                )})["_id"]
+        # Check whether category exists and either add or get ID
+        existing_category = mongo.db.itemCategory.find_one(
+                {"categoryName_lower": first_collection["categoryName"].lower(
+                )})
+        if existing_category:
+            category_id = existing_category["_id"]
+        else:
+            new_category = {
+                "categoryName": first_collection["categoryName"],
+                "categoryName_lower": first_collection["categoryName"].lower()
+            }
+            mongo.db.itemCategory.insert_one(new_category)
+            category_id = mongo.db.itemCategory.find_one(
+                {"categoryName_lower": first_collection["categoryName"].lower(
+                )})["_id"]
+        # Check whether type of waste exists and either add or get ID
+        existing_type_of_waste = mongo.db.recyclableItems.find_one(
+                {"typeOfWaste_lower": first_collection["typeOfWaste"].lower(),
+                    "categoryID": category_id})
+        if existing_type_of_waste:
+            item_id = existing_type_of_waste["_id"]
+        else:
+            new_item = {
+                "typeOfWaste": first_collection["typeOfWaste"],
+                "typeOfWaste_lower": first_collection["typeOfWaste"].lower(),
+                "categoryID": category_id
+            }
+            mongo.db.recyclableItems.insert_one(new_item)
+            item_id = mongo.db.recyclableItems.find_one(
+                {"typeOfWaste_lower": first_collection["typeOfWaste"].lower(
+                )})["_id"]
+        new_collection = {
+            "itemID": item_id,
+            "conditionNotes": first_collection["conditionNotes"],
+            "charityScheme": first_collection["charityScheme"],
+            "memberID": ObjectId(member_id),
+            "locationID": ObjectId(location_id),
+            "isNational": "no",
+            "dateAdded": datetime.now().strftime("%d %b %Y")
+        }
+        mongo.db.itemCollections.insert_one(new_collection)
+        mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
+        # Give user Worker Bee status
+        filter = {"_id": ObjectId(member_id)}
+        is_worker_bee = {"$set": {'isWorkerBee': True}}
+        mongo.db.hiveMembers.update(filter, is_worker_bee)
+        flash("Worker Bee request has been successfully approved")
+        return redirect(url_for("hive_management",
+                                username=session["username"]))
     return redirect(url_for("hive_management", username=session["username"]))
 
 
@@ -508,7 +580,7 @@ def get_recycling_categories():
         categories=categories, page_id="categories")
 
 
-@app.route("/hive/items/<category_id>", methods=["GET", "POST"])
+@app.route("/hive/items/<category_id>")
 def get_recycling_items(category_id):
     if category_id == 'view-all':
         # Get selected category for dropdown
@@ -534,7 +606,7 @@ def get_recycling_items(category_id):
         selected_category=selected_category, page_id="items")
 
 
-@app.route("/hive/collections/<item_id>", methods=["GET", "POST"])
+@app.route("/hive/collections/<item_id>")
 def get_recycling_collections(item_id):
     if item_id == 'view-all':
         # Get selected item for dropdown

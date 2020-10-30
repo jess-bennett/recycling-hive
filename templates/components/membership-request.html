@@ -74,13 +74,13 @@
 
 <!-- Delete collection request modal -->
 {% for collection in first_collections %}
-<div class="modal fade" id="modal-delete-collection-{{ collection._id }}" tabindex="-1" role="dialog"
+<div class="modal fade" id="modal-delete-collection-request-{{ collection._id }}" tabindex="-1" role="dialog"
   aria-labelledby="modal-delete-collection-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
         <h4 class="modal-title w-100" id="modal-delete-collection-title">Delete
-          Collection Request for {{ collection.username }}</h4>
+          Worker Bee Request for {{ collection.username }}</h4>
 
         <button type="button" class="close" data-dismiss="modal"
           aria-label="Close">
@@ -92,7 +92,7 @@
           action="{{ url_for('delete_collection_request', collection_id=collection._id) }}">
           <p class="warning-delete">Are you sure you want to delete this Worker Bee
             request?<br>
-            This will deny {{ collection.username }} Worker Bee status and they will not be able to submit new collections without approval. However, they will be free to make a future request for approval.
+            This will deny {{ collection.username }} 'Worker Bee' status and they will not be able to submit new collections without approval. However, they will be free to make a future request for approval.
           <p>
             <!-- Submit -->
           <div class="modal-footer">
@@ -100,6 +100,43 @@
               data-dismiss="modal">Cancel</button>
             <button id="submit-delete-collection" class="btn btn-outline-primary"
               type="submit" name="submit-delete-collection">Delete Worker Bee
+              Request!</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- Approve collection request modal -->
+{% for collection in first_collections %}
+<div class="modal fade" id="modal-approve-collection-request-{{ collection._id }}" tabindex="-1" role="dialog"
+  aria-labelledby="modal-approve-collection-request-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100" id="modal-approve-collection-request-title">Approve Worker Bee
+          Request for {{ collection.username }}</h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="approve-collection-request" class="card-body" method="POST"
+          action="{{ url_for('approve_collection_request', collection_id=collection._id) }}">
+          <p class="warning-delete">Are you sure you want to approve this Worker Bee
+            Request?<br>
+            This will give {{ collection.username }} 'Worker Bee' status and they will be able to submit new collections without future approval.
+          <p>
+            <!-- Submit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary"
+              data-dismiss="modal">Cancel</button>
+            <button id="submit-approve-collection-request" class="btn btn-outline-primary"
+              type="submit" name="submit-approve-collection-request">Approve Worker Bee
               Request!</button>
           </div>
         </form>
