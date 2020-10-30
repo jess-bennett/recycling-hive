@@ -223,13 +223,15 @@ def add_new_location():
     if request.method == "POST":
         # Check whether nickname already exists
         existing_nickname = mongo.db.collectionLocations.find_one(
-            {"memberID": ObjectId(user_id), "nickname": request.form.get(
-                "addLocationNickname")})
+            {"memberID": ObjectId(user_id), "nickname_lower": request.form.get(
+                "addLocationNickname").lower()})
         if existing_nickname:
             flash("Location already saved under this nickname")
             return redirect(url_for("profile", username=session["username"]))
         new_location = {
                 "nickname": request.form.get("addLocationNickname"),
+                "nickname_lower": request.form.get(
+                    "addLocationNickname").lower(),
                 "street": request.form.get("addLocationStreet"),
                 "town": request.form.get("addLocationTown"),
                 "postcode": request.form.get("addLocationPostcode"),
@@ -274,8 +276,8 @@ def add_new_collection():
         if 'newItemCategory' in request.form:
             # Check whether category already exists
             existing_category = mongo.db.itemCategory.find_one(
-                {"categoryName": request.form.get(
-                    "newItemCategory")})
+                {"categoryName_lower": request.form.get(
+                    "newItemCategory").lower()})
 
             if existing_category:
                 flash("Category already exists")
@@ -283,16 +285,19 @@ def add_new_collection():
                     "profile", username=session["username"]))
 
             new_item_category = {
-                "categoryName": request.form.get("newItemCategory")
+                "categoryName": request.form.get("newItemCategory"),
+                "categoryName_lower": request.form.get(
+                    "newItemCategory").lower()
             }
             mongo.db.itemCategory.insert_one(new_item_category)
             category_id = mongo.db.itemCategory.find_one(
-                    {"categoryName": request.form.get(
-                        "newItemCategory")})["_id"]
+                    {"categoryName_lower": request.form.get(
+                        "newItemCategory").lower()})["_id"]
 
             # Check whether item already exists
             existing_type_of_waste = mongo.db.recyclableItems.find_one(
-                {"typeOfWaste": request.form.get("newTypeOfWaste"),
+                {"typeOfWaste_lower": request.form.get(
+                    "newTypeOfWaste").lower(),
                     "categoryID": category_id}
             )
             if existing_type_of_waste:
@@ -302,19 +307,21 @@ def add_new_collection():
 
             new_type_of_waste = {
                 "typeOfWaste": request.form.get("newTypeOfWaste"),
+                "typeOfWaste_lower": request.form.get(
+                    "newTypeOfWaste").lower(),
                 "categoryID": category_id
             }
             mongo.db.recyclableItems.insert_one(new_type_of_waste)
             item_id = mongo.db.recyclableItems.find_one(
-                    {"typeOfWaste": request.form.get(
-                        "newTypeOfWaste")})["_id"]
+                    {"typeOfWaste_lower": request.form.get(
+                        "newTypeOfWaste").lower()})["_id"]
             new_collection = {
                 "itemID": item_id,
                 "conditionNotes": request.form.get("conditionNotes"),
                 "charityScheme": request.form.get("charityScheme"),
                 "memberID": user_id,
                 "locationID": mongo.db.collectionLocations.find_one(
-                    {"nickname": request.form.get("locationID"),
+                    {"nickname_lower": request.form.get("locationID").lower(),
                         "memberID": user_id})["_id"],
                 "isNational": "no",
                 "dateAdded": datetime.now().strftime("%d %b %Y")
@@ -327,10 +334,11 @@ def add_new_collection():
         if 'newTypeOfWaste' in request.form:
             # Check whether item already exists
             existing_type_of_waste = mongo.db.recyclableItems.find_one(
-                {"typeOfWaste": request.form.get("newTypeOfWaste"),
+                {"typeOfWaste_lower": request.form.get(
+                    "newTypeOfWaste").lower(),
                     "categoryID": mongo.db.itemCategory.find_one(
-                    {"categoryName": request.form.get(
-                        "itemCategory")})["_id"]}
+                    {"categoryName_lower": request.form.get(
+                        "itemCategory").lower()})["_id"]}
             )
             if existing_type_of_waste:
                 flash("Type of Waste already exists for this category")
@@ -339,21 +347,23 @@ def add_new_collection():
 
             new_type_of_waste = {
                 "typeOfWaste": request.form.get("newTypeOfWaste"),
+                "typeOfWaste_lower": request.form.get(
+                    "newTypeOfWaste").lower(),
                 "categoryID": mongo.db.itemCategory.find_one(
-                    {"categoryName": request.form.get(
-                        "itemCategory")})["_id"]
+                    {"categoryName_lower": request.form.get(
+                        "itemCategory").lower()})["_id"]
             }
             mongo.db.recyclableItems.insert_one(new_type_of_waste)
             item_id = mongo.db.recyclableItems.find_one(
-                    {"typeOfWaste": request.form.get(
-                        "newTypeOfWaste")})["_id"]
+                    {"typeOfWaste_lower": request.form.get(
+                        "newTypeOfWaste").lower()})["_id"]
             new_collection = {
                 "itemID": item_id,
                 "conditionNotes": request.form.get("conditionNotes"),
                 "charityScheme": request.form.get("charityScheme"),
                 "memberID": user_id,
                 "locationID": mongo.db.collectionLocations.find_one(
-                    {"nickname": request.form.get("locationID"),
+                    {"nickname_lower": request.form.get("locationID").lower(),
                         "memberID": user_id})["_id"],
                 "isNational": "no",
                 "dateAdded": datetime.now().strftime("%d %b %Y")
@@ -366,15 +376,15 @@ def add_new_collection():
         # of waste and category
         if 'typeOfWaste' in request.form:
             item_id = mongo.db.recyclableItems.find_one(
-                    {"typeOfWaste": request.form.get(
-                        "typeOfWaste")})["_id"]
+                    {"typeOfWaste_lower": request.form.get(
+                        "typeOfWaste").lower()})["_id"]
             new_collection = {
                 "itemID": item_id,
                 "conditionNotes": request.form.get("conditionNotes"),
                 "charityScheme": request.form.get("charityScheme"),
                 "memberID": user_id,
                 "locationID": mongo.db.collectionLocations.find_one(
-                    {"nickname": request.form.get("locationID"),
+                    {"nickname_lower": request.form.get("locationID").lower(),
                         "memberID": user_id})["_id"],
                 "isNational": "no",
                 "dateAdded": datetime.now().strftime("%d %b %Y")
