@@ -1,0 +1,98 @@
+{% extends "layout/base.html" %}
+{% block nav_home %}active{% endblock %}
+{% block content %}
+{{ unapproved_members }}
+<section id="hive-management-page">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <div id="accordion">
+          <!-- Activity card -->
+          <div class="card-header green-background space-below">
+            <h5 class="mb-0">
+              <strong>Hive Management</strong>
+            </h5>
+          </div>
+          <div class="card">
+            <div class="card-header green-background" id="headingTwo">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse"
+                  data-target="#collapseTwo" aria-expanded="false"
+                  aria-controls="collapseTwo">
+                  <i class="fas fa-user"></i> <strong>Membership Requests</strong>
+                </button>
+              </h5>
+            </div>
+            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+              data-parent="#accordion">
+              <div class="card-body">
+                <!-- Add location -->
+                {% if unapproved_members %}
+                {% for member in unapproved_members %}
+                <hr class="green-line">
+                <div class="form-row">
+                  <!-- Username -->
+                  <div class="form-group col-md-6">
+                    <div class="input-group mb-2">
+                      {% include "components/tooltips/tooltip-name.html" %}
+                      <p class="form-control">{{ member.username }}</p>
+                    </div>
+                  </div>
+                  <!-- Email -->
+                  <div class="form-group col-md-6">
+                    <div class="input-group mb-2">
+                      {% include "components/tooltips/tooltip-email.html" %}
+                      <p class="form-control">{{ member.email }}</p>
+                    </div>
+                  </div>
+                </div>
+                <!-- Security question -->
+                <div class="form-row">
+                    <div class="form-group col-md">
+                        <div class="input-group mb-2">
+                        {% include "components/tooltips/tooltip-security.html" %}
+                        <p class="form-control">{{ member.securityQuestion }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Marketing -->
+                <div class="form-row">
+                    <div class="form-group col-md">
+                        <div class="input-group mb-2">
+                        {% include "components/tooltips/tooltip-marketing.html" %}
+                        <p class="form-control">{{ member.marketing }}</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Approve/deny request -->
+                <div class="container-fluid">
+                  <div class="row">
+                    <div id="delete-profile"
+                      class="btn col-1 offset-10 btn-delete" data-toggle="modal"
+                      data-target="#modal-delete-request-{{ member._id }}"><i
+                        class="fas fa-times-circle" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Delete request"></i></div>
+                    <div id="amend-profile" class="btn col-1 btn-edit"
+                      data-toggle="modal" data-target="#modal-edit-profile"><i
+                        class="fas fa-check-circle" data-toggle="tooltip"
+                        data-placement="top" data-type="info" title="Approve request"></i>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p><strong>There are no current Membership Requests</strong></p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "components/membership-request.html" %}
+
+{% endblock %}

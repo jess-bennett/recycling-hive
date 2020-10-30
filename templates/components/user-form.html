@@ -71,10 +71,7 @@
             <label class="sr-only" for="securityQuestion">Security
               question</label>
             <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-passport"></i>
-                </div>
-              </div>
+              {% include "components/tooltips/tooltip-security.html" %}
               <textarea class="form-control" id="securityQuestion"
                 name="securityQuestion" placeholder="Security question"
                 minlength="8" required></textarea>
@@ -85,10 +82,7 @@
             <label class="sr-only" for="marketing">Where did you hear about
               Recycling Hive?</label>
             <div class="input-group mb-2">
-              <div class="input-group-prepend">
-                <div class="input-group-text"><i class="fas fa-recycle"></i>
-                </div>
-              </div>
+              {% include "components/tooltips/tooltip-marketing.html" %}
               <input type="text" class="form-control" id="marketing"
                 name="marketing"
                 placeholder="Where did you hear about Recycling Hive?"

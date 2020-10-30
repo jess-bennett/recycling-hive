@@ -23,11 +23,17 @@ mongo = PyMongo(app)
 def home():
     try:
         users = mongo.db.hiveMembers
-
+        username = users.find_one({'email': session['user']})["username"]
+        user_id = mongo.db.hiveMembers.find_one(
+            {'email': session['user']})["_id"]
+        if mongo.db.hiveMembers.find_one(
+                {"_id": user_id, "isQueenBee": True}):
+            is_queen_bee = True
+        else:
+            is_queen_bee = False
         return render_template("pages/index.html",
-                               username=users.find_one(
-                                   {'email': session['user']})["username"],
-                               page_id="home")
+                               username=username,
+                               page_id="home", is_queen_bee=is_queen_bee)
     except:
         return render_template(
             "pages/index.html", username=False, page_id="home")
@@ -93,6 +99,14 @@ def login():
             return redirect(url_for("login"))
 
     return render_template("pages/login.html", page_id="login")
+
+
+@app.route("/hive-management/<username>", methods=["GET", "POST"])
+def hive_management(username):
+    unapproved_members = mongo.db.hiveMembers.find(
+            {'approvedMember': False})
+    return render_template("/pages/hive-management.html",
+                           unapproved_members=unapproved_members)
 
 
 @app.route("/profile/<username>", methods=["GET", "POST"])
