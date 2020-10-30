@@ -105,23 +105,32 @@ def login():
 def hive_management(username):
     unapproved_members = list(mongo.db.hiveMembers.find(
             {'approvedMember': False}))
+    first_collections = list(mongo.db.firstCollection.find())
     return render_template("/pages/hive-management.html",
-                           unapproved_members=unapproved_members)
+                           unapproved_members=unapproved_members,
+                           first_collections=first_collections)
 
 
-@app.route("/hive-management/delete-request/<member_id>")
-def delete_request(member_id):
+@app.route("/hive-management/delete-member-request/<member_id>")
+def delete_member_request(member_id):
     mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
     flash("Membership request has been successfully deleted")
     return redirect(url_for("hive_management", username=session["username"]))
 
 
-@app.route("/hive-management/approve-request/<member_id>")
-def approve_request(member_id):
+@app.route("/hive-management/approve-member-request/<member_id>")
+def approve_member_request(member_id):
     filter = {"_id": ObjectId(member_id)}
     approve = {"$set": {'approvedMember': True}}
     mongo.db.hiveMembers.update(filter, approve)
     flash("Membership request has been successfully approved")
+    return redirect(url_for("hive_management", username=session["username"]))
+
+
+@app.route("/hive-management/delete-collection-request/<collection_id>")
+def delete_collection_request(collection_id):
+    mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
+    flash("Worker Bee request has been successfully deleted")
     return redirect(url_for("hive_management", username=session["username"]))
 
 
@@ -230,7 +239,7 @@ def profile(username):
                 {"memberID": ObjectId(user_id)}):
             awaiting_approval = True
         else:
-            awaiting_approval: False
+            awaiting_approval = False
         return render_template("/pages/profile.html", user_id=user_id,
                                username=session["username"], email=email,
                                member_type=member_type, locations=locations,
