@@ -103,10 +103,26 @@ def login():
 
 @app.route("/hive-management/<username>", methods=["GET", "POST"])
 def hive_management(username):
-    unapproved_members = mongo.db.hiveMembers.find(
-            {'approvedMember': False})
+    unapproved_members = list(mongo.db.hiveMembers.find(
+            {'approvedMember': False}))
     return render_template("/pages/hive-management.html",
                            unapproved_members=unapproved_members)
+
+
+@app.route("/hive-management/delete-request/<member_id>")
+def delete_request(member_id):
+    mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
+    flash("Membership request has been successfully deleted")
+    return redirect(url_for("hive_management", username=session["username"]))
+
+
+@app.route("/hive-management/approve-request/<member_id>")
+def approve_request(member_id):
+    filter = {"_id": ObjectId(member_id)}
+    approve = {"$set": {'approvedMember': True}}
+    mongo.db.hiveMembers.update(filter, approve)
+    flash("Membership request has been successfully approved")
+    return redirect(url_for("hive_management", username=session["username"]))
 
 
 @app.route("/profile/<username>", methods=["GET", "POST"])

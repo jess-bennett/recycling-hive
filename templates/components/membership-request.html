@@ -1,12 +1,12 @@
 <!-- Delete request modal -->
 {% for member in unapproved_members %}
 <div class="modal fade" id="modal-delete-request-{{ member._id }}" tabindex="-1" role="dialog"
-  aria-labelledby="modal-delete-profile-title" aria-hidden="true">
+  aria-labelledby="modal-delete-request-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-delete-profile-title">Delete
-          Request</h4>
+        <h4 class="modal-title w-100" id="modal-delete-request-title">Delete
+          Request for {{ member.username }}</h4>
 
         <button type="button" class="close" data-dismiss="modal"
           aria-label="Close">
@@ -14,11 +14,11 @@
         </button>
       </div>
       <div class="modal-body">
-        <form name="delete-profile" class="card-body"
-          action="{{ url_for('hive-management/delete_request', member_id=member._id) }}">
+        <form name="delete-request" class="card-body"
+          action="{{ url_for('delete_request', member_id=member._id) }}">
           <p class="warning-delete">Are you sure you want to delete this
             request?<br>
-            This will deny the requesting member access to your Hive. However, they will be free to make a future request to join.
+            This will deny {{ member.username }} access to your Hive. However, they will be free to make a future request to join.
           <p>
             <!-- Submit -->
           <div class="modal-footer">
@@ -26,6 +26,43 @@
               data-dismiss="modal">Cancel</button>
             <button id="submit-delete-request" class="btn btn-outline-primary"
               type="submit" name="submit-delete-request">Delete
+              Request!</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+<!-- Approve request modal -->
+{% for member in unapproved_members %}
+<div class="modal fade" id="modal-approve-request-{{ member._id }}" tabindex="-1" role="dialog"
+  aria-labelledby="modal-approve-request-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100" id="modal-approve-request-title">Approve
+          Request for {{ member.username }}</h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="approve-request" class="card-body"
+          action="{{ url_for('approve_request', member_id=member._id) }}">
+          <p class="warning-delete">Are you sure you want to approve this
+            request?<br>
+            This will allow {{ member.username }} access to your Hive and the collection locations shown within.
+          <p>
+            <!-- Submit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary"
+              data-dismiss="modal">Cancel</button>
+            <button id="submit-approve-request" class="btn btn-outline-primary"
+              type="submit" name="submit-approve-request">Approve
               Request!</button>
           </div>
         </form>

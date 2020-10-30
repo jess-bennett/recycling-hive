@@ -1,7 +1,7 @@
 {% extends "layout/base.html" %}
 {% block nav_home %}active{% endblock %}
 {% block content %}
-{{ unapproved_members }}
+
 <section id="hive-management-page">
   <div class="container-fluid">
     <div class="row">
@@ -26,7 +26,6 @@
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
               data-parent="#accordion">
               <div class="card-body">
-                <!-- Add location -->
                 {% if unapproved_members %}
                 {% for member in unapproved_members %}
                 <hr class="green-line">
@@ -74,7 +73,7 @@
                         data-placement="top" data-type="info"
                         title="Delete request"></i></div>
                     <div id="amend-profile" class="btn col-1 btn-edit"
-                      data-toggle="modal" data-target="#modal-edit-profile"><i
+                      data-toggle="modal" data-target="#modal-approve-request-{{ member._id }}"><i
                         class="fas fa-check-circle" data-toggle="tooltip"
                         data-placement="top" data-type="info" title="Approve request"></i>
                     </div>
