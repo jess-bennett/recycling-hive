@@ -225,12 +225,19 @@ def profile(username):
             return redirect(url_for(
                 "profile", username=session["username"]))
 
+        # Check whether user has submitted first collection for approval
+        if mongo.db.firstCollection.find_one(
+                {"memberID": ObjectId(user_id)}):
+            awaiting_approval = True
+        else:
+            awaiting_approval: False
         return render_template("/pages/profile.html", user_id=user_id,
                                username=session["username"], email=email,
                                member_type=member_type, locations=locations,
                                collections_dict=collections_dict, items=items,
                                items_dict=items_dict, categories=categories,
-                               page_id="profile")
+                               page_id="profile",
+                               awaiting_approval=awaiting_approval)
 
     return redirect(url_for("login"))
 
@@ -294,6 +301,40 @@ def delete_location(location_id):
     mongo.db.collectionLocations.remove({"_id": ObjectId(location_id)})
     mongo.db.itemCollections.remove({"locationID": ObjectId(location_id)})
     flash("Your location has been successfully deleted")
+    return redirect(url_for("profile", username=session["username"]))
+
+
+@app.route("/add-first-collection", methods=["GET", "POST"])
+def add_first_collection():
+    user_id = mongo.db.hiveMembers.find_one(
+            {'email': session['user']})["_id"]
+    username = session["username"]
+    if request.method == "POST":
+        if 'newItemCategory' in request.form:
+            category_name = request.form.get("newItemCategory")
+        else:
+            category_name = request.form.get("itemCategory")
+        if 'newTypeOfWaste' in request.form:
+            type_of_waste = request.form.get("newTypeOfWaste")
+        else:
+            type_of_waste = request.form.get("typeOfWaste")
+        first_collection = {
+            "memberID": user_id,
+            "username": username,
+            "nickname": request.form.get("addLocationNickname"),
+            "street": request.form.get("addLocationStreet"),
+            "town": request.form.get("addLocationTown"),
+            "postcode": request.form.get("addLocationPostcode"),
+            "categoryName": category_name,
+            "typeOfWaste": type_of_waste,
+            "conditionNotes": request.form.get("conditionNotes"),
+            "charityScheme": request.form.get("charityScheme"),
+            "isNational": "no",
+            "dateAdded": datetime.now().strftime("%d %b %Y")
+        }
+        mongo.db.firstCollection.insert_one(first_collection)
+        flash("First collection sent for approval")
+        return redirect(url_for("profile", username=session["username"]))
     return redirect(url_for("profile", username=session["username"]))
 
 
