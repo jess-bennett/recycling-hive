@@ -103,12 +103,69 @@ def login():
 
 @app.route("/hive-management/<username>")
 def hive_management(username):
+    # Get list of members waiting for approval
     unapproved_members = list(mongo.db.hiveMembers.find(
             {'approvedMember': False}))
+    # Get list of members waiting for Worker Bee status
     first_collections = list(mongo.db.firstCollection.find())
+    # Get list of all members for member details
+    members = list(mongo.db.hiveMembers.find())
+    # Get list of members with location and collection details
+    worker_bees = list(mongo.db.hiveMembers.find(
+            {'isWorkerBee': True}))
+    locations = list(mongo.db.collectionLocations.find())
+    # Get list of collections for collection details
+    collections_dict = list(mongo.db.itemCollections.aggregate([
+            {
+             '$lookup': {
+                'from': 'hiveMembers',
+                'localField': 'memberID',
+                'foreignField': '_id',
+                'as': 'hiveMembers'
+             },
+            },
+            {'$unwind': '$hiveMembers'},
+            {
+             '$lookup': {
+                'from': 'recyclableItems',
+                'localField': 'itemID',
+                'foreignField': '_id',
+                'as': 'recyclableItems'
+             },
+            },
+            {'$unwind': '$recyclableItems'},
+            {
+             '$lookup': {
+                'from': 'collectionLocations',
+                'localField': 'locationID',
+                'foreignField': '_id',
+                'as': 'collectionLocations'
+             },
+            },
+            {'$unwind': '$collectionLocations'},
+            {'$project': {
+             'typeOfWaste': '$recyclableItems.typeOfWaste',
+             'hiveMembers': '$hiveMembers.username',
+             'hiveMembersID': '$hiveMembers._id',
+             'nickname': '$collectionLocations.nickname',
+             'street': '$collectionLocations.street',
+             'town': '$collectionLocations.town',
+             'postcode': '$collectionLocations.postcode',
+             'id': 1,
+             'conditionNotes': 1,
+             'charityScheme': 1
+             }
+             },
+            {'$sort': {'hiveMembers': 1}}
+            ]))
     return render_template("/pages/hive-management.html",
                            unapproved_members=unapproved_members,
-                           first_collections=first_collections)
+                           first_collections=first_collections,
+                           members=members,
+                           worker_bees=worker_bees,
+                           locations=locations,
+                           collections_dict=collections_dict,
+                           page_id="management")
 
 
 @app.route("/hive-management/delete-member-request/<member_id>")

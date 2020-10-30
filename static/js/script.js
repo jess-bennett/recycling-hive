@@ -4,6 +4,7 @@ $(document).ready(function() {
   $("#select-itemCategory").hide();
   $("#instructions-addItemCategory").hide();
   $("#member-details").hide();
+  $("#location-details").hide();
   $("#collection-details").hide();
 });
 
@@ -88,6 +89,7 @@ $("#btn-manage-requests").click(function() {
   $("#membership-requests").show();
   $("#workerbee-requests").show();
   $("#member-details").hide();
+  $("#location-details").hide();
   $("#collection-details").hide();
 });
 
@@ -97,5 +99,6 @@ $("#btn-manage-members").click(function() {
   $("#membership-requests").hide();
   $("#workerbee-requests").hide();
   $("#member-details").show();
+  $("#location-details").show();
   $("#collection-details").show();
 });

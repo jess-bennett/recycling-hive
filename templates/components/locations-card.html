@@ -24,26 +24,8 @@
                 </div>
                 {% if locations %}
                 {% for location in locations %}
-                <hr>
-                <div class="form-row">
-                  <!-- Nickname -->
-                  <div class="form-group col-md-3">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-nickname.html" %}
-                      <p class="form-control">{{ location.nickname }}</p>
-                    </div>
-                  </div>
-                  <!-- Address -->
-                  <div class="form-group col-md-9">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-address.html" %}
-                      <p class="form-control">
-                        {{ location.street }}, {{ location.town }},
-                        {{ location.postcode }}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <hr class="green-line">
+                {% include "components/location-details.html" %}
                 <!-- Amend location -->
                 <div class="container-fluid">
                   <div class="row">
