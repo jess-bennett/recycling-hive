@@ -32,6 +32,20 @@ def login_required(f):
     return wrap
 
 
+def approval_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if mongo.db.hiveMembers.find_one(
+                {"_id": ObjectId(session["user_id"]), "approvedMember": True}):
+            return f(*args, **kwargs)
+        else:
+            flash("This page will become viewable once\
+                your membership has been approved")
+            return redirect(url_for("home"))
+
+    return wrap
+
+
 def queen_bee_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -47,10 +61,8 @@ def queen_bee_required(f):
 @app.route("/")
 def home():
     try:
-        users = mongo.db.hiveMembers
-        username = users.find_one({'email': session['user']})["username"]
-        user_id = mongo.db.hiveMembers.find_one(
-            {'email': session['user']})["_id"]
+        username = ObjectId(session["username"])
+        user_id = ObjectId(session["user_id"])
         if mongo.db.hiveMembers.find_one(
                 {"_id": user_id, "isQueenBee": True}):
             is_queen_bee = True
@@ -86,9 +98,9 @@ def register():
         }
         mongo.db.hiveMembers.insert_one(register)
 
-        # put the new user into 'session' cookie
+        # put the new user into "session" cookie
         session["user"] = request.form.get("email")
-        # grab the session user's username from db
+        # grab the session user"s username from db
         session["username"] = mongo.db.hiveMembers.find_one(
             {"email": session["user"]})["username"]
         flash("Registration Successful!")
@@ -109,17 +121,23 @@ def login():
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
                 session["user"] = existing_user["email"]
-                # grab the session user's username from db
+                # grab the session user's username for named messages
                 session["username"] = mongo.db.hiveMembers.find_one(
                     {"email": session["user"]})["username"]
+                # grab the session user's id for unique identification
+                session["user_id"] = str(mongo.db.hiveMembers.find_one(
+                    {"email": session["user"]})["_id"])
+                # grab the session user's hive for relevant content
+                session["hive"] = str(mongo.db.hiveMembers.find_one(
+                    {"email": session["user"]})["hive"])
                 # Get users member type for page access
-                user_id = mongo.db.hiveMembers.find_one(
-                    {'email': session['user']})["_id"]
                 if mongo.db.hiveMembers.find_one(
-                        {"_id": user_id, "isQueenBee": True}):
+                        {"_id": ObjectId(session["user_id"]),
+                         "isQueenBee": True}):
                     session["member_type"] = "Queen Bee"
                 elif mongo.db.hiveMembers.find_one(
-                        {"_id": user_id, "isWorkerBee": True}):
+                        {"_id": ObjectId(session["user_id"]),
+                         "isWorkerBee": True}):
                     session["member_type"] = "Worker Bee"
                 else:
                     session["member_type"] = "Busy Bee"
@@ -130,7 +148,7 @@ def login():
                 return redirect(url_for("login"))
 
         else:
-            # email doesn't exist
+            # email doesn"t exist
             flash("Incorrect email and/or password")
             return redirect(url_for("login"))
 
@@ -142,14 +160,14 @@ def login():
 def hive_management(username):
     # Get list of members waiting for approval
     unapproved_members = list(mongo.db.hiveMembers.find(
-            {'approvedMember': False}))
+            {"approvedMember": False}))
     # Get list of members waiting for Worker Bee status
     first_collections = list(mongo.db.firstCollection.find())
     # Get list of all members for member details
     members = list(mongo.db.hiveMembers.find())
     # Get list of members with location and/or collection details
     worker_bees = list(mongo.db.hiveMembers.find(
-            {'isWorkerBee': True}))
+            {"isWorkerBee": True}))
     locations = list(mongo.db.collectionLocations.find())
     # Check if worker bees have locations saved
     members_locations = list(mongo.db.collectionLocations.find(
@@ -164,46 +182,46 @@ def hive_management(username):
     # Get list of collections for collection details
     collections_dict = list(mongo.db.itemCollections.aggregate([
             {
-             '$lookup': {
-                'from': 'hiveMembers',
-                'localField': 'memberID',
-                'foreignField': '_id',
-                'as': 'hiveMembers'
+             "$lookup": {
+                "from": "hiveMembers",
+                "localField": "memberID",
+                "foreignField": "_id",
+                "as": "hiveMembers"
              },
             },
-            {'$unwind': '$hiveMembers'},
+            {"$unwind": "$hiveMembers"},
             {
-             '$lookup': {
-                'from': 'recyclableItems',
-                'localField': 'itemID',
-                'foreignField': '_id',
-                'as': 'recyclableItems'
+             "$lookup": {
+                "from": "recyclableItems",
+                "localField": "itemID",
+                "foreignField": "_id",
+                "as": "recyclableItems"
              },
             },
-            {'$unwind': '$recyclableItems'},
+            {"$unwind": "$recyclableItems"},
             {
-             '$lookup': {
-                'from': 'collectionLocations',
-                'localField': 'locationID',
-                'foreignField': '_id',
-                'as': 'collectionLocations'
+             "$lookup": {
+                "from": "collectionLocations",
+                "localField": "locationID",
+                "foreignField": "_id",
+                "as": "collectionLocations"
              },
             },
-            {'$unwind': '$collectionLocations'},
-            {'$project': {
-             'typeOfWaste': '$recyclableItems.typeOfWaste',
-             'hiveMembers': '$hiveMembers.username',
-             'hiveMembersID': '$hiveMembers._id',
-             'nickname': '$collectionLocations.nickname',
-             'street': '$collectionLocations.street',
-             'town': '$collectionLocations.town',
-             'postcode': '$collectionLocations.postcode',
-             'id': 1,
-             'conditionNotes': 1,
-             'charityScheme': 1
+            {"$unwind": "$collectionLocations"},
+            {"$project": {
+             "typeOfWaste": "$recyclableItems.typeOfWaste",
+             "hiveMembers": "$hiveMembers.username",
+             "hiveMembersID": "$hiveMembers._id",
+             "nickname": "$collectionLocations.nickname",
+             "street": "$collectionLocations.street",
+             "town": "$collectionLocations.town",
+             "postcode": "$collectionLocations.postcode",
+             "id": 1,
+             "conditionNotes": 1,
+             "charityScheme": 1
              }
              },
-            {'$sort': {'hiveMembers': 1}}
+            {"$sort": {"hiveMembers": 1}}
             ]))
     return render_template("/pages/hive-management.html",
                            unapproved_members=unapproved_members,
@@ -229,7 +247,7 @@ def delete_member_request(member_id):
 @queen_bee_required
 def approve_member_request(member_id):
     filter = {"_id": ObjectId(member_id)}
-    approve = {"$set": {'approvedMember': True}}
+    approve = {"$set": {"approvedMember": True}}
     mongo.db.hiveMembers.update(filter, approve)
     flash("Membership request has been successfully approved")
     return redirect(url_for("hive_management", username=session["username"]))
@@ -249,7 +267,7 @@ def delete_collection_request(collection_id):
 def approve_collection_request(collection_id):
     if request.method == "POST":
         first_collection = mongo.db.firstCollection.find_one(
-            {'_id': ObjectId(collection_id)})
+            {"_id": ObjectId(collection_id)})
         member_id = first_collection["memberID"]
         # Add location
         new_location = {
@@ -308,7 +326,7 @@ def approve_collection_request(collection_id):
         mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
         # Give user Worker Bee status
         filter = {"_id": ObjectId(member_id)}
-        is_worker_bee = {"$set": {'isWorkerBee': True}}
+        is_worker_bee = {"$set": {"isWorkerBee": True}}
         mongo.db.hiveMembers.update(filter, is_worker_bee)
         flash("Worker Bee request has been successfully approved")
         return redirect(url_for("hive_management",
@@ -319,98 +337,87 @@ def approve_collection_request(collection_id):
 @app.route("/profile/<username>")
 @login_required
 def profile(username):
-    if session["user"]:
-        # grab the session user's details from db
-        user_id = mongo.db.hiveMembers.find_one(
-            {'email': session['user']})["_id"]
-        email = session["user"]
-        if mongo.db.hiveMembers.find_one(
-                {"_id": user_id, "isQueenBee": True}):
-            member_type = "Queen Bee"
-        elif mongo.db.hiveMembers.find_one(
-                {"_id": user_id, "isWorkerBee": True}):
-            member_type = "Worker Bee"
-        else:
-            member_type = "Busy Bee"
-        # get user's location details from db for location accordion
-        locations = list(mongo.db.collectionLocations.find(
-            {"memberID": user_id}).sort("nickname"))
-        # Create new dictionary of collections for collection accordion
-        collections_dict = list(mongo.db.itemCollections.aggregate([
-            {'$match': {'memberID': user_id}},
-            {
-             '$lookup': {
-                'from': 'hiveMembers',
-                'localField': 'memberID',
-                'foreignField': '_id',
-                'as': 'hiveMembers'
-             },
+    # grab the session user"s details from db
+    user_id = ObjectId(session["user_id"])
+    email = session["user"]
+    # get user"s location details from db for location accordion
+    locations = list(mongo.db.collectionLocations.find(
+        {"memberID": user_id}).sort("nickname"))
+    # Create new dictionary of collections for collection accordion
+    collections_dict = list(mongo.db.itemCollections.aggregate([
+        {"$match": {"memberID": user_id}},
+        {
+            "$lookup": {
+             "from": "hiveMembers",
+             "localField": "memberID",
+             "foreignField": "_id",
+             "as": "hiveMembers"
             },
-            {'$unwind': '$hiveMembers'},
-            {
-             '$lookup': {
-                'from': 'recyclableItems',
-                'localField': 'itemID',
-                'foreignField': '_id',
-                'as': 'recyclableItems'
-             },
+        },
+        {"$unwind": "$hiveMembers"},
+        {
+            "$lookup": {
+             "from": "recyclableItems",
+             "localField": "itemID",
+             "foreignField": "_id",
+             "as": "recyclableItems"
             },
-            {'$unwind': '$recyclableItems'},
-            {
-             '$lookup': {
-                'from': 'collectionLocations',
-                'localField': 'locationID',
-                'foreignField': '_id',
-                'as': 'collectionLocations'
-             },
+        },
+        {"$unwind": "$recyclableItems"},
+        {
+            "$lookup": {
+             "from": "collectionLocations",
+             "localField": "locationID",
+             "foreignField": "_id",
+             "as": "collectionLocations"
             },
-            {'$unwind': '$collectionLocations'},
-            {'$project': {
-             'typeOfWaste': '$recyclableItems.typeOfWaste',
-             'hiveMembers': '$hiveMembers._id',
-             'nickname': '$collectionLocations.nickname',
-             'street': '$collectionLocations.street',
-             'town': '$collectionLocations.town',
-             'postcode': '$collectionLocations.postcode',
-             'id': 1,
-             'conditionNotes': 1,
-             'charityScheme': 1
-             }
-             },
-            {'$sort': {'typeOfWaste': 1}}
-            ]))
-        # Get list of categories for dropdown menu
-        categories = list(mongo.db.itemCategory.find().sort("categoryName"))
-        # Get list of all recyclable items for
-        # dropdown in 'Add collection' modal
-        items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
-        items_dict = list(mongo.db.recyclableItems.aggregate([
-            {
-             '$lookup': {
-                'from': 'itemCategory',
-                'localField': 'categoryID',
-                'foreignField': '_id',
-                'as': 'itemCategory'
-             },
+        },
+        {"$unwind": "$collectionLocations"},
+        {"$project": {
+            "typeOfWaste": "$recyclableItems.typeOfWaste",
+            "hiveMembers": "$hiveMembers._id",
+            "nickname": "$collectionLocations.nickname",
+            "street": "$collectionLocations.street",
+            "town": "$collectionLocations.town",
+            "postcode": "$collectionLocations.postcode",
+            "id": 1,
+            "conditionNotes": 1,
+            "charityScheme": 1
+            }
             },
-            {'$unwind': '$itemCategory'}
-            ]))
+        {"$sort": {"typeOfWaste": 1}}
+        ]))
+    # Get list of categories for dropdown menu
+    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+    # Get list of all recyclable items for
+    # dropdown in "Add collection" modal
+    items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
+    items_dict = list(mongo.db.recyclableItems.aggregate([
+        {
+            "$lookup": {
+             "from": "itemCategory",
+             "localField": "categoryID",
+             "foreignField": "_id",
+             "as": "itemCategory"
+            },
+        },
+        {"$unwind": "$itemCategory"}
+        ]))
 
-        # Check whether user has submitted first collection for approval
-        if mongo.db.firstCollection.find_one(
-                {"memberID": ObjectId(user_id)}):
-            awaiting_approval = True
-        else:
-            awaiting_approval = False
-        return render_template("/pages/profile.html", user_id=user_id,
-                               username=session["username"], email=email,
-                               member_type=member_type, locations=locations,
-                               collections_dict=collections_dict, items=items,
-                               items_dict=items_dict, categories=categories,
-                               page_id="profile",
-                               awaiting_approval=awaiting_approval)
-
-    return redirect(url_for("login"))
+    # Check whether user has submitted first collection for approval
+    if mongo.db.firstCollection.find_one(
+            {"memberID": ObjectId(user_id)}):
+        awaiting_approval = True
+    else:
+        awaiting_approval = False
+    return render_template("/pages/profile.html", user_id=user_id,
+                           username=session["username"], email=email,
+                           member_type=session["member_type"],
+                           locations=locations,
+                           collections_dict=collections_dict, items=items,
+                           items_dict=items_dict, categories=categories,
+                           page_id="profile",
+                           awaiting_approval=awaiting_approval)
 
 
 @app.route("/<route>/profile/edit/<member_id>", methods=["GET", "POST"])
@@ -434,7 +441,7 @@ def edit_profile(route, member_id):
 
         filter = {"_id": ObjectId(member_id)}
         session["username"] = request.form.get("edit-username")
-        edit_details = {"$set": {'username': session["username"],
+        edit_details = {"$set": {"username": session["username"],
                         "email": request.form.get(
                         "edit-email").lower()}}
         mongo.db.hiveMembers.update(filter, edit_details)
@@ -468,7 +475,7 @@ def delete_profile(route, member_id):
 @app.route("/add-new-location", methods=["GET", "POST"])
 @login_required
 def add_new_location():
-    user_id = mongo.db.hiveMembers.find_one({'email': session['user']})["_id"]
+    user_id = ObjectId(session["user_id"])
     if request.method == "POST":
         # Check whether nickname already exists
         existing_nickname = mongo.db.collectionLocations.find_one(
@@ -500,7 +507,8 @@ def edit_location(route, location_id):
         filter = {"_id": ObjectId(location_id)}
         edit_location = {"$set": {"street": request.form.get("editStreet"),
                          "town": request.form.get("editTown"),
-                         "postcode": request.form.get("editPostcode")}}
+                                  "postcode": request.form.get(
+                                      "editPostcode")}}
         mongo.db.collectionLocations.update(filter, edit_location)
         if route == "profile":
             flash("Your location has been updated")
@@ -533,15 +541,14 @@ def delete_location(route, location_id):
 @app.route("/add-first-collection", methods=["GET", "POST"])
 @login_required
 def add_first_collection():
-    user_id = mongo.db.hiveMembers.find_one(
-            {'email': session['user']})["_id"]
+    user_id = ObjectId(session["user_id"])
     username = session["username"]
     if request.method == "POST":
-        if 'newItemCategory' in request.form:
+        if "newItemCategory" in request.form:
             category_name = request.form.get("newItemCategory")
         else:
             category_name = request.form.get("itemCategory")
-        if 'newTypeOfWaste' in request.form:
+        if "newTypeOfWaste" in request.form:
             type_of_waste = request.form.get("newTypeOfWaste")
         else:
             type_of_waste = request.form.get("typeOfWaste")
@@ -568,11 +575,10 @@ def add_first_collection():
 @app.route("/add-new-collection", methods=["GET", "POST"])
 @login_required
 def add_new_collection():
-    user_id = mongo.db.hiveMembers.find_one(
-            {'email': session['user']})["_id"]
+    user_id = ObjectId(session["user_id"])
     if request.method == "POST":
         # Post method for adding a new category and type of waste
-        if 'newItemCategory' in request.form:
+        if "newItemCategory" in request.form:
             # Check whether category already exists
             existing_category = mongo.db.itemCategory.find_one(
                 {"categoryName_lower": request.form.get(
@@ -630,7 +636,7 @@ def add_new_collection():
             return redirect(url_for("get_recycling_collections",
                                     item_id=item_id))
         # Post method for adding new type of waste with existing category
-        if 'newTypeOfWaste' in request.form:
+        if "newTypeOfWaste" in request.form:
             # Check whether item already exists
             existing_type_of_waste = mongo.db.recyclableItems.find_one(
                 {"typeOfWaste_lower": request.form.get(
@@ -673,7 +679,7 @@ def add_new_collection():
                                     item_id=item_id))
         # Post method for adding new collection with existing type
         # of waste and category
-        if 'typeOfWaste' in request.form:
+        if "typeOfWaste" in request.form:
             item_id = mongo.db.recyclableItems.find_one(
                     {"typeOfWaste_lower": request.form.get(
                         "typeOfWaste").lower()})["_id"]
@@ -734,7 +740,7 @@ def delete_collection(route, collection_id):
 
 
 @app.route("/hive")
-@login_required
+@approval_required
 def get_recycling_categories():
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
     return render_template(
@@ -743,11 +749,11 @@ def get_recycling_categories():
 
 
 @app.route("/hive/items/<category_id>")
-@login_required
+@approval_required
 def get_recycling_items(category_id):
-    if category_id == 'view-all':
+    if category_id == "view-all":
         # Get selected category for dropdown
-        selected_category = 'Select a category'
+        selected_category = "Select a category"
         # Get recyclable items that match the selected category for
         # # accordion headers
         cat_items = list(mongo.db.recyclableItems.find(
@@ -770,11 +776,11 @@ def get_recycling_items(category_id):
 
 
 @app.route("/hive/collections/<item_id>")
-@login_required
+@approval_required
 def get_recycling_collections(item_id):
-    if item_id == 'view-all':
+    if item_id == "view-all":
         # Get selected item for dropdown
-        selected_item = 'Select an item'
+        selected_item = "Select an item"
         # Get recyclable collections that match the selected item for
         # # accordion headers
         item_collections = list(mongo.db.itemCollections.find(
@@ -793,41 +799,41 @@ def get_recycling_collections(item_id):
     # Create new dictionary of recyclable items and their matching collections
     collections_dict = list(mongo.db.itemCollections.aggregate([
         {
-         '$lookup': {
-            'from': 'recyclableItems',
-            'localField': 'itemID',
-            'foreignField': '_id',
-            'as': 'recyclableItems'
+         "$lookup": {
+            "from": "recyclableItems",
+            "localField": "itemID",
+            "foreignField": "_id",
+            "as": "recyclableItems"
          },
         },
-        {'$unwind': '$recyclableItems'},
+        {"$unwind": "$recyclableItems"},
         {
-         '$lookup': {
-            'from': 'hiveMembers',
-            'localField': 'memberID',
-            'foreignField': '_id',
-            'as': 'hiveMembers'
+         "$lookup": {
+            "from": "hiveMembers",
+            "localField": "memberID",
+            "foreignField": "_id",
+            "as": "hiveMembers"
          },
         },
-        {'$unwind': '$hiveMembers'},
+        {"$unwind": "$hiveMembers"},
         {
-         '$lookup': {
-            'from': 'collectionLocations',
-            'localField': 'locationID',
-            'foreignField': '_id',
-            'as': 'collectionLocations'
+         "$lookup": {
+            "from": "collectionLocations",
+            "localField": "locationID",
+            "foreignField": "_id",
+            "as": "collectionLocations"
          },
         },
-        {'$unwind': '$collectionLocations'},
-        {'$project': {
-         'typeOfWaste': '$recyclableItems.typeOfWaste',
-         'hiveMembers': '$hiveMembers.username',
-         'street': '$collectionLocations.street',
-         'town': '$collectionLocations.town',
-         'postcode': '$collectionLocations.postcode',
-         'id': 1,
-         'conditionNotes': 1,
-         'charityScheme': 1
+        {"$unwind": "$collectionLocations"},
+        {"$project": {
+         "typeOfWaste": "$recyclableItems.typeOfWaste",
+         "hiveMembers": "$hiveMembers.username",
+         "street": "$collectionLocations.street",
+         "town": "$collectionLocations.town",
+         "postcode": "$collectionLocations.postcode",
+         "id": 1,
+         "conditionNotes": 1,
+         "charityScheme": 1
          }
          }
         ]))
@@ -840,11 +846,11 @@ def get_recycling_collections(item_id):
 
 
 @app.route("/hive/members/<member_type>")
-@login_required
+@approval_required
 def get_recycling_members(member_type):
-    if member_type == 'view-all':
+    if member_type == "view-all":
         # Get selected member type for dropdown
-        selected_member_type = 'Select a Member Group'
+        selected_member_type = "Select a Member Group"
         # Get members that match the selected type for
         # # accordion headers
         member_group = list(mongo.db.hiveMembers.find(
@@ -854,13 +860,13 @@ def get_recycling_members(member_type):
         selected_member_type = member_type
         # Get members that match the selected type for
         # # accordion headers
-        if member_type == 'Queen Bee':
+        if member_type == "Queen Bee":
             member_group = list(mongo.db.hiveMembers.find(
                 {"isQueenBee": True}))
-        elif member_type == 'Worker Bee':
+        elif member_type == "Worker Bee":
             member_group = list(mongo.db.hiveMembers.find(
                 {"isQueenBee": False, "isWorkerBee": True}))
-        elif member_type == 'Busy Bee':
+        elif member_type == "Busy Bee":
             member_group = list(mongo.db.hiveMembers.find(
                 {"isQueenBee": False, "isWorkerBee": False}))
     # Check if member has collection
@@ -871,42 +877,42 @@ def get_recycling_members(member_type):
     # Create new dictionary of members and their collections
     members_dict = list(mongo.db.hiveMembers.aggregate([
         {
-         '$lookup': {
-            'from': 'itemCollections',
-            'localField': '_id',
-            'foreignField': 'memberID',
-            'as': 'itemCollections'
+         "$lookup": {
+            "from": "itemCollections",
+            "localField": "_id",
+            "foreignField": "memberID",
+            "as": "itemCollections"
          },
         },
-        {'$unwind': '$itemCollections'},
+        {"$unwind": "$itemCollections"},
         {
-         '$lookup': {
-            'from': 'recyclableItems',
-            'localField': 'itemCollections.itemID',
-            'foreignField': '_id',
-            'as': 'recyclableItems'
+         "$lookup": {
+            "from": "recyclableItems",
+            "localField": "itemCollections.itemID",
+            "foreignField": "_id",
+            "as": "recyclableItems"
          },
         },
-        {'$unwind': '$recyclableItems'},
+        {"$unwind": "$recyclableItems"},
         {
-         '$lookup': {
-            'from': 'collectionLocations',
-            'localField': 'itemCollections.locationID',
-            'foreignField': '_id',
-            'as': 'collectionLocations'
+         "$lookup": {
+            "from": "collectionLocations",
+            "localField": "itemCollections.locationID",
+            "foreignField": "_id",
+            "as": "collectionLocations"
          },
         },
-        {'$unwind': '$collectionLocations'},
-        {'$project': {
-         'typeOfWaste': '$recyclableItems.typeOfWaste',
-         'street': '$collectionLocations.street',
-         'town': '$collectionLocations.town',
-         'postcode': '$collectionLocations.postcode',
-         'conditionNotes': '$itemCollections.conditionNotes',
-         'charityScheme': '$itemCollections.charityScheme'
+        {"$unwind": "$collectionLocations"},
+        {"$project": {
+         "typeOfWaste": "$recyclableItems.typeOfWaste",
+         "street": "$collectionLocations.street",
+         "town": "$collectionLocations.town",
+         "postcode": "$collectionLocations.postcode",
+         "conditionNotes": "$itemCollections.conditionNotes",
+         "charityScheme": "$itemCollections.charityScheme"
          }
          },
-        {'$sort': {'typeOfWaste': 1}}
+        {"$sort": {"typeOfWaste": 1}}
         ]))
     return render_template(
         "pages/hive-member.html",
@@ -922,13 +928,13 @@ def logout():
     session.pop("user")
     session.pop("username")
     session.pop("member_type")
-    return redirect(url_for("login"))
+    return redirect(url_for("home"))
 
 
 @app.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
-    return render_template('404.html'), 404
+    return render_template("404.html"), 404
 
 
 if __name__ == "__main__":
