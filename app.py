@@ -63,13 +63,15 @@ def home():
     try:
         username = session["username"]
         user_id = ObjectId(session["user_id"])
+        hive_name = mongo.db.hives.find_one(
+            {"_id": ObjectId(session["hive"])})["name"]
         if mongo.db.hiveMembers.find_one(
                 {"_id": user_id, "isQueenBee": True}):
             is_queen_bee = True
         else:
             is_queen_bee = False
         return render_template("pages/index.html",
-                               username=username,
+                               username=username, hive_name=hive_name,
                                page_id="home", is_queen_bee=is_queen_bee)
     except:
         return render_template(
@@ -162,7 +164,8 @@ def hive_management(username):
     unapproved_members = list(mongo.db.hiveMembers.find(
             {"hive": ObjectId(session["hive"]), "approvedMember": False}))
     # Get list of members waiting for Worker Bee status
-    first_collections = list(mongo.db.firstCollection.find())
+    first_collections = list(mongo.db.firstCollection.find(
+        {"hive": ObjectId(session["hive"])}))
     # Get list of all members for member details
     members = list(mongo.db.hiveMembers.find(
         {"hive": ObjectId(session["hive"])}))
@@ -411,7 +414,7 @@ def profile(username):
             "conditionNotes": 1,
             "charityScheme": 1
             }
-            },
+         },
         {"$sort": {"typeOfWaste": 1}}
         ]))
     # Get list of categories for dropdown menu
@@ -580,6 +583,7 @@ def add_first_collection():
         else:
             type_of_waste = request.form.get("typeOfWaste")
         first_collection = {
+            "hive": ObjectId(session["hive"]),
             "memberID": user_id,
             "username": username,
             "nickname": request.form.get("addLocationNickname"),
