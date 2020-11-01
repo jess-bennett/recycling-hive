@@ -32,6 +32,18 @@ def login_required(f):
     return wrap
 
 
+def queen_bee_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if session["member_type"] == "Queen Bee":
+            return f(*args, **kwargs)
+        else:
+            flash("This page is only accessible to Queen Bees")
+            return redirect(url_for("profile", username=session["username"]))
+
+    return wrap
+
+
 @app.route("/")
 def home():
     try:
@@ -100,6 +112,17 @@ def login():
                 # grab the session user's username from db
                 session["username"] = mongo.db.hiveMembers.find_one(
                     {"email": session["user"]})["username"]
+                # Get users member type for page access
+                user_id = mongo.db.hiveMembers.find_one(
+                    {'email': session['user']})["_id"]
+                if mongo.db.hiveMembers.find_one(
+                        {"_id": user_id, "isQueenBee": True}):
+                    session["member_type"] = "Queen Bee"
+                elif mongo.db.hiveMembers.find_one(
+                        {"_id": user_id, "isWorkerBee": True}):
+                    session["member_type"] = "Worker Bee"
+                else:
+                    session["member_type"] = "Busy Bee"
                 return redirect(url_for("home"))
             else:
                 # invalid password match
@@ -115,7 +138,7 @@ def login():
 
 
 @app.route("/hive-management/<username>")
-@login_required
+@queen_bee_required
 def hive_management(username):
     # Get list of members waiting for approval
     unapproved_members = list(mongo.db.hiveMembers.find(
@@ -195,7 +218,7 @@ def hive_management(username):
 
 
 @app.route("/hive-management/delete-member-request/<member_id>")
-@login_required
+@queen_bee_required
 def delete_member_request(member_id):
     mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
     flash("Membership request has been successfully deleted")
@@ -203,7 +226,7 @@ def delete_member_request(member_id):
 
 
 @app.route("/hive-management/approve-member-request/<member_id>")
-@login_required
+@queen_bee_required
 def approve_member_request(member_id):
     filter = {"_id": ObjectId(member_id)}
     approve = {"$set": {'approvedMember': True}}
@@ -213,7 +236,7 @@ def approve_member_request(member_id):
 
 
 @app.route("/hive-management/delete-collection-request/<collection_id>")
-@login_required
+@queen_bee_required
 def delete_collection_request(collection_id):
     mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
     flash("Worker Bee request has been successfully deleted")
@@ -222,7 +245,7 @@ def delete_collection_request(collection_id):
 
 @app.route("/hive-management/approve-collection-request/<collection_id>",
            methods=["GET", "POST"])
-@login_required
+@queen_bee_required
 def approve_collection_request(collection_id):
     if request.method == "POST":
         first_collection = mongo.db.firstCollection.find_one(
@@ -887,7 +910,7 @@ def get_recycling_members(member_type):
         ]))
     return render_template(
         "pages/hive-member.html",
-        member_type=member_type, selected_member_type=selected_member_type,
+        selected_member_type=selected_member_type,
         member_group=member_group, members_dict=members_dict,
         members_collection_values=members_collection_values, page_id="members")
 
@@ -898,6 +921,7 @@ def logout():
     flash("Log Out Successful!")
     session.pop("user")
     session.pop("username")
+    session.pop("member_type")
     return redirect(url_for("login"))
 
 
