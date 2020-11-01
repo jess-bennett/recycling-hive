@@ -419,17 +419,22 @@ def add_new_location():
     return redirect(url_for("profile", username=session["username"]))
 
 
-@app.route("/edit-location/<location_id>", methods=["GET", "POST"])
-def edit_location(location_id):
+@app.route("/<route>/edit-location/<location_id>", methods=["GET", "POST"])
+def edit_location(route, location_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(location_id)}
         edit_location = {"$set": {"street": request.form.get("editStreet"),
-                        "town": request.form.get("editTown"),
-                        "postcode": request.form.get("editPostcode")}}
+                         "town": request.form.get("editTown"),
+                         "postcode": request.form.get("editPostcode")}}
         mongo.db.collectionLocations.update(filter, edit_location)
-        flash("Your location has been updated")
-        return redirect(url_for(
-            "profile", username=session["username"]))
+        if route == "profile":
+            flash("Your location has been updated")
+            return redirect(url_for(
+                "profile", username=session["username"]))
+        elif route == "management":
+            flash("Member's location has been updated")
+            return redirect(url_for(
+                "hive_management", username=session["username"]))
 
     return redirect(url_for("profile", username=session["username"]))
 

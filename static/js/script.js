@@ -84,8 +84,8 @@ $("select#editLocation").change(function() {
 
 /* HIVE-MANAGEMENT.HTML */
 $("#btn-manage-requests").click(function() {
-  $("#btn-manage-members").addClass("inactive");
-  $("#btn-manage-requests").removeClass("inactive");
+  $("#btn-manage-members").removeClass("active");
+  $("#btn-manage-requests").addClass("active");
   $("#membership-requests").show();
   $("#workerbee-requests").show();
   $("#member-details").hide();
@@ -94,8 +94,8 @@ $("#btn-manage-requests").click(function() {
 });
 
 $("#btn-manage-members").click(function() {
-  $("#btn-manage-members").removeClass("inactive");
-  $("#btn-manage-requests").addClass("inactive");
+  $("#btn-manage-members").addClass("active");
+  $("#btn-manage-requests").removeClass("active");
   $("#membership-requests").hide();
   $("#workerbee-requests").hide();
   $("#member-details").show();
