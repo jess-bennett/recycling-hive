@@ -110,10 +110,20 @@ def hive_management(username):
     first_collections = list(mongo.db.firstCollection.find())
     # Get list of all members for member details
     members = list(mongo.db.hiveMembers.find())
-    # Get list of members with location and collection details
+    # Get list of members with location and/or collection details
     worker_bees = list(mongo.db.hiveMembers.find(
             {'isWorkerBee': True}))
     locations = list(mongo.db.collectionLocations.find())
+    # Check if worker bees have locations saved
+    members_locations = list(mongo.db.collectionLocations.find(
+        {}, {"memberID": 1, "_id": 0}))
+    members_location_values = list(
+        [document["memberID"] for document in members_locations])
+    # Check if worker bees have collections saved
+    members_collections = list(mongo.db.itemCollections.find(
+        {}, {"memberID": 1, "_id": 0}))
+    members_collection_values = list(
+        [document["memberID"] for document in members_collections])
     # Get list of collections for collection details
     collections_dict = list(mongo.db.itemCollections.aggregate([
             {
@@ -164,6 +174,8 @@ def hive_management(username):
                            members=members,
                            worker_bees=worker_bees,
                            locations=locations,
+                           members_location_values=members_location_values,
+                           members_collection_values=members_collection_values,
                            collections_dict=collections_dict,
                            page_id="management")
 
@@ -380,14 +392,14 @@ def profile(username):
     return redirect(url_for("login"))
 
 
-@app.route("/profile/delete")
-def delete_profile():
+@app.route("/profile/delete/<member_id>")
+def delete_profile(member_id):
     # grab the session user's details from db
-    user_id = mongo.db.hiveMembers.find_one(
+    member_id = mongo.db.hiveMembers.find_one(
             {'email': session['user']})["_id"]
-    mongo.db.hiveMembers.remove({"_id": ObjectId(user_id)})
-    mongo.db.collectionLocations.remove({"memberID": ObjectId(user_id)})
-    mongo.db.itemCollections.remove({"memberID": ObjectId(user_id)})
+    mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
+    mongo.db.collectionLocations.remove({"memberID": ObjectId(member_id)})
+    mongo.db.itemCollections.remove({"memberID": ObjectId(member_id)})
     flash("Your profile has been successfully deleted")
     return redirect(url_for("logout"))
 
@@ -439,11 +451,18 @@ def edit_location(route, location_id):
     return redirect(url_for("profile", username=session["username"]))
 
 
-@app.route("/delete-location/<location_id>")
-def delete_location(location_id):
+@app.route("/<route>/delete-location/<location_id>")
+def delete_location(route, location_id):
     mongo.db.collectionLocations.remove({"_id": ObjectId(location_id)})
     mongo.db.itemCollections.remove({"locationID": ObjectId(location_id)})
-    flash("Your location has been successfully deleted")
+    if route == "profile":
+        flash("Your location has been successfully deleted")
+        return redirect(url_for(
+            "profile", username=session["username"]))
+    elif route == "management":
+        flash("Member's location has been successfully deleted")
+        return redirect(url_for(
+            "hive_management", username=session["username"]))
     return redirect(url_for("profile", username=session["username"]))
 
 
@@ -610,8 +629,8 @@ def add_new_collection():
     return redirect(url_for("profile", username=session["username"]))
 
 
-@app.route("/edit-collection/<collection_id>", methods=["GET", "POST"])
-def edit_collection(collection_id):
+@app.route("/<route>/edit-collection/<collection_id>", methods=["GET", "POST"])
+def edit_collection(route, collection_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(collection_id)}
         edit_collection = {"$set":
@@ -620,17 +639,29 @@ def edit_collection(collection_id):
                             "locationID": ObjectId(
                                 request.form.get("editLocation"))}}
         mongo.db.itemCollections.update(filter, edit_collection)
-        flash("Your collection has been updated")
-        return redirect(url_for(
-            "profile", username=session["username"]))
+        if route == "profile":
+            flash("Your collection has been updated")
+            return redirect(url_for(
+                "profile", username=session["username"]))
+        elif route == "management":
+            flash("Member's collection has been updated")
+            return redirect(url_for(
+                "hive_management", username=session["username"]))
 
     return redirect(url_for("profile", username=session["username"]))
 
 
-@app.route("/delete-collection/<collection_id>")
-def delete_collection(collection_id):
+@app.route("/<route>/delete-collection/<collection_id>")
+def delete_collection(route, collection_id):
     mongo.db.itemCollections.remove({"_id": ObjectId(collection_id)})
-    flash("Your collection has been successfully deleted")
+    if route == "profile":
+        flash("Your collection has been successfully deleted")
+        return redirect(url_for(
+            "profile", username=session["username"]))
+    elif route == "management":
+        flash("Member's collection has been successfully deleted")
+        return redirect(url_for(
+            "hive_management", username=session["username"]))
     return redirect(url_for("profile", username=session["username"]))
 
 
@@ -809,7 +840,6 @@ def get_recycling_members(member_type):
         "pages/hive-member.html",
         member_type=member_type, selected_member_type=selected_member_type,
         member_group=member_group, members_dict=members_dict,
-        members_collection=members_collection,
         members_collection_values=members_collection_values, page_id="members")
 
 

@@ -135,7 +135,7 @@
       </div>
       <div class="modal-body">
         <form name="editCollection" class="card-body" method="POST"
-          action="{{ url_for('edit_collection', collection_id=collection._id) }}">
+          action="{{ url_for('edit_collection', route=page_id, collection_id=collection._id) }}">
           <div class="form-row">
             <!-- Nickname -->
             <div class="form-group col-md-3">

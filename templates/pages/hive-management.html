@@ -169,9 +169,9 @@
                 <!-- Approve/deny collection -->
                 <div class="container-fluid">
                   <div class="row">
-                    <div id="delete-collection"
+                    <div id="deny-collection"
                       class="btn col-1 offset-10 btn-delete" data-toggle="modal"
-                      data-target="#modal-delete-collection-request-{{ collection._id }}"><i
+                      data-target="#modal-deny-collection-request-{{ collection._id }}"><i
                         class="fas fa-times-circle" data-toggle="tooltip"
                         data-placement="top" data-type="info"
                         title="Delete collection"></i></div>
@@ -208,6 +208,22 @@
                         <h6><strong>{{ member.username }}'s Details</strong></h6>
                         <hr>
                         {% include "components/member-details.html" %}
+                    <!-- Amend profile -->
+                    <div class="container-fluid">
+                    <div class="row">
+                        <div id="delete-profile"
+                        class="btn col-1 offset-10 btn-delete" data-toggle="modal"
+                        data-target="#modal-delete-profile-{{ member._id }}"><i
+                            class="fas fa-trash-alt" data-toggle="tooltip"
+                            data-placement="top" data-type="info"
+                            title="Delete"></i></div>
+                        <div id="amend-profile" class="btn col-1 btn-edit"
+                        data-toggle="modal" data-target="#modal-edit-profile"><i
+                            class="fas fa-edit" data-toggle="tooltip"
+                            data-placement="top" data-type="info" title="Edit"></i>
+                        </div>
+                    </div>
+                    </div>
                     <hr class="green-line">
                     {% endfor %}
                     {% else %}
@@ -232,6 +248,7 @@
               <div class="card-body">
                 {% if locations %}
                     {% for member in worker_bees %}
+                        {% if member._id in members_location_values %}
                         <h6><strong>{{ member.username }}'s Locations</strong></h6>
                         {% for location in locations if location.memberID == member._id %}
                         <hr>
@@ -253,7 +270,8 @@
                         </div>
                         </div>
                         {% endfor %}
-                    <hr class="green-line">
+                        <hr class="green-line">
+                        {% endif %}
                     {% endfor %}
                     {% else %}
                     <p><strong>There are no locations in your Hive</strong></p>
@@ -277,11 +295,29 @@
               <div class="card-body">
                 {% if collections_dict %}
                     {% for member in worker_bees %}
+                        {% if member._id in members_collection_values %}
                         <h6><strong>{{ member.username }}'s Collections</strong></h6>
                         {% for collection in collections_dict if collection.hiveMembersID == member._id %}
                         <hr class="green-line">
                         {% include "components/collection-details.html" %}
+                        <!-- Amend collection -->
+                        <div class="container-fluid">
+                        <div class="row">
+                            <div id="delete-collection"
+                            class="btn col-1 offset-10 btn-delete" data-toggle="modal"
+                            data-target="#modal-delete-collection-{{ collection._id }}"><i
+                                class="fas fa-trash-alt" data-toggle="tooltip"
+                                data-placement="top" data-type="info"
+                                title="Delete"></i></div>
+                            <div id="amend-collection" class="btn col-1 btn-edit" data-toggle="modal"
+                            data-target="#modal-edit-collection-{{ collection._id }}">
+                            <i class="fas fa-edit" data-toggle="tooltip" data-placement="top"
+                            data-type="info" title="Edit"></i>
+                            </div>
+                        </div>
+                        </div>
                         {% endfor %}
+                    {% endif %}
                     {% endfor %}
                     {% else %}
                     <p><strong>There are no collections in your Hive</strong></p>
