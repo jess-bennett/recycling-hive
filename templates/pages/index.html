@@ -21,7 +21,7 @@
     {% if username == False %}
     <li>
         <a href="">
-        <div id="btn-profile" class="hexagon">
+        <div class="hexagon">
             <img src="../static/images/bees.jpg" alt="Lorem Ipsum" />
             <h3 class="hexagon-text">Demo</h3>
         </div>
@@ -54,7 +54,7 @@
     {% else %}
     <li>
         <a href="{{ url_for('profile', username=session['username']) }}">
-        <div id="btn-profile" class="hexagon">
+        <div class="hexagon">
             <img src="../static/images/bees.jpg" alt="Lorem Ipsum" />
             <h3 class="hexagon-text">View your profile</h3>
         </div>
@@ -76,14 +76,16 @@
         </div>
       </a>
     </li>
-    <li>
-      <a href="#item3">
-        <div class="hexagon">
-          <img src="../static/images/recycling-symbol.png" alt="Lorem Ipsum" />
-          <h3 class="hexagon-text">Be inspired!</h3>
-        </div>
-      </a>
-    </li>
+    {% if is_queen_bee %}
+        <li>
+        <a href="{{ url_for('hive_management', username=session['username']) }}">
+            <div class="hexagon">
+            <img src="../static/images/recycling-symbol.png" alt="Lorem Ipsum" />
+            <h3 class="hexagon-text">Manage your Hive</h3>
+            </div>
+        </a>
+        </li>
+    {% endif %}
     {% endif %}
   </ul>
 </section>

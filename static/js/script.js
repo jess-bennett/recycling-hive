@@ -3,6 +3,9 @@ $(document).ready(function() {
   $("#instructions-addTypeOfWaste").hide();
   $("#select-itemCategory").hide();
   $("#instructions-addItemCategory").hide();
+  $("#member-details").hide();
+  $("#location-details").hide();
+  $("#collection-details").hide();
 });
 
 /* REGISTER.HTML */
@@ -77,4 +80,25 @@ $("select#locationID").change(function() {
 $("select#editLocation").change(function() {
   selectedEditLocation = $(this).find(":selected").data("id");
   $("#editLocationAddress").attr("placeholder", selectedEditLocation);
+});
+
+/* HIVE-MANAGEMENT.HTML */
+$("#btn-manage-requests").click(function() {
+  $("#btn-manage-members").removeClass("active");
+  $("#btn-manage-requests").addClass("active");
+  $("#membership-requests").show();
+  $("#workerbee-requests").show();
+  $("#member-details").hide();
+  $("#location-details").hide();
+  $("#collection-details").hide();
+});
+
+$("#btn-manage-members").click(function() {
+  $("#btn-manage-members").addClass("active");
+  $("#btn-manage-requests").removeClass("active");
+  $("#membership-requests").hide();
+  $("#workerbee-requests").hide();
+  $("#member-details").show();
+  $("#location-details").show();
+  $("#collection-details").show();
 });

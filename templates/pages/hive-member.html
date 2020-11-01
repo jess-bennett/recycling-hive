@@ -30,7 +30,7 @@
       <div class="modal-body">
                 {% if member._id in members_collection_values %}
                 {% for collection in members_dict if collection._id == member._id %}
-                    {% include "components/collection-details-modal.html" %}
+                    {% include "components/collection-details.html" %}
                 
                 <hr class="green-line">
                 {% endfor %}

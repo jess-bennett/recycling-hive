@@ -23,11 +23,17 @@ mongo = PyMongo(app)
 def home():
     try:
         users = mongo.db.hiveMembers
-
+        username = users.find_one({'email': session['user']})["username"]
+        user_id = mongo.db.hiveMembers.find_one(
+            {'email': session['user']})["_id"]
+        if mongo.db.hiveMembers.find_one(
+                {"_id": user_id, "isQueenBee": True}):
+            is_queen_bee = True
+        else:
+            is_queen_bee = False
         return render_template("pages/index.html",
-                               username=users.find_one(
-                                   {'email': session['user']})["username"],
-                               page_id="home")
+                               username=username,
+                               page_id="home", is_queen_bee=is_queen_bee)
     except:
         return render_template(
             "pages/index.html", username=False, page_id="home")
@@ -95,7 +101,181 @@ def login():
     return render_template("pages/login.html", page_id="login")
 
 
-@app.route("/profile/<username>", methods=["GET", "POST"])
+@app.route("/hive-management/<username>")
+def hive_management(username):
+    # Get list of members waiting for approval
+    unapproved_members = list(mongo.db.hiveMembers.find(
+            {'approvedMember': False}))
+    # Get list of members waiting for Worker Bee status
+    first_collections = list(mongo.db.firstCollection.find())
+    # Get list of all members for member details
+    members = list(mongo.db.hiveMembers.find())
+    # Get list of members with location and/or collection details
+    worker_bees = list(mongo.db.hiveMembers.find(
+            {'isWorkerBee': True}))
+    locations = list(mongo.db.collectionLocations.find())
+    # Check if worker bees have locations saved
+    members_locations = list(mongo.db.collectionLocations.find(
+        {}, {"memberID": 1, "_id": 0}))
+    members_location_values = list(
+        [document["memberID"] for document in members_locations])
+    # Check if worker bees have collections saved
+    members_collections = list(mongo.db.itemCollections.find(
+        {}, {"memberID": 1, "_id": 0}))
+    members_collection_values = list(
+        [document["memberID"] for document in members_collections])
+    # Get list of collections for collection details
+    collections_dict = list(mongo.db.itemCollections.aggregate([
+            {
+             '$lookup': {
+                'from': 'hiveMembers',
+                'localField': 'memberID',
+                'foreignField': '_id',
+                'as': 'hiveMembers'
+             },
+            },
+            {'$unwind': '$hiveMembers'},
+            {
+             '$lookup': {
+                'from': 'recyclableItems',
+                'localField': 'itemID',
+                'foreignField': '_id',
+                'as': 'recyclableItems'
+             },
+            },
+            {'$unwind': '$recyclableItems'},
+            {
+             '$lookup': {
+                'from': 'collectionLocations',
+                'localField': 'locationID',
+                'foreignField': '_id',
+                'as': 'collectionLocations'
+             },
+            },
+            {'$unwind': '$collectionLocations'},
+            {'$project': {
+             'typeOfWaste': '$recyclableItems.typeOfWaste',
+             'hiveMembers': '$hiveMembers.username',
+             'hiveMembersID': '$hiveMembers._id',
+             'nickname': '$collectionLocations.nickname',
+             'street': '$collectionLocations.street',
+             'town': '$collectionLocations.town',
+             'postcode': '$collectionLocations.postcode',
+             'id': 1,
+             'conditionNotes': 1,
+             'charityScheme': 1
+             }
+             },
+            {'$sort': {'hiveMembers': 1}}
+            ]))
+    return render_template("/pages/hive-management.html",
+                           unapproved_members=unapproved_members,
+                           first_collections=first_collections,
+                           members=members,
+                           worker_bees=worker_bees,
+                           locations=locations,
+                           members_location_values=members_location_values,
+                           members_collection_values=members_collection_values,
+                           collections_dict=collections_dict,
+                           page_id="management")
+
+
+@app.route("/hive-management/delete-member-request/<member_id>")
+def delete_member_request(member_id):
+    mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
+    flash("Membership request has been successfully deleted")
+    return redirect(url_for("hive_management", username=session["username"]))
+
+
+@app.route("/hive-management/approve-member-request/<member_id>")
+def approve_member_request(member_id):
+    filter = {"_id": ObjectId(member_id)}
+    approve = {"$set": {'approvedMember': True}}
+    mongo.db.hiveMembers.update(filter, approve)
+    flash("Membership request has been successfully approved")
+    return redirect(url_for("hive_management", username=session["username"]))
+
+
+@app.route("/hive-management/delete-collection-request/<collection_id>")
+def delete_collection_request(collection_id):
+    mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
+    flash("Worker Bee request has been successfully deleted")
+    return redirect(url_for("hive_management", username=session["username"]))
+
+
+@app.route("/hive-management/approve-collection-request/<collection_id>",
+           methods=["GET", "POST"])
+def approve_collection_request(collection_id):
+    if request.method == "POST":
+        first_collection = mongo.db.firstCollection.find_one(
+            {'_id': ObjectId(collection_id)})
+        member_id = first_collection["memberID"]
+        # Add location
+        new_location = {
+            "nickname": first_collection["nickname"],
+            "nickname_lower": first_collection["nickname"].lower(),
+            "street": first_collection["street"],
+            "town": first_collection["town"],
+            "postcode": first_collection["postcode"],
+            "memberID": ObjectId(member_id)
+        }
+        mongo.db.collectionLocations.insert_one(new_location)
+        location_id = mongo.db.collectionLocations.find_one(
+                {"nickname_lower": first_collection["nickname"].lower(
+                )})["_id"]
+        # Check whether category exists and either add or get ID
+        existing_category = mongo.db.itemCategory.find_one(
+                {"categoryName_lower": first_collection["categoryName"].lower(
+                )})
+        if existing_category:
+            category_id = existing_category["_id"]
+        else:
+            new_category = {
+                "categoryName": first_collection["categoryName"],
+                "categoryName_lower": first_collection["categoryName"].lower()
+            }
+            mongo.db.itemCategory.insert_one(new_category)
+            category_id = mongo.db.itemCategory.find_one(
+                {"categoryName_lower": first_collection["categoryName"].lower(
+                )})["_id"]
+        # Check whether type of waste exists and either add or get ID
+        existing_type_of_waste = mongo.db.recyclableItems.find_one(
+                {"typeOfWaste_lower": first_collection["typeOfWaste"].lower(),
+                    "categoryID": category_id})
+        if existing_type_of_waste:
+            item_id = existing_type_of_waste["_id"]
+        else:
+            new_item = {
+                "typeOfWaste": first_collection["typeOfWaste"],
+                "typeOfWaste_lower": first_collection["typeOfWaste"].lower(),
+                "categoryID": category_id
+            }
+            mongo.db.recyclableItems.insert_one(new_item)
+            item_id = mongo.db.recyclableItems.find_one(
+                {"typeOfWaste_lower": first_collection["typeOfWaste"].lower(
+                )})["_id"]
+        new_collection = {
+            "itemID": item_id,
+            "conditionNotes": first_collection["conditionNotes"],
+            "charityScheme": first_collection["charityScheme"],
+            "memberID": ObjectId(member_id),
+            "locationID": ObjectId(location_id),
+            "isNational": "no",
+            "dateAdded": datetime.now().strftime("%d %b %Y")
+        }
+        mongo.db.itemCollections.insert_one(new_collection)
+        mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
+        # Give user Worker Bee status
+        filter = {"_id": ObjectId(member_id)}
+        is_worker_bee = {"$set": {'isWorkerBee': True}}
+        mongo.db.hiveMembers.update(filter, is_worker_bee)
+        flash("Worker Bee request has been successfully approved")
+        return redirect(url_for("hive_management",
+                                username=session["username"]))
+    return redirect(url_for("hive_management", username=session["username"]))
+
+
+@app.route("/profile/<username>")
 def profile(username):
     if session["user"]:
         # grab the session user's details from db
@@ -173,48 +353,72 @@ def profile(username):
             },
             {'$unwind': '$itemCategory'}
             ]))
-        # Post method for editing user details
-        if request.method == "POST":
-            # check where email already exists in db
-            existing_user = mongo.db.hiveMembers.find_one(
-                {"_id": {"$ne": ObjectId(user_id)},
-                    "email": request.form.get("edit-email").lower()}
-            )
-            if existing_user:
-                flash("Email already exists")
-                return redirect(url_for(
-                    "profile", username=session["username"]))
-
-            filter = {"_id": ObjectId(user_id)}
-            session["username"] = request.form.get("edit-username")
-            edit_details = {"$set": {'username': session["username"],
-                            "email": request.form.get(
-                            "edit-email").lower()}}
-            mongo.db.hiveMembers.update(filter, edit_details)
-            flash("Your details have been updated")
-            return redirect(url_for(
-                "profile", username=session["username"]))
-
+        
+        # Check whether user has submitted first collection for approval
+        if mongo.db.firstCollection.find_one(
+                {"memberID": ObjectId(user_id)}):
+            awaiting_approval = True
+        else:
+            awaiting_approval = False
         return render_template("/pages/profile.html", user_id=user_id,
                                username=session["username"], email=email,
                                member_type=member_type, locations=locations,
                                collections_dict=collections_dict, items=items,
                                items_dict=items_dict, categories=categories,
-                               page_id="profile")
+                               page_id="profile",
+                               awaiting_approval=awaiting_approval)
 
     return redirect(url_for("login"))
 
 
-@app.route("/profile/delete")
-def delete_profile():
-    # grab the session user's details from db
-    user_id = mongo.db.hiveMembers.find_one(
-            {'email': session['user']})["_id"]
-    mongo.db.hiveMembers.remove({"_id": ObjectId(user_id)})
-    mongo.db.collectionLocations.remove({"memberID": ObjectId(user_id)})
-    mongo.db.itemCollections.remove({"memberID": ObjectId(user_id)})
-    flash("Your profile has been successfully deleted")
-    return redirect(url_for("logout"))
+@app.route("/<route>/profile/edit/<member_id>", methods=["GET", "POST"])
+def edit_profile(route, member_id):
+    # Post method for editing user details
+    if request.method == "POST":
+        # check where email already exists in db
+        existing_user = mongo.db.hiveMembers.find_one(
+            {"_id": {"$ne": ObjectId(member_id)},
+                "email": request.form.get("edit-email").lower()}
+        )
+        if existing_user:
+            flash("Email already exists")
+            if route == "profile":
+                return redirect(url_for(
+                    "profile", username=session["username"]))
+            elif route == "management":
+                return redirect(url_for(
+                    "hive_management", username=session["username"]))
+
+        filter = {"_id": ObjectId(member_id)}
+        session["username"] = request.form.get("edit-username")
+        edit_details = {"$set": {'username': session["username"],
+                        "email": request.form.get(
+                        "edit-email").lower()}}
+        mongo.db.hiveMembers.update(filter, edit_details)
+        if route == "profile":
+            flash("Your details have been successfully updated")
+            return redirect(url_for("profile", username=session["username"]))
+        elif route == "management":
+            flash("Member's details have been successfully updated")
+            return redirect(url_for(
+                "hive_management", username=session["username"]))
+    return redirect(url_for("profile", username=session["username"]))
+
+
+@app.route("/<route>/profile/delete/<member_id>")
+def delete_profile(route, member_id):
+    mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
+    mongo.db.collectionLocations.remove({"memberID": ObjectId(member_id)})
+    mongo.db.itemCollections.remove({"memberID": ObjectId(member_id)})
+    if route == "profile":
+        flash("Your profile has been successfully deleted")
+        return redirect(url_for(
+            "logout"))
+    elif route == "management":
+        flash("Member's profile has been successfully deleted")
+        return redirect(url_for(
+            "hive_management", username=session["username"]))
+    return redirect(url_for("profile", username=session["username"]))
 
 
 @app.route("/add-new-location", methods=["GET", "POST"])
@@ -244,26 +448,72 @@ def add_new_location():
     return redirect(url_for("profile", username=session["username"]))
 
 
-@app.route("/edit-location/<location_id>", methods=["GET", "POST"])
-def edit_location(location_id):
+@app.route("/<route>/edit-location/<location_id>", methods=["GET", "POST"])
+def edit_location(route, location_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(location_id)}
         edit_location = {"$set": {"street": request.form.get("editStreet"),
-                        "town": request.form.get("editTown"),
-                        "postcode": request.form.get("editPostcode")}}
+                         "town": request.form.get("editTown"),
+                         "postcode": request.form.get("editPostcode")}}
         mongo.db.collectionLocations.update(filter, edit_location)
-        flash("Your location has been updated")
-        return redirect(url_for(
-            "profile", username=session["username"]))
+        if route == "profile":
+            flash("Your location has been updated")
+            return redirect(url_for(
+                "profile", username=session["username"]))
+        elif route == "management":
+            flash("Member's location has been updated")
+            return redirect(url_for(
+                "hive_management", username=session["username"]))
 
     return redirect(url_for("profile", username=session["username"]))
 
 
-@app.route("/delete-location/<location_id>")
-def delete_location(location_id):
+@app.route("/<route>/delete-location/<location_id>")
+def delete_location(route, location_id):
     mongo.db.collectionLocations.remove({"_id": ObjectId(location_id)})
     mongo.db.itemCollections.remove({"locationID": ObjectId(location_id)})
-    flash("Your location has been successfully deleted")
+    if route == "profile":
+        flash("Your location has been successfully deleted")
+        return redirect(url_for(
+            "profile", username=session["username"]))
+    elif route == "management":
+        flash("Member's location has been successfully deleted")
+        return redirect(url_for(
+            "hive_management", username=session["username"]))
+    return redirect(url_for("profile", username=session["username"]))
+
+
+@app.route("/add-first-collection", methods=["GET", "POST"])
+def add_first_collection():
+    user_id = mongo.db.hiveMembers.find_one(
+            {'email': session['user']})["_id"]
+    username = session["username"]
+    if request.method == "POST":
+        if 'newItemCategory' in request.form:
+            category_name = request.form.get("newItemCategory")
+        else:
+            category_name = request.form.get("itemCategory")
+        if 'newTypeOfWaste' in request.form:
+            type_of_waste = request.form.get("newTypeOfWaste")
+        else:
+            type_of_waste = request.form.get("typeOfWaste")
+        first_collection = {
+            "memberID": user_id,
+            "username": username,
+            "nickname": request.form.get("addLocationNickname"),
+            "street": request.form.get("addLocationStreet"),
+            "town": request.form.get("addLocationTown"),
+            "postcode": request.form.get("addLocationPostcode"),
+            "categoryName": category_name,
+            "typeOfWaste": type_of_waste,
+            "conditionNotes": request.form.get("conditionNotes"),
+            "charityScheme": request.form.get("charityScheme"),
+            "isNational": "no",
+            "dateAdded": datetime.now().strftime("%d %b %Y")
+        }
+        mongo.db.firstCollection.insert_one(first_collection)
+        flash("First collection sent for approval")
+        return redirect(url_for("profile", username=session["username"]))
     return redirect(url_for("profile", username=session["username"]))
 
 
@@ -396,8 +646,8 @@ def add_new_collection():
     return redirect(url_for("profile", username=session["username"]))
 
 
-@app.route("/edit-collection/<collection_id>", methods=["GET", "POST"])
-def edit_collection(collection_id):
+@app.route("/<route>/edit-collection/<collection_id>", methods=["GET", "POST"])
+def edit_collection(route, collection_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(collection_id)}
         edit_collection = {"$set":
@@ -406,17 +656,29 @@ def edit_collection(collection_id):
                             "locationID": ObjectId(
                                 request.form.get("editLocation"))}}
         mongo.db.itemCollections.update(filter, edit_collection)
-        flash("Your collection has been updated")
-        return redirect(url_for(
-            "profile", username=session["username"]))
+        if route == "profile":
+            flash("Your collection has been updated")
+            return redirect(url_for(
+                "profile", username=session["username"]))
+        elif route == "management":
+            flash("Member's collection has been updated")
+            return redirect(url_for(
+                "hive_management", username=session["username"]))
 
     return redirect(url_for("profile", username=session["username"]))
 
 
-@app.route("/delete-collection/<collection_id>")
-def delete_collection(collection_id):
+@app.route("/<route>/delete-collection/<collection_id>")
+def delete_collection(route, collection_id):
     mongo.db.itemCollections.remove({"_id": ObjectId(collection_id)})
-    flash("Your collection has been successfully deleted")
+    if route == "profile":
+        flash("Your collection has been successfully deleted")
+        return redirect(url_for(
+            "profile", username=session["username"]))
+    elif route == "management":
+        flash("Member's collection has been successfully deleted")
+        return redirect(url_for(
+            "hive_management", username=session["username"]))
     return redirect(url_for("profile", username=session["username"]))
 
 
@@ -428,7 +690,7 @@ def get_recycling_categories():
         categories=categories, page_id="categories")
 
 
-@app.route("/hive/items/<category_id>", methods=["GET", "POST"])
+@app.route("/hive/items/<category_id>")
 def get_recycling_items(category_id):
     if category_id == 'view-all':
         # Get selected category for dropdown
@@ -454,7 +716,7 @@ def get_recycling_items(category_id):
         selected_category=selected_category, page_id="items")
 
 
-@app.route("/hive/collections/<item_id>", methods=["GET", "POST"])
+@app.route("/hive/collections/<item_id>")
 def get_recycling_collections(item_id):
     if item_id == 'view-all':
         # Get selected item for dropdown
@@ -595,7 +857,6 @@ def get_recycling_members(member_type):
         "pages/hive-member.html",
         member_type=member_type, selected_member_type=selected_member_type,
         member_group=member_group, members_dict=members_dict,
-        members_collection=members_collection,
         members_collection_values=members_collection_values, page_id="members")
 
 

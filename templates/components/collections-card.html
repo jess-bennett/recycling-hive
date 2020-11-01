@@ -1,0 +1,53 @@
+<!-- Collections card -->
+          <div class="card">
+            <div class="card-header green-background" id="headingFour">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse"
+                  data-target="#collapseFour" aria-expanded="false"
+                  aria-controls="collapseFour">
+                  <i class="fas fa-recycle"></i> <strong>Your
+                    Collections</strong>
+                </button>
+              </h5>
+            </div>
+            <div id="collapseFour" class="collapse"
+              aria-labelledby="headingFour" data-parent="#accordion">
+              <div class="card-body">
+                <!-- Add collection -->
+                <div class="container-fluid">
+                  <div class="row">
+                    <button type="button"
+                      class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add"
+                      data-toggle="modal"
+                      data-target="#modal-add-collection">Add New
+                      Collection</button>
+                  </div>
+                </div>
+                {% if collections_dict %}
+                {% for collection in collections_dict %}
+                <hr class="green-line">
+                {% include "components/collection-details.html" %}
+                <!-- Amend collection -->
+                <div class="container-fluid">
+                  <div class="row">
+                    <div id="delete-collection"
+                      class="btn col-1 offset-10 btn-delete" data-toggle="modal"
+                      data-target="#modal-delete-collection-{{ collection._id }}"><i
+                        class="fas fa-trash-alt" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Delete"></i></div>
+                    <div id="amend-collection" class="btn col-1 btn-edit" data-toggle="modal"
+                      data-target="#modal-edit-collection-{{ collection._id }}">
+                      <i class="fas fa-edit" data-toggle="tooltip" data-placement="top"
+                      data-type="info" title="Edit"></i>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p><strong>You do not currently have any collections saved! Want
+                    to add one?</strong></p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
