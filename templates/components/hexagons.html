@@ -22,7 +22,7 @@
 		<li>
 			<a href="{{ url_for('get_recycling_collections', item_id=cat_item._id) }}">
 				<div class="hexagon hexagon-medium">
-					<h5 class="hexagon-text hexagon-medium">{{ cat_item.typeOfWaste }}</h5>
+					<h5 class="hexagon-text">{{ cat_item.typeOfWaste }}</h5>
 				</div>
 			</a>
 		</li>
@@ -32,14 +32,14 @@
         <li>
             <a href="{{ url_for('get_recycling_members', member_type='view-all') }}">
                 <div class="hexagon hexagon-dark">
-                    <h3 class="hexagon-text hexagon-dark">View all members</h3>
+                    <h3 class="hexagon-text">View all members</h3>
                 </div>
             </a>
         </li>
         {% for collection in collections_dict if collection.typeOfWaste == selected_item %}
         <li>
             <div class="hexagon hexagon-dark" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
-                <h5 class="hexagon-text hexagon-dark">{{ collection.hiveMembers }} -
+                <h5 class="hexagon-text">{{ collection.hiveMembers }} -
                     {{ collection.town }}</h5>
             </div>
         </li>
