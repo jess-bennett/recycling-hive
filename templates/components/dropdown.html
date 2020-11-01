@@ -27,7 +27,7 @@
 		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 			<a class="dropdown-item" href="{{ url_for('get_recycling_items', category_id='view-all') }}">View
 				all</a>
-			{% for category in categories %}
+			{% for category in categories_dict %}
 			<a class="dropdown-item"
 				href="{{ url_for('get_recycling_items', category_id=category._id) }}">{{ category.categoryName }}</a>
 			{% endfor %}

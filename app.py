@@ -822,22 +822,108 @@ def get_recycling_items(category_id):
         selected_category = "Select a category"
         # Get recyclable items that match the selected category for
         # # accordion headers
-        cat_items = list(mongo.db.recyclableItems.find(
-        ).sort("typeOfWaste"))
+        recycling_items_dict = list(mongo.db.itemCollections.aggregate([
+            {
+             "$lookup": {
+                "from": "hiveMembers",
+                "localField": "memberID",
+                "foreignField": "_id",
+                "as": "hiveMembers"
+             },
+            },
+            {"$unwind": "$hiveMembers"},
+            {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+            {
+             "$lookup": {
+                "from": "recyclableItems",
+                "localField": "itemID",
+                "foreignField": "_id",
+                "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {"$group": {
+             "_id": "$recyclableItems._id",
+             "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
+             }
+             },
+            {"$sort": {"typeOfWaste": 1}}
+            ]))
     else:
         # Get selected category for dropdown
         selected_category = mongo.db.itemCategory.find_one(
                     {"_id": ObjectId(category_id)})["categoryName"]
         # Get recyclable items that match the selected category for
         # # accordion headers
-        cat_items = list(mongo.db.recyclableItems.find(
-            {"categoryID": ObjectId(
-                category_id)}).sort("typeOfWaste"))
+        recycling_items_dict = list(mongo.db.itemCollections.aggregate([
+            {
+             "$lookup": {
+                "from": "hiveMembers",
+                "localField": "memberID",
+                "foreignField": "_id",
+                "as": "hiveMembers"
+             },
+            },
+            {"$unwind": "$hiveMembers"},
+            {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+            {
+             "$lookup": {
+                "from": "recyclableItems",
+                "localField": "itemID",
+                "foreignField": "_id",
+                "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {"$match": {"recyclableItems.categoryID": ObjectId(category_id)}},
+            {"$group": {
+             "_id": "$recyclableItems._id",
+             "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
+             }
+             },
+            {"$sort": {"typeOfWaste": 1}}
+            ]))
     # Get list of categories for dropdown menu
-    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+    categories_dict = list(mongo.db.itemCollections.aggregate([
+            {
+             "$lookup": {
+                "from": "hiveMembers",
+                "localField": "memberID",
+                "foreignField": "_id",
+                "as": "hiveMembers"
+             },
+            },
+            {"$unwind": "$hiveMembers"},
+            {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+            {
+             "$lookup": {
+                "from": "recyclableItems",
+                "localField": "itemID",
+                "foreignField": "_id",
+                "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {
+             "$lookup": {
+                "from": "itemCategory",
+                "localField": "recyclableItems.categoryID",
+                "foreignField": "_id",
+                "as": "itemCategory"
+             },
+            },
+            {"$unwind": "$itemCategory"},
+            {"$group": {
+             "_id": "$itemCategory._id",
+             "categoryName": {"$first": "$itemCategory.categoryName"}
+             }
+             },
+            {"$sort": {"categoryName": 1}}
+            ]))
     return render_template(
         "pages/hive-item.html",
-        category_id=category_id, categories=categories, cat_items=cat_items,
+        categories_dict=categories_dict,
+        recycling_items_dict=recycling_items_dict,
         selected_category=selected_category, page_id="items")
 
 

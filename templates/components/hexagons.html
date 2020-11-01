@@ -18,12 +18,12 @@
         {% endfor %}
     {% endif %}
     {% if page_id == "items" %}
-        {% if cat_items %}
-            {% for cat_item in cat_items %}
+        {% if recycling_items_dict %}
+            {% for recycling_item in recycling_items_dict %}
             <li>
-                <a href="{{ url_for('get_recycling_collections', item_id=cat_item._id) }}">
+                <a href="{{ url_for('get_recycling_collections', item_id=recycling_item._id) }}">
                     <div class="hexagon hexagon-medium">
-                        <p class="hexagon-text">{{ cat_item.typeOfWaste }}</p>
+                        <p class="hexagon-text">{{ recycling_item.typeOfWaste }}</p>
                     </div>
                 </a>
             </li>
