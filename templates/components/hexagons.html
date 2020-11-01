@@ -18,7 +18,6 @@
         {% endfor %}
     {% endif %}
     {% if page_id == "items" %}
-        {% if recycling_items_dict %}
             {% for recycling_item in recycling_items_dict %}
             <li>
                 <a href="{{ url_for('get_recycling_collections', item_id=recycling_item._id) }}">
@@ -28,12 +27,8 @@
                 </a>
             </li>
             {% endfor %}
-        {% else %}
-            <h5 class="grid-blank">There are currently no items saved in this category.</h5>
-        {% endif %}
     {% endif %}
     {% if page_id == "collections" %}
-        {% if item_collections %}
             {% for collection in collections_dict if collection.typeOfWaste == selected_item %}
             <li>
                 <div class="hexagon hexagon-dark" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
@@ -42,9 +37,6 @@
                 </div>
             </li>
             {% endfor %}
-        {% else %}
-            <h5 class="grid-blank">There are currently no collections for this item.</h5>
-        {% endif %}
     {% endif %}
     {% if page_id == "members" %}
 		{% for member in member_group %}

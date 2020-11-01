@@ -370,10 +370,10 @@ def profile(username):
     # grab the session user"s details from db
     user_id = ObjectId(session["user_id"])
     email = session["user"]
-    # get user"s location details from db for location accordion
+    # get user"s location details from db for location hexagon
     locations = list(mongo.db.collectionLocations.find(
         {"memberID": user_id}).sort("nickname"))
-    # Create new dictionary of collections for collection accordion
+    # Create new dictionary of collections for collection hexagon
     collections_dict = list(mongo.db.itemCollections.aggregate([
         {"$match": {"memberID": user_id}},
         {
@@ -821,7 +821,7 @@ def get_recycling_items(category_id):
         # Get selected category for dropdown
         selected_category = "Select a category"
         # Get recyclable items that match the selected category for
-        # # accordion headers
+        # # hexagon headers
         recycling_items_dict = list(mongo.db.itemCollections.aggregate([
             {
              "$lookup": {
@@ -854,7 +854,7 @@ def get_recycling_items(category_id):
         selected_category = mongo.db.itemCategory.find_one(
                     {"_id": ObjectId(category_id)})["categoryName"]
         # Get recyclable items that match the selected category for
-        # # accordion headers
+        # # hexagon headers
         recycling_items_dict = list(mongo.db.itemCollections.aggregate([
             {
              "$lookup": {
@@ -933,32 +933,40 @@ def get_recycling_collections(item_id):
     if item_id == "view-all":
         # Get selected item for dropdown
         selected_item = "Select an item"
-        # Get recyclable collections that match the selected item for
-        # # accordion headers
-        item_collections = list(mongo.db.itemCollections.find(
-        ))
     else:
         # Get selected item for dropdown
         selected_item = mongo.db.recyclableItems.find_one(
                     {"_id": ObjectId(item_id)})["typeOfWaste"]
-        # Get recyclable collections that match the selected item for
-        # # accordion headers
-        item_collections = list(mongo.db.itemCollections.find(
-            {"itemID": ObjectId(
-                item_id)}))
     # Get list of items for dropdown menu
-    items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
+    recycling_items_dict = list(mongo.db.itemCollections.aggregate([
+            {
+             "$lookup": {
+                "from": "hiveMembers",
+                "localField": "memberID",
+                "foreignField": "_id",
+                "as": "hiveMembers"
+             },
+            },
+            {"$unwind": "$hiveMembers"},
+            {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+            {
+             "$lookup": {
+                "from": "recyclableItems",
+                "localField": "itemID",
+                "foreignField": "_id",
+                "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {"$group": {
+             "_id": "$recyclableItems._id",
+             "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
+             }
+             },
+            {"$sort": {"typeOfWaste": 1}}
+            ]))
     # Create new dictionary of recyclable items and their matching collections
     collections_dict = list(mongo.db.itemCollections.aggregate([
-        {
-         "$lookup": {
-            "from": "recyclableItems",
-            "localField": "itemID",
-            "foreignField": "_id",
-            "as": "recyclableItems"
-         },
-        },
-        {"$unwind": "$recyclableItems"},
         {
          "$lookup": {
             "from": "hiveMembers",
@@ -968,6 +976,16 @@ def get_recycling_collections(item_id):
          },
         },
         {"$unwind": "$hiveMembers"},
+        {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+        {
+         "$lookup": {
+            "from": "recyclableItems",
+            "localField": "itemID",
+            "foreignField": "_id",
+            "as": "recyclableItems"
+         },
+        },
+        {"$unwind": "$recyclableItems"},
         {
          "$lookup": {
             "from": "collectionLocations",
@@ -992,7 +1010,7 @@ def get_recycling_collections(item_id):
 
     return render_template(
         "pages/hive-collection.html",
-        item_id=item_id, items=items, item_collections=item_collections,
+        recycling_items_dict=recycling_items_dict,
         collections_dict=collections_dict, selected_item=selected_item,
         page_id="collections")
 
@@ -1004,14 +1022,14 @@ def get_recycling_members(member_type):
         # Get selected member type for dropdown
         selected_member_type = "Select a Member Group"
         # Get members that match the selected type for
-        # # accordion headers
+        # # hexagon headers
         member_group = list(mongo.db.hiveMembers.find(
         ))
     else:
         # Get selected member type for dropdown
         selected_member_type = member_type
         # Get members that match the selected type for
-        # # accordion headers
+        # # hexagon headers
         if member_type == "Queen Bee":
             member_group = list(mongo.db.hiveMembers.find(
                 {"isQueenBee": True}))
