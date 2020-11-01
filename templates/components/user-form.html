@@ -11,7 +11,7 @@
           {% endif %}
         </div>
         <form class="card-body" method="POST"
-          action="{% if page_id == 'register' %}{{ url_for('register') }}{% elif page_id == 'login' %}{{ url_for('login') }}{% endif %}">
+          action="{% if page_id == 'register' %}{{ url_for('register', hive='Newbury') }}{% elif page_id == 'login' %}{{ url_for('login') }}{% endif %}">
           {% if page_id == "register" %}
           <!-- Name -->
           <div class="form-group row">
@@ -67,12 +67,11 @@
           </div>
           <!-- Security Question -->
           <div class="form-group row">
-            <label class="sr-only" for="securityQuestion">Security
-              question</label>
+            <label class="sr-only" for="securityQuestion">{{ security_question }}</label>
             <div class="input-group mb-2">
               {% include "components/tooltips/tooltip-security.html" %}
               <textarea class="form-control" id="securityQuestion"
-                name="securityQuestion" placeholder="Security question"
+                name="securityQuestion" placeholder="{{ security_question }}"
                 minlength="8" required></textarea>
             </div>
           </div>

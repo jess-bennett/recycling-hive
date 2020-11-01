@@ -78,8 +78,20 @@ def home():
             "pages/index.html", username=False, page_id="home")
 
 
-@app.route("/register", methods=["GET", "POST"])
-def register():
+@app.route("/register")
+def find_a_hive():
+    hives = mongo.db.hives.find()
+
+    return render_template("pages/find-a-hive.html", hives=hives)
+
+
+
+@app.route("/register/<hive>", methods=["GET", "POST"])
+def register(hive):
+    security_question = mongo.db.hives.find_one(
+            {"name": hive})["securityQuestion"]
+    hive_id = mongo.db.hives.find_one(
+            {"name": hive})["_id"]
     if request.method == "POST":
         # check whether email already exists in db
         existing_user = mongo.db.hiveMembers.find_one(
@@ -97,19 +109,29 @@ def register():
             "marketing": request.form.get("marketing"),
             "postcode": request.form.get("postcode"),
             "isQueenBee": False,
-            "isWorkerBee": False
+            "isWorkerBee": False,
+            "approvedMember": False,
+            "hive": ObjectId(hive_id)
         }
         mongo.db.hiveMembers.insert_one(register)
 
         # put the new user into "session" cookie
         session["user"] = request.form.get("email")
-        # grab the session user"s username from db
+        # grab the session user's username for named messages
         session["username"] = mongo.db.hiveMembers.find_one(
             {"email": session["user"]})["username"]
+        # grab the session user's id for unique identification
+        session["user_id"] = str(mongo.db.hiveMembers.find_one(
+            {"email": session["user"]})["_id"])
+        # grab the session user's hive for relevant content
+        session["hive"] = str(mongo.db.hiveMembers.find_one(
+            {"email": session["user"]})["hive"])
+        session["member_type"] = "Busy Bee"
         flash("Registration Successful!")
         return redirect(url_for("home", username=session["username"]))
 
-    return render_template("pages/register.html", page_id="register")
+    return render_template("pages/register.html", page_id="register",
+                           security_question=security_question)
 
 
 @app.route("/login", methods=["GET", "POST"])
