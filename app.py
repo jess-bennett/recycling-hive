@@ -773,10 +773,45 @@ def delete_collection(route, collection_id):
 @app.route("/hive")
 @approval_required
 def get_recycling_categories():
-    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+    categories_dict = list(mongo.db.itemCollections.aggregate([
+            {
+             "$lookup": {
+                "from": "hiveMembers",
+                "localField": "memberID",
+                "foreignField": "_id",
+                "as": "hiveMembers"
+             },
+            },
+            {"$unwind": "$hiveMembers"},
+            {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+            {
+             "$lookup": {
+                "from": "recyclableItems",
+                "localField": "itemID",
+                "foreignField": "_id",
+                "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {
+             "$lookup": {
+                "from": "itemCategory",
+                "localField": "recyclableItems.categoryID",
+                "foreignField": "_id",
+                "as": "itemCategory"
+             },
+            },
+            {"$unwind": "$itemCategory"},
+            {"$group": {
+             "_id": "$itemCategory._id",
+             "categoryName": {"$first": "$itemCategory.categoryName"}
+             }
+             },
+            {"$sort": {"categoryName": 1}}
+            ]))
     return render_template(
         "pages/hive-category.html",
-        categories=categories, page_id="categories")
+        categories_dict=categories_dict, page_id="categories")
 
 
 @app.route("/hive/items/<category_id>")

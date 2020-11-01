@@ -141,13 +141,13 @@ body {
   border: 1px solid #8C0A06;
 }
 
-.warning-delete {
+.warning-text {
   color: #8C0A06;
   font-weight: bold;
   text-align: center;
 }
 
-small.warning-delete {
+small.warning-text {
   font-weight: normal;
 }
 
@@ -229,13 +229,13 @@ small.warning-delete {
 
 /* Item collection modal */
 
-.modal-borders {
-  border: solid 2px #bdc312;
-}
-
 /* Modals */
 .modal-content {
   border: 0.5rem solid #3a5c2d;
+}
+
+.modal-title {
+    color: #3a5c2d;
 }
 
 .modal-footer {

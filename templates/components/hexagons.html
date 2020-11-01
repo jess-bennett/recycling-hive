@@ -7,7 +7,7 @@
             </div>
         </a>
         </li>
-        {% for category in categories %}
+        {% for category in categories_dict %}
         <li>
         <a href="{{ url_for('get_recycling_items', category_id=category._id) }}">
             <div class="hexagon">
