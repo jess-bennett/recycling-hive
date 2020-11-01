@@ -3,7 +3,7 @@
         <li>
         <a href="{{ url_for('get_recycling_items', category_id='view-all') }}">
             <div class="hexagon">
-            <h3 class="hexagon-text">View all items</h3>
+            <p class="hexagon-text"><strong>View all items</strong></p>
             </div>
         </a>
         </li>
@@ -11,7 +11,7 @@
         <li>
         <a href="{{ url_for('get_recycling_items', category_id=category._id) }}">
             <div class="hexagon">
-            <h5 class="hexagon-text">{{ category.categoryName }}</h5>
+            <p class="hexagon-text">{{ category.categoryName }}</p>
             </div>
         </a>
         </li>
@@ -22,7 +22,7 @@
 		<li>
 			<a href="{{ url_for('get_recycling_collections', item_id=cat_item._id) }}">
 				<div class="hexagon hexagon-medium">
-					<h5 class="hexagon-text hexagon-medium">{{ cat_item.typeOfWaste }}</h5>
+					<p class="hexagon-text">{{ cat_item.typeOfWaste }}</p>
 				</div>
 			</a>
 		</li>
@@ -32,15 +32,15 @@
         <li>
             <a href="{{ url_for('get_recycling_members', member_type='view-all') }}">
                 <div class="hexagon hexagon-dark">
-                    <h3 class="hexagon-text hexagon-dark">View all members</h3>
+                    <p class="hexagon-text"><strong>View all members</strong></p>
                 </div>
             </a>
         </li>
         {% for collection in collections_dict if collection.typeOfWaste == selected_item %}
         <li>
             <div class="hexagon hexagon-dark" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
-                <h5 class="hexagon-text hexagon-dark">{{ collection.hiveMembers }} -
-                    {{ collection.town }}</h5>
+                <p class="hexagon-text">{{ collection.hiveMembers }} -
+                    {{ collection.town }}</p>
             </div>
         </li>
         
@@ -51,12 +51,12 @@
 		<li>
 			<div class="hexagon {% if ((member.isQueenBee == False) and (member.isWorkerBee == False)) %}hexagon-dark{% elif ((member.isQueenBee == False) and (member.isWorkerBee == True)) %}hexagon-medium{% endif %}"
 				data-toggle="modal" data-target="#modal-collection-{{ member._id }}">
-				<h5
+				<p
 					class="hexagon-text {% if ((member.isQueenBee == False) and (member.isWorkerBee == False)) %}hexagon-dark{% elif ((member.isQueenBee == False) and (member.isWorkerBee == True)) %}hexagon-medium{% endif %}">
 					{% if member.isQueenBee == True %}<i class="fas fa-crown"></i>
 					{% elif member.isWorkerBee == True %}<i class="fas fa-hard-hat"></i>
 					{% else %}<i class="fas fa-user"></i> {% endif %}{{ member.username }}
-				</h5>
+				</p>
 			</div>
 		</li>
 		
