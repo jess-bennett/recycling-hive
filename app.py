@@ -160,21 +160,47 @@ def login():
 def hive_management(username):
     # Get list of members waiting for approval
     unapproved_members = list(mongo.db.hiveMembers.find(
-            {"approvedMember": False}))
+            {"hive": ObjectId(session["hive"]), "approvedMember": False}))
     # Get list of members waiting for Worker Bee status
     first_collections = list(mongo.db.firstCollection.find())
     # Get list of all members for member details
-    members = list(mongo.db.hiveMembers.find())
+    members = list(mongo.db.hiveMembers.find(
+        {"hive": ObjectId(session["hive"])}))
     # Get list of members with location and/or collection details
     worker_bees = list(mongo.db.hiveMembers.find(
-            {"isWorkerBee": True}))
-    locations = list(mongo.db.collectionLocations.find())
-    # Check if worker bees have locations saved
+            {"hive": ObjectId(session["hive"]), "isWorkerBee": True}))
+    # Check if worker bees have locations saved by
+    # creating unnested list for jinja
     members_locations = list(mongo.db.collectionLocations.find(
         {}, {"memberID": 1, "_id": 0}))
     members_location_values = list(
         [document["memberID"] for document in members_locations])
-    # Check if worker bees have collections saved
+    # Get list of locations for location details
+    locations_dict = list(mongo.db.collectionLocations.aggregate([
+            {
+             "$lookup": {
+                "from": "hiveMembers",
+                "localField": "memberID",
+                "foreignField": "_id",
+                "as": "hiveMembers"
+             },
+            },
+            {"$unwind": "$hiveMembers"},
+            {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+            {"$project": {
+             "hiveMembers": "$hiveMembers.username",
+             "hiveMembersID": "$hiveMembers._id",
+             "nickname": 1,
+             "street": 1,
+             "town": 1,
+             "postcode": 1,
+             "id": 1
+             }
+             },
+            {"$sort": {"hiveMembers": 1}}
+            ]))
+    # Check if worker bees have collections saved by
+    # creating unnested list for jinja
     members_collections = list(mongo.db.itemCollections.find(
         {}, {"memberID": 1, "_id": 0}))
     members_collection_values = list(
@@ -190,6 +216,7 @@ def hive_management(username):
              },
             },
             {"$unwind": "$hiveMembers"},
+            {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
             {
              "$lookup": {
                 "from": "recyclableItems",
@@ -228,7 +255,7 @@ def hive_management(username):
                            first_collections=first_collections,
                            members=members,
                            worker_bees=worker_bees,
-                           locations=locations,
+                           locations_dict=locations_dict,
                            members_location_values=members_location_values,
                            members_collection_values=members_collection_values,
                            collections_dict=collections_dict,

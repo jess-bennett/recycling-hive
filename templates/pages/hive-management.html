@@ -1,7 +1,7 @@
 {% extends "layout/base.html" %}
 {% block nav_home %}active{% endblock %}
 {% block content %}
-
+{{ collections_dict }}
 <section id="hive-management-page">
   <div class="container-fluid">
     <div class="row">
@@ -246,11 +246,11 @@
             <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
               data-parent="#accordion">
               <div class="card-body">
-                {% if locations %}
+                {% if locations_dict %}
                     {% for member in worker_bees %}
                         {% if member._id in members_location_values %}
                         <h6><strong>{{ member.username }}'s Locations</strong></h6>
-                        {% for location in locations if location.memberID == member._id %}
+                        {% for location in locations_dict if location.hiveMembersID == member._id %}
                         <hr>
                         {% include "components/location-details.html" %}
                         <!-- Amend location -->
