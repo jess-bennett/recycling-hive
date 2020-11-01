@@ -270,6 +270,7 @@ small.warning-delete {
 
 /* Footer */
 footer {
+  font-size: 1.8rem;
   min-height: 3rem;
   color: #333;
   position: fixed;
@@ -277,7 +278,24 @@ footer {
   bottom: 0;
   width: 100%;
   text-align: center;
+  margin-top: 3rem;
 }
+
+
+footer a {
+  text-decoration: none;
+  color: inherit;
+}
+
+footer a:hover {
+  color: #6c8c26;
+}
+
+.footer--text {
+  font-size: 1rem;
+  margin: 0;
+}
+
 
 /* Media queries */
 @media screen and (min-width: 992px) {
