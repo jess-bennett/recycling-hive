@@ -1024,7 +1024,7 @@ def get_recycling_members(member_type):
         # Get members that match the selected type for
         # # hexagon headers
         member_group = list(mongo.db.hiveMembers.find(
-        ))
+            {"hive": ObjectId(session["hive"])}))
     else:
         # Get selected member type for dropdown
         selected_member_type = member_type
@@ -1032,13 +1032,15 @@ def get_recycling_members(member_type):
         # # hexagon headers
         if member_type == "Queen Bee":
             member_group = list(mongo.db.hiveMembers.find(
-                {"isQueenBee": True}))
+                {"hive": ObjectId(session["hive"]), "isQueenBee": True}))
         elif member_type == "Worker Bee":
             member_group = list(mongo.db.hiveMembers.find(
-                {"isQueenBee": False, "isWorkerBee": True}))
+                {"hive": ObjectId(session["hive"]),
+                 "isQueenBee": False, "isWorkerBee": True}))
         elif member_type == "Busy Bee":
             member_group = list(mongo.db.hiveMembers.find(
-                {"isQueenBee": False, "isWorkerBee": False}))
+                {"hive": ObjectId(session["hive"]),
+                 "isQueenBee": False, "isWorkerBee": False}))
     # Check if member has collection
     members_collection = list(mongo.db.itemCollections.find(
         {}, {"memberID": 1, "_id": 0}))
@@ -1046,6 +1048,7 @@ def get_recycling_members(member_type):
         [document["memberID"] for document in members_collection])
     # Create new dictionary of members and their collections
     members_dict = list(mongo.db.hiveMembers.aggregate([
+        {"$match": {"hive": ObjectId(session["hive"])}},
         {
          "$lookup": {
             "from": "itemCollections",
