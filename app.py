@@ -275,7 +275,7 @@ def approve_collection_request(collection_id):
     return redirect(url_for("hive_management", username=session["username"]))
 
 
-@app.route("/profile/<username>", methods=["GET", "POST"])
+@app.route("/profile/<username>")
 def profile(username):
     if session["user"]:
         # grab the session user's details from db
@@ -353,28 +353,7 @@ def profile(username):
             },
             {'$unwind': '$itemCategory'}
             ]))
-        # Post method for editing user details
-        if request.method == "POST":
-            # check where email already exists in db
-            existing_user = mongo.db.hiveMembers.find_one(
-                {"_id": {"$ne": ObjectId(user_id)},
-                    "email": request.form.get("edit-email").lower()}
-            )
-            if existing_user:
-                flash("Email already exists")
-                return redirect(url_for(
-                    "profile", username=session["username"]))
-
-            filter = {"_id": ObjectId(user_id)}
-            session["username"] = request.form.get("edit-username")
-            edit_details = {"$set": {'username': session["username"],
-                            "email": request.form.get(
-                            "edit-email").lower()}}
-            mongo.db.hiveMembers.update(filter, edit_details)
-            flash("Your details have been updated")
-            return redirect(url_for(
-                "profile", username=session["username"]))
-
+        
         # Check whether user has submitted first collection for approval
         if mongo.db.firstCollection.find_one(
                 {"memberID": ObjectId(user_id)}):
@@ -392,16 +371,54 @@ def profile(username):
     return redirect(url_for("login"))
 
 
-@app.route("/profile/delete/<member_id>")
-def delete_profile(member_id):
-    # grab the session user's details from db
-    member_id = mongo.db.hiveMembers.find_one(
-            {'email': session['user']})["_id"]
+@app.route("/<route>/profile/edit/<member_id>", methods=["GET", "POST"])
+def edit_profile(route, member_id):
+    # Post method for editing user details
+    if request.method == "POST":
+        # check where email already exists in db
+        existing_user = mongo.db.hiveMembers.find_one(
+            {"_id": {"$ne": ObjectId(member_id)},
+                "email": request.form.get("edit-email").lower()}
+        )
+        if existing_user:
+            flash("Email already exists")
+            if route == "profile":
+                return redirect(url_for(
+                    "profile", username=session["username"]))
+            elif route == "management":
+                return redirect(url_for(
+                    "hive_management", username=session["username"]))
+
+        filter = {"_id": ObjectId(member_id)}
+        session["username"] = request.form.get("edit-username")
+        edit_details = {"$set": {'username': session["username"],
+                        "email": request.form.get(
+                        "edit-email").lower()}}
+        mongo.db.hiveMembers.update(filter, edit_details)
+        if route == "profile":
+            flash("Your details have been successfully updated")
+            return redirect(url_for("profile", username=session["username"]))
+        elif route == "management":
+            flash("Member's details have been successfully updated")
+            return redirect(url_for(
+                "hive_management", username=session["username"]))
+    return redirect(url_for("profile", username=session["username"]))
+
+
+@app.route("/<route>/profile/delete/<member_id>")
+def delete_profile(route, member_id):
     mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
     mongo.db.collectionLocations.remove({"memberID": ObjectId(member_id)})
     mongo.db.itemCollections.remove({"memberID": ObjectId(member_id)})
-    flash("Your profile has been successfully deleted")
-    return redirect(url_for("logout"))
+    if route == "profile":
+        flash("Your profile has been successfully deleted")
+        return redirect(url_for(
+            "logout"))
+    elif route == "management":
+        flash("Member's profile has been successfully deleted")
+        return redirect(url_for(
+            "hive_management", username=session["username"]))
+    return redirect(url_for("profile", username=session["username"]))
 
 
 @app.route("/add-new-location", methods=["GET", "POST"])
