@@ -18,20 +18,20 @@
             <a class="nav-link"
               href="{{ url_for('get_recycling_categories') }}">Hive</a>
           </li>
-          <li class="nav-item {% block nav_inspiration %}{% endblock %}">
+          <li class="nav-item {% if active_item == 'inspiration' %}active{% endif %}">
             <a class="nav-link" href="#">Inspiration</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
           </li>
           {% else %}
-          <li class="nav-item {% block nav_demo %}{% endblock %}">
+          <li class="nav-item {% if active_item == 'demo' %}active{% endif %}">
             <a class="nav-link" href="#">Demo</a>
           </li>
-          <li class="nav-item {% block nav_login %}{% endblock %}">
+          <li class="nav-item {% if active_item == 'login' %}active{% endif %}">
             <a class="nav-link" href="{{ url_for('login') }}">Login</a>
           </li>
-          <li class="nav-item {% block nav_register %}{% endblock %}">
+          <li class="nav-item {% if active_item == 'register' %}active{% endif %}">
             <a class="nav-link" href="{{ url_for('register') }}">Register</a>
           </li>
           {% endif %}

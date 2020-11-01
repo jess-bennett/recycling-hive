@@ -1,5 +1,6 @@
 import os
 from datetime import datetime
+from functools import wraps
 from flask import (
     Flask, flash, render_template,
     redirect, request, session, url_for)
@@ -17,6 +18,18 @@ app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
+
+
+def login_required(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if "user" in session:
+            return f(*args, **kwargs)
+        else:
+            flash("You need to login first")
+            return redirect(url_for("login"))
+
+    return wrap
 
 
 @app.route("/")
@@ -102,6 +115,7 @@ def login():
 
 
 @app.route("/hive-management/<username>")
+@login_required
 def hive_management(username):
     # Get list of members waiting for approval
     unapproved_members = list(mongo.db.hiveMembers.find(
@@ -181,6 +195,7 @@ def hive_management(username):
 
 
 @app.route("/hive-management/delete-member-request/<member_id>")
+@login_required
 def delete_member_request(member_id):
     mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
     flash("Membership request has been successfully deleted")
@@ -188,6 +203,7 @@ def delete_member_request(member_id):
 
 
 @app.route("/hive-management/approve-member-request/<member_id>")
+@login_required
 def approve_member_request(member_id):
     filter = {"_id": ObjectId(member_id)}
     approve = {"$set": {'approvedMember': True}}
@@ -197,6 +213,7 @@ def approve_member_request(member_id):
 
 
 @app.route("/hive-management/delete-collection-request/<collection_id>")
+@login_required
 def delete_collection_request(collection_id):
     mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
     flash("Worker Bee request has been successfully deleted")
@@ -205,6 +222,7 @@ def delete_collection_request(collection_id):
 
 @app.route("/hive-management/approve-collection-request/<collection_id>",
            methods=["GET", "POST"])
+@login_required
 def approve_collection_request(collection_id):
     if request.method == "POST":
         first_collection = mongo.db.firstCollection.find_one(
@@ -276,6 +294,7 @@ def approve_collection_request(collection_id):
 
 
 @app.route("/profile/<username>")
+@login_required
 def profile(username):
     if session["user"]:
         # grab the session user's details from db
@@ -353,7 +372,7 @@ def profile(username):
             },
             {'$unwind': '$itemCategory'}
             ]))
-        
+
         # Check whether user has submitted first collection for approval
         if mongo.db.firstCollection.find_one(
                 {"memberID": ObjectId(user_id)}):
@@ -372,6 +391,7 @@ def profile(username):
 
 
 @app.route("/<route>/profile/edit/<member_id>", methods=["GET", "POST"])
+@login_required
 def edit_profile(route, member_id):
     # Post method for editing user details
     if request.method == "POST":
@@ -406,6 +426,7 @@ def edit_profile(route, member_id):
 
 
 @app.route("/<route>/profile/delete/<member_id>")
+@login_required
 def delete_profile(route, member_id):
     mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
     mongo.db.collectionLocations.remove({"memberID": ObjectId(member_id)})
@@ -422,6 +443,7 @@ def delete_profile(route, member_id):
 
 
 @app.route("/add-new-location", methods=["GET", "POST"])
+@login_required
 def add_new_location():
     user_id = mongo.db.hiveMembers.find_one({'email': session['user']})["_id"]
     if request.method == "POST":
@@ -449,6 +471,7 @@ def add_new_location():
 
 
 @app.route("/<route>/edit-location/<location_id>", methods=["GET", "POST"])
+@login_required
 def edit_location(route, location_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(location_id)}
@@ -469,6 +492,7 @@ def edit_location(route, location_id):
 
 
 @app.route("/<route>/delete-location/<location_id>")
+@login_required
 def delete_location(route, location_id):
     mongo.db.collectionLocations.remove({"_id": ObjectId(location_id)})
     mongo.db.itemCollections.remove({"locationID": ObjectId(location_id)})
@@ -484,6 +508,7 @@ def delete_location(route, location_id):
 
 
 @app.route("/add-first-collection", methods=["GET", "POST"])
+@login_required
 def add_first_collection():
     user_id = mongo.db.hiveMembers.find_one(
             {'email': session['user']})["_id"]
@@ -518,6 +543,7 @@ def add_first_collection():
 
 
 @app.route("/add-new-collection", methods=["GET", "POST"])
+@login_required
 def add_new_collection():
     user_id = mongo.db.hiveMembers.find_one(
             {'email': session['user']})["_id"]
@@ -647,6 +673,7 @@ def add_new_collection():
 
 
 @app.route("/<route>/edit-collection/<collection_id>", methods=["GET", "POST"])
+@login_required
 def edit_collection(route, collection_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(collection_id)}
@@ -669,6 +696,7 @@ def edit_collection(route, collection_id):
 
 
 @app.route("/<route>/delete-collection/<collection_id>")
+@login_required
 def delete_collection(route, collection_id):
     mongo.db.itemCollections.remove({"_id": ObjectId(collection_id)})
     if route == "profile":
@@ -683,6 +711,7 @@ def delete_collection(route, collection_id):
 
 
 @app.route("/hive")
+@login_required
 def get_recycling_categories():
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
     return render_template(
@@ -691,6 +720,7 @@ def get_recycling_categories():
 
 
 @app.route("/hive/items/<category_id>")
+@login_required
 def get_recycling_items(category_id):
     if category_id == 'view-all':
         # Get selected category for dropdown
@@ -717,6 +747,7 @@ def get_recycling_items(category_id):
 
 
 @app.route("/hive/collections/<item_id>")
+@login_required
 def get_recycling_collections(item_id):
     if item_id == 'view-all':
         # Get selected item for dropdown
@@ -786,6 +817,7 @@ def get_recycling_collections(item_id):
 
 
 @app.route("/hive/members/<member_type>")
+@login_required
 def get_recycling_members(member_type):
     if member_type == 'view-all':
         # Get selected member type for dropdown
