@@ -62,8 +62,7 @@
               </div>
               <input type="password" class="form-control" id="confirm-password"
                 name="confirm-password" placeholder="Confirm Password"
-                aria-describedby="password-match" required>
-              <small id="password-match" class="form-text col-12"></small>
+                required>
             </div>
           </div>
           <!-- Security Question -->
@@ -87,6 +86,20 @@
                 name="marketing"
                 placeholder="Where did you hear about Recycling Hive?"
                 minlength="5" required>
+            </div>
+          </div>
+          <!-- Postcode -->
+          <div class="form-group row">
+            <label class="sr-only" for="marketing">Your postcode</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-postcode.html" %}
+              <input type="text" class="form-control" id="postcode"
+                name="postcode"
+                placeholder="Your Postcode" aria-describedby="postcode-explanation"
+                minlength="5" required>
+                <small id="postcode-explanation" class="form-text col-12">
+                Your postcode will not appear on the site and is only used to help us understand where our members are.
+              </small>
             </div>
           </div>
           {% endif %}

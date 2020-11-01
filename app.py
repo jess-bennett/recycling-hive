@@ -95,6 +95,7 @@ def register():
             "password": generate_password_hash(request.form.get("password")),
             "securityQuestion": request.form.get("securityQuestion"),
             "marketing": request.form.get("marketing"),
+            "postcode": request.form.get("postcode"),
             "isQueenBee": False,
             "isWorkerBee": False
         }
