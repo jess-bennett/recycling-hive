@@ -7,9 +7,9 @@
     <div class="col-md-8 offset-md-2">
       <div class="card-body text-center green-background space-below">
         {% if username == False %}
-        <h4>Welcome back to the Recyling Hive</h4>
+        <h3>Welcome back to the Recyling Hive</h3>
         {% else %}
-        <h4>Welcome back to the XXX Hive,</h4>
+        <h3>Welcome back to the XXX Hive,</h3>
         <h3>{{ username }}!</h3>
         {% endif %}
       </div>
@@ -23,7 +23,7 @@
         <a href="">
         <div class="hexagon">
             <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/exclamation.svg"/>
-            <h3 class="hexagon-text">Demo</h3>
+            <p class="hexagon-text hexagon-text-background">Demo</p>
         </div>
         </a>
     </li>
@@ -31,7 +31,7 @@
       <a href="{{ url_for('login') }}">
         <div class="hexagon">
           <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/user.svg"/>
-          <h3 class="hexagon-text">Log In</h3>
+          <p class="hexagon-text hexagon-text-background">Log In</p>
         </div>
       </a>
     </li>
@@ -39,7 +39,7 @@
       <a href="{{ url_for('register') }}">
         <div class="hexagon">
           <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/passport.svg"/>
-          <h3 class="hexagon-text">Register</h3>
+          <p class="hexagon-text hexagon-text-background">Register</p>
         </div>
       </a>
     </li>
@@ -47,7 +47,7 @@
       <a href="#item3">
         <div class="hexagon">
           <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/lightbulb.svg"/>
-          <h3 class="hexagon-text">Be inspired!</h3>
+          <p class="hexagon-text hexagon-text-background">Be Inspired</p>
         </div>
       </a>
     </li>
@@ -56,7 +56,7 @@
         <a href="{{ url_for('profile', username=session['username']) }}">
         <div class="hexagon">
             <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/user.svg"/>
-            <h3 class="hexagon-text">View your profile</h3>
+            <p class="hexagon-text hexagon-text-background">View Profile</p>
         </div>
         </a>
     </li>
@@ -64,7 +64,7 @@
       <a href="{{ url_for('get_recycling_categories') }}">
         <div class="hexagon">
           <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/search.svg"/>
-          <h3 class="hexagon-text">Search your Hive</h3>
+          <p class="hexagon-text hexagon-text-background">Search Hive</p>
         </div>
       </a>
     </li>
@@ -72,7 +72,7 @@
       <a href="#item3">
         <div class="hexagon">
           <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/lightbulb.svg"/>
-          <h3 class="hexagon-text">Be inspired!</h3>
+          <p class="hexagon-text hexagon-text-background">Be Inspired</p>
         </div>
       </a>
     </li>
@@ -81,7 +81,7 @@
         <a href="{{ url_for('hive_management', username=session['username']) }}">
             <div class="hexagon">
             <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/users.svg"/>
-            <h3 class="hexagon-text">Manage your Hive</h3>
+            <p class="hexagon-text hexagon-text-background">Manage Hive</p>
             </div>
         </a>
         </li>

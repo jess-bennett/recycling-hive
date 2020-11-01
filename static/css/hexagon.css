@@ -9,7 +9,7 @@
 }
 
 #grid.hexagon-large {
-  width: 95%;
+  width: 90%;
 }
 
 #grid.home {
@@ -127,4 +127,8 @@
   -moz-transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
+}
+
+.hexagon-text-background {
+    background-color: #bdc312;
 }
