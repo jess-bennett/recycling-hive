@@ -61,7 +61,7 @@ def queen_bee_required(f):
 @app.route("/")
 def home():
     try:
-        username = ObjectId(session["username"])
+        username = session["username"]
         user_id = ObjectId(session["user_id"])
         if mongo.db.hiveMembers.find_one(
                 {"_id": user_id, "isQueenBee": True}):

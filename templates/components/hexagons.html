@@ -18,33 +18,33 @@
         {% endfor %}
     {% endif %}
     {% if page_id == "items" %}
-		{% for cat_item in cat_items %}
-		<li>
-			<a href="{{ url_for('get_recycling_collections', item_id=cat_item._id) }}">
-				<div class="hexagon hexagon-medium">
-					<p class="hexagon-text">{{ cat_item.typeOfWaste }}</p>
-				</div>
-			</a>
-		</li>
-		{% endfor %}
+        {% if cat_items %}
+            {% for cat_item in cat_items %}
+            <li>
+                <a href="{{ url_for('get_recycling_collections', item_id=cat_item._id) }}">
+                    <div class="hexagon hexagon-medium">
+                        <p class="hexagon-text">{{ cat_item.typeOfWaste }}</p>
+                    </div>
+                </a>
+            </li>
+            {% endfor %}
+        {% else %}
+            <h5 class="grid-blank">There are currently no items saved in this category.</h5>
+        {% endif %}
     {% endif %}
     {% if page_id == "collections" %}
-        <li>
-            <a href="{{ url_for('get_recycling_members', member_type='view-all') }}">
-                <div class="hexagon hexagon-dark">
-                    <p class="hexagon-text"><strong>View all members</strong></p>
+        {% if item_collections %}
+            {% for collection in collections_dict if collection.typeOfWaste == selected_item %}
+            <li>
+                <div class="hexagon hexagon-dark" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
+                    <p class="hexagon-text">{{ collection.hiveMembers }} -
+                        {{ collection.town }}</p>
                 </div>
-            </a>
-        </li>
-        {% for collection in collections_dict if collection.typeOfWaste == selected_item %}
-        <li>
-            <div class="hexagon hexagon-dark" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
-                <p class="hexagon-text">{{ collection.hiveMembers }} -
-                    {{ collection.town }}</p>
-            </div>
-        </li>
-        
-        {% endfor %}
+            </li>
+            {% endfor %}
+        {% else %}
+            <h5 class="grid-blank">There are currently no collections for this item.</h5>
+        {% endif %}
     {% endif %}
     {% if page_id == "members" %}
 		{% for member in member_group %}

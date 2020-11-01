@@ -195,6 +195,10 @@ small.warning-delete {
   visibility: hidden;
 }
 
+.grid-blank {
+    margin-top: 5rem;
+}
+
 .btn-link {
   font-size: 1.2rem;
   color: #333;
