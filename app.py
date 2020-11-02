@@ -85,7 +85,6 @@ def find_a_hive():
     return render_template("pages/find-a-hive.html", hives=hives)
 
 
-
 @app.route("/register/<hive>", methods=["GET", "POST"])
 def register(hive):
     security_question = mongo.db.hives.find_one(
@@ -131,7 +130,7 @@ def register(hive):
         return redirect(url_for("home", username=session["username"]))
 
     return render_template("pages/register.html", page_id="register",
-                           security_question=security_question)
+                           security_question=security_question, hive=hive)
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -1130,7 +1129,7 @@ def logout():
 @app.errorhandler(404)
 def page_not_found(e):
     # note that we set the 404 status explicitly
-    return render_template("404.html"), 404
+    return render_template("pages/404.html"), 404
 
 
 if __name__ == "__main__":
