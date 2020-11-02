@@ -1,8 +1,12 @@
 $(document).ready(function() {
   $("#input-typeOfWaste").hide(); /* Hide additional forms on page load */
+  $("#input-businessTypeOfWaste").hide(); 
   $("#instructions-addTypeOfWaste").hide();
+  $("#instructions-addBusinessTypeOfWaste").hide();
   $("#select-itemCategory").hide();
+  $("#select-businessItemCategory").hide();
   $("#instructions-addItemCategory").hide();
+  $("#instructions-addBusinessItemCategory").hide();
   $("#member-details").hide();
   $("#location-details").hide();
   $("#collection-details").hide();
@@ -68,6 +72,42 @@ $("select#select-itemCategory").change(function() {
     $("#input-itemCategory").prop("disabled", false);
     $("#input-itemCategory").prop('required',true);
     $("#instructions-addItemCategory").show();
+  }
+});
+
+/* FORMS IN NATIONAL COLLECTION MODAL */
+
+/* Change category if type of waste changed */
+
+$("select#select-businessTypeOfWaste").change(function() {
+  selectedBusinessTypeOfWaste = $(this).find(":selected").val();
+  selectedBusinessTypeOfWasteCategory = $(this).find(":selected").data("id");
+  if (selectedBusinessTypeOfWaste == "Add New Type of Waste...") {
+    $("#select-businessTypeOfWaste").hide();
+    $("#select-businessTypeOfWaste").attr("name", "select-businessTypeOfWaste");
+    $("#input-businessTypeOfWaste").show();
+    $("#input-businessTypeOfWaste").attr("name", "newBusinessTypeOfWaste");
+    $("#input-businessTypeOfWaste").attr("required", true);
+    $("#instructions-addBusinessTypeOfWaste").show();
+    $("#input-businessItemCategory").hide();
+    $("#select-businessItemCategory").show();
+    $("#select-businessItemCategory").prop('required',true);
+  } else {
+    $("#input-businessItemCategory").attr("placeholder", selectedBusinessTypeOfWasteCategory);
+  }
+});
+
+$("select#select-businessItemCategory").change(function() {
+  selectedBusinessItemCategory = $(this).find(":selected").val();
+  if (selectedBusinessItemCategory == "Add New Item Category...") {
+    $("#select-businessItemCategory").hide();
+    $("#select-businessItemCategory").attr("name", "select-businessItemCategory");
+    $("#select-businessItemCategory").prop('required',false);
+    $("#input-businessItemCategory").show();
+    $("#input-businessItemCategory").attr("name", "newItemCategory");
+    $("#input-businessItemCategory").prop("disabled", false);
+    $("#input-businessItemCategory").prop('required',true);
+    $("#instructions-addBusinessItemCategory").show();
   }
 });
 

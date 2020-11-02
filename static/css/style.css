@@ -7,6 +7,10 @@ body {
   margin-bottom: 3rem;
 }
 
+span.internal-link {
+    cursor: pointer;
+}
+
 .internal-link {
   color: #3a5c2d;
   font-weight: bold;
