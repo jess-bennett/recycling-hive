@@ -12,7 +12,7 @@
 		      {{ selected_item }}
 		    </button>
 		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			{% for item in items %}
+			{% for item in recycling_items_dict %}
 			<a class="dropdown-item"
 				href="{{ url_for('get_recycling_collections', item_id=item._id) }}">{{ item.typeOfWaste }}</a>
 			{% endfor %}
@@ -27,7 +27,7 @@
 		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 			<a class="dropdown-item" href="{{ url_for('get_recycling_items', category_id='view-all') }}">View
 				all</a>
-			{% for category in categories %}
+			{% for category in categories_dict %}
 			<a class="dropdown-item"
 				href="{{ url_for('get_recycling_items', category_id=category._id) }}">{{ category.categoryName }}</a>
 			{% endfor %}

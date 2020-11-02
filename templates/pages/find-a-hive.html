@@ -1,0 +1,35 @@
+{% extends "layout/base.html" %}
+{% set active_item = "register" %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <div class="card-body text-center green-background space-below">
+        <h4>Select your nearest hive to join</h4>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10 offset-md-1 text-center">
+        <h5>Can't find a hive local to you? <a href=""
+          class="internal-link">Contact me</a> to discuss setting one up!</h5>
+    </div>
+  </div>
+</div>
+<section id="home-hexagons">
+  <ul id="grid" class="clr home hexagon-large">
+    {% for hive in hives %}
+    <li>
+        <a href="{{ url_for('register', hive=hive.name) }}">
+        <div class="hexagon">
+            <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/globe-europe.svg"/>
+            <p class="hexagon-text hexagon-text-background">{{ hive.name }}</p>
+        </div>
+        </a>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% endblock %}

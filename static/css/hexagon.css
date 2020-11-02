@@ -118,6 +118,7 @@
   width: 100%;
   color: #333;
   text-align: center;
+  word-wrap: break-word;
   margin: 0;
   position: absolute;
   top: 50%;
