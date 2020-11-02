@@ -4,7 +4,7 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div class="col-md-8 offset-md-2">
+    <div class="col-md-10 offset-md-1">
       <div class="card-body text-center green-background space-below">
         {% if username == False %}
         <h3>Welcome to the Recyling Hive</h3>
@@ -44,7 +44,7 @@
       </a>
     </li>
     <li>
-      <a href="#item3">
+      <a href="{{ url_for('faqs') }}">
         <div class="hexagon">
           <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/question.svg"/>
           <p class="hexagon-text hexagon-text-background">FAQs</p>
@@ -77,7 +77,7 @@
       </a>
     </li>
     <li>
-      <a href="#item3">
+      <a href="{{ url_for('faqs') }}">
         <div class="hexagon">
           <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/question.svg"/>
           <p class="hexagon-text hexagon-text-background">FAQs</p>
