@@ -10,6 +10,12 @@
       </div>
     </div>
   </div>
+  <div class="row">
+    <div class="col-md-8 offset-md-2 text-center">
+        <h5>Can't find a hive local to you? <a href="{{ url_for('login') }}"
+          class="internal-link">Contact me</a> to discuss setting one up!</h5>
+    </div>
+  </div>
 </div>
 <section id="home-hexagons">
   <ul id="grid" class="clr home hexagon-large">
@@ -17,7 +23,7 @@
     <li>
         <a href="{{ url_for('register', hive=hive.name) }}">
         <div class="hexagon">
-            <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/exclamation.svg"/>
+            <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/globe-europe.svg"/>
             <p class="hexagon-text hexagon-text-background">{{ hive.name }}</p>
         </div>
         </a>

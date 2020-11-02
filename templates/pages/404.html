@@ -1,0 +1,17 @@
+{% extends "layout/base.html" %}
+{% set active_item = "register" %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card-body text-center green-background space-below">
+        <h3>Oh dear, something's gone wrong here!<br>
+        <a href="{{ url_for('home') }}"
+          class="internal-link">Click here to return home</a></h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
