@@ -21,7 +21,7 @@
             <div id="collapseOne" class="collapse show"
               aria-labelledby="headingOne" data-parent="#accordion">
               <div class="card-body">
-                {% include "components/member-details.html" %}
+                {% include "components/details/member.html" %}
                 <!-- Amend profile -->
                 <hr>
                 <div class="container-fluid">
@@ -59,10 +59,10 @@
             by the Queen Bee(s), you will be able to add more locations and collections without waiting for approval.</p>
           </div>
           </div>
-          {% include "components/first-collection-card.html" %}
+          {% include "components/cards/first-collection.html" %}
           {% else %}
-          {% include "components/locations-card.html" %}
-          {% include "components/collections-card.html" %}
+          {% include "components/cards/locations.html" %}
+          {% include "components/cards/collections.html" %}
           {% endif %}
           {% include "components/national-collections-card.html" %}
         </div>
@@ -71,12 +71,12 @@
   </div>
 </section>
 
-{% include "components/edit-modal.html" %}
+{% include "components/modals/edit.html" %}
 
-{% include "components/delete-modal.html" %}
+{% include "components/modals/delete.html" %}
 
 {% if member_type != "Busy Bee" %}
-    {% include "components/add-modal.html" %}
+    {% include "components/modals/add-location.html" %}
 {% endif %}
 
 {% endblock %}

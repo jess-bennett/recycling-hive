@@ -392,10 +392,10 @@ def profile(username):
     # grab the session user"s details from db
     user_id = ObjectId(session["user_id"])
     email = session["user"]
-    # get user"s location details from db for location hexagon
+    # get user"s location details from db for location card
     locations = list(mongo.db.collectionLocations.find(
         {"memberID": user_id}).sort("nickname"))
-    # Create new dictionary of collections for collection hexagon
+    # Create new dictionary of collections for collection card
     collections_dict = list(mongo.db.itemCollections.aggregate([
         {"$match": {"memberID": user_id}},
         {
@@ -439,23 +439,6 @@ def profile(username):
          },
         {"$sort": {"typeOfWaste": 1}}
         ]))
-    # Get list of categories for dropdown menu
-    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
-    # Get list of all recyclable items for
-    # dropdown in "Add collection" modal
-    items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
-    items_dict = list(mongo.db.recyclableItems.aggregate([
-        {
-            "$lookup": {
-             "from": "itemCategory",
-             "localField": "categoryID",
-             "foreignField": "_id",
-             "as": "itemCategory"
-            },
-        },
-        {"$unwind": "$itemCategory"}
-        ]))
-
     # Check whether user has submitted first collection for approval
     if mongo.db.firstCollection.find_one(
             {"memberID": ObjectId(user_id)}):
@@ -466,8 +449,7 @@ def profile(username):
                            username=session["username"], email=email,
                            member_type=session["member_type"],
                            locations=locations,
-                           collections_dict=collections_dict, items=items,
-                           items_dict=items_dict, categories=categories,
+                           collections_dict=collections_dict,
                            page_id="profile",
                            awaiting_approval=awaiting_approval)
 
@@ -628,7 +610,25 @@ def add_first_collection():
 @app.route("/add-new-collection", methods=["GET", "POST"])
 @login_required
 def add_new_collection():
+    # Get user ID for adding collection
     user_id = ObjectId(session["user_id"])
+    # Get list of categories for dropdown
+    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+    # Get list of all recyclable items for dropdown
+    items_dict = list(mongo.db.recyclableItems.aggregate([
+        {
+            "$lookup": {
+             "from": "itemCategory",
+             "localField": "categoryID",
+             "foreignField": "_id",
+             "as": "itemCategory"
+            },
+        },
+        {"$unwind": "$itemCategory"}
+        ]))
+    # get user"s location details from db for location card
+    locations = list(mongo.db.collectionLocations.find(
+        {"memberID": user_id}).sort("nickname"))
     if request.method == "POST":
         # Post method for adding a new category and type of waste
         if "newItemCategory" in request.form:
@@ -751,7 +751,9 @@ def add_new_collection():
             flash("New collection added")
             return redirect(url_for("get_recycling_collections",
                                     item_id=item_id))
-    return render_template("pages/add-collection.html")
+    return render_template("pages/add-collection.html",
+                           categories=categories, items_dict=items_dict,
+                           locations=locations)
 
 
 @app.route("/<route>/edit-collection/<collection_id>", methods=["GET", "POST"])

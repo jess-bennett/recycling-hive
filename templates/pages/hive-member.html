@@ -2,9 +2,9 @@
 {% set active_item = "members" %}
 {% block content %}
 
-{% include "components/breadcrumbs.html" %}
+{% include "components/navigation/breadcrumbs.html" %}
 
-{% include "components/dropdown.html" %}
+{% include "components/navigation/dropdown.html" %}
 
 
 <div id="member-layout">
@@ -29,7 +29,7 @@
       <div class="modal-body">
                 {% if member._id in members_collection_values %}
                 {% for collection in members_dict if collection._id == member._id %}
-                    {% include "components/collection-details.html" %}
+                    {% include "components/details/collection.html" %}
                 
                 <hr class="green-line">
                 {% endfor %}

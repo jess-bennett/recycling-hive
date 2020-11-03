@@ -1,15 +1,17 @@
 $(document).ready(function() {
-  $("#input-typeOfWaste").hide(); /* Hide additional forms on page load */
+  $("#local-national").hide(); /* Hide local-national question on page load   */
+  $("#private-collection").hide(); /* Hide private-collection input on page load   */
+  $("#input-typeOfWaste").hide(); /* Hide input forms on page load to allow user to select from dropdown instead */
   $("#input-businessTypeOfWaste").hide(); 
-  $("#instructions-addTypeOfWaste").hide();
+  $("#instructions-addTypeOfWaste").hide(); /* Hide input form instructions on page load to allow user to select from dropdown instead */
   $("#instructions-addBusinessTypeOfWaste").hide();
-  $("#select-itemCategory").hide();
+  $("#select-itemCategory").hide(); /* Hide select category on page load as not needed unless new type of waste added */
   $("#select-businessItemCategory").hide();
-  $("#instructions-addItemCategory").hide();
+  $("#instructions-addItemCategory").hide(); /* Hide select category instructions on page load as not needed unless new type of waste added */
   $("#instructions-addBusinessItemCategory").hide();
-  $("#member-details").hide();
-  $("#location-details").hide();
-  $("#collection-details").hide();
+  $("#member-details").hide(); /* Hide member details on page load until details button selected on page   */
+  $("#location-details").hide(); /* Hide location details on page load until details button selected on page   */
+  $("#collection-details").hide(); /* Hide collection details on page load until details button selected on page   */
 });
 
 /* REGISTER.HTML */
@@ -38,6 +40,19 @@ $("#submit-registration").click(function(event) {
 $(function() {
   $("[data-toggle='tooltip']").tooltip()
 })
+
+/* FORM IN ADD-COLLECTION PAGE */
+
+$("input:radio[name='collectionType']").change(
+    function(){
+        if (this.checked && this.value == "public") {
+            $("#local-national").show();
+        }
+        if (this.checked && this.value == "private") {
+            $("#private-collection").show();
+        }
+        $("input:radio[name='collectionType']").attr('disabled', 'disabled');
+    });
 
 /* FORMS IN ADD NEW COLLECTION MODAL */
 
@@ -116,7 +131,7 @@ $("select#locationID").change(function() {
   $("#locationAddress").attr("placeholder", selectedLocationID);
 });
 
-/* FORMS IN EDIT COLLECTION MODAL */
+/* FORMS IN EDIT COLLECTION-LOCATION MODAL */
 $("select#editLocation").change(function() {
   selectedEditLocation = $(this).find(":selected").data("id");
   $("#editLocationAddress").attr("placeholder", selectedEditLocation);

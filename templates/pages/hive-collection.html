@@ -2,9 +2,9 @@
 {% set active_item = "collections" %}
 {% block content %}
 
-{% include "components/breadcrumbs.html" %}
+{% include "components/navigation/breadcrumbs.html" %}
 
-{% include "components/dropdown.html" %}
+{% include "components/navigation/dropdown.html" %}
 
 <!-- Item collection accordion -->
 <div id="collection-layout">
@@ -27,7 +27,7 @@
       </div>
 
       <div class="modal-body">
-        {% include "components/collection-details.html" %}
+        {% include "components/details/collection.html" %}
       <div class="modal-footer">
     <button type="button" class="btn btn-outline-primary"
         data-dismiss="modal">Close</button>

@@ -207,7 +207,7 @@
                     {% for member in members %}
                         <h6><strong>{{ member.username }}'s Details</strong></h6>
                         <hr>
-                        {% include "components/member-details.html" %}
+                        {% include "components/details/member.html" %}
                     <!-- Amend profile -->
                     <div class="container-fluid">
                     <div class="row">
@@ -252,7 +252,7 @@
                         <h6><strong>{{ member.username }}'s Locations</strong></h6>
                         {% for location in locations_dict if location.hiveMembersID == member._id %}
                         <hr>
-                        {% include "components/location-details.html" %}
+                        {% include "components/details/location.html" %}
                         <!-- Amend location -->
                         <div class="container-fluid">
                         <div class="row">
@@ -299,7 +299,7 @@
                         <h6><strong>{{ member.username }}'s Collections</strong></h6>
                         {% for collection in collections_dict if collection.hiveMembersID == member._id %}
                         <hr class="green-line">
-                        {% include "components/collection-details.html" %}
+                        {% include "components/details/collection.html" %}
                         <!-- Amend collection -->
                         <div class="container-fluid">
                         <div class="row">
@@ -331,10 +331,10 @@
   </div>
 </section>
 
-{% include "components/membership-request-modal.html" %}
+{% include "components/modals/membership-request.html" %}
 
-{% include "components/edit-modal.html" %}
+{% include "components/modals/edit.html" %}
 
-{% include "components/delete-modal.html" %}
+{% include "components/modals/delete.html" %}
 
 {% endblock %}

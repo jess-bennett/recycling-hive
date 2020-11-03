@@ -145,6 +145,12 @@ span.internal-link {
   border: 1px solid #8C0A06;
 }
 
+a.btn-delete:hover {
+    color: #3a5c2d;
+    border: none;
+    text-decoration: none;
+}
+
 .warning-text {
   color: #8C0A06;
   font-weight: bold;
