@@ -371,7 +371,6 @@ def approve_collection_request(collection_id):
             "charityScheme": first_collection["charityScheme"],
             "memberID": ObjectId(member_id),
             "locationID": ObjectId(location_id),
-            "isNational": "no",
             "dateAdded": datetime.now().strftime("%d %b %Y")
         }
         mongo.db.itemCollections.insert_one(new_collection)
@@ -599,7 +598,6 @@ def add_first_collection():
             "typeOfWaste": type_of_waste,
             "conditionNotes": request.form.get("conditionNotes"),
             "charityScheme": request.form.get("charityScheme"),
-            "isNational": "no",
             "dateAdded": datetime.now().strftime("%d %b %Y")
         }
         mongo.db.firstCollection.insert_one(first_collection)
@@ -690,7 +688,6 @@ def add_private_collection():
                 "locationID": mongo.db.collectionLocations.find_one(
                     {"nickname_lower": request.form.get("locationID").lower(),
                         "memberID": user_id})["_id"],
-                "isNational": "no",
                 "dateAdded": datetime.now().strftime("%d %b %Y")
             }
             mongo.db.itemCollections.insert_one(new_collection)
@@ -731,7 +728,6 @@ def add_private_collection():
                 "locationID": mongo.db.collectionLocations.find_one(
                     {"nickname_lower": request.form.get("locationID").lower(),
                         "memberID": user_id})["_id"],
-                "isNational": "no",
                 "dateAdded": datetime.now().strftime("%d %b %Y")
             }
             mongo.db.itemCollections.insert_one(new_collection)
@@ -752,13 +748,46 @@ def add_private_collection():
                 "locationID": mongo.db.collectionLocations.find_one(
                     {"nickname_lower": request.form.get("locationID").lower(),
                         "memberID": user_id})["_id"],
-                "isNational": "no",
                 "dateAdded": datetime.now().strftime("%d %b %Y")
             }
             mongo.db.itemCollections.insert_one(new_collection)
             flash("New collection added")
             return redirect(url_for("get_recycling_collections",
                                     item_id=item_id))
+
+
+@app.route("/add-new-collection/public", methods=["GET", "POST"])
+@login_required
+def add_public_collection():
+    user_id = ObjectId(session["user_id"])
+    username = session["username"]
+    if request.method == "POST":
+        if "newItemCategory" in request.form:
+            category_name = request.form.get("newItemCategory")
+        else:
+            category_name = request.form.get("itemCategory")
+        if "newTypeOfWaste" in request.form:
+            type_of_waste = request.form.get("newTypeOfWaste")
+        else:
+            type_of_waste = request.form.get("typeOfWaste")
+        public_collection = {
+            "hive": ObjectId(session["hive"]),
+            "localNational": request.form.get("localNational"),
+            "username": username,
+            "memberID": user_id,
+            "businessName": request.form.get("businessName"),
+            "street": request.form.get("businessStreet"),
+            "town": request.form.get("businessTown"),
+            "postcode": request.form.get("businessPostcode"),
+            "categoryName": category_name,
+            "typeOfWaste": type_of_waste,
+            "conditionNotes": request.form.get("conditionNotes"),
+            "charityScheme": request.form.get("charityScheme"),
+            "dateAdded": datetime.now().strftime("%d %b %Y")
+        }
+        mongo.db.publicCollections.insert_one(public_collection)
+        flash("Public collection sent for approval")
+        return redirect(url_for("add_new_collection"))
 
 
 @app.route("/<route>/edit-collection/<collection_id>", methods=["GET", "POST"])

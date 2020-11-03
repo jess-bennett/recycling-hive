@@ -56,6 +56,8 @@ $("input:radio[name='collectionType']").change(
             $("#local-national").show();
             $(".all-collection").hide();
             $(".private-collection").hide();
+            $("#locationID").prop("required", false);
+            $("#businessName").prop("required", true);
             $("#form-add-collection").attr("action", "/add-new-collection/public");
         }
         if (this.checked && this.value == "private") {
@@ -64,6 +66,11 @@ $("input:radio[name='collectionType']").change(
             $(".all-collection").show();
             $(".public-collection").hide();
             $("#local-national").hide();
+            $("#locationID").prop("required", true);
+            $("#businessName").prop("required", false);
+            $("#businessStreet").prop("required", false);
+            $("#businessTown").prop("required", false);
+            $("#businessPostcode").prop("required", false);
             $("input:radio[name='localNational']").prop("checked", false);
             $("input:radio[name='dropoffPosted']").prop("checked", false);
             $("#form-add-collection").attr("action", "/add-new-collection/private");
@@ -77,6 +84,9 @@ function(){
         $(".national-collection").hide();
         $(".form-public-collection").show();
         $(".form-public-collection-address").show();
+        $("#businessStreet").prop("required", true);
+        $("#businessTown").prop("required", true);
+        $("#businessPostcode").prop("required", true);
         $(".form-public-collection-dropoff").show();
         $(".form-public-collection-postal").hide();
         $(".all-collection").show();
@@ -96,6 +106,9 @@ function(){
     if (this.checked && this.value == "postal") {
         $(".form-public-collection").show();
         $(".all-collection").show();
+        $("#businessStreet").prop("required", true);
+        $("#businessTown").prop("required", true);
+        $("#businessPostcode").prop("required", true);
         $(".form-public-collection-address").show();
         $(".form-public-collection-postal").show();
         $(".form-public-collection-dropoff").hide();
@@ -103,6 +116,9 @@ function(){
     if (this.checked && this.value == "dropoff") {
         $(".form-public-collection").show();
         $(".all-collection").show();
+        $("#businessStreet").prop("required", false);
+        $("#businessTown").prop("required", false);
+        $("#businessPostcode").prop("required", false);
         $(".form-public-collection-postal").hide();
         $(".form-public-collection-address").hide();
         $(".form-public-collection-dropoff").show();
