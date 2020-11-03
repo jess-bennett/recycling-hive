@@ -751,7 +751,7 @@ def add_new_collection():
             flash("New collection added")
             return redirect(url_for("get_recycling_collections",
                                     item_id=item_id))
-    return redirect(url_for("profile", username=session["username"]))
+    return render_template("pages/add-collection.html")
 
 
 @app.route("/<route>/edit-collection/<collection_id>", methods=["GET", "POST"])
