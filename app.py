@@ -607,10 +607,10 @@ def add_first_collection():
     return redirect(url_for("profile", username=session["username"]))
 
 
-@app.route("/add-new-collection", methods=["GET", "POST"])
+@app.route("/add-new-collection")
 @login_required
 def add_new_collection():
-    # Get user ID for adding collection
+    # Get user ID for locations
     user_id = ObjectId(session["user_id"])
     # Get list of categories for dropdown
     categories = list(mongo.db.itemCategory.find().sort("categoryName"))
@@ -629,6 +629,16 @@ def add_new_collection():
     # get user"s location details from db for location card
     locations = list(mongo.db.collectionLocations.find(
         {"memberID": user_id}).sort("nickname"))
+    return render_template("pages/add-collection.html",
+                           categories=categories, items_dict=items_dict,
+                           locations=locations)
+
+
+@app.route("/add-new-collection/private", methods=["GET", "POST"])
+@login_required
+def add_private_collection():
+    # Get user ID for adding collection
+    user_id = ObjectId(session["user_id"])
     if request.method == "POST":
         # Post method for adding a new category and type of waste
         if "newItemCategory" in request.form:
@@ -639,8 +649,7 @@ def add_new_collection():
 
             if existing_category:
                 flash("Category already exists")
-                return redirect(url_for(
-                    "profile", username=session["username"]))
+                return redirect(url_for("add_new_collection"))
 
             new_item_category = {
                 "categoryName": request.form.get("newItemCategory"),
@@ -660,8 +669,7 @@ def add_new_collection():
             )
             if existing_type_of_waste:
                 flash("Type of Waste already exists for this category")
-                return redirect(url_for(
-                    "profile", username=session["username"]))
+                return redirect(url_for("add_new_collection"))
 
             new_type_of_waste = {
                 "typeOfWaste": request.form.get("newTypeOfWaste"),
@@ -700,8 +708,7 @@ def add_new_collection():
             )
             if existing_type_of_waste:
                 flash("Type of Waste already exists for this category")
-                return redirect(url_for(
-                    "profile", username=session["username"]))
+                return redirect(url_for("add_new_collection"))
 
             new_type_of_waste = {
                 "typeOfWaste": request.form.get("newTypeOfWaste"),
@@ -751,9 +758,6 @@ def add_new_collection():
             flash("New collection added")
             return redirect(url_for("get_recycling_collections",
                                     item_id=item_id))
-    return render_template("pages/add-collection.html",
-                           categories=categories, items_dict=items_dict,
-                           locations=locations)
 
 
 @app.route("/<route>/edit-collection/<collection_id>", methods=["GET", "POST"])
