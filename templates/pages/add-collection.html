@@ -24,6 +24,8 @@
                 {% include "components/forms/collection-type.html" %}
                 
                 {% include "components/forms/local-national.html" %}
+
+                {% include "components/forms/dropoff-posted.html" %}
                 
                 <div class="private-collection">
                     <p class="warning-text">NB. Adding a private collection to the database indicates that you are happy for your collection location to be displayed on the website
@@ -35,7 +37,14 @@
                         </div>
                     </div>
                 </div>
-                
+                <div class="national-collection public-collection">
+                    <p class="warning-text">NB. National collections are visible to members of all hives (not just yours). For this reason, the collection is sent to the Queen Bee(s) for approval before it is committed to the database.</p>
+                </div>
+                <div class="row form-public-collection">
+                    <div class="col">
+                        <h5><i class="fas fa-recycle"></i> What is being collected?</h5>
+                    </div>
+                </div>
                     {% include "components/forms/type-of-waste.html" %}
                     <!-- Private collection location -->
                     <div class="private-collection">
@@ -46,8 +55,22 @@
                         
                     </div>
                     <small>To add a new location, please go to your Locations on your <a href="{{ url_for('profile', username=session['username'], _anchor='lcoations-card') }}" class="internal-link">profile</a></small>
-                    </div>
                     {% include "components/forms/private-location.html" %}
+                    </div>
+                    <!-- Public collection location -->
+                    <div class="form-public-collection">
+                    <div class="row">
+                        <div class="col form-public-collection-dropoff">
+                            <h5><i class="fas fa-building"></i> Where is this being collected?</h5>
+                        </div>
+                        <div class="col form-public-collection-postal">
+                            <h5><i class="fas fa-building"></i> Where should this be posted to?</h5>
+                        </div>
+                        
+                    </div>
+                    {% include "components/forms/business-venue.html" %}
+                    </div>
+                    
                     <!-- Condition Notes -->
                     <div class="row all-collection">
                         <div class="col">

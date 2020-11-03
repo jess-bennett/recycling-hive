@@ -447,6 +447,7 @@ def profile(username):
         awaiting_approval = False
     return render_template("/pages/profile.html", user_id=user_id,
                            username=session["username"], email=email,
+                           hive=session["hive"],
                            member_type=session["member_type"],
                            locations=locations,
                            collections_dict=collections_dict,
@@ -631,7 +632,7 @@ def add_new_collection():
         {"memberID": user_id}).sort("nickname"))
     return render_template("pages/add-collection.html",
                            categories=categories, items_dict=items_dict,
-                           locations=locations)
+                           locations=locations, hive=session["hive"])
 
 
 @app.route("/add-new-collection/private", methods=["GET", "POST"])

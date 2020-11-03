@@ -1,11 +1,13 @@
 $(document).ready(function() {
   $("#local-national").hide(); /* Hide local-national question on page load   */
   $(".private-collection").hide(); /* Hide private-collection input on page load   */
+  $(".public-collection").hide(); /* Hide public-collection input on page load   */
+  $(".form-public-collection").hide(); /* Hide public-collection input on page load   */
+  $(".form-public-collection-address").hide(); /* Hide public-collection input on page load   */
+  $(".form-public-collection-postal").hide(); /* Hide public-collection input on page load   */
+  $(".form-public-collection-dropoff").hide(); /* Hide public-collection input on page load   */
+  $(".national-collection").hide(); /* Hide national-collection text on page load   */
   $(".all-collection").hide(); /* Hide all-collection input on page load   */
-  $("#form-type-of-waste").hide(); /* Hide form elements on page load   */
-  $("#form-private-location").hide(); /* Hide form elements on page load   */
-  $("#form-condition-notes").hide(); /* Hide form elements on page load   */
-  $("#form-charity-scheme").hide(); /* Hide form elements on page load   */
   $("#input-typeOfWaste").hide(); /* Hide input forms on page load to allow user to select from dropdown instead */
   $("#input-businessTypeOfWaste").hide(); 
   $("#instructions-addTypeOfWaste").hide(); /* Hide input form instructions on page load to allow user to select from dropdown instead */
@@ -54,18 +56,58 @@ $("input:radio[name='collectionType']").change(
             $("#local-national").show();
             $(".all-collection").hide();
             $(".private-collection").hide();
+            $("#form-add-collection").attr("action", "/add-new-collection/public");
         }
         if (this.checked && this.value == "private") {
+            $(".form-public-collection").hide();
             $(".private-collection").show();
             $(".all-collection").show();
+            $(".public-collection").hide();
             $("#local-national").hide();
-            $("#form-type-of-waste").show();
-            $("#form-private-location").show();
-            $("#form-condition-notes").show();
-            $("#form-charity-scheme").show();
+            $("input:radio[name='localNational']").prop("checked", false);
+            $("input:radio[name='dropoffPosted']").prop("checked", false);
             $("#form-add-collection").attr("action", "/add-new-collection/private");
         }
     });
+
+$("input:radio[name='localNational']").change(
+function(){
+    if (this.checked && this.value == "local") {
+        $("#dropoff-posted").hide();
+        $(".national-collection").hide();
+        $(".form-public-collection").show();
+        $(".form-public-collection-address").show();
+        $(".form-public-collection-dropoff").show();
+        $(".form-public-collection-postal").hide();
+        $(".all-collection").show();
+        $("input:radio[name='dropoffPosted']").prop("checked", false);
+    }
+    if (this.checked && this.value == "national") {
+        $("#dropoff-posted").show();
+        $(".national-collection").show();
+        $(".form-public-collection").hide();
+        $(".form-public-collection-dropoff").hide();
+        $(".all-collection").hide();
+    }
+});
+
+$("input:radio[name='dropoffPosted']").change(
+function(){
+    if (this.checked && this.value == "postal") {
+        $(".form-public-collection").show();
+        $(".all-collection").show();
+        $(".form-public-collection-address").show();
+        $(".form-public-collection-postal").show();
+        $(".form-public-collection-dropoff").hide();
+    }
+    if (this.checked && this.value == "dropoff") {
+        $(".form-public-collection").show();
+        $(".all-collection").show();
+        $(".form-public-collection-postal").hide();
+        $(".form-public-collection-address").hide();
+        $(".form-public-collection-dropoff").show();
+    }
+});
 
 /* FORMS IN ADD NEW COLLECTION MODAL */
 
