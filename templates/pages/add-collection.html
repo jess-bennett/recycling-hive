@@ -19,50 +19,10 @@
                             data-placement="top" data-type="info"
                             title="Start again"></i> Start again</a> 
                 </div>
-                <!-- Collection Type -->
-                <div id="collection-type">
-                    <div class="row">
-                        <div class="col">
-                            <h5><i class="fas fa-user"></i> Is this collection private or public?</h5>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="private" name="collectionType" class="custom-control-input" value="private">
-                                <label class="custom-control-label" for="private">Private collection (<em>I am personally responsible for collecting and dispatching</em>)</label>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="public" name="collectionType" class="custom-control-input" value="public">
-                                <label class="custom-control-label" for="public">Public collection (<em>A business/company is responsible for collecting and dispatching</em>)</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Local or national -->
-                <div id="local-national">
-                    <div class="row">
-                        <div class="col">
-                            <h5><i class="fas fa-globe-europe"></i> Is this collection local or national?</h5>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="local" name="localNational" class="custom-control-input" value="local" checked>
-                                <label class="custom-control-label" for="local">Local collection (<em>It would only be suitable for members of my Hive</em>)</label>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <div class="custom-control custom-radio custom-control-inline">
-                                <input type="radio" id="national" name="localNational" class="custom-control-input" value="national">
-                                <label class="custom-control-label" for="national">National collection (<em>It could potentially be suitable for members of any Hive (in the UK)</em>)</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {% include "components/forms/collection-type.html" %}
+                
+                {% include "components/forms/local-national.html" %}
+                
                 <div id="private-collection">
                     <p class="warning-text">NB. Adding a private collection to the database indicates that you are happy for your collection location to be displayed on the website
                     to users registered to your Hive. <br>Please see FAQs for more information.</p>
@@ -72,72 +32,7 @@
                             <h5><i class="fas fa-recycle"></i> What are you collecting?</h5>
                         </div>
                     </div>
-                    <div class="form-row">
-                        <!-- Item Category -->
-                        <div class="form-group col-md-6">
-                        <label class="sr-only" for="input-itemCategory">Item
-                            Category</label>
-                        <div class="input-group mb-2">
-                            {% include "components/tooltips/tooltip-category.html" %}
-                            <input type="text" class="form-control" id="input-itemCategory"
-                            name="input-itemCategory" placeholder="Item Category"
-                            disabled>
-                            <select class="form-control" id="select-itemCategory"
-                            name="itemCategory">
-                            <option value="" selected disabled>Item Category</option>
-                            {% for category in categories %}
-                            <option value="{{ category.categoryName }}">
-                                {{ category.categoryName }}
-                            </option>
-                            {% endfor %}
-                            <option>Add New Item Category...</option>
-                            </select>
-                            <small id="instructions-addItemCategory"
-                            class="form-text col-12 warning-text">
-                            Please ensure that you are not duplicating a Category that
-                            already appears in the dropdown menu.<br>
-                            The Category that you add here will be accessible by other
-                            users, so should be fairly general (e.g. 'dental care'
-                            <strong>not</strong> 'toothbrush',) and should
-                            <strong>not</strong> include any notes that are relevant to
-                            your collection (e.g. 'Must be washed' does not belong here!).
-                            </small>
-                        </div>
-                        </div>
-                        <!-- Type of Waste -->
-                        <div class="form-group col-md-6">
-
-                        <label class="sr-only" for="select-typeOfWaste">Type of
-                            Waste</label>
-                        <div class="input-group mb-2">
-                            {% include "components/tooltips/tooltip-waste.html" %}
-                            <input type="text" class="form-control" id="input-typeOfWaste"
-                            name="input-typeOfWaste" placeholder="Type of Waste"
-                            minlength="2">
-                            <select class="form-control" id="select-typeOfWaste"
-                            name="typeOfWaste" required>
-                            <option value="" selected disabled>Type of Waste</option>
-                            {% for item in items_dict %}
-                            <option data-id="{{ item.itemCategory.categoryName }}"
-                                value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}
-                            </option>
-                            {% endfor %}
-                            <option>Add New Type of Waste...</option>
-                            </select>
-                            <small id="instructions-addTypeOfWaste"
-                            class="form-text col-12 warning-text">
-                            Please ensure that you are not duplicating a Type of Waste
-                            that already appears in the dropdown menu.<br>
-                            The Type of Waste that you add here will be accessible by
-                            other users, so should be specific (e.g. 'toothbrush'
-                            <strong>not</strong> 'dental care',) and should
-                            <strong>not</strong> include any notes that are relevant to
-                            your
-                            collection (e.g. 'Must be washed' does not belong here!).
-                            </small>
-                        </div>
-                        </div>
-                    </div>
+                    {% include "components/forms/type-of-waste.html" %}
                     <!-- Private collection location -->
                     <div class="row">
                         <div class="col">
@@ -146,67 +41,21 @@
                         
                     </div>
                     <small>To add a new location, please go to your Locations on your <a href="{{ url_for('profile', username=session['username'], _anchor='lcoations-card') }}" class="internal-link">profile</a></small>
-                    <div class="form-row">
-                        <!-- Nickname -->
-                        <div class="form-group col-md-3">
-                        <label class="sr-only" for="locationID">Location</label>
-                        <div class="input-group mb-2">
-                            {% include "components/tooltips/tooltip-nickname.html" %}
-                            <select class="form-control" id="locationID" name="locationID"
-                            required>
-                            <option value="" selected disabled>Location</option>
-                            {% for location in locations %}
-                            <option
-                                data-id="{{ location.street }}, {{ location.town }}, {{ location.postcode }}"
-                                value="{{ location.nickname }}">{{ location.nickname }}
-                            </option>
-                            {% endfor %}
-                            </select>
-                        </div>
-                        </div>
-                        <!-- Address -->
-                        <div class="form-group col-md-9">
-                        <label class="sr-only" for="locationAddress">Location</label>
-                        <div class="input-group mb-2">
-                            {% include "components/tooltips/tooltip-address.html" %}
-                            <input type="text" class="form-control" id="locationAddress"
-                            name="locationAddress" placeholder="Street, town, postcode"
-                            disabled>
-                        </div>
-                        </div>
-                    </div>
+                    {% include "components/forms/private-location.html" %}
                     <!-- Condition Notes -->
                     <div class="row">
                         <div class="col">
                             <h5><i class="fas fa-align-left"></i> What do people need to know about this collection?</h5>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="sr-only" for="conditionNotes">E.g. the condition you expect this item to be in: Washed/as it is...</label>
-                        <div class="input-group mb-2">
-                        {% include "components/tooltips/tooltip-notes.html" %}
-                        <textarea class="form-control" id="conditionNotes"
-                            name="conditionNotes"
-                            placeholder="E.g. the condition you expect this item to be in: Washed/as it is..."
-                            minlength="4" required></textarea>
-                        </div>
-                    </div>
+                    {% include "components/forms/condition-notes.html" %}
                     <!-- Charity -->
                     <div class="row">
                         <div class="col">
                             <h5><i class="fas fa-hand-holding-heart"></i> Is this collection for a charitable cause?</h5>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="sr-only" for="charityScheme">Charity
-                        (optional)</label>
-                        <div class="input-group mb-2">
-                        {% include "components/tooltips/tooltip-charity.html" %}
-                        <input type="text" class="form-control" id="charityScheme"
-                            name="charityScheme" placeholder="Charity (optional)"
-                            minlength="2">
-                        </div>
-                    </div>
+                    {% include "components/forms/charity-scheme.html" %}
                 </div>
               </div>
           </div>
