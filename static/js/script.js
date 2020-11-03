@@ -8,6 +8,7 @@ $(document).ready(function() {
   $(".form-public-collection-dropoff").hide(); /* Hide public-collection input on page load   */
   $(".national-collection").hide(); /* Hide national-collection text on page load   */
   $(".all-collection").hide(); /* Hide all-collection input on page load   */
+  $("#itemCategory").hide();
   $("#input-typeOfWaste").hide(); /* Hide input forms on page load to allow user to select from dropdown instead */
   $("#input-businessTypeOfWaste").hide(); 
   $("#instructions-addTypeOfWaste").hide(); /* Hide input form instructions on page load to allow user to select from dropdown instead */
@@ -146,10 +147,14 @@ $("select#select-typeOfWaste").change(function() {
     $("#input-typeOfWaste").attr("required", true);
     $("#instructions-addTypeOfWaste").show();
     $("#input-itemCategory").hide();
+    $("#input-itemCategory").attr("name", "input-itemCategory");
     $("#select-itemCategory").show();
     $("#select-itemCategory").prop('required',true);
   } else {
     $("#input-itemCategory").attr("placeholder", selectedTypeOfWasteCategory);
+    $("#input-itemCategory").val(selectedTypeOfWasteCategory);
+    $("#itemCategory").attr("placeholder", selectedTypeOfWasteCategory);
+    $("#itemCategory").val(selectedTypeOfWasteCategory);
   }
 });
 
@@ -164,42 +169,6 @@ $("select#select-itemCategory").change(function() {
     $("#input-itemCategory").prop("disabled", false);
     $("#input-itemCategory").prop('required',true);
     $("#instructions-addItemCategory").show();
-  }
-});
-
-/* FORMS IN NATIONAL COLLECTION MODAL */
-
-/* Change category if type of waste changed */
-
-$("select#select-businessTypeOfWaste").change(function() {
-  selectedBusinessTypeOfWaste = $(this).find(":selected").val();
-  selectedBusinessTypeOfWasteCategory = $(this).find(":selected").data("id");
-  if (selectedBusinessTypeOfWaste == "Add New Type of Waste...") {
-    $("#select-businessTypeOfWaste").hide();
-    $("#select-businessTypeOfWaste").attr("name", "select-businessTypeOfWaste");
-    $("#input-businessTypeOfWaste").show();
-    $("#input-businessTypeOfWaste").attr("name", "newBusinessTypeOfWaste");
-    $("#input-businessTypeOfWaste").attr("required", true);
-    $("#instructions-addBusinessTypeOfWaste").show();
-    $("#input-businessItemCategory").hide();
-    $("#select-businessItemCategory").show();
-    $("#select-businessItemCategory").prop('required',true);
-  } else {
-    $("#input-businessItemCategory").attr("placeholder", selectedBusinessTypeOfWasteCategory);
-  }
-});
-
-$("select#select-businessItemCategory").change(function() {
-  selectedBusinessItemCategory = $(this).find(":selected").val();
-  if (selectedBusinessItemCategory == "Add New Item Category...") {
-    $("#select-businessItemCategory").hide();
-    $("#select-businessItemCategory").attr("name", "select-businessItemCategory");
-    $("#select-businessItemCategory").prop('required',false);
-    $("#input-businessItemCategory").show();
-    $("#input-businessItemCategory").attr("name", "newItemCategory");
-    $("#input-businessItemCategory").prop("disabled", false);
-    $("#input-businessItemCategory").prop('required',true);
-    $("#instructions-addBusinessItemCategory").show();
   }
 });
 

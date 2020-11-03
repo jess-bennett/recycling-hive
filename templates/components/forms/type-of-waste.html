@@ -8,8 +8,11 @@
 			<input type="text" class="form-control" id="input-itemCategory"
                             name="input-itemCategory" placeholder="Item Category"
                             disabled>
+            <input type="text" class="form-control" id="itemCategory"
+                            name="itemCategory" placeholder="Item Category"
+                            >
 			<select class="form-control" id="select-itemCategory"
-                            name="itemCategory">
+                            name="select-itemCategory">
                             <option value="" selected disabled>Item Category</option>
                             {% for category in categories %}
                             <option value="{{ category.categoryName }}">
