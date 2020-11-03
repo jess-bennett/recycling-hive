@@ -1,7 +1,7 @@
 {% extends "layout/base.html" %}
 {% set active_item = "collection" %}
 {% block content %}
-
+{{ member_type }}
 <section id="add-collection">
   <div class="container-fluid">
     <div class="row">
@@ -14,7 +14,7 @@
             </div>
               <div class="card-body">
               <div class="row text-right">
-                <a href="{{ url_for('add_new_collection') }}"  class="col-4 offset-8 btn-delete"><i
+                <a href="{{ url_for('add_private_collection') }}"  class="col-4 offset-8 btn-delete"><i
                             class="fas fa-redo-alt" data-toggle="tooltip"
                             data-placement="top" data-type="info"
                             title="Start again"></i> Start again</a> 
@@ -28,6 +28,9 @@
                 {% include "components/forms/dropoff-posted.html" %}
                 
                 <div class="private-collection">
+                    {% if session["member_type"] == "Busy Bee" %}
+                    <p class="warning-text">You are submitting your first private collection for approval.</p>
+                    {% endif %}
                     <p class="warning-text">NB. Adding a private collection to the database indicates that you are happy for your collection location to be displayed on the website
                     to users registered to your Hive. <br>Please see FAQs for more information.</p>
                     <!-- Private collection type of waste -->
@@ -54,7 +57,9 @@
                         </div>
                         
                     </div>
+                    {% if session["member_type"] != "Busy Bee" %}
                     <small>To add a new location, please go to your Locations on your <a href="{{ url_for('profile', username=session['username'], _anchor='lcoations-card') }}" class="internal-link">profile</a></small>
+                    {% endif %}
                     {% include "components/forms/private-location.html" %}
                     </div>
                     <!-- Public collection location -->

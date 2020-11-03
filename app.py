@@ -628,9 +628,17 @@ def add_new_collection():
     # get user"s location details from db for location card
     locations = list(mongo.db.collectionLocations.find(
         {"memberID": user_id}).sort("nickname"))
+    # Check whether user has submitted first collection for approval
+    if mongo.db.firstCollection.find_one(
+            {"memberID": ObjectId(user_id)}):
+        awaiting_approval = True
+    else:
+        awaiting_approval = False
     return render_template("pages/add-collection.html",
                            categories=categories, items_dict=items_dict,
-                           locations=locations, hive=session["hive"])
+                           locations=locations, hive=session["hive"],
+                           member_type=session["member_type"],
+                           awaiting_approval=awaiting_approval)
 
 
 @app.route("/add-new-collection/private", methods=["GET", "POST"])

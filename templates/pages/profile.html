@@ -55,16 +55,16 @@
           {% if member_type == "Busy Bee" %}
           <div class="card-body">
             <p>As a Busy Bee, you are not able to add collection points for the Hive.<br>
-            To become a Worker Bee, please click 'Become a Worker Bee!' below and add your location and details for your first collection. Once this has been approved
+            To become a Worker Bee, please click 'Become a Worker Bee!' below and add your location and details for your first private collection. Once this has been approved
             by the Queen Bee(s), you will be able to add more locations and collections without waiting for approval.</p>
           </div>
           </div>
-          {% include "components/cards/first-collection.html" %}
+          <a href="{{ url_for('add_new_collection') }}" class="btn btn-outline-primary col"
+              ><i class="fas fa-hard-hat"></i> <strong>Become a Worker Bee!</strong></a>
           {% else %}
           {% include "components/cards/locations.html" %}
           {% include "components/cards/collections.html" %}
           {% endif %}
-          {% include "components/national-collections-card.html" %}
         </div>
       </div>
     </div>

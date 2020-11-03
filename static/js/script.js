@@ -52,6 +52,7 @@ $(function() {
 
 $("input:radio[name='collectionType']").change(
     function(){
+        
         if (this.checked && this.value == "public") {
             $("#local-national").show();
             $(".all-collection").hide();
@@ -73,7 +74,13 @@ $("input:radio[name='collectionType']").change(
             $("#businessPostcode").prop("required", false);
             $("input:radio[name='localNational']").prop("checked", false);
             $("input:radio[name='dropoffPosted']").prop("checked", false);
-            $("#form-add-collection").attr("action", "/add-new-collection/private");
+            let memberType = '{{ member_type }}';
+            console.log(memberType)
+            if (memberType == "Busy Bee") {
+            $("#form-add-collection").attr("action", "/add-first-collection");
+            } else {
+                $("#form-add-collection").attr("action", "/add-new-collection/private");
+            }
         }
     });
 
