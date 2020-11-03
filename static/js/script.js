@@ -52,13 +52,14 @@ $(function() {
 
 $("input:radio[name='collectionType']").change(
     function(){
-        
+        let memberType = $("input[name=collectionType]:checked").attr("data-id");
         if (this.checked && this.value == "public") {
             $("#local-national").show();
             $(".all-collection").hide();
             $(".private-collection").hide();
             $("#locationID").prop("required", false);
             $("#businessName").prop("required", true);
+            
             $("#form-add-collection").attr("action", "/add-new-collection/public");
         }
         if (this.checked && this.value == "private") {
@@ -74,8 +75,6 @@ $("input:radio[name='collectionType']").change(
             $("#businessPostcode").prop("required", false);
             $("input:radio[name='localNational']").prop("checked", false);
             $("input:radio[name='dropoffPosted']").prop("checked", false);
-            let memberType = '{{ member_type }}';
-            console.log(memberType)
             if (memberType == "Busy Bee") {
             $("#form-add-collection").attr("action", "/add-first-collection");
             } else {

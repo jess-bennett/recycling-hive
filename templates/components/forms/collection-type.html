@@ -7,13 +7,13 @@
 	<div class="form-row">
 		<div class="form-group col-md-6">
 			<div class="custom-control custom-radio custom-control-inline">
-				<input type="radio" id="private" name="collectionType" class="custom-control-input" value="private">
+				<input type="radio" id="private" name="collectionType" class="custom-control-input" value="private" data-id="{{ member_type }}">
 				<label class="custom-control-label" for="private">Private collection (<em>I am personally responsible for collecting and dispatching</em>)</label>
 			</div>
 		</div>
 		<div class="form-group col-md-6">
 			<div class="custom-control custom-radio custom-control-inline">
-				<input type="radio" id="public" name="collectionType" class="custom-control-input" value="public">
+				<input type="radio" id="public" name="collectionType" class="custom-control-input" value="public" data-id="{{ member_type }}">
 				<label class="custom-control-label" for="public">Public collection (<em>A business/company is responsible for collecting and dispatching</em>)</label>
 			</div>
 		</div>
