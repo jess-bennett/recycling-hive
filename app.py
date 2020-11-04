@@ -190,7 +190,7 @@ def hive_management(username):
         {"hive": ObjectId(session["hive"])}))
     # Get list of unapproved public collections
     unapproved_collections = list(mongo.db.publicCollections.find(
-        {"hive": ObjectId(session["hive"])}))
+        {"hive": ObjectId(session["hive"]), "approvedCollection": False}))
     # Get list of all members for member details
     members = list(mongo.db.hiveMembers.find(
         {"hive": ObjectId(session["hive"])}))
@@ -400,13 +400,54 @@ def delete_public_collection_request(collection_id):
 
 
 @app.route("/hive-management/approve-public-collection-request/\
-    <collection_id>")
+    <collection_id>", methods=["GET", "POST"])
 @queen_bee_required
 def approve_public_collection_request(collection_id):
-    filter = {"_id": ObjectId(collection_id)}
-    approve = {"$set": {"approvedCollection": True}}
-    mongo.db.publicCollections.update(filter, approve)
-    flash("Public Collection has been successfully approved")
+    if request.method == "POST":
+        public_collection = mongo.db.publicCollections.find_one(
+            {"_id": ObjectId(collection_id)})
+        # Check whether category exists and either add or get ID
+        existing_category = mongo.db.itemCategory.find_one(
+                {"categoryName_lower": public_collection["categoryName"].lower(
+                )})
+        if existing_category:
+            category_id = existing_category["_id"]
+        else:
+            new_category = {
+                "categoryName": public_collection["categoryName"],
+                "categoryName_lower": public_collection["categoryName"].lower()
+            }
+            mongo.db.itemCategory.insert_one(new_category)
+            category_id = mongo.db.itemCategory.find_one(
+                {"categoryName_lower": public_collection["categoryName"].lower(
+                )})["_id"]
+        # Check whether type of waste exists and either add or get ID
+        existing_type_of_waste = mongo.db.recyclableItems.find_one(
+                {"typeOfWaste_lower": public_collection["typeOfWaste"].lower(),
+                    "categoryID": category_id})
+        if existing_type_of_waste:
+            item_id = existing_type_of_waste["_id"]
+        else:
+            new_item = {
+                "typeOfWaste": public_collection["typeOfWaste"],
+                "typeOfWaste_lower": public_collection["typeOfWaste"].lower(),
+                "categoryID": category_id
+            }
+            mongo.db.recyclableItems.insert_one(new_item)
+            item_id = mongo.db.recyclableItems.find_one(
+                {"typeOfWaste_lower": public_collection["typeOfWaste"].lower(
+                )})["_id"]
+        # Update collection
+        filter = {"_id": ObjectId(collection_id)}
+        collection_updates = {"$set": {"itemID": item_id,
+                              "approvedCollection": True},
+                              "$unset": {"username": "", "memberID": "",
+                                         "categoryName": "",
+                                         "typeOfWaste": ""}}
+        mongo.db.publicCollections.update(filter, collection_updates)
+        flash("Public Collection has been successfully approved")
+        return redirect(url_for("hive_management",
+                                username=session["username"]))
     return redirect(url_for("hive_management", username=session["username"]))
 
 
@@ -818,9 +859,7 @@ def add_public_collection():
             "town": request.form.get("businessTown"),
             "postcode": request.form.get("businessPostcode"),
             "categoryName": category_name,
-            "categoryName_lower": category_name.lower(),
             "typeOfWaste": type_of_waste,
-            "typeOfWaste_lower": type_of_waste.lower(),
             "conditionNotes": request.form.get("conditionNotes"),
             "charityScheme": request.form.get("charityScheme"),
             "approvedCollection": False,

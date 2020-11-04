@@ -1,4 +1,5 @@
           <h5>{% if collection.localNational == "local" %}Local Collection{% elif (collection.localNational == "national") and (collection.postalDropoff == "dropoff") %} National Collection {% elif (collection.localNational == "national") and (collection.postalDropoff == "postal") %}National Postal Collection{% endif %}</h5>
+          {% if page_id == "management" %}<h6>submitted by {{ collection.username }}</h6>{% endif %}
           <div class="form-row">
                   <!-- Type of waste -->
                   <div class="form-group col-md-6">

@@ -195,7 +195,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form name="approve-public-collection-request" class="card-body"
+        <form name="approve-public-collection-request" class="card-body" method="POST"
           action="{{ url_for('approve_public_collection_request', collection_id=collection._id) }}">
           <p class="warning-text">Are you sure you want to approve this Public Collection?<br>
             Local collections will become visible to all members of your Hive, and National collections will become visible to all members of <strong>all</strong> Hives.
