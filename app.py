@@ -781,6 +781,7 @@ def add_public_collection():
         public_collection = {
             "hive": ObjectId(session["hive"]),
             "localNational": request.form.get("localNational"),
+            "postalDropoff": request.form.get("postalDropoff"),
             "username": username,
             "memberID": user_id,
             "businessName": request.form.get("businessName"),

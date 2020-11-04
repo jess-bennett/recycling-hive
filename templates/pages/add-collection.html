@@ -1,104 +1,137 @@
 {% extends "layout/base.html" %}
 {% set active_item = "collection" %}
 {% block content %}
-{{ member_type }}
+
 <section id="add-collection">
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-10 offset-md-1">
-          <div class="card">
-            <div class="card-header green-background text-center" id="headingOne"> 
-              <h4 class="mb-0">
-                  <i class="fas fa-plus"></i> <strong>Add New Collection</strong>
-              </h4>
-            </div>
-              <div class="card-body">
-              <div class="row text-right">
-                <a href="{{ url_for('add_private_collection') }}"  class="col-4 offset-8 btn-delete"><i
-                            class="fas fa-redo-alt" data-toggle="tooltip"
-                            data-placement="top" data-type="info"
-                            title="Start again"></i> Start again</a> 
-                </div>
-                <form id="form-add-collection" name="addCollection" class="card-body" method="POST"
-                action="">
-                {% include "components/forms/collection-type.html" %}
-                
-                {% include "components/forms/local-national.html" %}
-
-                {% include "components/forms/dropoff-posted.html" %}
-                
-                <div class="private-collection">
-                    {% if session["member_type"] == "Busy Bee" %}
-                    <p class="warning-text">You are submitting your first private collection for approval.</p>
-                    {% endif %}
-                    <p class="warning-text">NB. Adding a private collection to the database indicates that you are happy for your collection location to be displayed on the website
-                    to users registered to your Hive. <br>Please see FAQs for more information.</p>
-                    <!-- Private collection type of waste -->
-                    <div class="row">
-                        <div class="col">
-                            <h5><i class="fas fa-recycle"></i> What are you collecting?</h5>
-                        </div>
-                    </div>
-                </div>
-                <div class="national-collection public-collection">
-                    <p class="warning-text">NB. National collections are visible to members of all hives (not just yours). For this reason, the collection is sent to the Queen Bee(s) for approval before it is committed to the database.</p>
-                </div>
-                <div class="row form-public-collection">
-                    <div class="col">
-                        <h5><i class="fas fa-recycle"></i> What is being collected?</h5>
-                    </div>
-                </div>
-                    {% include "components/forms/type-of-waste.html" %}
-                    <!-- Private collection location -->
-                    <div class="private-collection">
-                    <div class="row">
-                        <div class="col">
-                            <h5><i class="fas fa-home"></i> Where are you collecting this item?</h5>
-                        </div>
-                        
-                    </div>
-                    {% if session["member_type"] != "Busy Bee" %}
-                    <small>To add a new location, please go to your Locations on your <a href="{{ url_for('profile', username=session['username'], _anchor='lcoations-card') }}" class="internal-link">profile</a></small>
-                    {% endif %}
-                    {% include "components/forms/private-location.html" %}
-                    </div>
-                    <!-- Public collection location -->
-                    <div class="form-public-collection">
-                    <div class="row">
-                        <div class="col form-public-collection-dropoff">
-                            <h5><i class="fas fa-building"></i> Where is this being collected?</h5>
-                        </div>
-                        <div class="col form-public-collection-postal">
-                            <h5><i class="fas fa-building"></i> Where should this be posted to?</h5>
-                        </div>
-                        
-                    </div>
-                    {% include "components/forms/business-venue.html" %}
-                    </div>
-                    
-                    <!-- Condition Notes -->
-                    <div class="row all-collection">
-                        <div class="col">
-                            <h5><i class="fas fa-align-left"></i> What do people need to know about this collection?</h5>
-                        </div>
-                    </div>
-                    {% include "components/forms/condition-notes.html" %}
-                    <!-- Charity -->
-                    <div class="row all-collection">
-                        <div class="col">
-                            <h5><i class="fas fa-hand-holding-heart"></i> Is this collection for a charitable cause?</h5>
-                        </div>
-                    </div>
-                    {% include "components/forms/charity-scheme.html" %}
-                
-				<div class="modal-footer">
-					<button type="button" class="btn btn-outline-primary"
-				              data-dismiss="modal">Close</button>
-					{% include "components/forms/submit-buttons.html" %}
-				</div>
-                </form>
-              </div>
+        <div class="card">
+          <div class="card-header green-background text-center" id="headingOne">
+            <h4 class="mb-0">
+              <i class="fas fa-plus"></i> <strong>Add New Collection</strong>
+            </h4>
           </div>
+          <div class="card-body">
+            <div class="row text-right">
+              <a href="{{ url_for('add_private_collection') }}"
+                class="col-4 offset-8 btn-delete"><i class="fas fa-redo-alt"
+                  data-toggle="tooltip" data-placement="top" data-type="info"
+                  title="Start again"></i> Start again</a>
+            </div>
+            <form id="form-add-collection" name="addCollection"
+              class="card-body" method="POST" action="">
+              {% include "components/forms/collection-type.html" %}
+
+              <div class="public-collection public-collection-radios">
+                <!-- Additional questions for public collection -->
+                <div class="public-collection-radio-one">
+                    {% include "components/forms/local-national.html" %}
+                </div>
+                <div class="public-collection-radio-two">
+                    {% include "components/forms/postal-dropoff.html" %}
+                </div>
+              </div>
+
+              <div class="private-collection">
+                <!-- Question and instruction text for private collection -->
+                {% if session["member_type"] == "Busy Bee" %}
+                <p class="warning-text">You are submitting your first private
+                  collection for approval.</p>
+                {% endif %}
+                <p class="warning-text">NB. Adding a private collection to the
+                  database indicates that you are happy for your collection
+                  location to be displayed on the website
+                  to users registered to your Hive. <br>Please see FAQs for more
+                  information.</p>
+                <!-- Private collection type of waste -->
+                <div class="row">
+                  <div class="col">
+                    <h5><i class="fas fa-recycle"></i> What are you collecting?
+                    </h5>
+                  </div>
+                </div>
+              </div>
+
+              <div class="public-collection">
+                <!-- Question and instruction text for public collection -->
+                <p class="warning-text national-collection">NB. National collections are visible to
+                  members of all hives (not just yours). For this reason, the
+                  collection is sent to the Queen Bee(s) for approval before it
+                  is committed to the database.</p>
+                <p class="warning-text local-collection">NB. Local collections are sent to the Queen Bee(s) for approval before being committed to the database to avoid duplication.</p>
+                <div class="row">
+                  <div class="col">
+                    <h5><i class="fas fa-recycle"></i> What is being collected?
+                    </h5>
+                  </div>
+                </div>
+              </div>
+
+              <div class="private-collection public-collection">
+                <!-- Type of waste/category input for all collections -->
+                {% include "components/forms/type-of-waste.html" %}
+              </div>
+
+              <div class="private-collection">
+                <!-- Location question and input for private collections -->
+                <div class="row">
+                  <div class="col">
+                    <h5><i class="fas fa-home"></i> Where are you collecting
+                      this item?</h5>
+                  </div>
+                </div>
+                {% if session["member_type"] != "Busy Bee" %}
+                <small>To add a new location, please go to your Locations on
+                  your <a
+                    href="{{ url_for('profile', username=session['username'], _anchor='lcoations-card') }}"
+                    class="internal-link">profile</a></small>
+                {% endif %}
+                {% include "components/forms/private-location.html" %}
+              </div>
+
+              <div class="public-collection">
+              <!-- Location question and input for public collections -->
+                <div class="row">
+                  <div class="col public-collection-dropoff">
+                    <h5><i class="fas fa-building"></i> Where is this being
+                      collected?</h5>
+                  </div>
+                  <div class="col public-collection-postal">
+                    <h5><i class="fas fa-building"></i> Where should this be
+                      posted to?</h5>
+                  </div>
+                </div>
+                {% include "components/forms/business-venue.html" %}
+              </div>
+
+              <div class="private-collection public-collection">
+              <!-- Condition/charity question and input for all collections -->
+                <div class="row">
+                    <div class="col">
+                    <h5><i class="fas fa-align-left"></i> What do people need to
+                        know about this collection?</h5>
+                    </div>
+                </div>
+                {% include "components/forms/condition-notes.html" %}
+                <!-- Charity -->
+                <div class="row">
+                    <div class="col">
+                    <h5><i class="fas fa-hand-holding-heart"></i> Is this
+                        collection for a charitable cause?</h5>
+                    </div>
+                </div>
+                {% include "components/forms/charity-scheme.html" %}
+              </div>
+
+              <div class="modal-footer private-collection public-collection">
+                <button type="button" class="btn btn-outline-primary"
+                  data-dismiss="modal">Close</button>
+                {% include "components/forms/submit-buttons.html" %}
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>
