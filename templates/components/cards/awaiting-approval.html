@@ -5,7 +5,7 @@
                 <button class="btn btn-link collapsed" data-toggle="collapse"
                   data-target="#collapseFive" aria-expanded="false"
                   aria-controls="collapseFive">
-                  <i class="fas fa-hourglass-half"></i> <strong>Public Collections for Approval</strong>
+                  <i class="fas fa-building"></i> <strong>Public Collections for Approval</strong>
                 </button>
               </h5>
             </div>
@@ -13,6 +13,7 @@
               aria-labelledby="headingFive" data-parent="#accordion">
               <div class="card-body">
                 <!-- Add collection -->
+                {% if page_id != "management" %}
                 <div class="container-fluid">
                   <div class="row">
                   <a href="{{ url_for('add_new_collection') }}" class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add"
@@ -20,14 +21,19 @@
                       Collection</strong></a>
                   </div>
                 </div>
+                {% endif %}
                 {% if unapproved_collections %}
                 {% for collection in unapproved_collections %}
                 <hr class="green-line">
                 {% include "components/details/public-collection.html" %}
                 {% endfor %}
                 {% else %}
+                    {% if page_id != "management" %}
                 <p><strong>You do not currently have any unapproved public collections! Want
                     to add one?</strong></p>
+                    {% else %}
+                    <p><strong>There are no public collections awaiting approval.</strong></p>
+                    {% endif %}
                 {% endif %}
               </div>
             </div>

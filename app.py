@@ -188,6 +188,9 @@ def hive_management(username):
     # Get list of members waiting for Worker Bee status
     first_collections = list(mongo.db.firstCollection.find(
         {"hive": ObjectId(session["hive"])}))
+    # Get list of unapproved public collections
+    unapproved_collections = list(mongo.db.publicCollections.find(
+        {"hive": ObjectId(session["hive"]}).sort("businessName"))
     # Get list of all members for member details
     members = list(mongo.db.hiveMembers.find(
         {"hive": ObjectId(session["hive"])}))
