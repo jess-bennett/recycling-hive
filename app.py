@@ -818,7 +818,9 @@ def add_public_collection():
             "town": request.form.get("businessTown"),
             "postcode": request.form.get("businessPostcode"),
             "categoryName": category_name,
+            "categoryName_lower": category_name.lower(),
             "typeOfWaste": type_of_waste,
+            "typeOfWaste_lower": type_of_waste.lower(),
             "conditionNotes": request.form.get("conditionNotes"),
             "charityScheme": request.form.get("charityScheme"),
             "approvedCollection": False,
@@ -870,7 +872,8 @@ def delete_collection(route, collection_id):
 @app.route("/hive")
 @approval_required
 def get_recycling_categories():
-    categories_dict = list(mongo.db.itemCollections.aggregate([
+    # Get categories in private collections
+    categories_dict_private = list(mongo.db.itemCollections.aggregate([
             {
              "$lookup": {
                 "from": "hiveMembers",
@@ -906,9 +909,33 @@ def get_recycling_categories():
              },
             {"$sort": {"categoryName": 1}}
             ]))
+    # Get categories in public collections
+    categories_dict_public = list(mongo.db.publicCollections.aggregate([
+            {"$match": {"$or": [{"hive": ObjectId(
+                session["hive"])}, {"localNational": "national"}]}},
+            {
+             "$lookup": {
+                "from": "itemCategory",
+                "localField": "categoryName_lower",
+                "foreignField": "categoryName_lower",
+                "as": "itemCategory"
+             },
+            },
+            {"$unwind": "$itemCategory"},
+            {"$group": {
+             "_id": "$itemCategory._id",
+             "categoryName": {"$first": "$itemCategory.categoryName"}
+             }
+             },
+            {"$sort": {"categoryName": 1}}
+            ]))
+    # Combine lists
+    categories_dict = combine_dictionaries(
+        categories_dict_private, categories_dict_public)
     return render_template(
         "pages/hive-category.html",
-        categories_dict=categories_dict, page_id="categories")
+        categories_dict=categories_dict,
+        page_id="categories")
 
 
 @app.route("/hive/items/<category_id>")
@@ -1205,6 +1232,13 @@ def logout():
 def faqs():
 
     return render_template("pages/faq.html")
+
+
+def combine_dictionaries(dict1, dict2):
+    for item in dict1:
+        if item not in dict2:
+            dict2.append(item)
+    return dict2
 
 
 @app.errorhandler(404)
