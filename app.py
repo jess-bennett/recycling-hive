@@ -951,7 +951,7 @@ def get_recycling_categories():
             ]))
     # Get categories in public collections
     categories_dict_public = list(mongo.db.publicCollections.aggregate([
-            {"$match": {"$or": [{"hive": ObjectId(
+            {"$match": {"approvedCollection": True, "$or": [{"hive": ObjectId(
                 session["hive"])}, {"localNational": "national"}]}},
             {
              "$lookup": {
@@ -1027,23 +1027,24 @@ def get_recycling_items(category_id):
         # # hexagon headers in public collection
         recycling_items_dict_public = list(
             mongo.db.publicCollections.aggregate([
-             {"$match": {"$or": [{"hive": ObjectId(
-                session["hive"])}, {"localNational": "national"}]}},
-             {
-              "$lookup": {
-                "from": "recyclableItems",
-                "localField": "itemID",
-                "foreignField": "_id",
-                "as": "recyclableItems"
-              },
-             },
-             {"$unwind": "$recyclableItems"},
-             {"$group": {
-              "_id": "$recyclableItems._id",
-              "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
-              }
-              },
-             {"$sort": {"typeOfWaste": 1}}
+                {"$match": {"approvedCollection": True,
+                 "$or": [{"hive": ObjectId(
+                  session["hive"])}, {"localNational": "national"}]}},
+                {
+                 "$lookup": {
+                  "from": "recyclableItems",
+                  "localField": "itemID",
+                  "foreignField": "_id",
+                  "as": "recyclableItems"
+                 },
+                },
+                {"$unwind": "$recyclableItems"},
+                {"$group": {
+                 "_id": "$recyclableItems._id",
+                 "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
+                 }
+                 },
+                {"$sort": {"typeOfWaste": 1}}
             ]))
         # Combine lists
         recycling_items_dict = list(combine_dictionaries(
@@ -1087,24 +1088,26 @@ def get_recycling_items(category_id):
         # # hexagon headers in public collection
         recycling_items_dict_public = list(
             mongo.db.publicCollections.aggregate([
-             {"$match": {"$or": [{"hive": ObjectId(
-                session["hive"])}, {"localNational": "national"}]}},
-             {
-              "$lookup": {
-                "from": "recyclableItems",
-                "localField": "itemID",
-                "foreignField": "_id",
-                "as": "recyclableItems"
-              },
-             },
-             {"$unwind": "$recyclableItems"},
-             {"$match": {"recyclableItems.categoryID": ObjectId(category_id)}},
-             {"$group": {
-              "_id": "$recyclableItems._id",
-              "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
-              }
-              },
-             {"$sort": {"typeOfWaste": 1}}
+                {"$match": {"approvedCollection": True,
+                 "$or": [{"hive": ObjectId(
+                  session["hive"])}, {"localNational": "national"}]}},
+                {
+                 "$lookup": {
+                  "from": "recyclableItems",
+                  "localField": "itemID",
+                  "foreignField": "_id",
+                  "as": "recyclableItems"
+                 },
+                },
+                {"$unwind": "$recyclableItems"},
+                {"$match": {"recyclableItems.categoryID": ObjectId(
+                    category_id)}},
+                {"$group": {
+                 "_id": "$recyclableItems._id",
+                 "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
+                 }
+                 },
+                {"$sort": {"typeOfWaste": 1}}
             ]))
         # Combine lists
         recycling_items_dict = list(combine_dictionaries(
@@ -1148,9 +1151,10 @@ def get_recycling_items(category_id):
             {"$sort": {"categoryName": 1}}
             ]))
     # Get categories in public collections
-    categories_dict_public = list(mongo.db.publicCollections.aggregate([
-            {"$match": {"$or": [{"hive": ObjectId(
-                session["hive"])}, {"localNational": "national"}]}},
+    categories_dict_public = list(mongo.db.publicCollections.aggregate(
+        [{"$match": {"approvedCollection": True,
+          "$or": [{"hive": ObjectId(session["hive"])},
+                  {"localNational": "national"}]}},
             {
              "$lookup": {
                 "from": "recyclableItems",
@@ -1175,7 +1179,7 @@ def get_recycling_items(category_id):
              }
              },
             {"$sort": {"categoryName": 1}}
-            ]))
+         ]))
     # Combine lists
     categories_dict = list(combine_dictionaries(
         categories_dict_private, categories_dict_public))
@@ -1196,24 +1200,25 @@ def get_recycling_collections(item_id):
         # Get selected item for dropdown
         selected_item = mongo.db.recyclableItems.find_one(
                     {"_id": ObjectId(item_id)})["typeOfWaste"]
-    # Get list of items for dropdown menu
-    recycling_items_dict = list(mongo.db.itemCollections.aggregate([
+    # Get list of items for dropdown menu in private collection
+    recycling_items_dict_private = list(
+        mongo.db.itemCollections.aggregate([
             {
              "$lookup": {
-                "from": "hiveMembers",
-                "localField": "memberID",
-                "foreignField": "_id",
-                "as": "hiveMembers"
+              "from": "hiveMembers",
+              "localField": "memberID",
+              "foreignField": "_id",
+              "as": "hiveMembers"
              },
             },
             {"$unwind": "$hiveMembers"},
             {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
             {
              "$lookup": {
-                "from": "recyclableItems",
-                "localField": "itemID",
-                "foreignField": "_id",
-                "as": "recyclableItems"
+              "from": "recyclableItems",
+              "localField": "itemID",
+              "foreignField": "_id",
+              "as": "recyclableItems"
              },
             },
             {"$unwind": "$recyclableItems"},
@@ -1223,50 +1228,106 @@ def get_recycling_collections(item_id):
              }
              },
             {"$sort": {"typeOfWaste": 1}}
-            ]))
-    # Create new dictionary of recyclable items and their matching collections
-    collections_dict = list(mongo.db.itemCollections.aggregate([
-        {
-         "$lookup": {
+        ]))
+    # Get list of items for dropdown menu in public collection
+    recycling_items_dict_public = list(mongo.db.publicCollections.aggregate(
+        [{"$match": {"approvedCollection": True,
+          "$or": [{"hive": ObjectId(session["hive"])},
+                  {"localNational": "national"}]}},
+            {
+             "$lookup": {
+              "from": "recyclableItems",
+              "localField": "itemID",
+              "foreignField": "_id",
+              "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {"$group": {
+             "_id": "$recyclableItems._id",
+             "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
+             }
+             },
+            {"$sort": {"typeOfWaste": 1}}
+         ]))
+    # Combine lists
+    recycling_items_dict = list(combine_dictionaries(
+        recycling_items_dict_private, recycling_items_dict_public))
+    # Create new dictionary of recyclable items and their
+    # matching collections from private collection
+    collections_dict_private = list(
+        mongo.db.itemCollections.aggregate([
+         {
+          "$lookup": {
             "from": "hiveMembers",
             "localField": "memberID",
             "foreignField": "_id",
             "as": "hiveMembers"
+          },
          },
-        },
-        {"$unwind": "$hiveMembers"},
-        {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
-        {
-         "$lookup": {
+         {"$unwind": "$hiveMembers"},
+         {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+         {
+          "$lookup": {
             "from": "recyclableItems",
             "localField": "itemID",
             "foreignField": "_id",
             "as": "recyclableItems"
+          },
          },
-        },
-        {"$unwind": "$recyclableItems"},
-        {
-         "$lookup": {
+         {"$unwind": "$recyclableItems"},
+         {
+          "$lookup": {
             "from": "collectionLocations",
             "localField": "locationID",
             "foreignField": "_id",
             "as": "collectionLocations"
+          },
          },
-        },
-        {"$unwind": "$collectionLocations"},
-        {"$project": {
-         "typeOfWaste": "$recyclableItems.typeOfWaste",
-         "hiveMembers": "$hiveMembers.username",
-         "street": "$collectionLocations.street",
-         "town": "$collectionLocations.town",
-         "postcode": "$collectionLocations.postcode",
-         "id": 1,
-         "conditionNotes": 1,
-         "charityScheme": 1
-         }
-         }
+         {"$unwind": "$collectionLocations"},
+         {"$project": {
+          "typeOfWaste": "$recyclableItems.typeOfWaste",
+          "hiveMembers": "$hiveMembers.username",
+          "street": "$collectionLocations.street",
+          "town": "$collectionLocations.town",
+          "postcode": "$collectionLocations.postcode",
+          "id": 1,
+          "conditionNotes": 1,
+          "charityScheme": 1
+          }
+          }
         ]))
-
+    # Create new dictionary of recyclable items and their
+    # matching collections from public collection
+    collections_dict_public = list(mongo.db.publicCollections.aggregate(
+        [{"$match": {"approvedCollection": True,
+          "$or": [{"hive": ObjectId(session["hive"])},
+                  {"localNational": "national"}]}},
+            {
+             "$lookup": {
+              "from": "recyclableItems",
+              "localField": "itemID",
+              "foreignField": "_id",
+              "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {"$project": {
+             "postalDropoff": "postalDropoff",
+             "typeOfWaste": "$recyclableItems.typeOfWaste",
+             "businessName": 1,
+             "street": 1,
+             "town": 1,
+             "postcode": 1,
+             "id": 1,
+             "conditionNotes": 1,
+             "charityScheme": 1
+             }
+             }
+         ]))
+    # Combine lists
+    collections_dict = list(combine_dictionaries(
+        collections_dict_private, collections_dict_public))
     return render_template(
         "pages/hive-collection.html",
         recycling_items_dict=recycling_items_dict,
