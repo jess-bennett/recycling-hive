@@ -1,13 +1,12 @@
 <!-- Public Collections card -->
           <div class="card">
             <div class="card-header green-background" id="headingFive">
-              <h5 class="mb-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse"
+                <button class="btn btn-link collapsed text-left" data-toggle="collapse"
                   data-target="#collapseFive" aria-expanded="false"
                   aria-controls="collapseFive">
-                  <i class="fas fa-building"></i> <strong>Public Collections for Approval</strong>
+                  <h5><i class="fas fa-building"></i> <strong>Public Collections for Approval</strong></h5>
+                  {% if page_id == "management" %}<h6>{{unapproved_collections|length}} current request(s)</h6>{% endif %}
                 </button>
-              </h5>
             </div>
             <div id="collapseFive" class="collapse"
               aria-labelledby="headingFive" data-parent="#accordion">

@@ -1,13 +1,13 @@
 <!-- Membership requests -->
           <div class="card" id="membership-requests">
             <div class="card-header green-background" id="headingOne">
-              <h5 class="mb-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse"
+                <button class="btn btn-link collapsed text-left" data-toggle="collapse"
                   data-target="#collapseOne" aria-expanded="false"
                   aria-controls="collapseOne">
-                  <i class="fas fa-user"></i> <strong>Membership Requests</strong>
+                  <h5><i class="fas fa-user"></i> <strong>Membership Requests </strong></h5>
+                  <h6>{{unapproved_members|length}} current request(s)</h6>
                 </button>
-              </h5>
+              
             </div>
             <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
               data-parent="#accordion">
