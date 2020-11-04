@@ -438,6 +438,9 @@ def profile(username):
          },
         {"$sort": {"typeOfWaste": 1}}
         ]))
+    # Get list of unapproved public collections
+    unapproved_collections = list(mongo.db.publicCollections.find(
+        {"memberID": user_id}).sort("businessName"))
     # Check whether user has submitted first collection for approval
     if mongo.db.firstCollection.find_one(
             {"memberID": ObjectId(user_id)}):
@@ -450,6 +453,7 @@ def profile(username):
                            member_type=session["member_type"],
                            locations=locations,
                            collections_dict=collections_dict,
+                           unapproved_collections=unapproved_collections,
                            page_id="profile",
                            awaiting_approval=awaiting_approval)
 
@@ -792,6 +796,7 @@ def add_public_collection():
             "typeOfWaste": type_of_waste,
             "conditionNotes": request.form.get("conditionNotes"),
             "charityScheme": request.form.get("charityScheme"),
+            "approvedCollection": False,
             "dateAdded": datetime.now().strftime("%d %b %Y")
         }
         mongo.db.publicCollections.insert_one(public_collection)
