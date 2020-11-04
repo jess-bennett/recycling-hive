@@ -1,0 +1,47 @@
+<!-- Location details -->
+          <div class="card" id="location-details">
+            <div class="card-header green-background" id="headingFour">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse"
+                  data-target="#collapseFour" aria-expanded="false"
+                  aria-controls="collapseFour">
+                  <i class="fas fa-home"></i> <strong>Location Details</strong>
+                </button>
+              </h5>
+            </div>
+            <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
+              data-parent="#accordion">
+              <div class="card-body">
+                {% if locations_dict %}
+                    {% for member in worker_bees %}
+                        {% if member._id in members_location_values %}
+                        <h6><strong>{{ member.username }}'s Locations</strong></h6>
+                        {% for location in locations_dict if location.hiveMembersID == member._id %}
+                        <hr>
+                        {% include "components/details/location.html" %}
+                        <!-- Amend location -->
+                        <div class="container-fluid">
+                        <div class="row">
+                            <div id="delete-location"
+                            class="btn col-1 offset-10 btn-delete" data-toggle="modal"
+                            data-target="#modal-delete-location-{{ location._id }}"><i
+                                class="fas fa-trash-alt" data-toggle="tooltip"
+                                data-placement="top" data-type="info"
+                                title="Delete"></i></div>
+                            <div id="amend-location" class="btn col-1 btn-edit" data-toggle="modal"
+                            data-target="#modal-edit-location-{{ location._id }}">
+                            <i class="fas fa-edit" data-toggle="tooltip" data-placement="top"
+                            data-type="info" title="Edit"></i>
+                            </div>
+                        </div>
+                        </div>
+                        {% endfor %}
+                        <hr class="green-line">
+                        {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    <p><strong>There are no locations in your Hive</strong></p>
+                {% endif %}
+              </div>
+            </div>
+          </div>

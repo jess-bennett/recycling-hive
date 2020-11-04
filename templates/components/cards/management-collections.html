@@ -1,0 +1,46 @@
+<!-- Collection details -->
+          <div class="card" id="collection-details">
+            <div class="card-header green-background" id="headingFive">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse"
+                  data-target="#collapseFive" aria-expanded="false"
+                  aria-controls="collapseFive">
+                  <i class="fas fa-recycle"></i> <strong>Collection Details</strong>
+                </button>
+              </h5>
+            </div>
+            <div id="collapseFive" class="collapse" aria-labelledby="headingFive"
+              data-parent="#accordion">
+              <div class="card-body">
+                {% if collections_dict %}
+                    {% for member in worker_bees %}
+                        {% if member._id in members_collection_values %}
+                        <h6><strong>{{ member.username }}'s Collections</strong></h6>
+                        {% for collection in collections_dict if collection.hiveMembersID == member._id %}
+                        <hr class="green-line">
+                        {% include "components/details/collection.html" %}
+                        <!-- Amend collection -->
+                        <div class="container-fluid">
+                        <div class="row">
+                            <div id="delete-collection"
+                            class="btn col-1 offset-10 btn-delete" data-toggle="modal"
+                            data-target="#modal-delete-collection-{{ collection._id }}"><i
+                                class="fas fa-trash-alt" data-toggle="tooltip"
+                                data-placement="top" data-type="info"
+                                title="Delete"></i></div>
+                            <div id="amend-collection" class="btn col-1 btn-edit" data-toggle="modal"
+                            data-target="#modal-edit-collection-{{ collection._id }}">
+                            <i class="fas fa-edit" data-toggle="tooltip" data-placement="top"
+                            data-type="info" title="Edit"></i>
+                            </div>
+                        </div>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    <p><strong>There are no collections in your Hive</strong></p>
+                {% endif %}
+              </div>
+            </div>
+          </div>

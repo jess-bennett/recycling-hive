@@ -190,7 +190,7 @@ def hive_management(username):
         {"hive": ObjectId(session["hive"])}))
     # Get list of unapproved public collections
     unapproved_collections = list(mongo.db.publicCollections.find(
-        {"hive": ObjectId(session["hive"]}).sort("businessName"))
+        {"hive": ObjectId(session["hive"])}))
     # Get list of all members for member details
     members = list(mongo.db.hiveMembers.find(
         {"hive": ObjectId(session["hive"])}))
@@ -281,6 +281,7 @@ def hive_management(username):
     return render_template("/pages/hive-management.html",
                            unapproved_members=unapproved_members,
                            first_collections=first_collections,
+                           unapproved_collections=unapproved_collections,
                            members=members,
                            worker_bees=worker_bees,
                            locations_dict=locations_dict,
@@ -308,18 +309,20 @@ def approve_member_request(member_id):
     return redirect(url_for("hive_management", username=session["username"]))
 
 
-@app.route("/hive-management/delete-collection-request/<collection_id>")
+@app.route("/hive-management/delete-private-collection-request\
+    /<collection_id>")
 @queen_bee_required
-def delete_collection_request(collection_id):
+def delete_private_collection_request(collection_id):
     mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
     flash("Worker Bee request has been successfully deleted")
     return redirect(url_for("hive_management", username=session["username"]))
 
 
-@app.route("/hive-management/approve-collection-request/<collection_id>",
+@app.route("/hive-management/approve-private-collection-request/\
+    <collection_id>",
            methods=["GET", "POST"])
 @queen_bee_required
-def approve_collection_request(collection_id):
+def approve_private_collection_request(collection_id):
     if request.method == "POST":
         first_collection = mongo.db.firstCollection.find_one(
             {"_id": ObjectId(collection_id)})
@@ -385,6 +388,25 @@ def approve_collection_request(collection_id):
         flash("Worker Bee request has been successfully approved")
         return redirect(url_for("hive_management",
                                 username=session["username"]))
+    return redirect(url_for("hive_management", username=session["username"]))
+
+
+@app.route("/hive-management/delete-public-collection-request/<collection_id>")
+@queen_bee_required
+def delete_public_collection_request(collection_id):
+    mongo.db.publicCollections.remove({"_id": ObjectId(collection_id)})
+    flash("Public Collection has been successfully deleted")
+    return redirect(url_for("hive_management", username=session["username"]))
+
+
+@app.route("/hive-management/approve-public-collection-request/\
+    <collection_id>")
+@queen_bee_required
+def approve_public_collection_request(collection_id):
+    filter = {"_id": ObjectId(collection_id)}
+    approve = {"$set": {"approvedCollection": True}}
+    mongo.db.publicCollections.update(filter, approve)
+    flash("Public Collection has been successfully approved")
     return redirect(url_for("hive_management", username=session["username"]))
 
 
