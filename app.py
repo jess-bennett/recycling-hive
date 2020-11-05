@@ -1316,7 +1316,7 @@ def get_recycling_collections(item_id):
             {"$project": {
              "localNational": 1,
              "postalDropoff": 1,
-             "typeOfWaste": "$1ecyclableItems.typeOfWaste",
+             "typeOfWaste": "$recyclableItems.typeOfWaste",
              "businessName": 1,
              "street": 1,
              "town": 1,

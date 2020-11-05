@@ -32,13 +32,16 @@
                     {% include "components/forms/postal-dropoff.html" %}
                 </div>
               </div>
-
+                
+              <p id="awaiting-approval" class="warning-text">Your first private collection is awaiting approval.<br>
+              Once it has been approved, you will be able to add further private collections without needing approval.</p>
               <div class="private-collection">
                 <!-- Question and instruction text for private collection -->
                 {% if session["member_type"] == "Busy Bee" %}
                 <p class="warning-text">You are submitting your first private
-                  collection for approval.</p>
+                collection for approval.</p>
                 {% endif %}
+                {% if awaiting_approval == False %}
                 <p class="warning-text">NB. Adding a private collection to the
                   database indicates that you are happy for your collection
                   location to be displayed on the website
@@ -51,6 +54,7 @@
                     </h5>
                   </div>
                 </div>
+                {% endif %}
               </div>
 
               <div class="public-collection">

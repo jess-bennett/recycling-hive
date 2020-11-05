@@ -1,7 +1,7 @@
 $(document).ready(function() {
   $(".private-collection").hide(); /* Hide private-collection input on page load   */
   $(".public-collection").hide(); /* Hide public-collection input on page load   */
-
+  $("#awaiting-approval").hide(); /* Hide approval text on page load   */
   
   /* Hide redundant form elements for typeofwaste/category on page load */
   $("#form-itemCategory").hide(); /* Hide input forms on page load to allow user to select from dropdown instead */
@@ -46,7 +46,10 @@ $(function() {
 $("input:radio[name='collectionType']").change(
     function(){
         let memberType = $("input[name=collectionType]:checked").attr("data-id");
+        let awaitingApproval = $("input[name=collectionType]:checked").attr("data-info");
+        console.log(awaitingApproval)
         if (this.checked && this.value == "public") {
+            $("#awaiting-approval").hide(); /* Hide approval text   */   
             $(".private-collection").hide(); /* Hide inputs for private collection */
             $(".public-collection-radios").show(); /* Show radios for public collection */
             $(".public-collection-radio-two").hide(); /* Hide second radio for public collection */
@@ -56,6 +59,9 @@ $("input:radio[name='collectionType']").change(
         }
         if (this.checked && this.value == "private") {
             $(".public-collection").hide(); /* Hide inputs for public collection */
+            if (awaitingApproval) {
+            $("#awaiting-approval").show(); /* Show approval text   */      
+            } else {
             $(".private-collection").show(); /* Show inputs for private collection */
             $("#locationID").prop("required", true); /* Add required attribute for private locationID */
             $("#businessName").prop("required", false); /* Remove required attribute for public location */
@@ -69,6 +75,7 @@ $("input:radio[name='collectionType']").change(
             } else {
                 $("#form-add-collection").attr("action", "/add-new-collection/private"); /* Change form action to private route */
             }
+        }
         }
     });
 
