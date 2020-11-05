@@ -63,8 +63,11 @@ def home():
     try:
         username = session["username"]
         user_id = ObjectId(session["user_id"])
-        hive_name = mongo.db.hives.find_one(
-            {"_id": ObjectId(session["hive"])})["name"]
+        if user_id == ObjectId("5fa43cf801329c2053c8067f"):
+            hive_name = "Demo"
+        else:
+            hive_name = mongo.db.hives.find_one(
+                {"_id": ObjectId(session["hive"])})["name"]
         if mongo.db.hiveMembers.find_one(
                 {"_id": user_id, "isQueenBee": True}):
             is_queen_bee = True
