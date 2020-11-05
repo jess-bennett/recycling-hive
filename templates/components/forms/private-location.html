@@ -1,0 +1,84 @@
+{% if session["member_type"] == "Busy Bee" %}
+<div class="form-row">
+          <!-- Location nickname -->
+          <div class="form-group col-md-6">
+            <label class="sr-only" for="addLocationNickname">Location nickname
+              (e.g. 'Work')</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-nickname.html" %}
+              <input type="text" class="form-control" id="addLocationNickname"
+                name="addLocationNickname"
+                placeholder="Location nickname (e.g. 'Work')" minlength="2"
+                >
+            </div>
+          </div>
+          <!-- Location street -->
+          <div class="form-group col-md-6">
+            <label class="sr-only" for="addLocationStreet">Location
+              address</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-address.html" %}
+              <input type="text" class="form-control" id="addLocationStreet"
+                name="addLocationStreet"
+                placeholder="Location address (e.g. '88 Recycling Street')"
+                minlength="2">
+            </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <!-- Location town -->
+          <div class="form-group col-md-6">
+            <label class="sr-only" for="addLocationTown">Location town
+              (e.g. 'Newbury')</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-town.html" %}
+              <input type="text" class="form-control" id="addLocationTown"
+                name="addLocationTown"
+                placeholder="Location town (e.g. 'Newbury')" minlength="2"
+            >
+            </div>
+          </div>
+          <!-- Location postcode -->
+          <div class="form-group col-md-6">
+            <label class="sr-only" for="addLocationPostcode">Location
+              postcode</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-postcode.html" %}
+              <input type="text" class="form-control" id="addLocationPostcode"
+                name="addLocationPostcode" placeholder="Location postcode"
+                minlength="2">
+            </div>
+          </div>
+        </div>
+        <hr class="green-line">
+{% else %}
+<div class="form-row">
+	<!-- Nickname -->
+	<div class="form-group col-md-3">
+		<label class="sr-only" for="locationID">Location</label>
+		<div class="input-group mb-2">
+			{% include "components/tooltips/tooltip-nickname.html" %}
+			<select class="form-control" id="locationID" name="locationID"
+                            >
+                            <option value="" selected disabled>Location</option>
+                            {% for location in locations %}
+                            <option
+                                data-id="{{ location.street }}, {{ location.town }}, {{ location.postcode }}"
+                                value="{{ location.nickname }}">{{ location.nickname }}
+                            </option>
+                            {% endfor %}
+                            </select>
+		</div>
+	</div>
+	<!-- Address -->
+	<div class="form-group col-md-9">
+		<label class="sr-only" for="locationAddress">Location</label>
+		<div class="input-group mb-2">
+			{% include "components/tooltips/tooltip-address.html" %}
+			<input type="text" class="form-control" id="locationAddress"
+                            name="locationAddress" placeholder="Street, town, postcode"
+                            disabled>
+                        </div>
+		</div>
+	</div>
+{% endif %}

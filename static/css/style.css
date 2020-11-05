@@ -7,6 +7,10 @@ body {
   margin-bottom: 3rem;
 }
 
+span.internal-link {
+    cursor: pointer;
+}
+
 .internal-link {
   color: #3a5c2d;
   font-weight: bold;
@@ -141,6 +145,12 @@ body {
   border: 1px solid #8C0A06;
 }
 
+a.btn-delete:hover {
+    color: #3a5c2d;
+    border: none;
+    text-decoration: none;
+}
+
 .warning-text {
   color: #8C0A06;
   font-weight: bold;
@@ -226,8 +236,6 @@ small.warning-text {
   text-align: center;
   margin-bottom: 1.5rem;
 }
-
-/* Item collection modal */
 
 /* Modals */
 .modal-content {

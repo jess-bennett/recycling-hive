@@ -188,6 +188,9 @@ def hive_management(username):
     # Get list of members waiting for Worker Bee status
     first_collections = list(mongo.db.firstCollection.find(
         {"hive": ObjectId(session["hive"])}))
+    # Get list of unapproved public collections
+    unapproved_collections = list(mongo.db.publicCollections.find(
+        {"hive": ObjectId(session["hive"]), "approvedCollection": False}))
     # Get list of all members for member details
     members = list(mongo.db.hiveMembers.find(
         {"hive": ObjectId(session["hive"])}))
@@ -278,6 +281,7 @@ def hive_management(username):
     return render_template("/pages/hive-management.html",
                            unapproved_members=unapproved_members,
                            first_collections=first_collections,
+                           unapproved_collections=unapproved_collections,
                            members=members,
                            worker_bees=worker_bees,
                            locations_dict=locations_dict,
@@ -305,18 +309,20 @@ def approve_member_request(member_id):
     return redirect(url_for("hive_management", username=session["username"]))
 
 
-@app.route("/hive-management/delete-collection-request/<collection_id>")
+@app.route("/hive-management/delete-private-collection-request\
+    /<collection_id>")
 @queen_bee_required
-def delete_collection_request(collection_id):
+def delete_private_collection_request(collection_id):
     mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
     flash("Worker Bee request has been successfully deleted")
     return redirect(url_for("hive_management", username=session["username"]))
 
 
-@app.route("/hive-management/approve-collection-request/<collection_id>",
+@app.route("/hive-management/approve-private-collection-request/\
+    <collection_id>",
            methods=["GET", "POST"])
 @queen_bee_required
-def approve_collection_request(collection_id):
+def approve_private_collection_request(collection_id):
     if request.method == "POST":
         first_collection = mongo.db.firstCollection.find_one(
             {"_id": ObjectId(collection_id)})
@@ -371,7 +377,6 @@ def approve_collection_request(collection_id):
             "charityScheme": first_collection["charityScheme"],
             "memberID": ObjectId(member_id),
             "locationID": ObjectId(location_id),
-            "isNational": "no",
             "dateAdded": datetime.now().strftime("%d %b %Y")
         }
         mongo.db.itemCollections.insert_one(new_collection)
@@ -386,16 +391,76 @@ def approve_collection_request(collection_id):
     return redirect(url_for("hive_management", username=session["username"]))
 
 
+@app.route("/hive-management/delete-public-collection-request/<collection_id>")
+@queen_bee_required
+def delete_public_collection_request(collection_id):
+    mongo.db.publicCollections.remove({"_id": ObjectId(collection_id)})
+    flash("Public Collection has been successfully deleted")
+    return redirect(url_for("hive_management", username=session["username"]))
+
+
+@app.route("/hive-management/approve-public-collection-request/\
+    <collection_id>", methods=["GET", "POST"])
+@queen_bee_required
+def approve_public_collection_request(collection_id):
+    if request.method == "POST":
+        public_collection = mongo.db.publicCollections.find_one(
+            {"_id": ObjectId(collection_id)})
+        # Check whether category exists and either add or get ID
+        existing_category = mongo.db.itemCategory.find_one(
+                {"categoryName_lower": public_collection["categoryName"].lower(
+                )})
+        if existing_category:
+            category_id = existing_category["_id"]
+        else:
+            new_category = {
+                "categoryName": public_collection["categoryName"],
+                "categoryName_lower": public_collection["categoryName"].lower()
+            }
+            mongo.db.itemCategory.insert_one(new_category)
+            category_id = mongo.db.itemCategory.find_one(
+                {"categoryName_lower": public_collection["categoryName"].lower(
+                )})["_id"]
+        # Check whether type of waste exists and either add or get ID
+        existing_type_of_waste = mongo.db.recyclableItems.find_one(
+                {"typeOfWaste_lower": public_collection["typeOfWaste"].lower(),
+                    "categoryID": category_id})
+        if existing_type_of_waste:
+            item_id = existing_type_of_waste["_id"]
+        else:
+            new_item = {
+                "typeOfWaste": public_collection["typeOfWaste"],
+                "typeOfWaste_lower": public_collection["typeOfWaste"].lower(),
+                "categoryID": category_id
+            }
+            mongo.db.recyclableItems.insert_one(new_item)
+            item_id = mongo.db.recyclableItems.find_one(
+                {"typeOfWaste_lower": public_collection["typeOfWaste"].lower(
+                )})["_id"]
+        # Update collection
+        filter = {"_id": ObjectId(collection_id)}
+        collection_updates = {"$set": {"itemID": item_id,
+                              "approvedCollection": True},
+                              "$unset": {"username": "", "memberID": "",
+                                         "categoryName": "",
+                                         "typeOfWaste": ""}}
+        mongo.db.publicCollections.update(filter, collection_updates)
+        flash("Public Collection has been successfully approved")
+        return redirect(url_for("hive_management",
+                                username=session["username"]))
+    return redirect(url_for("hive_management", username=session["username"]))
+
+
 @app.route("/profile/<username>")
 @login_required
 def profile(username):
     # grab the session user"s details from db
     user_id = ObjectId(session["user_id"])
     email = session["user"]
-    # get user"s location details from db for location hexagon
+    # get user"s location details from db for location card
     locations = list(mongo.db.collectionLocations.find(
         {"memberID": user_id}).sort("nickname"))
-    # Create new dictionary of collections for collection hexagon
+    # Create new dictionary of collections for collection card
     collections_dict = list(mongo.db.itemCollections.aggregate([
         {"$match": {"memberID": user_id}},
         {
@@ -439,23 +504,10 @@ def profile(username):
          },
         {"$sort": {"typeOfWaste": 1}}
         ]))
-    # Get list of categories for dropdown menu
-    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
-    # Get list of all recyclable items for
-    # dropdown in "Add collection" modal
-    items = list(mongo.db.recyclableItems.find().sort("typeOfWaste"))
-    items_dict = list(mongo.db.recyclableItems.aggregate([
-        {
-            "$lookup": {
-             "from": "itemCategory",
-             "localField": "categoryID",
-             "foreignField": "_id",
-             "as": "itemCategory"
-            },
-        },
-        {"$unwind": "$itemCategory"}
-        ]))
-
+    # Get list of unapproved public collections
+    unapproved_collections = list(mongo.db.publicCollections.find(
+        {"memberID": user_id,
+         "approvedCollection": False}).sort("businessName"))
     # Check whether user has submitted first collection for approval
     if mongo.db.firstCollection.find_one(
             {"memberID": ObjectId(user_id)}):
@@ -464,10 +516,11 @@ def profile(username):
         awaiting_approval = False
     return render_template("/pages/profile.html", user_id=user_id,
                            username=session["username"], email=email,
+                           hive=session["hive"],
                            member_type=session["member_type"],
                            locations=locations,
-                           collections_dict=collections_dict, items=items,
-                           items_dict=items_dict, categories=categories,
+                           collections_dict=collections_dict,
+                           unapproved_collections=unapproved_collections,
                            page_id="profile",
                            awaiting_approval=awaiting_approval)
 
@@ -616,7 +669,6 @@ def add_first_collection():
             "typeOfWaste": type_of_waste,
             "conditionNotes": request.form.get("conditionNotes"),
             "charityScheme": request.form.get("charityScheme"),
-            "isNational": "no",
             "dateAdded": datetime.now().strftime("%d %b %Y")
         }
         mongo.db.firstCollection.insert_one(first_collection)
@@ -625,9 +677,46 @@ def add_first_collection():
     return redirect(url_for("profile", username=session["username"]))
 
 
-@app.route("/add-new-collection", methods=["GET", "POST"])
+@app.route("/add-new-collection")
 @login_required
 def add_new_collection():
+    # Get user ID for locations
+    user_id = ObjectId(session["user_id"])
+    # Get list of categories for dropdown
+    categories = list(mongo.db.itemCategory.find().sort("categoryName"))
+    # Get list of all recyclable items for dropdown
+    items_dict = list(mongo.db.recyclableItems.aggregate([
+        {
+            "$lookup": {
+             "from": "itemCategory",
+             "localField": "categoryID",
+             "foreignField": "_id",
+             "as": "itemCategory"
+            },
+        },
+        {"$unwind": "$itemCategory"},
+        {"$sort": {"typeOfWaste": 1}}
+        ]))
+    # get user"s location details from db for location card
+    locations = list(mongo.db.collectionLocations.find(
+        {"memberID": user_id}).sort("nickname"))
+    # Check whether user has submitted first collection for approval
+    if mongo.db.firstCollection.find_one(
+            {"memberID": ObjectId(user_id)}):
+        awaiting_approval = True
+    else:
+        awaiting_approval = False
+    return render_template("pages/add-collection.html",
+                           categories=categories, items_dict=items_dict,
+                           locations=locations, hive=session["hive"],
+                           member_type=session["member_type"],
+                           awaiting_approval=awaiting_approval)
+
+
+@app.route("/add-new-collection/private", methods=["GET", "POST"])
+@login_required
+def add_private_collection():
+    # Get user ID for adding collection
     user_id = ObjectId(session["user_id"])
     if request.method == "POST":
         # Post method for adding a new category and type of waste
@@ -639,8 +728,7 @@ def add_new_collection():
 
             if existing_category:
                 flash("Category already exists")
-                return redirect(url_for(
-                    "profile", username=session["username"]))
+                return redirect(url_for("add_new_collection"))
 
             new_item_category = {
                 "categoryName": request.form.get("newItemCategory"),
@@ -660,8 +748,7 @@ def add_new_collection():
             )
             if existing_type_of_waste:
                 flash("Type of Waste already exists for this category")
-                return redirect(url_for(
-                    "profile", username=session["username"]))
+                return redirect(url_for("add_new_collection"))
 
             new_type_of_waste = {
                 "typeOfWaste": request.form.get("newTypeOfWaste"),
@@ -681,7 +768,6 @@ def add_new_collection():
                 "locationID": mongo.db.collectionLocations.find_one(
                     {"nickname_lower": request.form.get("locationID").lower(),
                         "memberID": user_id})["_id"],
-                "isNational": "no",
                 "dateAdded": datetime.now().strftime("%d %b %Y")
             }
             mongo.db.itemCollections.insert_one(new_collection)
@@ -700,8 +786,7 @@ def add_new_collection():
             )
             if existing_type_of_waste:
                 flash("Type of Waste already exists for this category")
-                return redirect(url_for(
-                    "profile", username=session["username"]))
+                return redirect(url_for("add_new_collection"))
 
             new_type_of_waste = {
                 "typeOfWaste": request.form.get("newTypeOfWaste"),
@@ -723,7 +808,6 @@ def add_new_collection():
                 "locationID": mongo.db.collectionLocations.find_one(
                     {"nickname_lower": request.form.get("locationID").lower(),
                         "memberID": user_id})["_id"],
-                "isNational": "no",
                 "dateAdded": datetime.now().strftime("%d %b %Y")
             }
             mongo.db.itemCollections.insert_one(new_collection)
@@ -744,14 +828,48 @@ def add_new_collection():
                 "locationID": mongo.db.collectionLocations.find_one(
                     {"nickname_lower": request.form.get("locationID").lower(),
                         "memberID": user_id})["_id"],
-                "isNational": "no",
                 "dateAdded": datetime.now().strftime("%d %b %Y")
             }
             mongo.db.itemCollections.insert_one(new_collection)
             flash("New collection added")
             return redirect(url_for("get_recycling_collections",
                                     item_id=item_id))
-    return redirect(url_for("profile", username=session["username"]))
+
+
+@app.route("/add-new-collection/public", methods=["GET", "POST"])
+@login_required
+def add_public_collection():
+    user_id = ObjectId(session["user_id"])
+    username = session["username"]
+    if request.method == "POST":
+        if "newItemCategory" in request.form:
+            category_name = request.form.get("newItemCategory")
+        else:
+            category_name = request.form.get("itemCategory")
+        if "newTypeOfWaste" in request.form:
+            type_of_waste = request.form.get("newTypeOfWaste")
+        else:
+            type_of_waste = request.form.get("typeOfWaste")
+        public_collection = {
+            "hive": ObjectId(session["hive"]),
+            "localNational": request.form.get("localNational"),
+            "postalDropoff": request.form.get("postalDropoff"),
+            "username": username,
+            "memberID": user_id,
+            "businessName": request.form.get("businessName"),
+            "street": request.form.get("businessStreet"),
+            "town": request.form.get("businessTown"),
+            "postcode": request.form.get("businessPostcode"),
+            "categoryName": category_name,
+            "typeOfWaste": type_of_waste,
+            "conditionNotes": request.form.get("conditionNotes"),
+            "charityScheme": request.form.get("charityScheme"),
+            "approvedCollection": False,
+            "dateAdded": datetime.now().strftime("%d %b %Y")
+        }
+        mongo.db.publicCollections.insert_one(public_collection)
+        flash("Public collection sent for approval")
+        return redirect(url_for("add_new_collection"))
 
 
 @app.route("/<route>/edit-collection/<collection_id>", methods=["GET", "POST"])
@@ -795,7 +913,8 @@ def delete_collection(route, collection_id):
 @app.route("/hive")
 @approval_required
 def get_recycling_categories():
-    categories_dict = list(mongo.db.itemCollections.aggregate([
+    # Get categories in private collections
+    categories_dict_private = list(mongo.db.itemCollections.aggregate([
             {
              "$lookup": {
                 "from": "hiveMembers",
@@ -831,9 +950,47 @@ def get_recycling_categories():
              },
             {"$sort": {"categoryName": 1}}
             ]))
+    # Get categories in public collections
+    categories_dict_public = list(mongo.db.publicCollections.aggregate([
+            {"$match": {"approvedCollection": True, "$or": [{"hive": ObjectId(
+                session["hive"])}, {"localNational": "national"}]}},
+            {
+             "$lookup": {
+                "from": "recyclableItems",
+                "localField": "itemID",
+                "foreignField": "_id",
+                "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {
+             "$lookup": {
+                "from": "itemCategory",
+                "localField": "recyclableItems.categoryID",
+                "foreignField": "_id",
+                "as": "itemCategory"
+             },
+            },
+            {"$unwind": "$itemCategory"},
+            {"$group": {
+             "_id": "$itemCategory._id",
+             "categoryName": {"$first": "$itemCategory.categoryName"}
+             }
+             },
+            {"$sort": {"categoryName": 1}}
+            ]))
+    # Combine lists
+    categories_dict = list(combine_dictionaries(
+        categories_dict_private, categories_dict_public))
+    # Check if member has collection
+    members_collection_values = list(sorted(
+        [document["categoryName"] for document in categories_dict]))
+    print(categories_dict[0])
     return render_template(
         "pages/hive-category.html",
-        categories_dict=categories_dict, page_id="categories")
+        categories_dict=categories_dict,
+        members_collection_values=members_collection_values,
+        page_id="categories")
 
 
 @app.route("/hive/items/<category_id>")
@@ -843,70 +1000,127 @@ def get_recycling_items(category_id):
         # Get selected category for dropdown
         selected_category = "Select a category"
         # Get recyclable items that match the selected category for
-        # # hexagon headers
-        recycling_items_dict = list(mongo.db.itemCollections.aggregate([
-            {
-             "$lookup": {
+        # # hexagon headers in private collection
+        recycling_items_dict_private = list(
+            mongo.db.itemCollections.aggregate([
+             {
+              "$lookup": {
                 "from": "hiveMembers",
                 "localField": "memberID",
                 "foreignField": "_id",
                 "as": "hiveMembers"
+              },
              },
-            },
-            {"$unwind": "$hiveMembers"},
-            {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
-            {
-             "$lookup": {
+             {"$unwind": "$hiveMembers"},
+             {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+             {
+              "$lookup": {
                 "from": "recyclableItems",
                 "localField": "itemID",
                 "foreignField": "_id",
                 "as": "recyclableItems"
+              },
              },
-            },
-            {"$unwind": "$recyclableItems"},
-            {"$group": {
-             "_id": "$recyclableItems._id",
-             "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
-             }
-             },
-            {"$sort": {"typeOfWaste": 1}}
+             {"$unwind": "$recyclableItems"},
+             {"$group": {
+              "_id": "$recyclableItems._id",
+              "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
+              }
+              },
+             {"$sort": {"typeOfWaste": 1}}
             ]))
+        # Get recyclable items that match the selected category for
+        # # hexagon headers in public collection
+        recycling_items_dict_public = list(
+            mongo.db.publicCollections.aggregate([
+                {"$match": {"approvedCollection": True,
+                 "$or": [{"hive": ObjectId(
+                  session["hive"])}, {"localNational": "national"}]}},
+                {
+                 "$lookup": {
+                  "from": "recyclableItems",
+                  "localField": "itemID",
+                  "foreignField": "_id",
+                  "as": "recyclableItems"
+                 },
+                },
+                {"$unwind": "$recyclableItems"},
+                {"$group": {
+                 "_id": "$recyclableItems._id",
+                 "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
+                 }
+                 },
+                {"$sort": {"typeOfWaste": 1}}
+            ]))
+        # Combine lists
+        recycling_items_dict = list(combine_dictionaries(
+            recycling_items_dict_private, recycling_items_dict_public))
     else:
         # Get selected category for dropdown
         selected_category = mongo.db.itemCategory.find_one(
                     {"_id": ObjectId(category_id)})["categoryName"]
         # Get recyclable items that match the selected category for
-        # # hexagon headers
-        recycling_items_dict = list(mongo.db.itemCollections.aggregate([
-            {
-             "$lookup": {
+        # # hexagon headers in private collection
+        recycling_items_dict_private = list(
+            mongo.db.itemCollections.aggregate([
+             {
+              "$lookup": {
                 "from": "hiveMembers",
                 "localField": "memberID",
                 "foreignField": "_id",
                 "as": "hiveMembers"
+              },
              },
-            },
-            {"$unwind": "$hiveMembers"},
-            {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
-            {
-             "$lookup": {
+             {"$unwind": "$hiveMembers"},
+             {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+             {
+              "$lookup": {
                 "from": "recyclableItems",
                 "localField": "itemID",
                 "foreignField": "_id",
                 "as": "recyclableItems"
+              },
              },
-            },
-            {"$unwind": "$recyclableItems"},
-            {"$match": {"recyclableItems.categoryID": ObjectId(category_id)}},
-            {"$group": {
-             "_id": "$recyclableItems._id",
-             "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
-             }
-             },
-            {"$sort": {"typeOfWaste": 1}}
+             {"$unwind": "$recyclableItems"},
+             {"$match": {"recyclableItems.categoryID": ObjectId(category_id)}},
+             {"$group": {
+              "_id": "$recyclableItems._id",
+              "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
+              }
+              },
+             {"$sort": {"typeOfWaste": 1}}
             ]))
+        # Get recyclable items that match the selected category for
+        # # hexagon headers in public collection
+        recycling_items_dict_public = list(
+            mongo.db.publicCollections.aggregate([
+                {"$match": {"approvedCollection": True,
+                 "$or": [{"hive": ObjectId(
+                  session["hive"])}, {"localNational": "national"}]}},
+                {
+                 "$lookup": {
+                  "from": "recyclableItems",
+                  "localField": "itemID",
+                  "foreignField": "_id",
+                  "as": "recyclableItems"
+                 },
+                },
+                {"$unwind": "$recyclableItems"},
+                {"$match": {"recyclableItems.categoryID": ObjectId(
+                    category_id)}},
+                {"$group": {
+                 "_id": "$recyclableItems._id",
+                 "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
+                 }
+                 },
+                {"$sort": {"typeOfWaste": 1}}
+            ]))
+        # Combine lists
+        recycling_items_dict = list(combine_dictionaries(
+            recycling_items_dict_private, recycling_items_dict_public))
     # Get list of categories for dropdown menu
-    categories_dict = list(mongo.db.itemCollections.aggregate([
+    # Get categories in private collections
+    categories_dict_private = list(mongo.db.itemCollections.aggregate([
             {
              "$lookup": {
                 "from": "hiveMembers",
@@ -942,6 +1156,39 @@ def get_recycling_items(category_id):
              },
             {"$sort": {"categoryName": 1}}
             ]))
+    # Get categories in public collections
+    categories_dict_public = list(mongo.db.publicCollections.aggregate(
+        [{"$match": {"approvedCollection": True,
+          "$or": [{"hive": ObjectId(session["hive"])},
+                  {"localNational": "national"}]}},
+            {
+             "$lookup": {
+                "from": "recyclableItems",
+                "localField": "itemID",
+                "foreignField": "_id",
+                "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {
+             "$lookup": {
+                "from": "itemCategory",
+                "localField": "recyclableItems.categoryID",
+                "foreignField": "_id",
+                "as": "itemCategory"
+             },
+            },
+            {"$unwind": "$itemCategory"},
+            {"$group": {
+             "_id": "$itemCategory._id",
+             "categoryName": {"$first": "$itemCategory.categoryName"}
+             }
+             },
+            {"$sort": {"categoryName": 1}}
+         ]))
+    # Combine lists
+    categories_dict = list(combine_dictionaries(
+        categories_dict_private, categories_dict_public))
     return render_template(
         "pages/hive-item.html",
         categories_dict=categories_dict,
@@ -959,24 +1206,25 @@ def get_recycling_collections(item_id):
         # Get selected item for dropdown
         selected_item = mongo.db.recyclableItems.find_one(
                     {"_id": ObjectId(item_id)})["typeOfWaste"]
-    # Get list of items for dropdown menu
-    recycling_items_dict = list(mongo.db.itemCollections.aggregate([
+    # Get list of items for dropdown menu in private collection
+    recycling_items_dict_private = list(
+        mongo.db.itemCollections.aggregate([
             {
              "$lookup": {
-                "from": "hiveMembers",
-                "localField": "memberID",
-                "foreignField": "_id",
-                "as": "hiveMembers"
+              "from": "hiveMembers",
+              "localField": "memberID",
+              "foreignField": "_id",
+              "as": "hiveMembers"
              },
             },
             {"$unwind": "$hiveMembers"},
             {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
             {
              "$lookup": {
-                "from": "recyclableItems",
-                "localField": "itemID",
-                "foreignField": "_id",
-                "as": "recyclableItems"
+              "from": "recyclableItems",
+              "localField": "itemID",
+              "foreignField": "_id",
+              "as": "recyclableItems"
              },
             },
             {"$unwind": "$recyclableItems"},
@@ -986,54 +1234,110 @@ def get_recycling_collections(item_id):
              }
              },
             {"$sort": {"typeOfWaste": 1}}
-            ]))
-    # Create new dictionary of recyclable items and their matching collections
-    collections_dict = list(mongo.db.itemCollections.aggregate([
-        {
-         "$lookup": {
+        ]))
+    # Get list of items for dropdown menu in public collection
+    recycling_items_dict_public = list(mongo.db.publicCollections.aggregate(
+        [{"$match": {"approvedCollection": True,
+          "$or": [{"hive": ObjectId(session["hive"])},
+                  {"localNational": "national"}]}},
+            {
+             "$lookup": {
+              "from": "recyclableItems",
+              "localField": "itemID",
+              "foreignField": "_id",
+              "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {"$group": {
+             "_id": "$recyclableItems._id",
+             "typeOfWaste": {"$first": "$recyclableItems.typeOfWaste"}
+             }
+             },
+            {"$sort": {"typeOfWaste": 1}}
+         ]))
+    # Combine lists
+    recycling_items_dict = list(combine_dictionaries(
+        recycling_items_dict_private, recycling_items_dict_public))
+    # Create new dictionary of recyclable items and their
+    # matching collections from private collection
+    collections_dict_private = list(
+        mongo.db.itemCollections.aggregate([
+         {
+          "$lookup": {
             "from": "hiveMembers",
             "localField": "memberID",
             "foreignField": "_id",
             "as": "hiveMembers"
+          },
          },
-        },
-        {"$unwind": "$hiveMembers"},
-        {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
-        {
-         "$lookup": {
+         {"$unwind": "$hiveMembers"},
+         {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+         {
+          "$lookup": {
             "from": "recyclableItems",
             "localField": "itemID",
             "foreignField": "_id",
             "as": "recyclableItems"
+          },
          },
-        },
-        {"$unwind": "$recyclableItems"},
-        {
-         "$lookup": {
+         {"$unwind": "$recyclableItems"},
+         {
+          "$lookup": {
             "from": "collectionLocations",
             "localField": "locationID",
             "foreignField": "_id",
             "as": "collectionLocations"
+          },
          },
-        },
-        {"$unwind": "$collectionLocations"},
-        {"$project": {
-         "typeOfWaste": "$recyclableItems.typeOfWaste",
-         "hiveMembers": "$hiveMembers.username",
-         "street": "$collectionLocations.street",
-         "town": "$collectionLocations.town",
-         "postcode": "$collectionLocations.postcode",
-         "id": 1,
-         "conditionNotes": 1,
-         "charityScheme": 1
-         }
-         }
+         {"$unwind": "$collectionLocations"},
+         {"$project": {
+          "typeOfWaste": "$recyclableItems.typeOfWaste",
+          "hiveMembers": "$hiveMembers.username",
+          "street": "$collectionLocations.street",
+          "town": "$collectionLocations.town",
+          "postcode": "$collectionLocations.postcode",
+          "id": 1,
+          "conditionNotes": 1,
+          "charityScheme": 1
+          }
+          }
         ]))
-
+    # Create new dictionary of recyclable items and their
+    # matching collections from public collection
+    collections_dict_public = list(mongo.db.publicCollections.aggregate(
+        [{"$match": {"approvedCollection": True,
+          "$or": [{"hive": ObjectId(session["hive"])},
+                  {"localNational": "national"}]}},
+            {
+             "$lookup": {
+              "from": "recyclableItems",
+              "localField": "itemID",
+              "foreignField": "_id",
+              "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {"$project": {
+             "localNational": 1,
+             "postalDropoff": 1,
+             "typeOfWaste": "$recyclableItems.typeOfWaste",
+             "businessName": 1,
+             "street": 1,
+             "town": 1,
+             "postcode": 1,
+             "id": 1,
+             "conditionNotes": 1,
+             "charityScheme": 1
+             }
+             }
+         ]))
     return render_template(
         "pages/hive-collection.html",
         recycling_items_dict=recycling_items_dict,
-        collections_dict=collections_dict, selected_item=selected_item,
+        collections_dict_private=collections_dict_private,
+        collections_dict_public=collections_dict_public,
+        selected_item=selected_item,
         page_id="collections")
 
 
@@ -1130,6 +1434,14 @@ def logout():
 def faqs():
 
     return render_template("pages/faq.html")
+
+
+def combine_dictionaries(dict1, dict2):
+    for item in dict1:
+        if item not in dict2:
+            dict2.append(item)
+            dict2
+    return dict2
 
 
 @app.errorhandler(404)

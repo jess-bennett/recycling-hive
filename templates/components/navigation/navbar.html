@@ -14,12 +14,12 @@
               href="{{ url_for('home', username=session['username']) }}">Home</a>
           </li>
           {% if session.user %}
+          <li class="nav-item {% if active_item == 'collection' %}active{% endif %}">
+            <a class="nav-link" href="{{ url_for('add_new_collection') }}">Add Collection</a>
+          </li>
           <li class="nav-item {% if (active_item == 'categories') or (active_item == 'items') or (active_item == 'collections') or (active_item == 'members') %}active{% endif %}">
             <a class="nav-link"
               href="{{ url_for('get_recycling_categories') }}">Hive</a>
-          </li>
-          <li class="nav-item {% if active_item == 'inspiration' %}active{% endif %}">
-            <a class="nav-link" href="#">Inspiration</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>

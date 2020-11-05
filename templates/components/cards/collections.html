@@ -16,17 +16,15 @@
                 <!-- Add collection -->
                 <div class="container-fluid">
                   <div class="row">
-                    <button type="button"
-                      class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add"
-                      data-toggle="modal"
-                      data-target="#modal-add-collection">Add New
-                      Collection</button>
+                  <a href="{{ url_for('add_new_collection') }}" class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add"
+              ><i class="fas fa-plus"></i> <strong>Add New
+                      Collection</strong></a>
                   </div>
                 </div>
                 {% if collections_dict %}
                 {% for collection in collections_dict %}
                 <hr class="green-line">
-                {% include "components/collection-details.html" %}
+                {% include "components/details/collection.html" %}
                 <!-- Amend collection -->
                 <div class="container-fluid">
                   <div class="row">
