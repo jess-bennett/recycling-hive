@@ -982,9 +982,14 @@ def get_recycling_categories():
     # Combine lists
     categories_dict = list(combine_dictionaries(
         categories_dict_private, categories_dict_public))
+    # Check if member has collection
+    members_collection_values = list(sorted(
+        [document["categoryName"] for document in categories_dict]))
+    print(categories_dict[0])
     return render_template(
         "pages/hive-category.html",
         categories_dict=categories_dict,
+        members_collection_values=members_collection_values,
         page_id="categories")
 
 
