@@ -46,6 +46,20 @@ def approval_required(f):
     return wrap
 
 
+def no_demo(f):
+    @wraps(f)
+    def wrap(*args, **kwargs):
+        if mongo.db.hiveMembers.find_one(
+                {"_id": ObjectId(session["user_id"]),
+                 "password": {"$exists": True}}):
+            return f(*args, **kwargs)
+        else:
+            flash("Not available in Demo version")
+            return redirect(url_for("home"))
+
+    return wrap
+
+
 def queen_bee_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -63,8 +77,11 @@ def home():
     try:
         username = session["username"]
         user_id = ObjectId(session["user_id"])
-        hive_name = mongo.db.hives.find_one(
-            {"_id": ObjectId(session["hive"])})["name"]
+        if user_id == ObjectId("5fa43cf801329c2053c8067f"):
+            hive_name = "Demo"
+        else:
+            hive_name = mongo.db.hives.find_one(
+                {"_id": ObjectId(session["hive"])})["name"]
         if mongo.db.hiveMembers.find_one(
                 {"_id": user_id, "isQueenBee": True}):
             is_queen_bee = True
@@ -177,6 +194,18 @@ def login():
             return redirect(url_for("login"))
 
     return render_template("pages/login.html", page_id="login")
+
+
+@app.route("/demo")
+def demo():
+    # Set demo values for session items
+    session["user"] = "demo@demo.com"
+    session["username"] = "Demo User"
+    session["user_id"] = str(mongo.db.hiveMembers.find_one(
+        {"email": session["user"]})["_id"])
+    session["hive"] = "5f9ebcd7764cbc485a65cb82"
+    session["member_type"] = "Busy Bee"
+    return redirect(url_for("home"))
 
 
 @app.route("/hive-management/<username>")
@@ -527,6 +556,7 @@ def profile(username):
 
 @app.route("/<route>/profile/edit/<member_id>", methods=["GET", "POST"])
 @login_required
+@no_demo
 def edit_profile(route, member_id):
     # Post method for editing user details
     if request.method == "POST":
@@ -562,6 +592,7 @@ def edit_profile(route, member_id):
 
 @app.route("/<route>/profile/delete/<member_id>")
 @login_required
+@no_demo
 def delete_profile(route, member_id):
     mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
     mongo.db.collectionLocations.remove({"memberID": ObjectId(member_id)})
@@ -579,6 +610,7 @@ def delete_profile(route, member_id):
 
 @app.route("/add-new-location", methods=["GET", "POST"])
 @login_required
+@no_demo
 def add_new_location():
     user_id = ObjectId(session["user_id"])
     if request.method == "POST":
@@ -607,6 +639,7 @@ def add_new_location():
 
 @app.route("/<route>/edit-location/<location_id>", methods=["GET", "POST"])
 @login_required
+@no_demo
 def edit_location(route, location_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(location_id)}
@@ -629,6 +662,7 @@ def edit_location(route, location_id):
 
 @app.route("/<route>/delete-location/<location_id>")
 @login_required
+@no_demo
 def delete_location(route, location_id):
     mongo.db.collectionLocations.remove({"_id": ObjectId(location_id)})
     mongo.db.itemCollections.remove({"locationID": ObjectId(location_id)})
@@ -645,6 +679,7 @@ def delete_location(route, location_id):
 
 @app.route("/add-first-collection", methods=["GET", "POST"])
 @login_required
+@no_demo
 def add_first_collection():
     user_id = ObjectId(session["user_id"])
     username = session["username"]
@@ -715,6 +750,7 @@ def add_new_collection():
 
 @app.route("/add-new-collection/private", methods=["GET", "POST"])
 @login_required
+@no_demo
 def add_private_collection():
     # Get user ID for adding collection
     user_id = ObjectId(session["user_id"])
@@ -838,6 +874,7 @@ def add_private_collection():
 
 @app.route("/add-new-collection/public", methods=["GET", "POST"])
 @login_required
+@no_demo
 def add_public_collection():
     user_id = ObjectId(session["user_id"])
     username = session["username"]
@@ -874,6 +911,7 @@ def add_public_collection():
 
 @app.route("/<route>/edit-collection/<collection_id>", methods=["GET", "POST"])
 @login_required
+@no_demo
 def edit_collection(route, collection_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(collection_id)}
@@ -897,6 +935,7 @@ def edit_collection(route, collection_id):
 
 @app.route("/<route>/delete-collection/<collection_id>")
 @login_required
+@no_demo
 def delete_collection(route, collection_id):
     mongo.db.itemCollections.remove({"_id": ObjectId(collection_id)})
     if route == "profile":
@@ -985,7 +1024,6 @@ def get_recycling_categories():
     # Check if member has collection
     members_collection_values = list(sorted(
         [document["categoryName"] for document in categories_dict]))
-    print(categories_dict[0])
     return render_template(
         "pages/hive-category.html",
         categories_dict=categories_dict,

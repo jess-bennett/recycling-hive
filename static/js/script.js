@@ -47,7 +47,6 @@ $("input:radio[name='collectionType']").change(
     function(){
         let memberType = $("input[name=collectionType]:checked").attr("data-id");
         let awaitingApproval = $("input[name=collectionType]:checked").attr("data-info");
-        console.log(awaitingApproval)
         if (this.checked && this.value == "public") {
             $("#awaiting-approval").hide(); /* Hide approval text   */   
             $(".private-collection").hide(); /* Hide inputs for private collection */
@@ -59,7 +58,7 @@ $("input:radio[name='collectionType']").change(
         }
         if (this.checked && this.value == "private") {
             $(".public-collection").hide(); /* Hide inputs for public collection */
-            if (awaitingApproval) {
+            if (awaitingApproval == "True") {
             $("#awaiting-approval").show(); /* Show approval text   */      
             } else {
             $(".private-collection").show(); /* Show inputs for private collection */
