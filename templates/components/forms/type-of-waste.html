@@ -46,10 +46,14 @@
 			<select class="form-control" id="select-typeOfWaste"
                             name="typeOfWaste" required>
                             <option value="" selected disabled>Type of Waste</option>
-                            {% for item in items_dict %}
+                            {% for category in categories %}
+                            <optgroup label="{{ category.categoryName }}">
+                            {% for item in items_dict if item.itemCategory.categoryName == category.categoryName  %}
                             <option data-id="{{ item.itemCategory.categoryName }}"
                                 value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}
                             </option>
+                            {% endfor %}
+                            </optgroup>
                             {% endfor %}
                             <option>Add New Type of Waste...</option>
                             </select>

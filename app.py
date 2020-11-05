@@ -694,7 +694,8 @@ def add_new_collection():
              "as": "itemCategory"
             },
         },
-        {"$unwind": "$itemCategory"}
+        {"$unwind": "$itemCategory"},
+        {"$sort": {"typeOfWaste": 1}}
         ]))
     # get user"s location details from db for location card
     locations = list(mongo.db.collectionLocations.find(
@@ -1315,7 +1316,7 @@ def get_recycling_collections(item_id):
             {"$project": {
              "localNational": 1,
              "postalDropoff": 1,
-             "typeOfWaste": "$recyclableItems.typeOfWaste",
+             "typeOfWaste": "$1ecyclableItems.typeOfWaste",
              "businessName": 1,
              "street": 1,
              "town": 1,
