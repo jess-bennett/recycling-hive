@@ -1313,7 +1313,8 @@ def get_recycling_collections(item_id):
             },
             {"$unwind": "$recyclableItems"},
             {"$project": {
-             "postalDropoff": "postalDropoff",
+             "localNational": 1,
+             "postalDropoff": 1,
              "typeOfWaste": "$recyclableItems.typeOfWaste",
              "businessName": 1,
              "street": 1,
@@ -1325,13 +1326,12 @@ def get_recycling_collections(item_id):
              }
              }
          ]))
-    # Combine lists
-    collections_dict = list(combine_dictionaries(
-        collections_dict_private, collections_dict_public))
     return render_template(
         "pages/hive-collection.html",
         recycling_items_dict=recycling_items_dict,
-        collections_dict=collections_dict, selected_item=selected_item,
+        collections_dict_private=collections_dict_private,
+        collections_dict_public=collections_dict_public,
+        selected_item=selected_item,
         page_id="collections")
 
 
