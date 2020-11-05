@@ -179,6 +179,18 @@ def login():
     return render_template("pages/login.html", page_id="login")
 
 
+@app.route("/demo")
+def demo():
+    # Set demo values for session items
+    session["user"] = "demo@demo.com"
+    session["username"] = "Demo User"
+    session["user_id"] = str(mongo.db.hiveMembers.find_one(
+        {"email": session["user"]})["_id"])
+    session["hive"] = "5f9ebcd7764cbc485a65cb82"
+    session["member_type"] = "Busy Bee"
+    return redirect(url_for("home"))
+
+
 @app.route("/hive-management/<username>")
 @queen_bee_required
 def hive_management(username):
@@ -985,7 +997,6 @@ def get_recycling_categories():
     # Check if member has collection
     members_collection_values = list(sorted(
         [document["categoryName"] for document in categories_dict]))
-    print(categories_dict[0])
     return render_template(
         "pages/hive-category.html",
         categories_dict=categories_dict,
