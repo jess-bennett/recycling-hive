@@ -700,6 +700,9 @@ def add_first_collection():
             type_of_waste = request.form.get("newTypeOfWaste")
         else:
             type_of_waste = request.form.get("typeOfWaste")
+        charityScheme = request.form.get("charityScheme")
+        if charityScheme == "":
+            charityScheme = "-"
         first_collection = {
             "hive": ObjectId(session["hive"]),
             "memberID": user_id,
@@ -711,7 +714,7 @@ def add_first_collection():
             "categoryName": category_name,
             "typeOfWaste": type_of_waste,
             "conditionNotes": request.form.get("conditionNotes"),
-            "charityScheme": request.form.get("charityScheme"),
+            "charityScheme": charityScheme,
             "dateAdded": datetime.now().strftime("%d %b %Y")
         }
         mongo.db.firstCollection.insert_one(first_collection)
@@ -804,10 +807,13 @@ def add_private_collection():
             item_id = mongo.db.recyclableItems.find_one(
                     {"typeOfWaste_lower": request.form.get(
                         "newTypeOfWaste").lower()})["_id"]
+            charityScheme = request.form.get("charityScheme")
+            if charityScheme == "":
+                charityScheme = "-"
             new_collection = {
                 "itemID": item_id,
                 "conditionNotes": request.form.get("conditionNotes"),
-                "charityScheme": request.form.get("charityScheme"),
+                "charityScheme": charityScheme,
                 "memberID": user_id,
                 "locationID": mongo.db.collectionLocations.find_one(
                     {"nickname_lower": request.form.get("locationID").lower(),
@@ -844,10 +850,13 @@ def add_private_collection():
             item_id = mongo.db.recyclableItems.find_one(
                     {"typeOfWaste_lower": request.form.get(
                         "newTypeOfWaste").lower()})["_id"]
+            charityScheme = request.form.get("charityScheme")
+            if charityScheme == "":
+                charityScheme = "-"
             new_collection = {
                 "itemID": item_id,
                 "conditionNotes": request.form.get("conditionNotes"),
-                "charityScheme": request.form.get("charityScheme"),
+                "charityScheme": charityScheme,
                 "memberID": user_id,
                 "locationID": mongo.db.collectionLocations.find_one(
                     {"nickname_lower": request.form.get("locationID").lower(),
@@ -864,10 +873,13 @@ def add_private_collection():
             item_id = mongo.db.recyclableItems.find_one(
                     {"typeOfWaste_lower": request.form.get(
                         "typeOfWaste").lower()})["_id"]
+            charityScheme = request.form.get("charityScheme")
+            if charityScheme == "":
+                charityScheme = "-"
             new_collection = {
                 "itemID": item_id,
                 "conditionNotes": request.form.get("conditionNotes"),
-                "charityScheme": request.form.get("charityScheme"),
+                "charityScheme": charityScheme,
                 "memberID": user_id,
                 "locationID": mongo.db.collectionLocations.find_one(
                     {"nickname_lower": request.form.get("locationID").lower(),
@@ -895,6 +907,9 @@ def add_public_collection():
             type_of_waste = request.form.get("newTypeOfWaste")
         else:
             type_of_waste = request.form.get("typeOfWaste")
+        charityScheme = request.form.get("charityScheme")
+        if charityScheme == "":
+            charityScheme = "-"
         public_collection = {
             "hive": ObjectId(session["hive"]),
             "localNational": request.form.get("localNational"),
@@ -909,7 +924,7 @@ def add_public_collection():
             "categoryName": category_name,
             "typeOfWaste": type_of_waste,
             "conditionNotes": request.form.get("conditionNotes"),
-            "charityScheme": request.form.get("charityScheme"),
+            "charityScheme": charityScheme,
             "approvedCollection": False,
             "dateAdded": datetime.now().strftime("%d %b %Y")
         }
@@ -924,9 +939,12 @@ def add_public_collection():
 def edit_collection(route, collection_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(collection_id)}
+        charityScheme = request.form.get("editCharity")
+        if charityScheme == "":
+            charityScheme = "-"
         edit_collection = {"$set":
                            {"conditionNotes": request.form.get("editNotes"),
-                            "charityScheme": request.form.get("editCharity"),
+                            "charityScheme": charityScheme,
                             "locationID": ObjectId(
                                 request.form.get("editLocation"))}}
         mongo.db.itemCollections.update(filter, edit_collection)
