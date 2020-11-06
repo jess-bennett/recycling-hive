@@ -520,6 +520,15 @@ def profile(username):
         },
         {"$unwind": "$recyclableItems"},
         {
+        "$lookup": {
+            "from": "itemCategory",
+            "localField": "recyclableItems.categoryID",
+            "foreignField": "_id",
+            "as": "itemCategory"
+        },
+        },
+        {"$unwind": "$itemCategory"},
+        {
             "$lookup": {
              "from": "collectionLocations",
              "localField": "locationID",
@@ -529,6 +538,7 @@ def profile(username):
         },
         {"$unwind": "$collectionLocations"},
         {"$project": {
+            "categoryName": "$itemCategory.categoryName",
             "typeOfWaste": "$recyclableItems.typeOfWaste",
             "hiveMembers": "$hiveMembers._id",
             "nickname": "$collectionLocations.nickname",
@@ -540,7 +550,7 @@ def profile(username):
             "charityScheme": 1
             }
          },
-        {"$sort": {"typeOfWaste": 1}}
+        {"$sort": {"categoryName": 1, "typeOfWaste": 1}}
         ]))
     # Get list of unapproved public collections
     unapproved_collections = list(mongo.db.publicCollections.find(
