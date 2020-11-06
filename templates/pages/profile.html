@@ -9,17 +9,17 @@
         <div id="accordion">
           <!-- Details card -->
           <div class="card">
-            <div class="card-header green-background" id="headingOne">
+            <div class="card-header green-background" id="headingProfile">
               <h5 class="mb-0">
                 <button class="btn btn-link" data-toggle="collapse"
-                  data-target="#collapseOne" aria-expanded="true"
-                  aria-controls="collapseOne">
+                  data-target="#collapseProfile" aria-expanded="true"
+                  aria-controls="collapseProfile">
                   <i class="fas fa-user"></i> <strong>Your Details</strong>
                 </button>
               </h5>
             </div>
-            <div id="collapseOne" class="collapse show"
-              aria-labelledby="headingOne" data-parent="#accordion">
+            <div id="collapseProfile" class="collapse show"
+              aria-labelledby="headingProfile" data-parent="#accordion">
               <div class="card-body">
                 {% include "components/details/member.html" %}
                 <!-- Amend profile -->
@@ -59,7 +59,7 @@
             by the Queen Bee(s), you will be able to add more locations and collections without waiting for approval.</p>
           </div>
           </div>
-          <a href="{{ url_for('add_new_collection') }}" class="btn btn-outline-primary col"
+          <a href="{{ url_for('add_new_collection') }}" class="btn btn-outline-primary col space-below"
               ><i class="fas fa-hard-hat"></i> <strong>Become a Worker Bee!</strong></a>
           {% else %}
           {% include "components/cards/locations.html" %}

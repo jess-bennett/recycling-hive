@@ -12,6 +12,8 @@ $(document).ready(function() {
   $("#member-details").hide(); /* Hide member details on page load until details button selected on page   */
   $("#location-details").hide(); /* Hide location details on page load until details button selected on page   */
   $("#collection-details").hide(); /* Hide collection details on page load until details button selected on page   */
+  /* Hide flash form on contact page */
+  $("#contact-flash").hide();
 });
 
 /* REGISTER.HTML */
@@ -66,6 +68,7 @@ $("input:radio[name='collectionType']").change(
             $("#businessName").prop("required", false); /* Remove required attribute for public location */
             $("#businessStreet").prop("required", false); /* Remove required attribute for public address */
             $("#businessTown").prop("required", false); /* Remove required attribute for public address */
+            $("#businessCounty").prop("required", false); /* Remove required attribute for public address */
             $("#businessPostcode").prop("required", false); /* Remove required attribute for public address */
             $("input:radio[name='localNational']").prop("checked", false); /* Remove any previous selection for public radio buttons */
             $("input:radio[name='postalDropoff']").prop("checked", false); /* Remove any previous selection for public radio buttons */
@@ -85,11 +88,13 @@ function(){
         $(".public-collection-dropoff").show(); /* Show input for dropoff collection */
         $(".public-collection-postal").hide(); /* Hide input for postal collection */
         $(".public-collection-address").show(); /* Show input for dropoff address */
+        $(".postal-county").hide(); /* Hide input for postal county */
         $(".local-collection").show(); /* Show instructions for local collection */
         $(".national-collection").hide(); /* Hide instructions for national collection */
         $(".public-collection-radio-two").hide(); /* Hide radio button for national collection */
         $("#businessStreet").prop("required", true); /* Add required attribute for public address */
         $("#businessTown").prop("required", true); /* Add required attribute for public address */
+        $("#businessCounty").prop("required", false); /* Remove required attribute for public address */
         $("#businessPostcode").prop("required", true); /* Add required attribute for public address */
         $("input:radio[name='postalDropoff']").prop("checked", false); /* Remove any previous selection for postal/dropoff radio buttons */
     }
@@ -110,6 +115,7 @@ function(){
         $(".public-collection-postal").show(); /* Show input for postal collection */
         $("#businessStreet").prop("required", true); /* Add required attribute for public address */
         $("#businessTown").prop("required", true); /* Add required attribute for public address */
+        $("#businessCounty").prop("required", true); /* Add required attribute for public address */
         $("#businessPostcode").prop("required", true); /* Add required attribute for public address */
     }
     if (this.checked && this.value == "dropoff") {
@@ -118,6 +124,7 @@ function(){
         $(".public-collection-postal").hide(); /* Hide input for postal collection */
         $("#businessStreet").prop("required", false); /* Remove required attribute for public address */
         $("#businessTown").prop("required", false); /* Remove required attribute for public address */
+        $("#businessCounty").prop("required", false); /* Remove required attribute for public address */
         $("#businessPostcode").prop("required", false); /* Remove required attribute for public address */
     }
 });

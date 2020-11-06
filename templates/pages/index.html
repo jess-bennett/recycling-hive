@@ -17,7 +17,7 @@
   </div>
 </div>
 <section id="home-hexagons">
-  <ul id="grid" class="clr home hexagon-large">
+  <ul id="grid" class="clr">
     {% if username == False %}
     <li>
         <a href="{{ url_for('demo') }}">
@@ -77,18 +77,10 @@
       </a>
     </li>
     <li>
-      <a href="#item3">
+      <a href="{{ url_for('contact') }}">
         <div class="hexagon">
           <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/at.svg"/>
           <p class="hexagon-text hexagon-text-background">Contact</p>
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="{{ url_for('faqs') }}">
-        <div class="hexagon">
-          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/question.svg"/>
-          <p class="hexagon-text hexagon-text-background">FAQs</p>
         </div>
       </a>
     </li>
@@ -102,6 +94,14 @@
         </a>
         </li>
     {% endif %}
+    <li>
+      <a href="{{ url_for('faqs') }}">
+        <div class="hexagon">
+          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/question.svg"/>
+          <p class="hexagon-text hexagon-text-background">FAQs</p>
+        </div>
+      </a>
+    </li>
     {% endif %}
   </ul>
 </section>
