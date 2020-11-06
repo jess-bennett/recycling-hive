@@ -14,12 +14,13 @@
   clear: both;
 }
 
+
 #grid li {
   list-style-type: none;
   position: relative;
   float: left;
-  width: 22.5%;
-  padding: 0 0 26.03755254041571% 0;
+  width: 27.85714285714286%;
+  padding: 0 0 32.16760145166612% 0;
   -o-transform: rotate(-60deg) skewY(30deg);
   -moz-transform: rotate(-60deg) skewY(30deg);
   -webkit-transform: rotate(-60deg) skewY(30deg);
@@ -60,27 +61,7 @@
   visibility: visible;
 }
 
-#grid li:nth-child(1n+1) {
-  margin: 0.5%;
-}
 
-
-#grid li:nth-child(8n+5),
-#grid li:nth-child(8n+6),
-#grid li:nth-child(8n+7),
-#grid li:nth-child(8n+8) {
-  margin-top: -6.1%;
-  margin-bottom: -6.1%;
-  -o-transform: translateX(50%) rotate(-60deg) skewY(30deg);
-  -moz-transform: translateX(50%) rotate(-60deg) skewY(30deg);
-  -webkit-transform: translateX(50%) rotate(-60deg) skewY(30deg);
-  -ms-transform: translateX(50%) rotate(-60deg) skewY(30deg);
-  transform: translateX(50%) rotate(-60deg) skewY(30deg);
-}
-
-#grid li:nth-child(8n+5) {
-  margin-left: 1%;
-}
 
 #grid li .hexagon img {
   left: -100%;
@@ -124,4 +105,65 @@
 
 .hexagon-text-background {
     background-color: #bdc312;
+}
+
+/* Media queries */
+@media screen and (max-width: 991px) {
+#grid li:nth-child(3n+2) {
+  margin: 0 1%;
+}
+
+
+#grid li:nth-child(6n+4), #grid li:nth-child(6n+5), #grid li:nth-child(6n+6) {
+  margin-top: -6.9285714285%;
+  margin-bottom: -6.9285714285%;
+}
+
+#grid li:nth-child(6n+1), #grid li:nth-child(6n+2), #grid li:nth-child(6n+3) {
+  -o-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  -moz-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  -webkit-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  -ms-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  transform: translateX(50%) rotate(-60deg) skewY(30deg);
+}
+
+#grid li:nth-last-child(1){
+ margin-bottom: 0.5%;
+}
+
+#grid li:nth-child(6n+1) { 
+  margin-left: 0.5%;
+}
+}
+
+@media screen and (min-width: 992px) {
+    #grid li {
+  width: 22.5%;
+  padding: 0 0 26.03755254041571% 0;
+}
+#grid li:nth-child(1n+1) {
+  margin: 0.5%;
+}
+
+
+#grid li:nth-child(8n+5),
+#grid li:nth-child(8n+6),
+#grid li:nth-child(8n+7),
+#grid li:nth-child(8n+8){
+  margin-top: -6.1%;
+  margin-bottom: -6.1%;
+  -o-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  -moz-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  -webkit-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  -ms-transform: translateX(50%) rotate(-60deg) skewY(30deg);
+  transform: translateX(50%) rotate(-60deg) skewY(30deg);
+}
+
+#grid li:nth-last-child(1){
+ margin-bottom: 0.5%;
+}
+
+#grid li:nth-child(8n+5) {
+  margin-left: 1%;
+}
 }

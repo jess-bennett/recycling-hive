@@ -1,18 +1,18 @@
           <h5>{% if collection.localNational == "local" %}Local Collection{% elif (collection.localNational == "national") and (collection.postalDropoff == "dropoff") %} National Collection {% elif (collection.localNational == "national") and (collection.postalDropoff == "postal") %}National Postal Collection{% endif %}</h5>
           {% if page_id == "management" %}<h6>submitted by {{ collection.username }}</h6>{% endif %}
           <div class="form-row">
+                  <!-- Category -->
+                  <div class="form-group col-md-6">
+                    <div class="input-group mb-2">
+                      {% include "components/tooltips/tooltip-category.html" %}
+                      <p class="form-control">{{ collection.categoryName }}</p>
+                    </div>
+                  </div>
                   <!-- Type of waste -->
                   <div class="form-group col-md-6">
                     <div class="input-group mb-2">
                       {% include "components/tooltips/tooltip-waste.html" %}
                       <p class="form-control">{{ collection.typeOfWaste }}</p>
-                    </div>
-                  </div>
-                  <!-- Charity Scheme -->
-                  <div class="form-group col-md-6">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-charity.html" %}
-                      <p class="form-control">{{ collection.charityScheme }}</p>
                     </div>
                   </div>
                 </div>
@@ -47,3 +47,10 @@
                     <p class="form-control">{{ collection.conditionNotes }}</p>
                   </div>
                 </div>
+                <!-- Charity Scheme -->
+                  <div class="form-group">
+                    <div class="input-group mb-2">
+                      {% include "components/tooltips/tooltip-charity.html" %}
+                      <p class="form-control">{{ collection.charityScheme }}</p>
+                    </div>
+                  </div>

@@ -1,11 +1,11 @@
 <!-- Delete member request modal -->
 {% for member in unapproved_members %}
-<div class="modal fade" id="modal-deny-member-request-{{ member._id }}" tabindex="-1" role="dialog"
-  aria-labelledby="modal-deny-member-request-title" aria-hidden="true">
+<div class="modal fade" id="modal-delete-member-request-{{ member._id }}" tabindex="-1" role="dialog"
+  aria-labelledby="modal-delete-member-request-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-deny-member-request-title">Delete
+        <h4 class="modal-title w-100" id="modal-delete-member-request-title">Delete
           Request for {{ member.username }}</h4>
 
         <button type="button" class="close" data-dismiss="modal"
