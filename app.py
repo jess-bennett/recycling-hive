@@ -1048,13 +1048,9 @@ def get_recycling_categories():
     # Combine lists
     categories_dict = list(combine_dictionaries(
         categories_dict_private, categories_dict_public))
-    # Check if member has collection
-    members_collection_values = list(sorted(
-        [document["categoryName"] for document in categories_dict]))
     return render_template(
         "pages/hive-category.html",
         categories_dict=categories_dict,
-        members_collection_values=members_collection_values,
         page_id="categories")
 
 
@@ -1483,6 +1479,12 @@ def get_recycling_members(member_type):
         selected_member_type=selected_member_type,
         member_group=member_group, members_dict=members_dict,
         members_collection_values=members_collection_values, page_id="members")
+
+
+@app.route("/contact")
+def contact():
+
+    return render_template("pages/contact.html")
 
 
 @app.route("/logout")

@@ -12,6 +12,8 @@ $(document).ready(function() {
   $("#member-details").hide(); /* Hide member details on page load until details button selected on page   */
   $("#location-details").hide(); /* Hide location details on page load until details button selected on page   */
   $("#collection-details").hide(); /* Hide collection details on page load until details button selected on page   */
+  /* Hide flash form on contact page */
+  $("#contact-flash").hide();
 });
 
 /* REGISTER.HTML */

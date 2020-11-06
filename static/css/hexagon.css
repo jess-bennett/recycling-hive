@@ -8,14 +8,6 @@
 
 }
 
-#grid.hexagon-large {
-  width: 90%;
-}
-
-#grid.home {
-  margin: 0 5% 4rem;
-}
-
 .clear:after {
   content: "";
   display: block;
