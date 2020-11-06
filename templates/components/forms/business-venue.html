@@ -1,0 +1,68 @@
+
+	<!-- Business name -->
+	<div class="form-group">
+		<label class="sr-only" for="businessName">Business/Venue Name</label>
+		<div class="input-group mb-2">
+			<div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info"
+				title="Business/Venue Name">
+				<div class="input-group-text"><i class="fas fa-sign"></i>
+				</div>
+			</div>
+			<input type="text" class="form-control" id="businessName"
+                name="businessName" placeholder="Business/Venue Name"
+                minlength="2">
+            </div>
+		</div>
+        <div class="form-row">
+		<!-- Street -->
+		<div class="form-group col-md-6 public-collection-postal public-collection-address">
+			<label class="sr-only" for="businessStreet">Business/Venue
+              Address</label>
+			<div class="input-group mb-2">
+				{% include "components/tooltips/tooltip-address.html" %}
+				<input type="text" class="form-control" id="businessStreet"
+                name="businessStreet"
+                placeholder="Business/Venue Address (e.g. '8 High Street')"
+                minlength="2">
+            </div>
+			</div>
+			<!-- Town -->
+			<div class="form-group col-md-6 public-collection-postal public-collection-address">
+				<label class="sr-only" for="businessTown">Business/Venue Town
+              (e.g. '{{ hive }}')</label>
+				<div class="input-group mb-2">
+					{% include "components/tooltips/tooltip-town.html" %}
+					<input type="text" class="form-control" id="businessTown"
+                name="businessTown"
+                placeholder="Business/Venue Town (e.g. 'Newbury')" minlength="2"
+                >
+            </div>
+				</div>
+        </div>
+        
+		<div class="form-row">
+        <!-- County -->
+				<div class="form-group col-md-6 public-collection-postal public-collection-address postal-county">
+					<label class="sr-only" for="businessCounty">Business/Venue
+              County</label>
+					<div class="input-group mb-2">
+						{% include "components/tooltips/tooltip-county.html" %}
+						<input type="text" class="form-control" id="businessCounty"
+                name="businessCounty"
+                placeholder="Business/Venue County"
+                minlength="2">
+            </div>
+					</div>
+				<!-- Postcode -->
+				<div class="form-group col-md-6 public-collection-postal public-collection-address">
+					<label class="sr-only" for="businessPostcode">Business/Venue
+              Postcode</label>
+					<div class="input-group mb-2">
+						{% include "components/tooltips/tooltip-postcode.html" %}
+						<input type="text" class="form-control" id="businessPostcode"
+                name="businessPostcode"
+                placeholder="Business/Venue Postcode"
+                minlength="2">
+            </div>
+					</div>
+				</div>

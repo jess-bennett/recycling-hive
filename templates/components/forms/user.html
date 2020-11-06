@@ -1,0 +1,119 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <div class="card">
+        <div class="card-header text-center green-background">
+          {% if page_id == "register" %}
+          <a href="{{ url_for('find_a_hive') }}"  class="col-1 offset-11 btn-delete"><i
+                        class="fas fa-times-circle" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Pick another hive"></i></a>
+          <h4>Register</h4>
+          <h5>You are applying to join the {{ hive }} Hive</h5>
+          {% elif page_id == "login" %}
+          <h4>Log In</h4>
+          {% endif %}
+        </div>
+        <form class="card-body" method="POST"
+          action="{% if page_id == 'register' %}{{ url_for('register', hive=hive) }}{% elif page_id == 'login' %}{{ url_for('login') }}{% endif %}">
+          {% if page_id == "register" %}
+          <!-- Name -->
+          <div class="form-group row">
+            <label class="sr-only" for="username">Name</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-name.html" %}
+              <input type="text" class="form-control" id="username"
+                name="username" placeholder="Name" minlength="3" required>
+            </div>
+          </div>
+          {% endif %}
+          <!-- Email -->
+          <div class="form-group row">
+            <label class="sr-only" for="email">Email</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-email.html" %}
+              <input type="email" class="form-control" id="email" name="email"
+                placeholder="email" required>
+            </div>
+          </div>
+          <!-- Password -->
+          <div class="form-group row">
+            <label class="sr-only" for="password">Password</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fas fa-lock-open"></i>
+                </div>
+              </div>
+              <input type="password" class="form-control" id="password"
+                name="password" placeholder="Password"
+                aria-describedby="password-validation" minlength="8"
+                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$"
+                required>
+              <small id="password-validation" class="form-text col-12">
+                Your password must be at least 8 characters and contain at least
+                1 uppercase letter, 1 lowercase letter, and 1 number
+              </small>
+            </div>
+          </div>
+          {% if page_id == "register" %}
+          <!-- Confirm Password -->
+          <div class="form-group row">
+            <label class="sr-only" for="confirm-password">Confirm
+              Password</label>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><i class="fas fa-lock"></i></div>
+              </div>
+              <input type="password" class="form-control" id="confirm-password"
+                name="confirm-password" placeholder="Confirm Password"
+                required>
+              <small id="password-match" class="form-text col-12"></small>
+            </div>
+          </div>
+          <!-- Security Question -->
+          <div class="form-group row">
+            <label class="sr-only" for="securityQuestion">{{ security_question }}</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-security.html" %}
+              <textarea class="form-control" id="securityQuestion"
+                name="securityQuestion" placeholder="{{ security_question }}"
+                minlength="4" required></textarea>
+            </div>
+          </div>
+          <!-- Marketing -->
+          <div class="form-group row">
+            <label class="sr-only" for="marketing">Where did you hear about
+              Recycling Hive?</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-marketing.html" %}
+              <input type="text" class="form-control" id="marketing"
+                name="marketing"
+                placeholder="Where did you hear about Recycling Hive?"
+                minlength="5" required>
+            </div>
+          </div>
+          <!-- Postcode -->
+          <div class="form-group row">
+            <label class="sr-only" for="marketing">Your postcode</label>
+            <div class="input-group mb-2">
+              {% include "components/tooltips/tooltip-postcode.html" %}
+              <input type="text" class="form-control" id="postcode"
+                name="postcode"
+                placeholder="Your Postcode" aria-describedby="postcode-explanation"
+                minlength="5" required>
+                <small id="postcode-explanation" class="form-text col-12">
+                Your postcode will not appear on the site and is only used to help us understand where our members are.
+              </small>
+            </div>
+          </div>
+          {% endif %}
+          <!-- Submit -->
+          <div class="form-group row">
+            <button class="btn btn-outline-primary col"
+              type="submit">{% if page_id == "register" %}Register{% elif page_id == "login" %}Log In{% endif %}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

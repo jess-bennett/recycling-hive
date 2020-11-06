@@ -1,0 +1,109 @@
+{% extends "layout/base.html" %}
+{% set active_item = "home" %}
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <div class="card-body text-center green-background space-below">
+        {% if username == False %}
+        <h3>Welcome to the Recyling Hive</h3>
+        {% else %}
+        <h3>Welcome back to the {{ hive_name }} Hive,</h3>
+        <h3>{{ username }}!</h3>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<section id="home-hexagons">
+  <ul id="grid" class="clr">
+    {% if username == False %}
+    <li>
+        <a href="{{ url_for('demo') }}">
+        <div class="hexagon">
+            <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/exclamation.svg"/>
+            <p class="hexagon-text hexagon-text-background">Demo</p>
+        </div>
+        </a>
+    </li>
+    <li>
+      <a href="{{ url_for('login') }}">
+        <div class="hexagon">
+          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/user.svg"/>
+          <p class="hexagon-text hexagon-text-background">Log In</p>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="{{ url_for('find_a_hive') }}">
+        <div class="hexagon">
+          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/passport.svg"/>
+          <p class="hexagon-text hexagon-text-background">Register</p>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="{{ url_for('faqs') }}">
+        <div class="hexagon">
+          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/question.svg"/>
+          <p class="hexagon-text hexagon-text-background">FAQs</p>
+        </div>
+      </a>
+    </li>
+    {% else %}
+    <li>
+        <a href="{{ url_for('profile', username=session['username']) }}">
+        <div class="hexagon">
+            <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/user.svg"/>
+            <p class="hexagon-text hexagon-text-background">View Profile</p>
+        </div>
+        </a>
+    </li>
+    <li>
+      <a href="{{ url_for('add_new_collection') }}">
+        <div class="hexagon">
+          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/plus.svg"/>
+          <p class="hexagon-text hexagon-text-background">Add Collection</p>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="{{ url_for('get_recycling_categories') }}">
+        <div class="hexagon">
+          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/search.svg"/>
+          <p class="hexagon-text hexagon-text-background">Search Hive</p>
+        </div>
+      </a>
+    </li>
+    <li>
+      <a href="{{ url_for('contact') }}">
+        <div class="hexagon">
+          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/at.svg"/>
+          <p class="hexagon-text hexagon-text-background">Contact</p>
+        </div>
+      </a>
+    </li>
+    {% if is_queen_bee %}
+        <li>
+        <a href="{{ url_for('hive_management', username=session['username']) }}">
+            <div class="hexagon">
+            <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/users.svg"/>
+            <p class="hexagon-text hexagon-text-background">Manage Hive</p>
+            </div>
+        </a>
+        </li>
+    {% endif %}
+    <li>
+      <a href="{{ url_for('faqs') }}">
+        <div class="hexagon">
+          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/question.svg"/>
+          <p class="hexagon-text hexagon-text-background">FAQs</p>
+        </div>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</section>
+
+{% endblock %}

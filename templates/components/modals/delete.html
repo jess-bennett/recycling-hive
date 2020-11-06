@@ -1,0 +1,148 @@
+<!-- Delete profile modal -->
+{% if page_id == "profile" %}
+<div class="modal fade" id="modal-delete-profile" tabindex="-1" role="dialog"
+  aria-labelledby="modal-delete-profile-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100" id="modal-delete-profile-title">Delete
+          Profile</h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="delete-profile" class="card-body"
+          action="{{ url_for('delete_profile', route=page_id, member_id=user_id) }}">
+          <p class="warning-text">Are you sure you want to delete your
+            profile?<br>
+            This will remove all locations and recycling collections associated
+            with your user profile!
+          <p>
+            <!-- Submit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary"
+              data-dismiss="modal">Cancel</button>
+            <button id="submit-delete-profile" class="btn btn-outline-primary"
+              type="submit" name="submit-delete-profile">Delete
+              Profile!</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% for member in members if page_id == "management" %}
+<div class="modal fade" id="modal-delete-member-{{ member._id }}" tabindex="-1" role="dialog"
+  aria-labelledby="modal-delete-member-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100" id="modal-delete-member-title">Delete
+          {{ member.username }}'s Profile</h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="delete-profile" class="card-body"
+          action="{{ url_for('delete_profile', route=page_id, member_id=member._id) }}">
+          <p class="warning-text">Are you sure you want to delete {{ member.username }}'s'
+            profile?<br>
+            This will remove all locations and recycling collections associated
+            with this member!
+          <p>
+            <!-- Submit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary"
+              data-dismiss="modal">Cancel</button>
+            <button id="submit-delete-member" class="btn btn-outline-primary"
+              type="submit" name="submit-delete-member">Delete
+              Member!</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% for location in locations %}
+<!-- Delete location modal -->
+<div class="modal fade" id="modal-delete-location-{{ location._id }}" tabindex="-1" role="dialog"
+  aria-labelledby="modal-delete-location-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100" id="modal-delete-location-title">Delete {{ location.nickname }}
+          Location</h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="delete-location" class="card-body"
+          action="{{ url_for('delete_location', route=page_id, location_id=location._id) }}">
+          <p class="warning-text">Are you sure you want to delete this
+            location?<br>
+            This will also remove all recycling collections associated
+            with this location!
+          <p>
+            <!-- Submit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary"
+              data-dismiss="modal">Cancel</button>
+            <button id="submit-delete-location" class="btn btn-outline-primary"
+              type="submit" name="submit-delete-location">Delete
+              Location!</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+{% for collection in collections_dict %}
+<!-- Delete location modal -->
+<div class="modal fade" id="modal-delete-collection-{{ collection._id }}" tabindex="-1" role="dialog"
+  aria-labelledby="modal-delete-collection-title" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100" id="modal-delete-collection-title">Delete {{ collection.typeOfWaste }}
+          Collection</h4>
+
+        <button type="button" class="close" data-dismiss="modal"
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form name="delete-collection" class="card-body"
+          action="{{ url_for('delete_collection', route=page_id, collection_id=collection._id) }}">
+          <p class="warning-text">Are you sure you want to delete this
+            collection?
+          <p>
+            <!-- Submit -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-primary"
+              data-dismiss="modal">Cancel</button>
+            <button id="submit-delete-collection" class="btn btn-outline-primary"
+              type="submit" name="submit-delete-collection">Delete
+              Collection!</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}

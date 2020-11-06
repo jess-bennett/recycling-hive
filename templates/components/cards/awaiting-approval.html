@@ -1,0 +1,56 @@
+<!-- Public Collections card -->
+          <div class="card">
+            <div class="card-header green-background" id="headingPublicCollection">
+                <button class="btn btn-link collapsed text-left" data-toggle="collapse"
+                  data-target="#collapsePublicCollection" aria-expanded="false"
+                  aria-controls="collapsePublicCollection">
+                  <h5><i class="fas fa-building"></i> <strong>Public Collections for Approval</strong></h5>
+                  {% if page_id == "management" %}<h6>{{unapproved_collections|length}} current request(s)</h6>{% endif %}
+                </button>
+            </div>
+            <div id="collapsePublicCollection" class="collapse"
+              aria-labelledby="headingPublicCollection" data-parent="#accordion">
+              <div class="card-body">
+                <!-- Add collection -->
+                {% if page_id != "management" %}
+                <div class="container-fluid">
+                  <div class="row">
+                  <a href="{{ url_for('add_new_collection') }}" class="btn btn-outline-primary col-5 offset-7 col-md-3 offset-md-9 btn-add"
+              ><i class="fas fa-plus"></i> <strong>Add New Public
+                      Collection</strong></a>
+                  </div>
+                </div>
+                {% endif %}
+                {% if unapproved_collections %}
+                {% for collection in unapproved_collections %}
+                <hr class="green-line">
+                {% include "components/details/public-collection.html" %}
+                <!-- Approve/deny collection -->
+                <div class="container-fluid">
+                  <div class="row">
+                    <div id="deny-collection"
+                      class="btn col-1 offset-10 btn-delete" data-toggle="modal"
+                      data-target="#modal-delete-public-collection-request-{{ collection._id }}"><i
+                        class="fas fa-times-circle" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Delete collection"></i></div>
+                    <div id="approve-collection" class="btn col-1 btn-edit"
+                      data-toggle="modal" data-target="#modal-approve-public-collection-request-{{ collection._id }}"><i
+                        class="fas fa-check-circle" data-toggle="tooltip"
+                        data-placement="top" data-type="info" title="Approve collection"></i>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                    {% if page_id != "management" %}
+                <p><strong>You do not currently have any unapproved public collections! Want
+                    to add one?</strong></p>
+                    {% else %}
+                    <p><strong>There are no public collections awaiting approval.</strong></p>
+                    {% endif %}
+                {% endif %}
+              </div>
+            </div>
+            
+          </div>

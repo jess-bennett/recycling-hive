@@ -1,0 +1,14 @@
+{% extends "layout/base.html" %}
+{% set active_item = "categories" %}
+{% block content %}
+
+{% include "components/navigation/breadcrumbs.html" %}
+
+{% include "components/navigation/dropdown.html" %}
+
+<!-- Show all categories -->
+<div id="category-layout">
+  {% include "components/hexagons.html" %}
+</div>
+
+{% endblock %}

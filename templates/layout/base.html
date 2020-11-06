@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include "layout/head.html" %}
+</head>
+
+<body>
+  <header>
+    {% set active_item = active_item|default("home") %}
+    {% include "components/navigation/navbar.html" %}
+  </header>
+
+  <!-- flash messages -->    
+  <section>
+    {% include "components/flash-messages.html" %}
+  </section>
+
+  <main>
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <footer class="container-fluid honeycomb-green">
+    {% include "components/footer.html" %}
+  </footer>
+{% include "layout/scripts.html" %}
+</body>
+
+</html>

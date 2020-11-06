@@ -1,0 +1,84 @@
+{% extends "layout/base.html" %}
+{% block nav_home %}active{% endblock %}
+{% block content %}
+
+<section id="profile-page">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10 offset-md-1">
+        <div id="accordion">
+          <!-- Details card -->
+          <div class="card">
+            <div class="card-header green-background" id="headingProfile">
+              <h5 class="mb-0">
+                <button class="btn btn-link" data-toggle="collapse"
+                  data-target="#collapseProfile" aria-expanded="true"
+                  aria-controls="collapseProfile">
+                  <i class="fas fa-user"></i> <strong>Your Details</strong>
+                </button>
+              </h5>
+            </div>
+            <div id="collapseProfile" class="collapse show"
+              aria-labelledby="headingProfile" data-parent="#accordion">
+              <div class="card-body">
+                {% include "components/details/member.html" %}
+                <!-- Amend profile -->
+                <hr>
+                <div class="container-fluid">
+                  <div class="row">
+                    <div id="delete-profile"
+                      class="btn col-1 offset-10 btn-delete" data-toggle="modal"
+                      data-target="#modal-delete-profile"><i
+                        class="fas fa-trash-alt" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Delete"></i></div>
+                    <div id="amend-profile" class="btn col-1 btn-edit"
+                      data-toggle="modal" data-target="#modal-edit-profile"><i
+                        class="fas fa-edit" data-toggle="tooltip"
+                        data-placement="top" data-type="info" title="Edit"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Activity card -->
+          {% if member_type == "Busy Bee" %}
+          <div class="card">
+          {% endif %}
+          <div class="card-header green-background space-below">
+            <h5 id="hive-activity" class="mb-0">
+              <strong>Your Hive Activity</strong>
+            </h5>
+          </div>
+          {% if member_type == "Busy Bee" %}
+          <div class="card-body">
+            <p>As a Busy Bee, you are not able to add private collection points for the Hive.<br>
+            To become a Worker Bee, please click 'Become a Worker Bee!' below and add your location and details for your first private collection. Once this has been approved
+            by the Queen Bee(s), you will be able to add more locations and collections without waiting for approval.</p>
+          </div>
+          </div>
+          <a href="{{ url_for('add_new_collection') }}" class="btn btn-outline-primary col space-below"
+              ><i class="fas fa-hard-hat"></i> <strong>Become a Worker Bee!</strong></a>
+          {% else %}
+          {% include "components/cards/locations.html" %}
+          {% include "components/cards/collections.html" %}
+          {% endif %}
+          
+          {% include "components/cards/awaiting-approval.html" %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "components/modals/edit.html" %}
+
+{% include "components/modals/delete.html" %}
+
+{% if member_type != "Busy Bee" %}
+    {% include "components/modals/add-location.html" %}
+{% endif %}
+
+{% endblock %}

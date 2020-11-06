@@ -1,0 +1,43 @@
+<!-- Member details -->
+          <div class="card" id="member-details">
+            <div class="card-header green-background" id="headingMemberDetails">
+              <h5 class="mb-0">
+                <button class="btn btn-link collapsed" data-toggle="collapse"
+                  data-target="#collapseMemberDetails" aria-expanded="false"
+                  aria-controls="collapseMemberDetails">
+                  <i class="fas fa-user"></i> <strong>Member Details</strong>
+                </button>
+              </h5>
+            </div>
+            <div id="collapseMemberDetails" class="collapse" aria-labelledby="headingMemberDetails"
+              data-parent="#accordion">
+              <div class="card-body">
+                {% if members %}
+                    {% for member in members %}
+                        <h6><strong>{{ member.username }}'s Details</strong></h6>
+                        <hr>
+                        {% include "components/details/member.html" %}
+                    <!-- Amend profile -->
+                    <div class="container-fluid">
+                    <div class="row">
+                        <div id="delete-profile"
+                        class="btn col-1 offset-10 btn-delete" data-toggle="modal"
+                        data-target="#modal-delete-member-{{ member._id }}"><i
+                            class="fas fa-trash-alt" data-toggle="tooltip"
+                            data-placement="top" data-type="info"
+                            title="Delete"></i></div>
+                        <div id="amend-profile" class="btn col-1 btn-edit"
+                        data-toggle="modal" data-target="#modal-edit-member-{{ member._id }}"><i
+                            class="fas fa-edit" data-toggle="tooltip"
+                            data-placement="top" data-type="info" title="Edit"></i>
+                        </div>
+                    </div>
+                    </div>
+                    <hr class="green-line">
+                    {% endfor %}
+                    {% else %}
+                    <p><strong>There are no members in your Hive</strong></p>
+                {% endif %}
+              </div>
+            </div>
+          </div>

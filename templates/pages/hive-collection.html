@@ -1,0 +1,18 @@
+{% extends "layout/base.html" %}
+{% set active_item = "collections" %}
+{% block content %}
+
+{% include "components/navigation/breadcrumbs.html" %}
+
+{% include "components/navigation/dropdown.html" %}
+
+<!-- Item collection accordion -->
+<div id="collection-layout">
+  {% include "components/hexagons.html" %}
+</div>
+
+<!-- Collection details modal -->
+{% include "components/modals/collection-details.html" %}
+
+
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "layout/base.html" %}
+{% block nav_home %}active{% endblock %}
+{% block content %}
+
+<section id="hive-management-page">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-10 offset-md-1">
+        <div id="accordion">
+          <!-- Activity card -->
+          <div class="card-header green-background space-below">
+            <h5 class="mb-0">
+              <strong>Hive Management</strong>
+            </h5>
+          </div>
+          <div class="row space-below">
+            <div class="col-6">
+				<button type="button" id="btn-manage-requests"
+                    class="btn btn-outline-primary col active">Manage Requests
+                </button>
+            </div>
+            <div class="col-6">
+                <button type="button" id="btn-manage-members"
+                    class="btn btn-outline-primary col">Manage Members
+                </button>
+            </div>
+          </div>
+          {% include "components/cards/management-member-requests.html" %}
+          {% include "components/cards/management-worker-bee-requests.html" %}
+          {% include "components/cards/awaiting-approval.html" %}
+          {% include "components/cards/management-members.html" %}
+          {% include "components/cards/management-locations.html" %}
+          {% include "components/cards/management-collections.html" %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% include "components/modals/management-approval.html" %}
+
+{% include "components/modals/edit.html" %}
+
+{% include "components/modals/delete.html" %}
+
+{% endblock %}
