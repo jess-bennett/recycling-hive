@@ -98,14 +98,15 @@ def home():
 @app.route("/register")
 def find_a_hive():
     hives = mongo.db.hives.find()
-    if session["user"] == "demo@demo.com":
-        # Remove session variables for Demo login
-        session.pop("user")
-        session.pop("username")
-        session.pop("user_id")
-        session.pop("hive")
-        session.pop("member_type")
-        return render_template("pages/find-a-hive.html", hives=hives)
+    if session.get("user"):
+        if session["user"] == "demo@demo.com":
+            # Remove session variables for Demo login
+            session.pop("user")
+            session.pop("username")
+            session.pop("user_id")
+            session.pop("hive")
+            session.pop("member_type")
+            return render_template("pages/find-a-hive.html", hives=hives)
 
     return render_template("pages/find-a-hive.html", hives=hives)
 

@@ -127,6 +127,10 @@
   transform: translateX(50%) rotate(-60deg) skewY(30deg);
 }
 
+#grid li:nth-last-child(1){
+ margin-bottom: 0.5%;
+}
+
 #grid li:nth-child(6n+1) { 
   margin-left: 0.5%;
 }
@@ -145,7 +149,7 @@
 #grid li:nth-child(8n+5),
 #grid li:nth-child(8n+6),
 #grid li:nth-child(8n+7),
-#grid li:nth-child(8n+8) {
+#grid li:nth-child(8n+8){
   margin-top: -6.1%;
   margin-bottom: -6.1%;
   -o-transform: translateX(50%) rotate(-60deg) skewY(30deg);
@@ -153,6 +157,10 @@
   -webkit-transform: translateX(50%) rotate(-60deg) skewY(30deg);
   -ms-transform: translateX(50%) rotate(-60deg) skewY(30deg);
   transform: translateX(50%) rotate(-60deg) skewY(30deg);
+}
+
+#grid li:nth-last-child(1){
+ margin-bottom: 0.5%;
 }
 
 #grid li:nth-child(8n+5) {
