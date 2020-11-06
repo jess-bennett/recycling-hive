@@ -21,12 +21,18 @@
             <a class="nav-link"
               href="{{ url_for('get_recycling_categories') }}">Hive</a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
-          </li>
+            {% if session.user == "demo@demo.com" %}
+                <li class="nav-item {% if active_item == 'register' %}active{% endif %}">
+                    <a class="nav-link" href="{{ url_for('find_a_hive') }}">Register</a>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Log Out</a>
+                </li>
+            {% endif %}
           {% else %}
           <li class="nav-item {% if active_item == 'demo' %}active{% endif %}">
-            <a class="nav-link" href="#">Demo</a>
+            <a class="nav-link" href="{{ url_for('demo') }}">Demo</a>
           </li>
           <li class="nav-item {% if active_item == 'login' %}active{% endif %}">
             <a class="nav-link" href="{{ url_for('login') }}">Login</a>
