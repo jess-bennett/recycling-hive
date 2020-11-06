@@ -34,7 +34,7 @@
                     <div class="input-group mb-2">
                         {% include "components/tooltips/tooltip-address.html" %}
                         <p class="form-control">{{ collection.street }},
-                        {{ collection.town }}, {{ collection.postcode }}
+                        {{ collection.town }}, {% if collection.postalDropoff == "postal" %}{{ collection.county }},{% endif %} {{ collection.postcode }}
                         </p>
                     </div>
                     </div>

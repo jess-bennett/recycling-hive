@@ -904,6 +904,7 @@ def add_public_collection():
             "businessName": request.form.get("businessName"),
             "street": request.form.get("businessStreet"),
             "town": request.form.get("businessTown"),
+            "county": request.form.get("businessCounty"),
             "postcode": request.form.get("businessPostcode"),
             "categoryName": category_name,
             "typeOfWaste": type_of_waste,

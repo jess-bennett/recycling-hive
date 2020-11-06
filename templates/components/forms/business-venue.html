@@ -1,6 +1,6 @@
-<div class="form-row">
+
 	<!-- Business name -->
-	<div class="form-group col-md-6">
+	<div class="form-group">
 		<label class="sr-only" for="businessName">Business/Venue Name</label>
 		<div class="input-group mb-2">
 			<div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info"
@@ -13,6 +13,7 @@
                 minlength="2">
             </div>
 		</div>
+        <div class="form-row">
 		<!-- Street -->
 		<div class="form-group col-md-6 public-collection-postal public-collection-address">
 			<label class="sr-only" for="businessStreet">Business/Venue
@@ -25,8 +26,6 @@
                 minlength="2">
             </div>
 			</div>
-		</div>
-		<div class="form-row">
 			<!-- Town -->
 			<div class="form-group col-md-6 public-collection-postal public-collection-address">
 				<label class="sr-only" for="businessTown">Business/Venue Town
@@ -39,6 +38,21 @@
                 >
             </div>
 				</div>
+        </div>
+        
+		<div class="form-row">
+        <!-- County -->
+				<div class="form-group col-md-6 public-collection-postal public-collection-address postal-county">
+					<label class="sr-only" for="businessCounty">Business/Venue
+              County</label>
+					<div class="input-group mb-2">
+						{% include "components/tooltips/tooltip-county.html" %}
+						<input type="text" class="form-control" id="businessCounty"
+                name="businessCounty"
+                placeholder="Business/Venue County"
+                minlength="2">
+            </div>
+					</div>
 				<!-- Postcode -->
 				<div class="form-group col-md-6 public-collection-postal public-collection-address">
 					<label class="sr-only" for="businessPostcode">Business/Venue
