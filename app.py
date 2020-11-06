@@ -1346,6 +1346,15 @@ def get_recycling_collections(item_id):
          {"$unwind": "$recyclableItems"},
          {
           "$lookup": {
+            "from": "itemCategory",
+            "localField": "recyclableItems.categoryID",
+            "foreignField": "_id",
+            "as": "itemCategory"
+          },
+         },
+         {"$unwind": "$itemCategory"},
+         {
+          "$lookup": {
             "from": "collectionLocations",
             "localField": "locationID",
             "foreignField": "_id",
@@ -1354,6 +1363,7 @@ def get_recycling_collections(item_id):
          },
          {"$unwind": "$collectionLocations"},
          {"$project": {
+          "categoryName": "$itemCategory.categoryName",
           "typeOfWaste": "$recyclableItems.typeOfWaste",
           "hiveMembers": "$hiveMembers.username",
           "street": "$collectionLocations.street",
@@ -1380,9 +1390,19 @@ def get_recycling_collections(item_id):
              },
             },
             {"$unwind": "$recyclableItems"},
+            {
+            "$lookup": {
+                "from": "itemCategory",
+                "localField": "recyclableItems.categoryID",
+                "foreignField": "_id",
+                "as": "itemCategory"
+            },
+            },
+            {"$unwind": "$itemCategory"},
             {"$project": {
              "localNational": 1,
              "postalDropoff": 1,
+             "categoryName": "$itemCategory.categoryName",
              "typeOfWaste": "$recyclableItems.typeOfWaste",
              "businessName": 1,
              "street": 1,
@@ -1456,6 +1476,15 @@ def get_recycling_members(member_type):
         },
         {"$unwind": "$recyclableItems"},
         {
+        "$lookup": {
+            "from": "itemCategory",
+            "localField": "recyclableItems.categoryID",
+            "foreignField": "_id",
+            "as": "itemCategory"
+        },
+        },
+        {"$unwind": "$itemCategory"},
+        {
          "$lookup": {
             "from": "collectionLocations",
             "localField": "itemCollections.locationID",
@@ -1465,6 +1494,7 @@ def get_recycling_members(member_type):
         },
         {"$unwind": "$collectionLocations"},
         {"$project": {
+         "categoryName": "$itemCategory.categoryName",
          "typeOfWaste": "$recyclableItems.typeOfWaste",
          "street": "$collectionLocations.street",
          "town": "$collectionLocations.town",
@@ -1473,7 +1503,7 @@ def get_recycling_members(member_type):
          "charityScheme": "$itemCollections.charityScheme"
          }
          },
-        {"$sort": {"typeOfWaste": 1}}
+        {"$sort": {"categoryName": 1, "typeOfWaste": 1}}
         ]))
     return render_template(
         "pages/hive-member.html",
