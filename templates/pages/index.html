@@ -84,14 +84,6 @@
         </div>
       </a>
     </li>
-    <li>
-      <a href="{{ url_for('faqs') }}">
-        <div class="hexagon">
-          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/question.svg"/>
-          <p class="hexagon-text hexagon-text-background">FAQs</p>
-        </div>
-      </a>
-    </li>
     {% if is_queen_bee %}
         <li>
         <a href="{{ url_for('hive_management', username=session['username']) }}">
@@ -102,6 +94,14 @@
         </a>
         </li>
     {% endif %}
+    <li>
+      <a href="{{ url_for('faqs') }}">
+        <div class="hexagon">
+          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/question.svg"/>
+          <p class="hexagon-text hexagon-text-background">FAQs</p>
+        </div>
+      </a>
+    </li>
     {% endif %}
   </ul>
 </section>
