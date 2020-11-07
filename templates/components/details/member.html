@@ -24,7 +24,7 @@
                     {% endif %}
 				</div>
 			</div>
-			<p class="form-control">
+			<p class="form-control item-display">
             {% if page_id == "management" %}
                 {% if member.isQueenBee == True %}
                         Queen Bee
@@ -45,7 +45,7 @@
 	<div class="form-group col-md-6">
 		<div class="input-group mb-2">
 			{% include "components/tooltips/tooltip-name.html" %}
-			<p class="form-control">
+			<p class="form-control item-display">
                 {% if page_id == "management" %}
                     {{ member.username }}
                 {% else %}
@@ -58,7 +58,7 @@
 	<div class="form-group col-md-6">
 		<div class="input-group mb-2">
 			{% include "components/tooltips/tooltip-email.html" %}
-			<p class="form-control">
+			<p class="form-control item-display">
                 {% if page_id == "management" %}
                     {{ member.email }}
                 {% else %}

@@ -3,14 +3,14 @@
                   <div class="form-group col-md-3">
                     <div class="input-group mb-2">
                       {% include "components/tooltips/tooltip-nickname.html" %}
-                      <p class="form-control">{{ location.nickname }}</p>
+                      <p class="form-control item-display">{{ location.nickname }}</p>
                     </div>
                   </div>
                   <!-- Address -->
                   <div class="form-group col-md-9">
                     <div class="input-group mb-2">
                       {% include "components/tooltips/tooltip-address.html" %}
-                      <p class="form-control">
+                      <p class="form-control item-display">
                         {{ location.street }}, {{ location.town }},
                         {{ location.postcode }}
                       </p>

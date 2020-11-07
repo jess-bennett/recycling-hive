@@ -246,6 +246,10 @@ small.warning-text {
   margin-bottom: 1.5rem;
 }
 
+.form-control.item-display {
+    height: 100%;
+}
+
 /* Modals */
 .modal-content {
   border: 0.5rem solid #3a5c2d;

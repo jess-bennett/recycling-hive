@@ -3,14 +3,14 @@
                   <div class="form-group col-md-6">
                     <div class="input-group mb-2">
                       {% include "components/tooltips/tooltip-category.html" %}
-                      <p class="form-control">{{ collection.categoryName }}</p>
+                      <p class="form-control item-display">{{ collection.categoryName }}</p>
                     </div>
                   </div>
                   <!-- Type of waste -->
                   <div class="form-group col-md-6">
                     <div class="input-group mb-2">
                       {% include "components/tooltips/tooltip-waste.html" %}
-                      <p class="form-control">{{ collection.typeOfWaste }}</p>
+                      <p class="form-control item-display">{{ collection.typeOfWaste }}</p>
                     </div>
                   </div>
                 </div>
@@ -18,7 +18,7 @@
                 <div class="form-group">
                   <div class="input-group mb-2">
                     {% include "components/tooltips/tooltip-address.html" %}
-                    <p class="form-control">{{ collection.street }},
+                    <p class="form-control item-display">{{ collection.street }},
                       {{ collection.town }}, {{ collection.postcode }}
                     </p>
                   </div>
@@ -27,13 +27,13 @@
                 <div class="form-group">
                   <div class="input-group mb-2">
                     {% include "components/tooltips/tooltip-notes.html" %}
-                    <p class="form-control">{{ collection.conditionNotes }}</p>
+                    <p class="form-control item-display">{{ collection.conditionNotes }}</p>
                   </div>
                 </div>
                 <!-- Charity Scheme -->
                   <div class="form-group">
                     <div class="input-group mb-2">
                       {% include "components/tooltips/tooltip-charity.html" %}
-                      <p class="form-control">{{ collection.charityScheme }}</p>
+                      <p class="form-control item-display">{{ collection.charityScheme }}</p>
                     </div>
                   </div>
