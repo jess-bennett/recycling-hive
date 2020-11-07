@@ -77,19 +77,46 @@ def home():
     try:
         username = session["username"]
         user_id = ObjectId(session["user_id"])
+        # Check if demo login and if so, assign Demo hive name
         if user_id == ObjectId("5fa43cf801329c2053c8067f"):
             hive_name = "Demo"
         else:
             hive_name = mongo.db.hives.find_one(
                 {"_id": ObjectId(session["hive"])})["name"]
+        # Check whether queen bee
         if mongo.db.hiveMembers.find_one(
                 {"_id": user_id, "isQueenBee": True}):
             is_queen_bee = True
         else:
             is_queen_bee = False
+        # Check whether approved member
+        if mongo.db.hiveMembers.find_one(
+                {"_id": ObjectId(session["user_id"]), "approvedMember": True}):
+            approved_member = True
+        else:
+            approved_member = False
+        # Check whether waiting for worker bee approval
+        if mongo.db.firstCollection.find_one({"memberID": ObjectId(user_id)}):
+            awaiting_approval = True
+        else:
+            awaiting_approval = False
+        # Check whether has public collections to be approved
+        if mongo.db.publicCollections.find_one(
+                {"memberID": ObjectId(user_id)}):
+            public_approval = True
+        else:
+            public_approval = False
+        # Get list of public collections to be approved
+        unapproved_collections = list(mongo.db.publicCollections.find(
+            {"memberID": ObjectId(user_id),
+             "approvedCollection": False}).sort("businessName"))
         return render_template("pages/index.html",
                                username=username, hive_name=hive_name,
-                               page_id="home", is_queen_bee=is_queen_bee)
+                               page_id="home", is_queen_bee=is_queen_bee,
+                               approved_member=approved_member,
+                               awaiting_approval=awaiting_approval,
+                               public_approval=public_approval,
+                               unapproved_collections=unapproved_collections)
     except:
         return render_template(
             "pages/index.html", username=False, page_id="home")

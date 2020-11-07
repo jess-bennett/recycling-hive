@@ -68,6 +68,14 @@ span.internal-link {
   margin-bottom: 1.5rem;
 }
 
+#notification-bar {
+    text-align: right;
+    background-color: #f1f3b8;
+    color: #8C0A06;
+    padding: 0.5rem;
+    font-size: 1.2rem;
+}
+
 /* Register */
 .card {
   margin-bottom: 1.5rem;

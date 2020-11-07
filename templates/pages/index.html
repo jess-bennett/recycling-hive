@@ -6,10 +6,21 @@
   <div class="row">
     <div class="col-md-10 offset-md-1">
       <div class="card-body text-center green-background space-below">
+    <div id="notification-bar" class="row space-below">
+    <i class="col-2 offset-6 col-md-1 offset-md-9 {% if approved_member == False%}fas fa-user-slash{% endif %}" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Membership currently unapproved"></i>
+    <i class="col-2 col-md-1 {% if awaiting_approval %}fas fa-hard-hat{% endif %}" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Currently waiting for Worker Bee approval"></i>
+    <i class="col-2 col-md-1 {% if public_approval %}fas fa-globe-europe{% endif %}" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="{{ unapproved_collections|length }} public collection(s) to be approved"></i>
+    </div>
         {% if username == False %}
         <h3>Welcome to the Recyling Hive</h3>
         {% else %}
-        <h3>Welcome back to the {{ hive_name }} Hive,</h3>
+        <h3>Welcome to the {{ hive_name }} Hive,</h3>
         <h3>{{ username }}!</h3>
         {% endif %}
       </div>
