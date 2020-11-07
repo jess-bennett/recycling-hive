@@ -85,7 +85,7 @@ span.internal-link {
 
 .btn-outline-primary {
   color: #333;
-  font-size: 1.3rem;
+  font-size: 1rem;
   border-color: #3a5c2d;
   border-width: 0.2rem;
 }
@@ -137,10 +137,6 @@ span.internal-link {
   font-size: 1rem;
   color: #8C0A06;
   padding: 0.5rem;
-}
-
-.btn-form {
-    font-size: 1rem;
 }
 
 .btn-edit:hover {
@@ -316,7 +312,7 @@ footer a:hover {
       font-size: 1.5rem;
   }
 
-  .btn-form {
+  .btn-outline-primary {
     font-size: 1.3rem;
 }
 }
