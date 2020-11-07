@@ -16,6 +16,14 @@
           class="internal-link">Contact me</a> to discuss setting one up!</h5>
     </div>
   </div>
+  <div class="row text-center">
+    <div class="col">
+      <p class="">
+        Already registered? <a href="{{ url_for('login') }}"
+          class="internal-link">Log In</a>
+      </p>
+    </div>
+  </div>
 </div>
 <section id="home-hexagons">
   <ul id="grid" class="clr home hexagon-large">
@@ -31,5 +39,4 @@
     {% endfor %}
   </ul>
 </section>
-
 {% endblock %}
