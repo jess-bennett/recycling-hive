@@ -88,6 +88,7 @@
 
 
 .hexagon-text {
+  font-size: 0.8rem;
   width: 100%;
   color: #333;
   text-align: center;
@@ -137,6 +138,9 @@
 }
 
 @media screen and (min-width: 992px) {
+    .hexagon-text {
+  font-size: 1.2rem;
+    }
     #grid li {
   width: 22.5%;
   padding: 0 0 26.03755254041571% 0;

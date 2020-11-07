@@ -130,19 +130,28 @@ span.internal-link {
 .btn-edit {
   font-size: 1rem;
   color: #bdc312;
+  padding: 0.5rem;
 }
 
 .btn-delete {
   font-size: 1rem;
   color: #8C0A06;
+  padding: 0.5rem;
+}
+
+.btn-form {
+    font-size: 1rem;
 }
 
 .btn-edit:hover {
   border: 1px solid #bdc312;
+  border-radius: 0.25rem;
+
 }
 
 .btn-delete:hover {
   border: 1px solid #8C0A06;
+  border-radius: 0.25rem;
 }
 
 a.btn-delete:hover {
@@ -258,7 +267,7 @@ small.warning-text {
 
 /* Footer */
 footer {
-  font-size: 1.8rem;
+  font-size: 1.2rem;
   min-height: 3rem;
   color: #333;
   position: fixed;
@@ -279,7 +288,7 @@ footer a:hover {
   color: #3a5c2d;
 }
 
-.footer--text {
+.footer-text {
   font-size: 1rem;
   margin: 0;
   font-weight: bold;
@@ -293,11 +302,17 @@ footer a:hover {
 
 /* Media queries */
 @media screen and (min-width: 992px) {
-
+    footer {
+  font-size: 1.8rem;
+    }
   .navbar-nav .nav-link {
     padding-bottom: 0rem;
   }
   .hexagon-text {
       font-size: 1.5rem;
   }
+
+  .btn-form {
+    font-size: 1.3rem;
+}
 }
