@@ -3,8 +3,8 @@
             <div class="card-header green-background btn btn-link collapsed text-left" id="headingPublicCollection" data-toggle="collapse"
                   data-target="#collapsePublicCollection" aria-expanded="false"
                   aria-controls="collapsePublicCollection">
-                  <h5><i class="fas fa-building"></i> <strong>Public Collections for Approval</strong></h5>
-                  {% if page_id == "management" %}<h6>{{unapproved_collections|length}} current request(s)</h6>{% endif %}
+                  <h5><i class="fas fa-building"></i> <strong>Public Collections</strong></h5>
+                  {% if page_id == "management" %}<h6>{{unapproved_collections|length}} current submission(s)</h6>{% endif %}
             </div>
             <div id="collapsePublicCollection" class="collapse"
               aria-labelledby="headingPublicCollection" data-parent="#accordion">
@@ -20,6 +20,9 @@
                 </div>
                 {% endif %}
                 {% if unapproved_collections %}
+                {% if page_id != "management" %}
+                <h4>Unapproved Submissions</h4>
+                {% endif %}
                 {% for collection in unapproved_collections %}
                 <hr class="green-line">
                 {% include "components/details/public-collection.html" %}
@@ -58,6 +61,13 @@
                     {% else %}
                     <p><strong>There are no public collections awaiting approval.</strong></p>
                     {% endif %}
+                {% endif %}
+                {% if collections_dict_public %}
+                <h4>Approved Submissions</h4>
+                {% for collection in collections_dict_public %}
+                <hr class="green-line">
+                {% include "components/details/public-collection.html" %}
+                {% endfor %}
                 {% endif %}
               </div>
             </div>

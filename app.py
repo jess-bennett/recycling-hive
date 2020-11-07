@@ -582,10 +582,51 @@ def profile(username):
          },
         {"$sort": {"categoryName": 1, "typeOfWaste": 1}}
         ]))
-    # Get list of unapproved public collections
+    # Get list of unapproved public collections for public collection card
     unapproved_collections = list(mongo.db.publicCollections.find(
         {"memberID": user_id,
          "approvedCollection": False}).sort("businessName"))
+    # Create new dictionary of approved public collections from this member
+    # for public collections card
+    collections_dict_public = list(mongo.db.publicCollections.aggregate(
+        [{"$match": {"approvedCollection": True,
+          "addedBy": user_id}},
+            {
+             "$lookup": {
+              "from": "recyclableItems",
+              "localField": "itemID",
+              "foreignField": "_id",
+              "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {
+            "$lookup": {
+                "from": "itemCategory",
+                "localField": "recyclableItems.categoryID",
+                "foreignField": "_id",
+                "as": "itemCategory"
+            },
+            },
+            {"$unwind": "$itemCategory"},
+            {"$project": {
+             "localNational": 1,
+             "postalDropoff": 1,
+             "categoryName": "$itemCategory.categoryName",
+             "typeOfWaste": "$recyclableItems.typeOfWaste",
+             "businessName": 1,
+             "street": 1,
+             "town": 1,
+             "county": 1,
+             "postcode": 1,
+             "id": 1,
+             "conditionNotes": 1,
+             "charityScheme": 1,
+             "dateAdded": 1
+             }
+             },
+            {"$sort": {"dateAdded": -1}}
+         ]))
     # Check whether user has submitted first collection for approval
     if mongo.db.firstCollection.find_one(
             {"memberID": ObjectId(user_id)}):
@@ -598,6 +639,7 @@ def profile(username):
                            member_type=session["member_type"],
                            locations=locations,
                            collections_dict=collections_dict,
+                           collections_dict_public=collections_dict_public,
                            unapproved_collections=unapproved_collections,
                            page_id="profile",
                            awaiting_approval=awaiting_approval)
