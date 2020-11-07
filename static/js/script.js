@@ -1,7 +1,8 @@
 $(document).ready(function() {
+  /* ADD COLLECTION PAGE */
   $(".private-collection").hide(); /* Hide private-collection input on page load   */
   $(".public-collection").hide(); /* Hide public-collection input on page load   */
-  $("#awaiting-approval").hide(); /* Hide approval text on page load   */
+  $("#awaiting-approval-text").hide(); /* Hide approval text on page load   */
   
   /* Hide redundant form elements for typeofwaste/category on page load */
   $("#form-itemCategory").hide(); /* Hide input forms on page load to allow user to select from dropdown instead */
@@ -9,6 +10,7 @@ $(document).ready(function() {
   $("#instructions-addTypeOfWaste").hide(); /* Hide input form instructions on page load to allow user to select from dropdown instead */
   $("#select-itemCategory").hide(); /* Hide select category on page load as not needed unless new type of waste added */
   $("#instructions-addItemCategory").hide(); /* Hide select category instructions on page load as not needed unless new type of waste added */
+  /* HIVE MANAGEMENT PAGE */
   $("#member-details").hide(); /* Hide member details on page load until details button selected on page   */
   $("#location-details").hide(); /* Hide location details on page load until details button selected on page   */
   $("#collection-details").hide(); /* Hide collection details on page load until details button selected on page   */
@@ -50,7 +52,7 @@ $("input:radio[name='collectionType']").change(
         let memberType = $("input[name=collectionType]:checked").attr("data-id");
         let awaitingApproval = $("input[name=collectionType]:checked").attr("data-info");
         if (this.checked && this.value == "public") {
-            $("#awaiting-approval").hide(); /* Hide approval text   */   
+            $("#awaiting-approval-text").hide(); /* Hide approval text   */   
             $(".private-collection").hide(); /* Hide inputs for private collection */
             $(".public-collection-radios").show(); /* Show radios for public collection */
             $(".public-collection-radio-two").hide(); /* Hide second radio for public collection */
@@ -61,7 +63,7 @@ $("input:radio[name='collectionType']").change(
         if (this.checked && this.value == "private") {
             $(".public-collection").hide(); /* Hide inputs for public collection */
             if (awaitingApproval == "True") {
-            $("#awaiting-approval").show(); /* Show approval text   */      
+            $("#awaiting-approval-text").show(); /* Show approval text   */      
             } else {
             $(".private-collection").show(); /* Show inputs for private collection */
             $("#locationID").prop("required", true); /* Add required attribute for private locationID */
@@ -186,6 +188,7 @@ $("select#editLocation").change(function() {
 $("#btn-manage-requests").click(function() {
   $("#btn-manage-members").removeClass("active");
   $("#btn-manage-requests").addClass("active");
+  $("#awaiting-approval").show();
   $("#membership-requests").show();
   $("#workerbee-requests").show();
   $("#member-details").hide();
@@ -196,6 +199,7 @@ $("#btn-manage-requests").click(function() {
 $("#btn-manage-members").click(function() {
   $("#btn-manage-members").addClass("active");
   $("#btn-manage-requests").removeClass("active");
+  $("#awaiting-approval").hide();
   $("#membership-requests").hide();
   $("#workerbee-requests").hide();
   $("#member-details").show();

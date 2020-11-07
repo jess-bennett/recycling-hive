@@ -1,12 +1,10 @@
 <!-- Public Collections card -->
-          <div class="card">
-            <div class="card-header green-background" id="headingPublicCollection">
-                <button class="btn btn-link collapsed text-left" data-toggle="collapse"
+          <div class="card" id="awaiting-approval">
+            <div class="card-header green-background btn btn-link collapsed text-left" id="headingPublicCollection" data-toggle="collapse"
                   data-target="#collapsePublicCollection" aria-expanded="false"
                   aria-controls="collapsePublicCollection">
-                  <h5><i class="fas fa-building"></i> <strong>Public Collections for Approval</strong></h5>
-                  {% if page_id == "management" %}<h6>{{unapproved_collections|length}} current request(s)</h6>{% endif %}
-                </button>
+                  <h5><i class="fas fa-building"></i> <strong>Public Collections</strong></h5>
+                  {% if page_id == "management" %}<h6>{{unapproved_collections|length}} current submission(s)</h6>{% endif %}
             </div>
             <div id="collapsePublicCollection" class="collapse"
               aria-labelledby="headingPublicCollection" data-parent="#accordion">
@@ -15,19 +13,32 @@
                 {% if page_id != "management" %}
                 <div class="container-fluid">
                   <div class="row">
-                  <a href="{{ url_for('add_new_collection') }}" class="btn btn-outline-primary col-9 offset-3 col-md-3 offset-md-9 btn-add space-below"
-              ><i class="fas fa-plus"></i> <strong>Add New Public
-                      Collection</strong></a>
+                  <a href="{{ url_for('add_new_collection') }}" class="btn btn-outline-primary col-9 offset-3 col-md-4 offset-md-8 btn-add space-below"
+              ><i class="fas fa-plus"></i> Add New Public
+                      Collection</a>
                   </div>
                 </div>
                 {% endif %}
                 {% if unapproved_collections %}
+                {% if page_id != "management" %}
+                <h4>Unapproved Submissions</h4>
+                {% endif %}
                 {% for collection in unapproved_collections %}
                 <hr class="green-line">
                 {% include "components/details/public-collection.html" %}
+                
                 <!-- Approve/deny collection -->
                 <div class="container-fluid">
                   <div class="row">
+                  {% if page_id != "management" %}
+                    <div id="delete-collection"
+                      class="btn col-2 col-md-1 offset-10 offset-md-11 text-right" data-toggle="modal"
+                      data-target="#modal-delete-public-collection-request-{{ collection._id }}"><i
+                        class="fas fa-times-circle btn-delete" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="Delete collection"></i></div>
+                    {% endif %}
+                    {% if page_id == "management" %}
                     <div id="deny-collection"
                       class="btn col-2 col-md-1 offset-8 offset-md-10 text-right" data-toggle="modal"
                       data-target="#modal-delete-public-collection-request-{{ collection._id }}"><i
@@ -39,6 +50,7 @@
                         class="fas fa-check-circle btn-edit" data-toggle="tooltip"
                         data-placement="top" data-type="info" title="Approve collection"></i>
                     </div>
+                {% endif %}
                   </div>
                 </div>
                 {% endfor %}
@@ -49,6 +61,13 @@
                     {% else %}
                     <p><strong>There are no public collections awaiting approval.</strong></p>
                     {% endif %}
+                {% endif %}
+                {% if collections_dict_public %}
+                <h4>Approved Submissions</h4>
+                {% for collection in collections_dict_public %}
+                <hr class="green-line">
+                {% include "components/details/public-collection.html" %}
+                {% endfor %}
                 {% endif %}
               </div>
             </div>

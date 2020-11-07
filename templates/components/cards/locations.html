@@ -1,12 +1,10 @@
 <!-- Locations card -->
           <div id="locations-card" class="card">
-            <div class="card-header green-background" id="headingLocations">
-              <h5 class="mb-0">
-                <button class="btn btn-link collapsed" data-toggle="collapse"
+            <div class="card-header green-background btn btn-link collapsed text-left" id="headingLocations" data-toggle="collapse"
                   data-target="#collapseLocations" aria-expanded="false"
                   aria-controls="collapseLocations">
+              <h5 class="mb-0">
                   <i class="fas fa-home"></i> <strong>Your Locations</strong>
-                </button>
               </h5>
             </div>
             <div id="collapseLocations" class="collapse" aria-labelledby="headingLocations"
@@ -18,8 +16,8 @@
                     <button type="button"
                       class="btn btn-outline-primary col-7 offset-5 col-md-3 offset-md-9 btn-add space-below"
                       data-toggle="modal"
-                      data-target="#modal-add-location"><i class="fas fa-plus"></i> <strong>Add New
-                      Location</strong></button>
+                      data-target="#modal-add-location"><i class="fas fa-plus"></i> Add New
+                      Location</button>
                   </div>
                 </div>
                 {% if locations %}

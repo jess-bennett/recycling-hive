@@ -77,19 +77,46 @@ def home():
     try:
         username = session["username"]
         user_id = ObjectId(session["user_id"])
+        # Check if demo login and if so, assign Demo hive name
         if user_id == ObjectId("5fa43cf801329c2053c8067f"):
             hive_name = "Demo"
         else:
             hive_name = mongo.db.hives.find_one(
                 {"_id": ObjectId(session["hive"])})["name"]
+        # Check whether queen bee
         if mongo.db.hiveMembers.find_one(
                 {"_id": user_id, "isQueenBee": True}):
             is_queen_bee = True
         else:
             is_queen_bee = False
+        # Check whether approved member
+        if mongo.db.hiveMembers.find_one(
+                {"_id": ObjectId(session["user_id"]), "approvedMember": True}):
+            approved_member = True
+        else:
+            approved_member = False
+        # Check whether waiting for worker bee approval
+        if mongo.db.firstCollection.find_one({"memberID": ObjectId(user_id)}):
+            awaiting_approval = True
+        else:
+            awaiting_approval = False
+        # Check whether has public collections to be approved
+        if mongo.db.publicCollections.find_one(
+                {"memberID": ObjectId(user_id)}):
+            public_approval = True
+        else:
+            public_approval = False
+        # Get list of public collections to be approved
+        unapproved_collections = list(mongo.db.publicCollections.find(
+            {"memberID": ObjectId(user_id),
+             "approvedCollection": False}).sort("businessName"))
         return render_template("pages/index.html",
                                username=username, hive_name=hive_name,
-                               page_id="home", is_queen_bee=is_queen_bee)
+                               page_id="home", is_queen_bee=is_queen_bee,
+                               approved_member=approved_member,
+                               awaiting_approval=awaiting_approval,
+                               public_approval=public_approval,
+                               unapproved_collections=unapproved_collections)
     except:
         return render_template(
             "pages/index.html", username=False, page_id="home")
@@ -439,14 +466,6 @@ def approve_private_collection_request(collection_id):
     return redirect(url_for("hive_management", username=session["username"]))
 
 
-@app.route("/hive-management/delete-public-collection-request/<collection_id>")
-@queen_bee_required
-def delete_public_collection_request(collection_id):
-    mongo.db.publicCollections.remove({"_id": ObjectId(collection_id)})
-    flash("Public Collection has been successfully deleted")
-    return redirect(url_for("hive_management", username=session["username"]))
-
-
 @app.route("/hive-management/approve-public-collection-request/\
     <collection_id>", methods=["GET", "POST"])
 @queen_bee_required
@@ -489,7 +508,8 @@ def approve_public_collection_request(collection_id):
         filter = {"_id": ObjectId(collection_id)}
         collection_updates = {"$set": {"itemID": item_id,
                               "approvedCollection": True},
-                              "$unset": {"username": "", "memberID": "",
+                              "$rename": {"memberID": "addedBy"},
+                              "$unset": {"username": "",
                                          "categoryName": "",
                                          "typeOfWaste": ""}}
         mongo.db.publicCollections.update(filter, collection_updates)
@@ -562,10 +582,51 @@ def profile(username):
          },
         {"$sort": {"categoryName": 1, "typeOfWaste": 1}}
         ]))
-    # Get list of unapproved public collections
+    # Get list of unapproved public collections for public collection card
     unapproved_collections = list(mongo.db.publicCollections.find(
         {"memberID": user_id,
          "approvedCollection": False}).sort("businessName"))
+    # Create new dictionary of approved public collections from this member
+    # for public collections card
+    collections_dict_public = list(mongo.db.publicCollections.aggregate(
+        [{"$match": {"approvedCollection": True,
+          "addedBy": user_id}},
+            {
+             "$lookup": {
+              "from": "recyclableItems",
+              "localField": "itemID",
+              "foreignField": "_id",
+              "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {
+            "$lookup": {
+                "from": "itemCategory",
+                "localField": "recyclableItems.categoryID",
+                "foreignField": "_id",
+                "as": "itemCategory"
+            },
+            },
+            {"$unwind": "$itemCategory"},
+            {"$project": {
+             "localNational": 1,
+             "postalDropoff": 1,
+             "categoryName": "$itemCategory.categoryName",
+             "typeOfWaste": "$recyclableItems.typeOfWaste",
+             "businessName": 1,
+             "street": 1,
+             "town": 1,
+             "county": 1,
+             "postcode": 1,
+             "id": 1,
+             "conditionNotes": 1,
+             "charityScheme": 1,
+             "dateAdded": 1
+             }
+             },
+            {"$sort": {"dateAdded": -1}}
+         ]))
     # Check whether user has submitted first collection for approval
     if mongo.db.firstCollection.find_one(
             {"memberID": ObjectId(user_id)}):
@@ -578,6 +639,7 @@ def profile(username):
                            member_type=session["member_type"],
                            locations=locations,
                            collections_dict=collections_dict,
+                           collections_dict_public=collections_dict_public,
                            unapproved_collections=unapproved_collections,
                            page_id="profile",
                            awaiting_approval=awaiting_approval)
@@ -740,8 +802,8 @@ def add_first_collection():
         }
         mongo.db.firstCollection.insert_one(first_collection)
         flash("First collection sent for approval")
-        return redirect(url_for("profile", username=session["username"]))
-    return redirect(url_for("profile", username=session["username"]))
+        return redirect(url_for("home"))
+    return redirect(url_for("add_new_collection"))
 
 
 @app.route("/add-new-collection")
@@ -992,6 +1054,24 @@ def delete_collection(route, collection_id):
             "profile", username=session["username"]))
     elif route == "management":
         flash("Member's collection has been successfully deleted")
+        return redirect(url_for(
+            "hive_management", username=session["username"]))
+    return redirect(url_for("profile", username=session["username"]))
+
+
+@app.route("/<route>/delete-public-collection-submission/<collection_id>")
+@login_required
+@no_demo
+def delete_public_collection_submission(route, collection_id):
+    mongo.db.publicCollections.remove({"_id": ObjectId(collection_id)})
+    if route == "profile":
+        flash("Your public collection submission\
+            has been successfully deleted")
+        return redirect(url_for(
+            "profile", username=session["username"]))
+    elif route == "management":
+        flash("Member's public collection submission\
+            has been successfully deleted")
         return redirect(url_for(
             "hive_management", username=session["username"]))
     return redirect(url_for("profile", username=session["username"]))
@@ -1427,6 +1507,7 @@ def get_recycling_collections(item_id):
              "businessName": 1,
              "street": 1,
              "town": 1,
+             "county": 1,
              "postcode": 1,
              "id": 1,
              "conditionNotes": 1,

@@ -61,11 +61,24 @@ span.internal-link {
   background-color: inherit;
 }
 
+.dropdown-menu {
+    max-height: 80%;
+    overflow-y: auto;
+}
+
 .flashes {
   text-align: center;
   color: #333;
   background-color: #f1f3b8;
   margin-bottom: 1.5rem;
+}
+
+#notification-bar {
+    text-align: right;
+    background-color: #f1f3b8;
+    color: #8C0A06;
+    padding: 0.5rem;
+    font-size: 1.2rem;
 }
 
 /* Register */
@@ -85,7 +98,7 @@ span.internal-link {
 
 .btn-outline-primary {
   color: #333;
-  font-size: 1.3rem;
+  font-size: 1rem;
   border-color: #3a5c2d;
   border-width: 0.2rem;
 }
@@ -137,10 +150,6 @@ span.internal-link {
   font-size: 1rem;
   color: #8C0A06;
   padding: 0.5rem;
-}
-
-.btn-form {
-    font-size: 1rem;
 }
 
 .btn-edit:hover {
@@ -248,6 +257,8 @@ small.warning-text {
 
 .form-control.item-display {
     height: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Modals */
@@ -280,6 +291,7 @@ footer {
   width: 100%;
   text-align: center;
   margin-top: 3rem;
+  padding-top: 0.5rem;
 }
 
 
@@ -316,7 +328,7 @@ footer a:hover {
       font-size: 1.5rem;
   }
 
-  .btn-form {
+  .btn-outline-primary {
     font-size: 1.3rem;
 }
 }
