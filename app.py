@@ -1427,6 +1427,7 @@ def get_recycling_collections(item_id):
              "businessName": 1,
              "street": 1,
              "town": 1,
+             "county": 1,
              "postcode": 1,
              "id": 1,
              "conditionNotes": 1,
