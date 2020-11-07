@@ -23,6 +23,7 @@
                 {% for collection in unapproved_collections %}
                 <hr class="green-line">
                 {% include "components/details/public-collection.html" %}
+                
                 <!-- Approve/deny collection -->
                 <div class="container-fluid">
                   <div class="row">
@@ -32,11 +33,13 @@
                         class="fas fa-times-circle btn-delete" data-toggle="tooltip"
                         data-placement="top" data-type="info"
                         title="Delete collection"></i></div>
+                    {% if page_id == "management" %}
                     <div id="approve-collection" class="btn col-2 col-md-1 text-right"
                       data-toggle="modal" data-target="#modal-approve-public-collection-request-{{ collection._id }}"><i
                         class="fas fa-check-circle btn-edit" data-toggle="tooltip"
                         data-placement="top" data-type="info" title="Approve collection"></i>
                     </div>
+                {% endif %}
                   </div>
                 </div>
                 {% endfor %}
