@@ -294,6 +294,15 @@ def hive_management(username):
             {"$unwind": "$recyclableItems"},
             {
              "$lookup": {
+                "from": "itemCategory",
+                "localField": "recyclableItems.categoryID",
+                "foreignField": "_id",
+                "as": "itemCategory"
+             },
+            },
+            {"$unwind": "$itemCategory"},
+            {
+             "$lookup": {
                 "from": "collectionLocations",
                 "localField": "locationID",
                 "foreignField": "_id",
@@ -302,6 +311,7 @@ def hive_management(username):
             },
             {"$unwind": "$collectionLocations"},
             {"$project": {
+             "categoryName": "$itemCategory.categoryName",
              "typeOfWaste": "$recyclableItems.typeOfWaste",
              "hiveMembers": "$hiveMembers.username",
              "hiveMembersID": "$hiveMembers._id",
@@ -314,7 +324,7 @@ def hive_management(username):
              "charityScheme": 1
              }
              },
-            {"$sort": {"hiveMembers": 1}}
+            {"$sort": {"hiveMembers": 1, "categoryName": 1, "typeOfWaste": 1}}
             ]))
     return render_template("/pages/hive-management.html",
                            unapproved_members=unapproved_members,
@@ -520,12 +530,12 @@ def profile(username):
         },
         {"$unwind": "$recyclableItems"},
         {
-        "$lookup": {
+         "$lookup": {
             "from": "itemCategory",
             "localField": "recyclableItems.categoryID",
             "foreignField": "_id",
             "as": "itemCategory"
-        },
+         },
         },
         {"$unwind": "$itemCategory"},
         {

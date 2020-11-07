@@ -20,14 +20,14 @@
                   <div class="form-group col-md-6">
                     <div class="input-group mb-2">
                       {% include "components/tooltips/tooltip-name.html" %}
-                      <p class="form-control">{{ member.username }}</p>
+                      <p class="form-control item-display">{{ member.username }}</p>
                     </div>
                   </div>
                   <!-- Email -->
                   <div class="form-group col-md-6">
                     <div class="input-group mb-2">
                       {% include "components/tooltips/tooltip-email.html" %}
-                      <p class="form-control">{{ member.email }}</p>
+                      <p class="form-control item-display">{{ member.email }}</p>
                     </div>
                   </div>
                 </div>
@@ -36,7 +36,7 @@
                     <div class="form-group col-md">
                         <div class="input-group mb-2">
                         {% include "components/tooltips/tooltip-security.html" %}
-                        <p class="form-control">{{ member.securityQuestion }}</p>
+                        <p class="form-control item-display">{{ member.securityQuestion }}</p>
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                     <div class="form-group col-md">
                         <div class="input-group mb-2">
                         {% include "components/tooltips/tooltip-marketing.html" %}
-                        <p class="form-control">{{ member.marketing }}</p>
+                        <p class="form-control item-display">{{ member.marketing }}</p>
                         </div>
                     </div>
                 </div>
@@ -53,14 +53,14 @@
                 <div class="container-fluid">
                   <div class="row">
                     <div id="delete-request"
-                      class="btn col-1 offset-10 btn-delete" data-toggle="modal"
+                      class="btn col-2 col-md-1 offset-8 offset-md-10 text-right" data-toggle="modal"
                       data-target="#modal-delete-member-request-{{ member._id }}"><i
-                        class="fas fa-times-circle" data-toggle="tooltip"
+                        class="fas fa-times-circle bnt-delete" data-toggle="tooltip"
                         data-placement="top" data-type="info"
                         title="Delete request"></i></div>
-                    <div id="approve-request" class="btn col-1 btn-edit"
+                    <div id="approve-request" class="btn col-2 col-md-1 text-right"
                       data-toggle="modal" data-target="#modal-approve-member-request-{{ member._id }}"><i
-                        class="fas fa-check-circle" data-toggle="tooltip"
+                        class="fas fa-check-circle btn-edit" data-toggle="tooltip"
                         data-placement="top" data-type="info" title="Approve request"></i>
                     </div>
                   </div>
