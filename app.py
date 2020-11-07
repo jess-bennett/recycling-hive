@@ -466,14 +466,6 @@ def approve_private_collection_request(collection_id):
     return redirect(url_for("hive_management", username=session["username"]))
 
 
-@app.route("/hive-management/delete-public-collection-request/<collection_id>")
-@queen_bee_required
-def delete_public_collection_request(collection_id):
-    mongo.db.publicCollections.remove({"_id": ObjectId(collection_id)})
-    flash("Public Collection has been successfully deleted")
-    return redirect(url_for("hive_management", username=session["username"]))
-
-
 @app.route("/hive-management/approve-public-collection-request/\
     <collection_id>", methods=["GET", "POST"])
 @queen_bee_required
@@ -516,7 +508,8 @@ def approve_public_collection_request(collection_id):
         filter = {"_id": ObjectId(collection_id)}
         collection_updates = {"$set": {"itemID": item_id,
                               "approvedCollection": True},
-                              "$unset": {"username": "", "memberID": "",
+                              "$rename": {"memberID": "addedBy"},
+                              "$unset": {"username": "",
                                          "categoryName": "",
                                          "typeOfWaste": ""}}
         mongo.db.publicCollections.update(filter, collection_updates)
@@ -1019,6 +1012,24 @@ def delete_collection(route, collection_id):
             "profile", username=session["username"]))
     elif route == "management":
         flash("Member's collection has been successfully deleted")
+        return redirect(url_for(
+            "hive_management", username=session["username"]))
+    return redirect(url_for("profile", username=session["username"]))
+
+
+@app.route("/<route>/delete-public-collection-submission/<collection_id>")
+@login_required
+@no_demo
+def delete_public_collection_submission(route, collection_id):
+    mongo.db.publicCollections.remove({"_id": ObjectId(collection_id)})
+    if route == "profile":
+        flash("Your public collection submission\
+            has been successfully deleted")
+        return redirect(url_for(
+            "profile", username=session["username"]))
+    elif route == "management":
+        flash("Member's public collection submission\
+            has been successfully deleted")
         return redirect(url_for(
             "hive_management", username=session["username"]))
     return redirect(url_for("profile", username=session["username"]))
