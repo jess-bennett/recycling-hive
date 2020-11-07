@@ -61,6 +61,11 @@ span.internal-link {
   background-color: inherit;
 }
 
+.dropdown-menu {
+    max-height: 80%;
+    overflow-y: auto;
+}
+
 .flashes {
   text-align: center;
   color: #333;

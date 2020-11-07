@@ -802,8 +802,8 @@ def add_first_collection():
         }
         mongo.db.firstCollection.insert_one(first_collection)
         flash("First collection sent for approval")
-        return redirect(url_for("profile", username=session["username"]))
-    return redirect(url_for("profile", username=session["username"]))
+        return redirect(url_for("home"))
+    return redirect(url_for("add_new_collection"))
 
 
 @app.route("/add-new-collection")
