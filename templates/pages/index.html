@@ -6,7 +6,20 @@
   <div class="row">
     <div class="col-md-10 offset-md-1">
       <div class="card-body text-center green-background space-below">
-    <div id="notification-bar" class="row space-below">
+    {% if is_queen_bee %}
+    <div class="notification-bar row">
+    <i class="col-2 offset-6 col-md-1 offset-md-9 {% if unapproved_members %}fas fa-user{% endif %}" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="{{ unapproved_members|length }} member(s) waiting for Membership to be approved"></i>
+    <i class="col-2 col-md-1 {% if first_collections %}fas fa-hard-hat{% endif %}" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="{{ first_collections|length }} member(s) waiting for Worker Bee approval"></i>
+    <i class="col-2 col-md-1 {% if unapproved_member_collections %}fas fa-building{% endif %}" data-toggle="tooltip"
+                        data-placement="top" data-type="info"
+                        title="{{ unapproved_member_collections|length }} public collection(s) waiting to be approved"></i>
+    </div>
+    {% endif %}
+    <div class="notification-bar row space-below">
     <i class="col-2 offset-6 col-md-1 offset-md-9 {% if approved_member == False%}fas fa-user-slash{% endif %}" data-toggle="tooltip"
                         data-placement="top" data-type="info"
                         title="Currently waiting for Membership to be approved"></i>
