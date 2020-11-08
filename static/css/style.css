@@ -62,7 +62,7 @@ span.internal-link {
 }
 
 .dropdown-menu {
-    max-height: 80%;
+    max-height: 80vh;
     overflow-y: auto;
 }
 
