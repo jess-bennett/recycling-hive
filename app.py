@@ -1170,6 +1170,7 @@ def get_recycling_categories():
     # Combine lists
     categories_dict = list(combine_dictionaries(
         categories_dict_private, categories_dict_public))
+    categories_dict.sort(key=lambda x: x["categoryName"])
     return render_template(
         "pages/hive-category.html",
         categories_dict=categories_dict,
@@ -1238,6 +1239,7 @@ def get_recycling_items(category_id):
         # Combine lists
         recycling_items_dict = list(combine_dictionaries(
             recycling_items_dict_private, recycling_items_dict_public))
+        recycling_items_dict.sort(key=lambda x: x["typeOfWaste"])
     else:
         # Get selected category for dropdown
         selected_category = mongo.db.itemCategory.find_one(
@@ -1301,6 +1303,7 @@ def get_recycling_items(category_id):
         # Combine lists
         recycling_items_dict = list(combine_dictionaries(
             recycling_items_dict_private, recycling_items_dict_public))
+        recycling_items_dict.sort(key=lambda x: x["typeOfWaste"])
     # Get list of categories for dropdown menu
     # Get categories in private collections
     categories_dict_private = list(mongo.db.itemCollections.aggregate([
@@ -1372,6 +1375,7 @@ def get_recycling_items(category_id):
     # Combine lists
     categories_dict = list(combine_dictionaries(
         categories_dict_private, categories_dict_public))
+    categories_dict.sort(key=lambda x: x["categoryName"])
     return render_template(
         "pages/hive-item.html",
         categories_dict=categories_dict,
@@ -1442,6 +1446,7 @@ def get_recycling_collections(item_id):
     # Combine lists
     recycling_items_dict = list(combine_dictionaries(
         recycling_items_dict_private, recycling_items_dict_public))
+    recycling_items_dict.sort(key=lambda x: x["typeOfWaste"])
     # Create new dictionary of recyclable items and their
     # matching collections from private collection
     collections_dict_private = list(
@@ -1663,6 +1668,7 @@ def combine_dictionaries(dict1, dict2):
     for item in dict1:
         if item not in dict2:
             dict2.append(item)
+            dict2
             dict2
     return dict2
 
