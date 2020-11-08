@@ -62,7 +62,7 @@ span.internal-link {
 }
 
 .dropdown-menu {
-    max-height: 80%;
+    max-height: 80vh;
     overflow-y: auto;
 }
 
@@ -73,7 +73,7 @@ span.internal-link {
   margin-bottom: 1.5rem;
 }
 
-#notification-bar {
+.notification-bar {
     text-align: right;
     background-color: #f1f3b8;
     color: #8C0A06;
