@@ -61,7 +61,7 @@ and arrange for these items to be sent to companies that do have the ability to 
 save incredible amounts of waste from going to landfill. Whilst I have co-ordinated collections myself in the past, I tend to be more of a waste-contributor
 than a waste-collector. So, I wanted to give something back to this amazing group by creating this site.
 
-Currently, all the recycling locations are stored in an Excel spreadsheet which has become very unwieldy as it grows and is hard to keep up to date. My hope
+Currently, all the recycling locations for the group are stored in an Excel spreadsheet which has become very unwieldy as it grows and is hard to keep up-to-date. My hope
 in creating this site is that not only will this save the admin team a great deal of time, but will also make it easier for local community members to find out
 what they can recycle, and where.
 
@@ -89,6 +89,8 @@ rubbish from landfill.
     * As a user I want to be able to easily find what items I can recycle locally, and where
     * As a user I want to be able to make suggestions about items that can be recycled nationally
 
+<em><strong>C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete</em>
+
 ### :earth_africa: Scope Plane
 ---
 * :loop: **Site Logic**\
@@ -96,15 +98,14 @@ rubbish from landfill.
 
 | Membership | Approval                                                   | Notes                                                                                                                                           |
 |------------|------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
-| SuperUser  | N/A                                                        | There is only one SU - ME!                                                                                                                      |
+| SuperUser  | N/A                                                        | The SU is the site owner - and the person responsible for the Mongo DB                                                                                                                   |
 | Queen Bees | First person to request a Hive location is given QB access | A current QB can request additional QBs (up to a max of 4 per Hive) to the SU                                                                   |
 |            |                                                            | QBs cannot be deleted. A request must be made to the SU to first demote them and the profile can then be kept (as WB or BB) or deleted entirely |
 |            |                                                            | If a Hive has only one QB, they must find and approve another QB before they can be removed                                                     |
-| Worker Bee | Approved by QBs upon adding a new recycling location       | Once WB status has been given, all future locations are automatically approved                                                                  |
-|            |                                                            | Each newly added location will have a <strong>NEW</strong> flag for 7 days so that QBs can monitor                                              |
+| Worker Bee | Approved by QBs upon adding a new recycling location       | Once WB status has been given, all future private locations are automatically approved                                                          |                                             |
 | Busy Bees  | Approved by QBs on completion of registration              | Each Hive will set their own security questions for registration so they can monitor new member requests                                        |
 
-**Site accessibility**
+**Site access**
 | Collection             | QB Access         | WB Access                  | BB Access            |
 |------------------------|-------------------|----------------------------|----------------------|
 | Hive collection        | :x:               | :x:                        | :x:                  |
@@ -127,6 +128,8 @@ I decided to go for a 'handwritten' style of font for the entirety of the site. 
 
 I chose fairly typical colours for a site revolving around recycling and the environment, based on a recycling image that I particularly liked from [here](https://blog.ferrovial.com/en/2016/11/recycling-began-when-greeks-discovered-landfills/)
 
+The highlighted row is the main colour used throughout, with buttons and flash messages using varying shades of the same colour. Font colour was an off-black and in the vast majority of cases, was placed over an off-whie background for improved readibility.
+
 ![Site Colours](/wireframes/site-colours.jpg)
 
 ### :clipboard: Wireframes
@@ -138,13 +141,115 @@ The site was designed with a mobile-first approach.
 
 :bulb: **Deviation from wireframe**
 
+There was quite a lot of deviation from the original wireframe plan. This was mostly due to underestimating the complexity of the final database and also making better design decisions as my understanding/proficiency improved.\
+The majority of the deviation was in the form of creating entirely new pages for the site. Whereas pages that were originally planned for have mostly stayed true to the original concept. 
+
+I had also originally designed a lot of the content to be displayed in modals. As I began to delve more into Flask, I realised that additional pages (rather than modals) would be a much more preferable option!
+
+#### Homepage
+* The hexagon design on the homepage has been altered to be in-keeping with the rest of the site.
+* I decided to include a link to the FAQs on this page to make them more accessible.
+* Rather than requesting the site-visitor register in order to view the demo-site, I opted to make it instantly accessible to reach more potential members.
+
+#### FAQs
+* Very few deviations, except I had originally planned to have an image on this page. I eventually decided against it as I felt that an image would be at odds with the look of the rest of the site.
+
+#### Register - Find a Hive
+* This was in part a design choice, and in part due to prioritising other parts of the site. I had originally planned to have a searchable map using the Google Maps API.\
+However, I decided to stick with the hexagon layout to show the currently available Hives. This might be something I go back to in the future.
+
+#### Register
+* Have included a link to the login page for those that have already registered. 
+* Have included a link to the contact page for those that could not find a local hive.
+
+#### Homepage - for logged-in users
+* This page ended up with additional links to pages that hadn't been planned for:
+    * Add collection
+    * Contact
+    * Manage Hive (for Queen Bees)
+* I also included a link to the FAQs to make them more accessible. 
+* The 'Be inspired' page and its link were removed altogether (as explained further down).
+* I also decided to add a notification bar. This was following feedback from my first round of tests, as testers felt that communication within the site was lacking.
+
+#### Profile
+* This remained largely the same, except for the addition of another card to show public collections that had been added by the user
+
+#### Hive
+This has probably had the biggest overhaul from how it was originally envisaged.\
+In reality, it is the most important part of the site - its sole purpose really! And it was difficult to find a design that was visually-appealing, clear and comprehensible, and
+that also worked well with the database design. I hope I have managed to meet all those goals in the end.
+* The original 'Explore categories' page was used as the main design for all new pages. 
+* Rather than using cards and dropdowns as I had originally planned, I decided to split all the content into several new pages. This achieved:
+    * More visual appeal than using a table-design as shown in the wireframe
+    * A much clearer layout with fewer buttons and filters grouped onto a single page
+    * A better way to work with Flask as it allowed me to separate my functions into different routes for different pages
+
+#### Add New Location - modal
+This concept also went through several iterations before I was happy with how it worked. The original idea was to have two separate modals - one for adding private/personal collections
+and one for adding public collections. However, I was concerned that what seemed obvious to me (i.e. what type of collection it would be) might not be obvious to the user. 
+
+In the end, I have chosen to have a single page for adding all new collections. This page is then routed through radio buttons that hide/display relevant content via JS.\
+This means that the site does the work of deciding what goes where, rather than the user.
+
+#### Be Inspired
+This page was completely abandoned. Originally, it was going to be a place to display a randomly picked national collection, to inspire people to recycle something they hadn't thought of/
+searched for. I was also going to give links to other sites that would be useful to people wanting to do more for the environment. However, I quickly realised that I had more than enough to be
+getting on with and so left this page for a future development.
+
+#### Contact page
+This page was added despite not being on the original wireframe as I wanted a way for site-users to be able to get in touch with me easily. And in particular, if new visitors wanted to set up a Hive, they
+needed a way to tell me!
+
+#### Hive Management
+My initial plan was for the Queen Bee(s) to do all of their admin within the original site pages. So for each collection displayed on the main Hive pages, they would have access to edit/delete buttons
+to make any necessary amends. However, I soon realised that as the collections grow, it will get harder and harder to maintain without a central page for administration. 
+Once I had decided to add this page, I used it as a place for all Queen Bee activity - accepting/deleting members, promoting to Worker Bee, accepting public collections...
+
+
 ### :dvd: Database Design
 ---
 I opted for a document-oriented NoSQL database (MongoDB) and spent a large part of my planning time designing the database.
 
-I ended up with the following six collections:
+I initially ended up with the following six collections:
 
-![Database Model](/wireframes/database-model.jpg)
+![Initial Database Model](/wireframes/database-model-initial.png)
+
+However, as the site grew more complex, so did my database design. I ended up with eight collections:
+
+![Final Database Model](/wireframes/database-model-final.png)
+
+The key changes were:
+
+* hives
+ * Added securityQuestion field so that each new Hive could set their own question for registration
+
+* hiveMembers
+ * Added fields to store registration responses to security and marketing questions
+ * Added approvedMember field to block parts of the site from the member until their registration has been approved
+
+* itemCategory/typeOfWaste
+ * Added _lower fields to both to allow for easier matching on newly added documents - to avoid duplication
+
+* collectionLocations
+ * Removed hiveID field as this is covered by the memberID
+ * Added nickname and nickname_lower fields to allow a member to store more than one location (e.g. Home/Work) and easily distinguish between the two
+
+* itemCollections
+ * Removed isNational field as this is now covered by the new 'publicCollections' collection
+
+* firstCollection
+ * This is a new, temporary collection for storage of the first collection a member adds.\
+ Its purpose is to allow the Queen Bee(s) to check all information given, before comitting it to the permanent 'itemCollections' collection.\
+ By putting it in its own collection (rather than having a boolean field in 'itemCollections' to indicate a first collection), there was less searching required to find relevant
+ documents for Queen Bee approval on the Hive Management page.
+
+* publicCollections
+ * This is another new collection to store details of public collections. I felt putting these details in a separate collection (rather than using the 'isNational' boolean field
+ I had originally planned on), was a more straightforward approach as some of the data fields needed for this collection were slightly different.
+
+
+In hindsight, I realise that using a NoSQL database for this website might not have been the ideal approach. However, it has given me a huge amount of experience using MongoDB, so all
+is not lost.
 
 ### :crystal_ball: Future Developments
 ---
@@ -157,6 +262,7 @@ I ended up with the following six collections:
 * [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
 * [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
 * [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+* [Python](https://www.python.org/)
 
 **Libraries & Frameworks**
 * [Bootstrap](https://getbootstrap.com/)
@@ -164,9 +270,12 @@ I ended up with the following six collections:
 * [Google Fonts](https://fonts.google.com/)
 * [jQuery](https://jquery.com/)
 * [Popper](https://popper.js.org/)
+* [Flask](https://flask.palletsprojects.com/en/1.1.x/)
 
 **Tools**
-* [Gimp (image editing)](https://www.gimp.org/)
+* [GitHub](https://github.com/)
+* [Gitpod](https://gitpod.io/)
+* [Heroku](https://heroku.com/)
 
 
 ### :computer: External Sources Used
