@@ -184,12 +184,27 @@ that also worked well with the database design. I hope I have managed to meet al
     * A much clearer layout with fewer buttons and filters grouped onto a single page
     * A better way to work with Flask as it allowed me to separate my functions into different routes for different pages
 
-#### Add new location modal
+#### Add New Location - modal
 This concept also went through several iterations before I was happy with how it worked. The original idea was to have two separate modals - one for adding private/personal collections
 and one for adding public collections. However, I was concerned that what seemed obvious to me (i.e. what type of collection it would be) might not be obvious to the user. 
 
 In the end, I have chosen to have a single page for adding all new collections. This page is then routed through radio buttons that hide/display relevant content via JS.\
 This means that the site does the work of deciding what goes where, rather than the user.
+
+#### Be Inspired
+This page was completely abandoned. Originally, it was going to be a place to display a randomly picked national collection, to inspire people to recycle something they hadn't thought of/
+searched for. I was also going to give links to other sites that would be useful to people wanting to do more for the environment. However, I quickly realised that I had more than enough to be
+getting on with and so left this page for a future development.
+
+#### Contact page
+This page was added despite not being on the original wireframe as I wanted a way for site-users to be able to get in touch with me easily. And in particular, if new visitors wanted to set up a Hive, they
+needed a way to tell me!
+
+#### Hive Management
+My initial plan was for the Queen Bee(s) to do all of their admin within the original site pages. So for each collection displayed on the main Hive pages, they would have access to edit/delete buttons
+to make any necessary amends. However, I soon realised that as the collections grow, it will get harder and harder to maintain without a central page for administration. 
+Once I had decided to add this page, I used it as a place for all Queen Bee activity - accepting/deleting members, promoting to Worker Bee, accepting public collections...
+
 
 ### :dvd: Database Design
 ---
