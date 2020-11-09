@@ -105,7 +105,7 @@ rubbish from landfill.
 | Worker Bee | Approved by QBs upon adding a new recycling location       | Once WB status has been given, all future private locations are automatically approved                                                          |                                             |
 | Busy Bees  | Approved by QBs on completion of registration              | Each Hive will set their own security questions for registration so they can monitor new member requests                                        |
 
-**Site accessibility**
+**Site access**
 | Collection             | QB Access         | WB Access                  | BB Access            |
 |------------------------|-------------------|----------------------------|----------------------|
 | Hive collection        | :x:               | :x:                        | :x:                  |
@@ -262,6 +262,7 @@ is not lost.
 * [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
 * [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
 * [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+* [Python](https://www.python.org/)
 
 **Libraries & Frameworks**
 * [Bootstrap](https://getbootstrap.com/)
@@ -269,9 +270,12 @@ is not lost.
 * [Google Fonts](https://fonts.google.com/)
 * [jQuery](https://jquery.com/)
 * [Popper](https://popper.js.org/)
+* [Flask](https://flask.palletsprojects.com/en/1.1.x/)
 
 **Tools**
-* [Gimp (image editing)](https://www.gimp.org/)
+* [GitHub](https://github.com/)
+* [Gitpod](https://gitpod.io/)
+* [Heroku](https://heroku.com/)
 
 
 ### :computer: External Sources Used
