@@ -163,7 +163,33 @@ However, I decided to stick with the hexagon layout to show the currently availa
 * Have included a link to the contact page for those that could not find a local hive.
 
 #### Homepage - for logged-in users
+* This page ended up with additional links to pages that hadn't been planned for:
+    * Add collection
+    * Contact
+    * Manage Hive (for Queen Bees)
+* I also included a link to the FAQs to make them more accessible. 
+* The 'Be inspired' page and its link were removed altogether (as explained further down).
+* I also decided to add a notification bar. This was following feedback from my first round of tests, as testers felt that communication within the site was lacking.
 
+#### Profile
+* This remained largely the same, except for the addition of another card to show public collections that had been added by the user
+
+#### Hive
+This has probably had the biggest overhaul from how it was originally envisaged.\
+In reality, it is the most important part of the site - its sole purpose really! And it was difficult to find a design that was visually-appealing, clear and comprehensible, and
+that also worked well with the database design. I hope I have managed to meet all those goals in the end.
+* The original 'Explore categories' page was used as the main design for all new pages. 
+* Rather than using cards and dropdowns as I had originally planned, I decided to split all the content into several new pages. This achieved:
+    * More visual appeal than using a table-design as shown in the wireframe
+    * A much clearer layout with fewer buttons and filters grouped onto a single page
+    * A better way to work with Flask as it allowed me to separate my functions into different routes for different pages
+
+#### Add new location modal
+This concept also went through several iterations before I was happy with how it worked. The original idea was to have two separate modals - one for adding private/personal collections
+and one for adding public collections. However, I was concerned that what seemed obvious to me (i.e. what type of collection it would be) might not be obvious to the user. 
+
+In the end, I have chosen to have a single page for adding all new collections. This page is then routed through radio buttons that hide/display relevant content via JS.\
+This means that the site does the work of deciding what goes where, rather than the user.
 
 ### :dvd: Database Design
 ---
