@@ -195,9 +195,46 @@ This means that the site does the work of deciding what goes where, rather than 
 ---
 I opted for a document-oriented NoSQL database (MongoDB) and spent a large part of my planning time designing the database.
 
-I ended up with the following six collections:
+I initially ended up with the following six collections:
 
-![Database Model](/wireframes/database-model.jpg)
+![Initial Database Model](/wireframes/database-model-initial.png)
+
+However, as the site grew more complex, so did my database design. I ended up with eight collections:
+
+![Final Database Model](/wireframes/database-model-final.png)
+
+The key changes were:
+
+* hives
+ * Added securityQuestion field so that each new Hive could set their own question for registration
+
+* hiveMembers
+ * Added fields to store registration responses to security and marketing questions
+ * Added approvedMember field to block parts of the site from the member until their registration has been approved
+
+* itemCategory/typeOfWaste
+ * Added _lower fields to both to allow for easier matching on newly added documents - to avoid duplication
+
+* collectionLocations
+ * Removed hiveID field as this is covered by the memberID
+ * Added nickname and nickname_lower fields to allow a member to store more than one location (e.g. Home/Work) and easily distinguish between the two
+
+* itemCollections
+ * Removed isNational field as this is now covered by the new 'publicCollections' collection
+
+* firstCollection
+ * This is a new, temporary collection for storage of the first collection a member adds.\
+ Its purpose is to allow the Queen Bee(s) to check all information given, before comitting it to the permanent 'itemCollections' collection.\
+ By putting it in its own collection (rather than having a boolean field in 'itemCollections' to indicate a first collection), there was less searching required to find relevant
+ documents for Queen Bee approval on the Hive Management page.
+
+* publicCollections
+ * This is another new collection to store details of public collections. I felt putting these details in a separate collection (rather than using the 'isNational' boolean field
+ I had originally planned on), was a more straightforward approach as some of the data fields needed for this collection were slightly different.
+
+
+In hindsight, I realise that using a NoSQL database for this website might not have been the ideal approach. However, it has given me a huge amount of experience using MongoDB, so all
+is not lost.
 
 ### :crystal_ball: Future Developments
 ---
