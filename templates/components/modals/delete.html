@@ -16,17 +16,22 @@
       <div class="modal-body">
         <form name="delete-profile" class="card-body"
           action="{{ url_for('delete_profile', route=page_id, member_id=user_id) }}">
-          <p class="warning-text">Are you sure you want to delete your
+          <p class="warning-text">
+            {% if member_type == "Queen Bee" %}
+            As a Queen Bee, you are not able to delete your profile yourself.<br>Please <a href="{{ url_for('contact') }}" class="internal-link">contact</a> the site owner to request the removal of your profile.
+            {% else %}
+            Are you sure you want to delete your
             profile?<br>
             This will remove all locations and recycling collections associated
             with your user profile!
+            {% endif %}
           <p>
             <!-- Submit -->
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary"
               data-dismiss="modal">Cancel</button>
             <button id="submit-delete-profile" class="btn btn-outline-primary"
-              type="submit" name="submit-delete-profile">Delete
+              type="submit" name="submit-delete-profile" {% if member_type == "Queen Bee" %} disabled {% endif %}>Delete
               Profile!</button>
           </div>
         </form>
