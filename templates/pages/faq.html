@@ -14,11 +14,37 @@
 			<h5>Can't find the answer you're looking for? <a href="{{ url_for('contact') }}" class="internal-link">Get in touch!</a></h5>
 		</div>
 	</div>
+    <div class="row">
+		<div class="col-md-10 offset-md-1 text-center">
+            <div class="row">
+                <div class="col-6 col-md-3 space-below">
+                    <button type="button" id="btn-faq-about"
+                                class="btn btn-outline-primary col btn-faq active">About
+                    </button>
+                </div>
+                <div class="col-6 col-md-3 space-below">
+                    <button type="button" id="btn-faq-how-to"
+                                class="btn btn-outline-primary col btn-faq">How to
+                     </button>
+                </div>
+                <div class="col-6 col-md-3 space-below">
+                    <button type="button" id="btn-faq-troubleshooting"
+                                class="btn btn-outline-primary col btn-faq">Troubleshooting
+                     </button>
+                </div>
+                <div class="col-6 col-md-3 space-below">
+                    <button type="button" id="btn-faq-general"
+                                class="btn btn-outline-primary col btn-faq">General
+                     </button>
+                </div>
+            </div>
+		</div>
+    </div>
 </div>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-10 offset-md-1">
-			<div id="accordion">
+			<div id="accordion-faq-about" class="accordion-faq">
 				<div class="card">
 					<div class="card-header green-background btn btn-link collapsed text-left" id="headingOne" data-toggle="collapse"
                         data-target="#collapseOne" aria-expanded="false"
@@ -27,7 +53,7 @@
                         <strong>What is Recycling Hive (the long version)?</strong>
 						</h5>
 					</div>
-					<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+					<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-faq-about">
 						<div class="card-body">
 							<p>Recycling Hive is an idea born from a local Facebook community – filled with recycling
 								heroes!</p>
@@ -36,21 +62,19 @@
 								the first answer: Rethink, repair, refuse, repurpose, reduce, re-use, recycle.
 								But, it is still an important step in trying to undo the damage we have already done and
 								avoid further damage to our planet.
-								But recycling is so hard!!!</p>
+								But recycling isn't always that easy.</p>
 							<p>
 
 								Most local authorities still have a long way to go with regards to what they accept, and
-								there are a lot of rules which must be adhered to if you want to be sure your recycling
-								bin doesn’t end up going to landfill because of contamination (lids left on bottles?
-								Depends where you live!).</p>
+								there are a lot of rules which must be adhered to if you want to be sure the contents of your recycling
+								bin doesn’t end up going to landfill because of contamination. <em>Should lids be left on plastic bottles? Depends where you live!</em></p>
 							<p>
 
-								Local recycling communities can be a godsend, thanks to caring individuals in your
-								community who collect various recyclables and send them in the right direction -
+								Local recycling communities can be a godsend, thanks to caring individuals who collect various recyclables and send them in the right direction -
 								charities, Terracycle, additional council-run facilities and even repurposing (to name a
 								few).</p>
 							<p>
-								But working out what you can send where can be the tricky part! Our local group ended up
+								But working out what goes where can be the tricky part! Our local group ended up
 								with a very unwieldy spreadsheet (frequently updated by some amazing volunteers). The
 								problem was, scanning through the spreadsheet became a time-consuming job, and keeping
 								it up-to-date as people started new collections or stopped old collections was a
@@ -71,49 +95,31 @@
 					</div>
 				</div>
 				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingEight" data-toggle="collapse"
-                        data-target="#collapseEight" aria-expanded="false"
-                        aria-controls="collapseEight">
+					<div class="card-header green-background btn btn-link collapsed text-left" id="headingTwo" data-toggle="collapse"
+                        data-target="#collapseTwo" aria-expanded="false"
+                        aria-controls="collapseTwo">
 						<h5 class="mb-0">
                         <strong>What is Recycling Hive (the short version)?</strong>
 						</h5>
 					</div>
-					<div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion">
+					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion-faq-about">
 						<div class="card-body">
-							<p>Recycling Hive is a place to checkout what can be recycled locally to you - above and beyond what your council
+							<p>Recycling Hive is a place to check out what can be recycled locally to you - above and beyond what your council
                             refuse service collects.</p>
-                            <p>It is a community that relies entirely on being updated by you and your neighbours.</p>
+                            <p>It is a service that relies entirely on being updated by the local community.</p>
 							
 						</div>
 					</div>
 				</div>
 				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingTwo" data-toggle="collapse"
-                        data-target="#collapseTwo" aria-expanded="false"
-                        aria-controls="collapseTwo">
-						<h5 class="mb-0">
-                        <strong>Why can't I find a Hive near me?</strong>
-						</h5>
-					</div>
-					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-						<div class="card-body">
-							<p>It may well be that there isn’t one set up in your area. If you would like to set up your
-								own recycling Hive, please <a href="{{ url_for('contact') }}" class="internal-link">contact me</a> to discuss
-								how
-								to go about it.
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingFour" data-toggle="collapse"
-                        data-target="#collapseFour" aria-expanded="false"
-                        aria-controls="collapseFour">
+					<div class="card-header green-background btn btn-link collapsed text-left" id="headingThree" data-toggle="collapse"
+                        data-target="#collapseThree" aria-expanded="false"
+                        aria-controls="collapseThree">
 						<h5 class="mb-0">
                         <strong>Who is in my Hive?</strong>
 						</h5>
 					</div>
-					<div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+					<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion-faq-about">
 						<div class="card-body">
 							<p>Your Hive is made up of several different community members:</p>
 							<p><strong>Queen Bees</strong> – Your Hive will have one or more (up to a maximum of four)
@@ -122,9 +128,9 @@
 								workload! Our bees also have jobs, families and hobbies to attend to.
 								The role of the Queen Bee is to accept new membership requests, and approve new
 								recycling locations. They will have decided on what criteria is needed before accepting
-								a new member (local addresses are displayed on the site, so they might have some questions
-                                to check that you really are local before being
-								accepted!).</p>
+								a new member - local addresses are displayed on the site, so they might have some questions
+                                to check that you really <strong>are</strong> local before being
+								accepted!</p>
 							<p><strong>Worker Bees</strong> – There will (hopefully) be many, many workers in your hive.
 								These are the
 								local heroes who happily accept your recycling and send it off to the right place. They
@@ -137,16 +143,35 @@
 						</div>
 					</div>
 				</div>
-                {% if session["user"] %}
+			</div>
+            <div id="accordion-faq-how-to" class="accordion-faq">
 				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingSeven" data-toggle="collapse"
-                        data-target="#collapseSeven" aria-expanded="false"
-                        aria-controls="collapseSeven">
+					<div class="card-header green-background btn btn-link collapsed text-left" id="headingFour" data-toggle="collapse"
+                        data-target="#collapseFour" aria-expanded="false"
+                        aria-controls="collapseFour">
+						<h5 class="mb-0">
+                        <strong>Why can't I find a Hive near me?</strong>
+						</h5>
+					</div>
+					<div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion-faq-how-to">
+						<div class="card-body">
+							<p>It may well be that there isn’t one set up in your area. If you would like to set up your
+								own recycling Hive, please <a href="{{ url_for('contact') }}" class="internal-link">contact me</a> to discuss
+								how
+								to go about it.
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header green-background btn btn-link collapsed text-left" id="headingFive" data-toggle="collapse"
+                        data-target="#collapseFive" aria-expanded="false"
+                        aria-controls="collapseFive">
 						<h5 class="mb-0">
                         <strong>How do I actually use this site?</strong>
 						</h5>
 					</div>
-					<div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion">
+					<div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion-faq-how-to">
 						<div class="card-body">
 							<p>The hope is that the site has been designed to be user-friendly and self-explanatory.
 								But, the best laid plans...
@@ -185,34 +210,17 @@
 						</div>
 					</div>
 				</div>
+            </div>
+            <div id="accordion-faq-troubleshooting" class="accordion-faq">
 				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingThree" data-toggle="collapse"
-                        data-target="#collapseThree" aria-expanded="false"
-                        aria-controls="collapseThree">
-						<h5 class="mb-0">
-                        <strong>I don't like the colour scheme you've used on your site...</strong>
-						</h5>
-					</div>
-					<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-						<div class="card-body">
-							<p>Well, that is a shame – no one likes criticism!! But in all seriousness, if you do have
-								any feedback on this site (colour schemes or otherwise!) then please, please do let me
-								know <a href="{{ url_for('contact') }}" class="internal-link">here</a>. All ideas will be seriously considered –
-								the
-								site is only as good as the people who use it!
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingFive" data-toggle="collapse"
-                        data-target="#collapseFive" aria-expanded="false"
-                        aria-controls="collapseFive">
+					<div class="card-header green-background btn btn-link collapsed text-left" id="headingSix" data-toggle="collapse"
+                        data-target="#collapseSix" aria-expanded="false"
+                        aria-controls="collapseSix">
 						<h5 class="mb-0">
                         <strong>I've just registered to join my local hive, but it's not letting me search...</strong>
 						</h5>
 					</div>
-					<div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+					<div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion-faq-troubleshooting">
 						<div class="card-body">
 							<p>Once you've registered, the answers you gave in your form (not including your password!)
 								are sent to your Queen Bee(s) to be reviewed.
@@ -227,24 +235,44 @@
 						</div>
 					</div>
 				</div>
-                {% endif %}
 				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingSix" data-toggle="collapse"
-                        data-target="#collapseSix" aria-expanded="false"
-                        aria-controls="collapseSix">
+					<div class="card-header green-background btn btn-link collapsed text-left" id="headingSeven" data-toggle="collapse"
+                        data-target="#collapseSeven" aria-expanded="false"
+                        aria-controls="collapseSeven">
 						<h5 class="mb-0">
                         <strong>I registered to join, but now when I try to log in my username/password isn't recognised...</strong>
 						</h5>
 					</div>
-					<div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion">
+					<div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion-faq-troubleshooting">
 						<div class="card-body">
 							<p>Could it be that you're entering your login details incorrectly? Have another go, or <a
 									href="{{ url_for('contact') }}" class="internal-link">get in touch</a> if you think this might be the case.
 							</p>
-							<p>The other possiblity (more likley if you've never been able to use the 'Search Hive'
+							<p>The other possiblity (more likely if you've never been able to use the 'Search Hive'
 								function) is that your request to join
 								has been denied. I don't know why they would deny you... Are you here for the right
 								reasons? Are your intentions good? Are you sure?!
+							</p>
+						</div>
+					</div>
+				</div>
+            </div>
+            <div id="accordion-faq-general" class="accordion-faq">
+				<div class="card">
+					<div class="card-header green-background btn btn-link collapsed text-left" id="headingEight" data-toggle="collapse"
+                        data-target="#collapseEight" aria-expanded="false"
+                        aria-controls="collapseEight">
+						<h5 class="mb-0">
+                        <strong>I don't like the colour scheme you've used on your site...</strong>
+						</h5>
+					</div>
+					<div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion-faq-general">
+						<div class="card-body">
+							<p>Well, that is a shame – no one likes criticism!! But in all seriousness, if you do have
+								any feedback on this site (colour schemes or otherwise!) then please, please do let me
+								know <a href="{{ url_for('contact') }}" class="internal-link">here</a>. All ideas will be seriously considered –
+								the
+								site is only as good as the people who use it!
 							</p>
 						</div>
 					</div>

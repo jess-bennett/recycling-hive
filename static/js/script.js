@@ -16,6 +16,9 @@ $(document).ready(function() {
   $("#collection-details").hide(); /* Hide collection details on page load until details button selected on page   */
   /* Hide flash form on contact page */
   $("#contact-flash").hide();
+  /* FAQ PAGE */
+  $(".accordion-faq").hide(); /* Hide FAQ section  */
+  $("#accordion-faq-about").show(); /* Show FAQ section  */
 });
 
 /* REGISTER.HTML */
@@ -205,4 +208,34 @@ $("#btn-manage-members").click(function() {
   $("#member-details").show();
   $("#location-details").show();
   $("#collection-details").show();
+});
+
+/* FAQ.HTML */
+/* Show/hide sections on page on button click */
+$("#btn-faq-about").click(function() {
+  $(".btn-faq").removeClass("active");
+  $("#btn-faq-about").addClass("active");
+  $(".accordion-faq").hide();
+  $("#accordion-faq-about").show();
+});
+
+$("#btn-faq-how-to").click(function() {
+  $(".btn-faq").removeClass("active");
+  $("#btn-faq-how-to").addClass("active");
+  $(".accordion-faq").hide();
+  $("#accordion-faq-how-to").show();
+});
+
+$("#btn-faq-troubleshooting").click(function() {
+  $(".btn-faq").removeClass("active");
+  $("#btn-faq-troubleshooting").addClass("active");
+  $(".accordion-faq").hide();
+  $("#accordion-faq-troubleshooting").show();
+});
+
+$("#btn-faq-general").click(function() {
+  $(".btn-faq").removeClass("active");
+  $("#btn-faq-general").addClass("active");
+  $(".accordion-faq").hide();
+  $("#accordion-faq-general").show();
 });

@@ -67,14 +67,6 @@
         </div>
       </a>
     </li>
-    <li>
-      <a href="{{ url_for('faqs') }}">
-        <div class="hexagon">
-          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/question.svg"/>
-          <p class="hexagon-text hexagon-text-background">FAQs</p>
-        </div>
-      </a>
-    </li>
     {% else %}
     <li>
         <a href="{{ url_for('profile', username=session['username']) }}">
@@ -85,14 +77,6 @@
         </a>
     </li>
     <li>
-      <a href="{{ url_for('add_new_collection') }}">
-        <div class="hexagon">
-          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/plus.svg"/>
-          <p class="hexagon-text hexagon-text-background">Add Collection</p>
-        </div>
-      </a>
-    </li>
-    <li>
       <a href="{{ url_for('get_recycling_categories') }}">
         <div class="hexagon">
           <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/search.svg"/>
@@ -101,10 +85,10 @@
       </a>
     </li>
     <li>
-      <a href="{{ url_for('contact') }}">
+      <a href="{{ url_for('add_new_collection') }}">
         <div class="hexagon">
-          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/at.svg"/>
-          <p class="hexagon-text hexagon-text-background">Contact</p>
+          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/plus.svg"/>
+          <p class="hexagon-text hexagon-text-background">Add Collection</p>
         </div>
       </a>
     </li>
@@ -118,6 +102,13 @@
         </a>
         </li>
     {% endif %}
+    {% endif %}
+    <li>
+        <div class="hexagon" data-toggle="modal" data-target="#modal-about">
+          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/book.svg"/>
+          <p class="hexagon-text hexagon-text-background">About</p>
+        </div>
+    </li>
     <li>
       <a href="{{ url_for('faqs') }}">
         <div class="hexagon">
@@ -126,8 +117,17 @@
         </div>
       </a>
     </li>
-    {% endif %}
+    <li>
+      <a href="{{ url_for('contact') }}">
+        <div class="hexagon">
+          <img src="https://raw.githubusercontent.com/FortAwesome/Font-Awesome/master/svgs/solid/at.svg"/>
+          <p class="hexagon-text hexagon-text-background">Contact</p>
+        </div>
+      </a>
+    </li>
   </ul>
 </section>
+
+{% include "components/modals/about.html" %}
 
 {% endblock %}

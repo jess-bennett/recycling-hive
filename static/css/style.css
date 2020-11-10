@@ -112,7 +112,7 @@ span.internal-link {
 .btn-outline-primary:not(:disabled):not(.disabled).active,
 .btn-outline-primary:not(:disabled):not(.disabled):active,
 .show>.btn-outline-primary.dropdown-toggle {
-  color: #333;
+  color: #fafafa;
   background-color: #3a5c2d;
   border-color: #3a5c2d;
 }
@@ -261,6 +261,11 @@ small.warning-text {
     overflow-wrap: break-word;
 }
 
+/* FAQs */
+.card-header > h5 {
+    font-size: 1rem;
+}
+
 /* Modals */
 .modal-content {
   border: 0.5rem solid #3a5c2d;
@@ -329,6 +334,9 @@ footer a:hover {
   }
 
   .btn-outline-primary {
+    font-size: 1.3rem;
+}
+.card-header > h5 {
     font-size: 1.3rem;
 }
 }
