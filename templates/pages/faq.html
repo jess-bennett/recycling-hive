@@ -193,11 +193,29 @@
 									href="{{ url_for('get_recycling_members', member_type='view-all') }}"
 									class="internal-link">Hive Members</a> and click on a name to see all the items they currently accept.
 							</p>
+                            <p><strong>What are the different collection types?</strong><br>
+                            It can take some getting used to, but once it's clear, it makes adding and finding collections easier for all of us. So, without further ado, this is how the collections are split:</p>
+                            <ul>
+                                <li>Private</li>
+                                <dl>These are collections which are undertaken by an individual - a Worker Bee in your hive. They are responsible for collecting and dispatching the recyclable item.
+                                The collection address is usually their home or work. They do all of this voluntarily and it's hard work - so please make sure you follow the condition notes they give to the letter.
+                                In particular, please make sure the items you drop off to them are clean and don't have bits of food stuck to them!</dl>
+                                <li>Public</li>
+                                <dl>These collections belong to a business/company or similar and are available to be used by basically everyone (depending on location). They are further split down into:</dl>
+                                <ul>
+                                    <li>Local</li>
+                                    <li>National</li>
+                                </ul>
+                            </ul>
                             <p><strong>How do I add a collection?</strong><br>
-                            When you first join the site, you are automatically a 'Busy Bee'. To become a 'Worker Bee', you just need to add your first collection from your 
-                            <a href="{{ url_for('profile', username=session['username']) }}" class="internal-link">Profile Page</a>. Once that's been approved by a Queen Bee, you're free to add as many collections
-                            as you want, without waiting for further approval.
-                            </p>
+                            When you first join the site, you are automatically a 'Busy Bee'. To become a 'Worker Bee' (a member with private recycling collections), you just need to add your first collection from the 
+                            <a href="{{ url_for('add_new_collection') }}" class="internal-link">Add Collection page</a>. Once that's been approved by a Queen Bee, you're free to add as many collections
+                            as you want, without waiting for further approval.</p>
+
+                            <p>Anyone can add a public collection - you don't need to be a Worker Bee to do so. As these collections are displayed to <strong>all</strong> Hives (not just your own), <strong>and/or</strong> are prone to
+                            duplication by different members, they are first checked and approved by a Queen Bee, before being committed to the database. To add one, just go to the <a href="{{ url_for('add_new_collection') }}" class="internal-link">Add Collection page</a>
+                            and follow the instructions there.</p>
+
                             <p><strong>What if I don't want to put my address on here?</strong><br>
                             The registration process has been designed to encourage only local people to join and your address will only be visible to those that have registered to be 
                             part of your local community. However, it is a website and it's understandable if you don't feel comfortable

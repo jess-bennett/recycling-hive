@@ -5,6 +5,7 @@ body {
   background-color: #fafafa;
   color: #333;
   margin-bottom: 3rem;
+  min-height: 100vh;
 }
 
 span.internal-link {
@@ -14,6 +15,7 @@ span.internal-link {
 .internal-link {
   color: #3a5c2d;
   font-weight: bold;
+  font-size: 120%;
 }
 
 /* Navbar */
