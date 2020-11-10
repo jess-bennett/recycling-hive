@@ -14,13 +14,18 @@
               href="{{ url_for('home', username=session['username']) }}">Home</a>
           </li>
           {% if session.user %}
+          <li class="nav-item {% if (active_item == 'categories') or (active_item == 'items') or (active_item == 'collections') or (active_item == 'members') %}active{% endif %}">
+            <a class="nav-link"
+              href="{{ url_for('get_recycling_categories') }}">Search Hive</a>
+          </li>
           <li class="nav-item {% if active_item == 'collection' %}active{% endif %}">
             <a class="nav-link" href="{{ url_for('add_new_collection') }}">Add Collection</a>
           </li>
-          <li class="nav-item {% if (active_item == 'categories') or (active_item == 'items') or (active_item == 'collections') or (active_item == 'members') %}active{% endif %}">
-            <a class="nav-link"
-              href="{{ url_for('get_recycling_categories') }}">Hive</a>
-          </li>
+            {% if session.member_type == "Queen Bee" %}
+            <li class="nav-item {% if active_item == 'management' %}active{% endif %}">
+                <a class="nav-link" href="{{ url_for('hive_management', username=session['username']) }}">Hive Management</a>
+           </li>
+            {% endif %}
             {% if session.user == "demo@demo.com" %}
                 <li class="nav-item {% if active_item == 'register' %}active{% endif %}">
                     <a class="nav-link" href="{{ url_for('find_a_hive') }}">Register</a>
