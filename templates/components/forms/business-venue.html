@@ -11,6 +11,20 @@
 			<input type="text" class="form-control" id="businessName"
                 name="businessName" placeholder="Business/Venue Name"
                 minlength="2">
+            <select class="form-control" id="councilLocation"
+                            name="councilLocation">
+                            <option value="" selected disabled>Select council location</option>
+                            {% for collection in council_collection %}
+                            <option value="{{ council_collection.councilCollection }}">
+                                {{ collection.councilCollection }}
+                            </option>
+                            {% for hrc in collection.householdRecyclingCentres %}
+                            <option value="{{ hrc[0] }}">
+                                {{ hrc[0] }}
+                            </option>
+                            {% endfor %}
+                            {% endfor %}
+                            </select>
             </div>
 		</div>
         <div class="form-row">

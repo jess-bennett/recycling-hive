@@ -850,6 +850,8 @@ def add_new_collection():
     # get user"s location details from db for location card
     locations = list(mongo.db.collectionLocations.find(
         {"memberID": user_id}).sort("nickname"))
+    council_collection = list(mongo.db.hives.find(
+        {"_id": ObjectId(session["hive"])}))
     # Check whether user has submitted first collection for approval
     if mongo.db.firstCollection.find_one(
             {"memberID": ObjectId(user_id)}):
@@ -859,6 +861,7 @@ def add_new_collection():
     return render_template("pages/add-collection.html",
                            categories=categories, items_dict=items_dict,
                            locations=locations, hive=session["hive"],
+                           council_collection=council_collection,
                            member_type=session["member_type"],
                            awaiting_approval=awaiting_approval)
 

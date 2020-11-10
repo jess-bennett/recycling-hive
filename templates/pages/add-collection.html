@@ -25,10 +25,13 @@
 
               <div class="public-collection public-collection-radios">
                 <!-- Additional questions for public collection -->
-                <div class="public-collection-radio-one">
+                <div id="public-collection-radio-one">
                     {% include "components/forms/local-national.html" %}
                 </div>
-                <div class="public-collection-radio-two">
+                <div id="public-collection-radio-two">
+                    {% include "components/forms/council-other.html" %}
+                </div>
+                <div id="public-collection-radio-three">
                     {% include "components/forms/postal-dropoff.html" %}
                 </div>
               </div>

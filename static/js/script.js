@@ -58,7 +58,8 @@ $("input:radio[name='collectionType']").change(
             $("#awaiting-approval-text").hide(); /* Hide approval text   */   
             $(".private-collection").hide(); /* Hide inputs for private collection */
             $(".public-collection-radios").show(); /* Show radios for public collection */
-            $(".public-collection-radio-two").hide(); /* Hide second radio for public collection */
+            $("#public-collection-radio-two").hide(); /* Hide second radio for public collection */
+            $("#public-collection-radio-three").hide(); /* Hide third radio for public collection */
             $("#locationID").prop("required", false); /* Remove required attribute for private locationID */
             $("#businessName").prop("required", true); /* Add required attribute for public location */
             $("#form-add-collection").attr("action", "/add-new-collection/public"); /* Change form action to public route */
@@ -89,25 +90,21 @@ $("input:radio[name='collectionType']").change(
 $("input:radio[name='localNational']").change(
 function(){
     if (this.checked && this.value == "local") {
-        $(".public-collection").show(); /* Show input for public collection */
-        $(".public-collection-dropoff").show(); /* Show input for dropoff collection */
-        $(".public-collection-postal").hide(); /* Hide input for postal collection */
-        $(".public-collection-address").show(); /* Show input for dropoff address */
-        $(".postal-county").hide(); /* Hide input for postal county */
+        $(".public-collection").hide(); /* Hide input for public collection */
+        $(".public-collection-radios").show(); /* Show radio button for national collection */
+        $("#public-collection-radio-two").show(); /* Show radio button for local collection */
+        $("#public-collection-radio-three").hide(); /* Hide radio button for national collection */
         $(".local-collection").show(); /* Show instructions for local collection */
-        $(".national-collection").hide(); /* Hide instructions for national collection */
-        $(".public-collection-radio-two").hide(); /* Hide radio button for national collection */
-        $("#businessStreet").prop("required", true); /* Add required attribute for public address */
-        $("#businessTown").prop("required", true); /* Add required attribute for public address */
-        $("#businessCounty").prop("required", false); /* Remove required attribute for public address */
-        $("#businessPostcode").prop("required", true); /* Add required attribute for public address */
         $("input:radio[name='postalDropoff']").prop("checked", false); /* Remove any previous selection for postal/dropoff radio buttons */
+        $(".national-collection").hide(); /* Hide instructions for national collection */
     }
     if (this.checked && this.value == "national") {
         $(".public-collection").hide(); /* Hide input for public collection */
         $(".public-collection-radios").show(); /* Show radio button for national collection */
-        $(".public-collection-radio-two").show(); /* Show radio button for national collection */
+        $("#public-collection-radio-two").hide(); /* Hide radio button for local collection */
+        $("#public-collection-radio-three").show(); /* Show radio button for national collection */
         $(".national-collection").show(); /* Show instructions for national collection */
+        $("input:radio[name='councilOther']").prop("checked", false); /* Remove any previous selection for postal/dropoff radio buttons */
         $(".local-collection").hide(); /* Hide instructions for local collection */
     }
 });
@@ -118,6 +115,7 @@ function(){
         $(".public-collection").show(); /* Show input for public collection */
         $(".public-collection-dropoff").hide(); /* Hide input for dropoff collection */
         $(".public-collection-postal").show(); /* Show input for postal collection */
+        $("#businessName").show(); /* Show input for business name */
         $("#businessStreet").prop("required", true); /* Add required attribute for public address */
         $("#businessTown").prop("required", true); /* Add required attribute for public address */
         $("#businessCounty").prop("required", true); /* Add required attribute for public address */
@@ -127,10 +125,37 @@ function(){
         $(".public-collection").show(); /* Show input for public collection */
         $(".public-collection-dropoff").show(); /* Show input for dropoff collection */
         $(".public-collection-postal").hide(); /* Hide input for postal collection */
+        $("#businessName").show(); /* Show input for business name */
         $("#businessStreet").prop("required", false); /* Remove required attribute for public address */
         $("#businessTown").prop("required", false); /* Remove required attribute for public address */
         $("#businessCounty").prop("required", false); /* Remove required attribute for public address */
         $("#businessPostcode").prop("required", false); /* Remove required attribute for public address */
+    }
+});
+
+$("input:radio[name='councilOther']").change(
+function(){
+    if (this.checked && this.value == "council") {
+        $(".public-collection").show(); /* Show input for public collection */
+        $(".public-collection-dropoff").show(); /* Show input for dropoff collection */
+        $(".public-collection-postal").hide(); /* Hide input for postal collection */
+        $("#businessName").hide(); /* Hide input for business name */
+        $("#businessStreet").prop("required", false); /* Remove required attribute for public address */
+        $("#businessTown").prop("required", false); /* Remove required attribute for public address */
+        $("#businessCounty").prop("required", false); /* Remove required attribute for public address */
+        $("#businessPostcode").prop("required", false); /* Remove required attribute for public address */
+    }
+    if (this.checked && this.value == "other") {
+        $(".public-collection").show(); /* Show input for public collection */
+        $(".public-collection-dropoff").show(); /* Show input for dropoff collection */
+        $(".public-collection-postal").hide(); /* Hide input for postal collection */
+        $(".public-collection-address").show(); /* Show input for dropoff address */
+        $(".postal-county").hide(); /* Hide input for postal county */
+        $("#businessName").show(); /* Show input for business name */
+        $("#businessStreet").prop("required", true); /* Add required attribute for public address */
+        $("#businessTown").prop("required", true); /* Add required attribute for public address */
+        $("#businessCounty").prop("required", false); /* Remove required attribute for public address */
+        $("#businessPostcode").prop("required", true); /* Add required attribute for public address */
     }
 });
 
