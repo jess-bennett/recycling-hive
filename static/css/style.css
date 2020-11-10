@@ -78,7 +78,7 @@ span.internal-link {
     background-color: #f1f3b8;
     color: #8C0A06;
     padding: 0.5rem;
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 /* Register */
@@ -261,7 +261,12 @@ small.warning-text {
     overflow-wrap: break-word;
 }
 
-/* FAQs */
+/* Cards */
+
+.card-header > h3 {
+    font-size: 1.3rem;
+}
+
 .card-header > h5 {
     font-size: 1rem;
 }
@@ -336,7 +341,13 @@ footer a:hover {
   .btn-outline-primary {
     font-size: 1.3rem;
 }
+.card-header > h3 {
+    font-size: 1.75rem;
+}
 .card-header > h5 {
     font-size: 1.3rem;
+}
+.notification-bar {
+    font-size: 1.2rem;
 }
 }
