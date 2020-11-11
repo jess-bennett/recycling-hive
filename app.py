@@ -1700,7 +1700,9 @@ def get_recycling_collector(collector_type):
         {"$group": {
              "_id": "$collectionLocations._id",
              "memberID": {"$first": "$_id"},
-             "nickname": {"$first": "$collectionLocations.nickname"}
+             "street": {"$first": "$collectionLocations.street"},
+             "town": {"$first": "$collectionLocations.town"},
+             "postcode": {"$first": "$collectionLocations.postcode"}
              }
              },
         {"$sort": {"nickname": 1}}
@@ -1747,7 +1749,7 @@ def get_recycling_collector(collector_type):
         {"$project": {
          "categoryName": "$itemCategory.categoryName",
          "typeOfWaste": "$recyclableItems.typeOfWaste",
-         "nickname": "$collectionLocations.nickname",
+         "locationID": "$collectionLocations._id",
          "street": "$collectionLocations.street",
          "town": "$collectionLocations.town",
          "postcode": "$collectionLocations.postcode",

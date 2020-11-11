@@ -27,13 +27,16 @@
       </div>
 
       <div class="modal-body">
-                {{private_collector_locations}}
-
-                {% for collection in private_collector_dict if collection._id == collector._id %}
-                    {% include "components/details/collection.html" %}
+                {% for location in private_collector_locations if location.memberID == collector._id  %}
+				<!-- Location -->
+                <div class="card-header green-background space-below">
+				<h5><i class="fas fa-home"></i> {{ location.street }}, {{ location.town }}, {{ location.postcode }}</h5>
+			    </div>
+                {% for collection in private_collector_dict if collection.locationID == location._id %}
+                    {% include "components/details/collection-all.html" %}
                 <hr class="green-line">
                 {% endfor %}
-                
+                {% endfor %}
                 <div class="modal-footer">
     <button type="button" class="btn btn-outline-primary"
         data-dismiss="modal">Close</button>
