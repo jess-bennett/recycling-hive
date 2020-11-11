@@ -33,7 +33,9 @@
                     </div>
                   </div>
                 <!-- Location -->
-                    {% if collection.collectionType != "local-council" %}
+                    {% if collection.collectionType == "local-council" %}
+                    {% elif collection.collectionType == "national-dropoff" %}
+                    {% else %}
                     <div class="form-group col-md-6">
                     <div class="input-group mb-2">
                         {% include "components/tooltips/tooltip-address.html" %}

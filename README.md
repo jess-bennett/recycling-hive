@@ -364,6 +364,47 @@ to enable my 'if statement'.
 
 I am still not convinced that this is the most elegant solution, but it was the best I was able to come up with for this issue!
 
+#### Bug 3
+This continues to frustrate me even after finding a workaround as the code <em>should</em> work in its original format. But, it doesn't. 
+
+<strong>Initial working code</strong>
+```html
+{% if collection.collectionType != "local-council" %}
+    DO THIS
+{% endif %}
+```
+This achieved what I expected: DO THIS (in this instance, an input box appearing) for cases where collectionType did not equal "local-council".
+
+I then wanted to extend this include cases where it did not equal "national-dropoff":
+
+<strong>Modification</strong>
+```html
+{% if collection.collectionType != "local-council" or collection.collectionType != "national-dropoff" %}
+    DO THIS
+{% endif %}
+```
+For reasons completely unknown to me, this didn't work. 
+
+I also tried:
+<strong>Next attempt</strong>
+```html
+{% if (collection.collectionType != "local-council") or (collection.collectionType != "national-dropoff") %}
+    DO THIS
+{% endif %}
+```
+But no joy. 
+
+In the end, I had to resort to:
+
+<strong>(Unsatisfactory) Solution</strong>
+```html
+{% if collection.collectionType == "local-council" %}
+{% elif collection.collectionType == "national-dropoff" %}
+{% else %}
+    DO THIS
+{% endif %}
+```
+Not very beautiful, but working.
 
 ### :deciduous_tree: Branches
 ---

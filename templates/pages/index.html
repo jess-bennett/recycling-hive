@@ -23,10 +23,10 @@
     <i class="col-2 offset-6 col-md-1 offset-md-9 warning-text {% if approved_member == False%}fas fa-user-slash{% endif %}" data-toggle="tooltip"
                         data-placement="top" data-type="info"
                         title="Currently waiting for Membership to be approved"></i>
-    <i class="col-2 col-md-1 {% if awaiting_approval %}fas fa-hard-hat{% endif %}" data-toggle="tooltip"
+    <i class="col-2 col-md-1 warning-text {% if awaiting_approval %}fas fa-hard-hat{% endif %}" data-toggle="tooltip"
                         data-placement="top" data-type="info"
                         title="Currently waiting for Worker Bee approval"></i>
-    <i class="col-2 col-md-1 {% if public_approval %}fas fa-globe-europe{% endif %}" data-toggle="tooltip"
+    <i class="col-2 col-md-1 warning-text {% if public_approval %}fas fa-globe-europe{% endif %}" data-toggle="tooltip"
                         data-placement="top" data-type="info"
                         title="{{ unapproved_collections|length }} public collection(s) to be approved"></i>
     </div>

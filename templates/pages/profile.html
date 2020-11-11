@@ -56,16 +56,12 @@
             <h5 class="warning-text">Your first private collection is awaiting approval.<br>
               Once it has been approved, you will be able to add further private collections without needing approval.</h5>
             {% else %}
-            <p>As a Busy Bee, you are not able to add private collection points for the Hive.<br>
-            To become a Worker Bee, please click 'Become a Worker Bee!' below and add your location and details for your first private collection. Once this has been approved
+            <p>As a Busy Bee, you are not able to add private collection points for the Hive yet.<br>
+            To become a Worker Bee, please go to <a href="{{ url_for('add_new_collection') }}" class="internal-link">Add Collection</a> and add your location and details for your first private collection. Once this has been approved
             by the Queen Bee(s), you will be able to add more locations and collections without waiting for approval.</p>
             {% endif %}
           </div>
           </div>
-          {% if awaiting_approval == False %}
-          <a href="{{ url_for('add_new_collection') }}" class="btn btn-outline-primary col space-below"
-              ><i class="fas fa-hard-hat"></i> <strong>Become a Worker Bee!</strong></a>
-          {% endif %}
           {% else %}
           {% include "components/cards/locations.html" %}
           {% include "components/cards/collections.html" %}

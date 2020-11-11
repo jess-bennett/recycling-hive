@@ -9,16 +9,6 @@
             <div id="collapsePublicCollection" class="collapse"
               aria-labelledby="headingPublicCollection" data-parent="#accordion">
               <div class="card-body">
-                <!-- Add collection -->
-                {% if page_id != "management" %}
-                <div class="container-fluid">
-                  <div class="row">
-                  <a href="{{ url_for('add_new_collection') }}" class="btn btn-outline-primary col-9 offset-3 col-md-4 offset-md-8 btn-add space-below"
-              ><i class="fas fa-plus"></i> Add New Public
-                      Collection</a>
-                  </div>
-                </div>
-                {% endif %}
                 {% if unapproved_collections %}
                 {% if page_id != "management" %}
                 <h4>Unapproved Submissions</h4>
@@ -56,8 +46,8 @@
                 {% endfor %}
                 {% else %}
                     {% if page_id != "management" %}
-                <p><strong>You do not currently have any unapproved public collections! Want
-                    to add one?</strong></p>
+                <p><strong>You do not currently have any unapproved public collections! You
+                    can <a href="{{ url_for('add_new_collection') }}" class="internal-link">Add Collection</a> here.</strong></p>
                     {% else %}
                     <p><strong>There are no public collections awaiting approval.</strong></p>
                     {% endif %}
