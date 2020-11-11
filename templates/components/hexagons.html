@@ -50,7 +50,7 @@
 		{% for collector in private_collector %}
 		<li>
 			<div class="hexagon"
-				data-toggle="modal" data-target="#modal-collection-{{ collector._id }}">
+				data-toggle="modal" data-target="#modal-private-collection-{{ collector._id }}">
 				<p
 					class="hexagon-text ">
 					<i class="fas fa-hard-hat"></i> <strong>{{ collector.username }}</strong>
@@ -63,7 +63,7 @@
         {% for collector in local_council_collector %}
 		<li>
 			<div class="hexagon hexagon-medium"
-				data-toggle="modal" data-target="#modal-collection-{{ collector._id }}">
+				data-toggle="modal" data-target="#modal-council-collection-{{ collector._id }}">
 				<p
 					class="hexagon-text ">
 					<i class="fas fa-building"></i> <strong>{{ collector.councilLocation }}</strong>

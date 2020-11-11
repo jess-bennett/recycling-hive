@@ -1034,6 +1034,8 @@ def add_public_collection():
                  "username": username,
                  "memberID": user_id,
                  "councilLocation": request.form.get("councilLocation"),
+                 "councilLocation_lower": request.form.get(
+                     "councilLocation").lower().replace(" ", "_"),
                  "categoryName": category_name,
                  "typeOfWaste": type_of_waste,
                  "conditionNotes": request.form.get("conditionNotes"),
@@ -1642,9 +1644,18 @@ def get_recycling_collector(collector_type):
             {"$sort": {"username": 1}}
             ]))
         # Get all local council collectors for hexagon headers
-        local_council_collector = list(mongo.db.publicCollections.find(
-                {"hive": ObjectId(session["hive"]), "approvedCollection": True,
-                 "collectionType": "local-council"}).sort("councilLocation"))
+        local_council_collector = list(
+                mongo.db.publicCollections.aggregate([
+                    {"$match": {"hive": ObjectId(
+                        session["hive"]), "approvedCollection": True,
+                        "collectionType": "local-council"}},
+                    {"$group": {
+                     "_id": "$councilLocation_lower",
+                     "councilLocation": {"$first": "$councilLocation"}
+                     }
+                     },
+                    {"$sort": {"_id": 1}}
+                    ]))
     else:
         # Get selected member type for dropdown
         selected_collector_type = collector_type
@@ -1671,11 +1682,19 @@ def get_recycling_collector(collector_type):
             ]))
             local_council_collector = None
         elif collector_type == "Local Council":
-            local_council_collector = list(mongo.db.publicCollections.find(
-                {"hive": ObjectId(session["hive"]), "approvedCollection": True,
-                 "collectionType": "local-council"}).sort("councilLocation"))
+            local_council_collector = list(
+                mongo.db.publicCollections.aggregate([
+                    {"$match": {"hive": ObjectId(
+                        session["hive"]), "approvedCollection": True,
+                        "collectionType": "local-council"}},
+                    {"$group": {
+                     "_id": "$councilLocation_lower",
+                     "councilLocation": {"$first": "$councilLocation"}
+                     }
+                     },
+                    {"$sort": {"_id": 1}}
+                    ]))
             private_collector = None
-    
     # Get list of members addresses for collection card groups
     private_collector_locations = list(mongo.db.hiveMembers.aggregate([
         {"$match": {"hive": ObjectId(session["hive"])}},

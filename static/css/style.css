@@ -126,7 +126,11 @@ span.internal-link {
   background-color: #bdc312;
   border-radius: .25rem;
   font-weight: bold;
-  padding: 1rem;
+  padding: 0.75rem;
+}
+
+.green-background > * {
+    margin-bottom: 0;
 }
 
 .green-line {

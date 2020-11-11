@@ -12,12 +12,12 @@
 <!-- Collection details modal -->
 {% if private_collector %}
 {% for collector in private_collector %}
-<div class="modal fade" id="modal-collection-{{ collector._id }}" tabindex="-1" role="dialog"
+<div class="modal fade" id="modal-private-collection-{{ collector._id }}" tabindex="-1" role="dialog"
   aria-labelledby="modal-collection-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-collection-title">All
+        <h4 class="modal-title w-100" id="modal-private-collection-title">All
           Collections for {{ collector.username }}</h4>
 
         <button type="button" class="close" data-dismiss="modal"
@@ -29,7 +29,7 @@
       <div class="modal-body">
                 {% for location in private_collector_locations if location.memberID == collector._id  %}
 				<!-- Location -->
-                <div class="card-header green-background space-below">
+                <div class="green-background space-below">
 				<h5><i class="fas fa-home"></i> {{ location.street }}, {{ location.town }}, {{ location.postcode }}</h5>
 			    </div>
                 {% for collection in private_collector_dict if collection.locationID == location._id %}
@@ -50,12 +50,12 @@
 
 {% if local_council_collector %}
 {% for collector in local_council_collector %}
-<div class="modal fade" id="modal-collection-{{ collector._id }}" tabindex="-1"
+<div class="modal fade" id="modal-council-collection-{{ collector._id }}" tabindex="-1"
   role="dialog" aria-labelledby="modal-collection-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-collection-title">All
+        <h4 class="modal-title w-100" id="modal-council-collection-title">All
           Collections for {{ collector.councilLocation }}</h4>
 
         <button type="button" class="close" data-dismiss="modal"
