@@ -209,6 +209,15 @@ def register(hive):
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if session.get("user"):
+        if session["user"] == "demo@demo.com":
+            # Remove session variables for Demo login
+            session.pop("user")
+            session.pop("username")
+            session.pop("user_id")
+            session.pop("hive")
+            session.pop("member_type")
+            return render_template("pages/login.html", page_id="login")
     if request.method == "POST":
         # check if user exists in db
         existing_user = mongo.db.hiveMembers.find_one(
