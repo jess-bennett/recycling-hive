@@ -33,7 +33,7 @@
     <div class="modal-content">
       <div class="modal-header text-center">
         <h4 class="modal-title w-100" id="modal-collection-title">Collection
-          details for {{ collection.businessName }}</h4>
+          details for {% if collection.collectionType == "local-council" %}{{ collection.councilLocation }}{% else %}{{ collection.businessName }}{% endif %}</h4>
 
         <button type="button" class="close" data-dismiss="modal"
           aria-label="Close">

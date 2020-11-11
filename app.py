@@ -1615,40 +1615,69 @@ def get_recycling_collections(item_id):
         page_id="collections")
 
 
-@app.route("/hive/members/<member_type>")
+@app.route("/hive/collector/<collector_type>")
 @approval_required
-def get_recycling_members(member_type):
-    if member_type == "view-all":
-        # Get selected member type for dropdown
-        selected_member_type = "Select a Member Group"
-        # Get members that match the selected type for
-        # # hexagon headers
-        member_group = list(mongo.db.hiveMembers.find(
-            {"hive": ObjectId(session["hive"])}).sort("username"))
+def get_recycling_collector(collector_type):
+    if collector_type == "view-all":
+        # Get selected collector type for dropdown
+        selected_collector_type = "Select a Collection Type"
+        # Get all private collectors for
+        # hexagon headers
+        private_collector = list(mongo.db.itemCollections.aggregate([
+            {
+             "$lookup": {
+                "from": "hiveMembers",
+                "localField": "memberID",
+                "foreignField": "_id",
+                "as": "hiveMembers"
+             },
+            },
+            {"$unwind": "$hiveMembers"},
+            {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+            {"$group": {
+             "_id": "$hiveMembers._id",
+             "username": {"$first": "$hiveMembers.username"}
+             }
+             },
+            {"$sort": {"username": 1}}
+            ]))
+        # Get all local council collectors for hexagon headers
+        local_council_collector = list(mongo.db.publicCollections.find(
+                {"hive": ObjectId(session["hive"]), "approvedCollection": True,
+                 "collectionType": "local-council"}).sort("councilLocation"))
     else:
         # Get selected member type for dropdown
-        selected_member_type = member_type
+        selected_collector_type = collector_type
         # Get members that match the selected type for
         # # hexagon headers
-        if member_type == "Queen Bee":
-            member_group = list(mongo.db.hiveMembers.find(
-                {"hive": ObjectId(session["hive"]),
-                 "isQueenBee": True}).sort("username"))
-        elif member_type == "Worker Bee":
-            member_group = list(mongo.db.hiveMembers.find(
-                {"hive": ObjectId(session["hive"]),
-                 "isQueenBee": False, "isWorkerBee": True}).sort("username"))
-        elif member_type == "Busy Bee":
-            member_group = list(mongo.db.hiveMembers.find(
-                {"hive": ObjectId(session["hive"]),
-                 "isQueenBee": False, "isWorkerBee": False}).sort("username"))
-    # Check if member has collection
-    members_collection = list(mongo.db.itemCollections.find(
-        {}, {"memberID": 1, "_id": 0}))
-    members_collection_values = list(
-        [document["memberID"] for document in members_collection])
+        if collector_type == "Worker Bee":
+            private_collector = list(mongo.db.itemCollections.aggregate([
+            {
+             "$lookup": {
+                "from": "hiveMembers",
+                "localField": "memberID",
+                "foreignField": "_id",
+                "as": "hiveMembers"
+             },
+            },
+            {"$unwind": "$hiveMembers"},
+            {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+            {"$group": {
+             "_id": "$hiveMembers._id",
+             "username": {"$first": "$hiveMembers.username"}
+             }
+             },
+            {"$sort": {"username": 1}}
+            ]))
+            local_council_collector = None
+        elif collector_type == "Local Council":
+            local_council_collector = list(mongo.db.publicCollections.find(
+                {"hive": ObjectId(session["hive"]), "approvedCollection": True,
+                 "collectionType": "local-council"}).sort("councilLocation"))
+            private_collector = None
+    
     # Create new dictionary of members and their collections
-    members_dict = list(mongo.db.hiveMembers.aggregate([
+    private_collector_dict = list(mongo.db.hiveMembers.aggregate([
         {"$match": {"hive": ObjectId(session["hive"])}},
         {
          "$lookup": {
@@ -1698,11 +1727,46 @@ def get_recycling_members(member_type):
          },
         {"$sort": {"categoryName": 1, "typeOfWaste": 1}}
         ]))
+    local_council_collector_dict = list(mongo.db.publicCollections.aggregate(
+        [{"$match": {"hive": ObjectId(session["hive"]), "approvedCollection": True,
+                     "collectionType": "local-council"}},
+            {
+             "$lookup": {
+              "from": "recyclableItems",
+              "localField": "itemID",
+              "foreignField": "_id",
+              "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {
+            "$lookup": {
+                "from": "itemCategory",
+                "localField": "recyclableItems.categoryID",
+                "foreignField": "_id",
+                "as": "itemCategory"
+            },
+            },
+            {"$unwind": "$itemCategory"},
+            {"$project": {
+             "collectionType": 1,
+             "categoryName": "$itemCategory.categoryName",
+             "typeOfWaste": "$recyclableItems.typeOfWaste",
+             "councilLocation": 1,
+             "id": 1,
+             "conditionNotes": 1,
+             "charityScheme": 1
+             }
+             }
+         ]))
     return render_template(
-        "pages/hive-member.html",
-        selected_member_type=selected_member_type,
-        member_group=member_group, members_dict=members_dict,
-        members_collection_values=members_collection_values, page_id="members")
+        "pages/hive-collector.html",
+        selected_collector_type=selected_collector_type,
+        private_collector=private_collector,
+        private_collector_dict=private_collector_dict,
+        local_council_collector=local_council_collector,
+        local_council_collector_dict=local_council_collector_dict,
+        page_id="collector")
 
 
 @app.route("/contact")

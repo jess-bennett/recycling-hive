@@ -3,7 +3,7 @@
     <div class="row">
 		<div class="col-md-10 offset-md-1 text-center">
             <div class="card-header text-center green-background space-below">
-				<h3>Search by:</h3>
+				<h5>Search by:</h5>
 			</div>
             <div class="row">
                 <div class="col-4 col-md-4 space-below">
@@ -19,9 +19,9 @@
                      </a>
                 </div>
                 <div class="col-4 col-md-4 space-below">
-                    <a href="{{ url_for('get_recycling_members', member_type='view-all') }}" type="button" id="btn-faq-general"
-                                class="btn btn-outline-primary col btn-faq {% if active_item == 'members' %}active{% endif %}">
-                        Member
+                    <a href="{{ url_for('get_recycling_collector', collector_type='view-all') }}" type="button" id="btn-faq-general"
+                                class="btn btn-outline-primary col btn-faq {% if active_item == 'collector' %}active{% endif %}">
+                        Collection
                      </a>
                 </div>
             </div>

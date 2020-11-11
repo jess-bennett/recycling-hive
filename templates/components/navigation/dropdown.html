@@ -33,29 +33,25 @@
 			{% endfor %}
 		</div>
     {% endif %}
-    {% if page_id == "members" %}
+    {% if page_id == "collector" %}
         <button class="btn btn-outline-primary col space-below dropdown-toggle"
         type="button" data-toggle="dropdown"
         aria-haspopup="true" aria-expanded="false">
-        {% if selected_member_type == "Queen Bee"%}<i class="fas fa-crown"></i>
-        {% elif selected_member_type == "Worker Bee"%}<i
-            class="fas fa-hard-hat"></i>
-        {% elif selected_member_type == "Busy Bee" %}<i class="fas fa-user"></i>
-        {% endif %}{{ selected_member_type }}
+        {% if selected_collector_type == "Worker Bee"%}<i class="fas fa-hard-hat"></i>
+        {% elif selected_collector_type == "Local Council"%}<i
+            class="fas fa-building"></i>
+        {% endif %}{{ selected_collector_type }}
         </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item"
-            href="{{ url_for('get_recycling_members', member_type='view-all') }}">View
+            href="{{ url_for('get_recycling_collector', collector_type='view-all') }}">View
             all</a>
         <a class="dropdown-item"
-            href="{{ url_for('get_recycling_members', member_type='Queen Bee') }}"><i
-            class="fas fa-crown"></i> Queen Bee</a>
-        <a class="dropdown-item"
-            href="{{ url_for('get_recycling_members', member_type='Worker Bee') }}"><i
+            href="{{ url_for('get_recycling_collector', collector_type='Worker Bee') }}"><i
             class="fas fa-hard-hat"></i> Worker Bee</a>
         <a class="dropdown-item"
-            href="{{ url_for('get_recycling_members', member_type='Busy Bee') }}"><i
-            class="fas fa-user"></i> Busy Bee</a>
+            href="{{ url_for('get_recycling_collector', collector_type='Local Council') }}"><i
+            class="fas fa-building"></i> Local Council</a>
         </div>
     {% endif %}
   </div>
