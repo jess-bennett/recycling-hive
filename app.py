@@ -172,7 +172,7 @@ def register(hive):
 
         if existing_user:
             flash("Email already exists")
-            return redirect(url_for("register"))
+            return redirect(url_for("register", hive=hive))
 
         register = {
             "username": request.form.get("username"),
@@ -1017,24 +1017,71 @@ def add_public_collection():
         charityScheme = request.form.get("charityScheme")
         if charityScheme == "":
             charityScheme = "-"
-        public_collection = {
-            "hive": ObjectId(session["hive"]),
-            "localNational": request.form.get("localNational"),
-            "postalDropoff": request.form.get("postalDropoff"),
-            "username": username,
-            "memberID": user_id,
-            "businessName": request.form.get("businessName"),
-            "street": request.form.get("businessStreet"),
-            "town": request.form.get("businessTown"),
-            "county": request.form.get("businessCounty"),
-            "postcode": request.form.get("businessPostcode"),
-            "categoryName": category_name,
-            "typeOfWaste": type_of_waste,
-            "conditionNotes": request.form.get("conditionNotes"),
-            "charityScheme": charityScheme,
-            "approvedCollection": False,
-            "dateAdded": datetime.now().strftime("%d %b %Y")
-        }
+        if request.form.get("localNational") == "local":
+            if request.form.get("councilOther") == "council":
+                public_collection = {
+                 "hive": ObjectId(session["hive"]),
+                 "collectionType": "local-council",
+                 "username": username,
+                 "memberID": user_id,
+                 "councilLocation": request.form.get("councilLocation"),
+                 "categoryName": category_name,
+                 "typeOfWaste": type_of_waste,
+                 "conditionNotes": request.form.get("conditionNotes"),
+                 "charityScheme": charityScheme,
+                 "approvedCollection": False,
+                 "dateAdded": datetime.now().strftime("%d %b %Y")
+                }
+            if request.form.get("councilOther") == "other":
+                public_collection = {
+                 "hive": ObjectId(session["hive"]),
+                 "collectionType": "local-other",
+                 "username": username,
+                 "memberID": user_id,
+                 "businessName": request.form.get("businessName"),
+                 "street": request.form.get("businessStreet"),
+                 "town": request.form.get("businessTown"),
+                 "postcode": request.form.get("businessPostcode"),
+                 "categoryName": category_name,
+                 "typeOfWaste": type_of_waste,
+                 "conditionNotes": request.form.get("conditionNotes"),
+                 "charityScheme": charityScheme,
+                 "approvedCollection": False,
+                 "dateAdded": datetime.now().strftime("%d %b %Y")
+                }
+        if request.form.get("localNational") == "national":
+            if request.form.get("postalDropoff") == "postal":
+                public_collection = {
+                 "hive": ObjectId(session["hive"]),
+                 "collectionType": "national-postal",
+                 "username": username,
+                 "memberID": user_id,
+                 "businessName": request.form.get("businessName"),
+                 "street": request.form.get("businessStreet"),
+                 "town": request.form.get("businessTown"),
+                 "county": request.form.get("businessCounty"),
+                 "postcode": request.form.get("businessPostcode"),
+                 "categoryName": category_name,
+                 "typeOfWaste": type_of_waste,
+                 "conditionNotes": request.form.get("conditionNotes"),
+                 "charityScheme": charityScheme,
+                 "approvedCollection": False,
+                 "dateAdded": datetime.now().strftime("%d %b %Y")
+                }
+            if request.form.get("postalDropoff") == "dropoff":
+                public_collection = {
+                 "hive": ObjectId(session["hive"]),
+                 "collectionType": "national-dropoff",
+                 "username": username,
+                 "memberID": user_id,
+                 "businessName": request.form.get("businessName"),
+                 "categoryName": category_name,
+                 "typeOfWaste": type_of_waste,
+                 "conditionNotes": request.form.get("conditionNotes"),
+                 "charityScheme": charityScheme,
+                 "approvedCollection": False,
+                 "dateAdded": datetime.now().strftime("%d %b %Y")
+                }
         mongo.db.publicCollections.insert_one(public_collection)
         flash("Public collection sent for approval")
         return redirect(url_for("add_new_collection"))
@@ -1144,7 +1191,8 @@ def get_recycling_categories():
     # Get categories in public collections
     categories_dict_public = list(mongo.db.publicCollections.aggregate([
             {"$match": {"approvedCollection": True, "$or": [{"hive": ObjectId(
-                session["hive"])}, {"localNational": "national"}]}},
+                session["hive"])}, {"collectionType": "national-postal"},
+                {"collectionType": "national-dropoff"}]}},
             {
              "$lookup": {
                 "from": "recyclableItems",
@@ -1222,7 +1270,8 @@ def get_recycling_items(category_id):
             mongo.db.publicCollections.aggregate([
                 {"$match": {"approvedCollection": True,
                  "$or": [{"hive": ObjectId(
-                  session["hive"])}, {"localNational": "national"}]}},
+                  session["hive"])}, {"collectionType": "national-postal"},
+                  {"collectionType": "national-dropoff"}]}},
                 {
                  "$lookup": {
                   "from": "recyclableItems",
@@ -1284,7 +1333,8 @@ def get_recycling_items(category_id):
             mongo.db.publicCollections.aggregate([
                 {"$match": {"approvedCollection": True,
                  "$or": [{"hive": ObjectId(
-                  session["hive"])}, {"localNational": "national"}]}},
+                  session["hive"])}, {"collectionType": "national-postal"},
+                  {"collectionType": "national-dropoff"}]}},
                 {
                  "$lookup": {
                   "from": "recyclableItems",
@@ -1349,7 +1399,8 @@ def get_recycling_items(category_id):
     categories_dict_public = list(mongo.db.publicCollections.aggregate(
         [{"$match": {"approvedCollection": True,
           "$or": [{"hive": ObjectId(session["hive"])},
-                  {"localNational": "national"}]}},
+                  {"collectionType": "national-postal"},
+                  {"collectionType": "national-dropoff"}]}},
             {
              "$lookup": {
                 "from": "recyclableItems",
@@ -1429,7 +1480,8 @@ def get_recycling_collections(item_id):
     recycling_items_dict_public = list(mongo.db.publicCollections.aggregate(
         [{"$match": {"approvedCollection": True,
           "$or": [{"hive": ObjectId(session["hive"])},
-                  {"localNational": "national"}]}},
+                  {"collectionType": "national-postal"},
+                  {"collectionType": "national-dropoff"}]}},
             {
              "$lookup": {
               "from": "recyclableItems",
@@ -1509,7 +1561,8 @@ def get_recycling_collections(item_id):
     collections_dict_public = list(mongo.db.publicCollections.aggregate(
         [{"$match": {"approvedCollection": True,
           "$or": [{"hive": ObjectId(session["hive"])},
-                  {"localNational": "national"}]}},
+                  {"collectionType": "national-postal"},
+                  {"collectionType": "national-dropoff"}]}},
             {
              "$lookup": {
               "from": "recyclableItems",
@@ -1529,10 +1582,10 @@ def get_recycling_collections(item_id):
             },
             {"$unwind": "$itemCategory"},
             {"$project": {
-             "localNational": 1,
-             "postalDropoff": 1,
+             "collectionType": 1,
              "categoryName": "$itemCategory.categoryName",
              "typeOfWaste": "$recyclableItems.typeOfWaste",
+             "councilLocation": 1,
              "businessName": 1,
              "street": 1,
              "town": 1,

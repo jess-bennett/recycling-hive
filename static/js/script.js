@@ -61,7 +61,6 @@ $("input:radio[name='collectionType']").change(
             $("#public-collection-radio-two").hide(); /* Hide second radio for public collection */
             $("#public-collection-radio-three").hide(); /* Hide third radio for public collection */
             $("#locationID").prop("required", false); /* Remove required attribute for private locationID */
-            $("#businessName").prop("required", true); /* Add required attribute for public location */
             $("#form-add-collection").attr("action", "/add-new-collection/public"); /* Change form action to public route */
         }
         if (this.checked && this.value == "private") {
@@ -115,7 +114,10 @@ function(){
         $(".public-collection").show(); /* Show input for public collection */
         $(".public-collection-dropoff").hide(); /* Hide input for dropoff collection */
         $(".public-collection-postal").show(); /* Show input for postal collection */
+        $("#councilLocation").hide(); /* Hide input for council name */
+        $("#councilLocation").prop("required", false); /* Remove required attribute for council location */
         $("#businessName").show(); /* Show input for business name */
+        $("#businessName").prop("required", true); /* Add required attribute for public location */
         $("#businessStreet").prop("required", true); /* Add required attribute for public address */
         $("#businessTown").prop("required", true); /* Add required attribute for public address */
         $("#businessCounty").prop("required", true); /* Add required attribute for public address */
@@ -125,7 +127,10 @@ function(){
         $(".public-collection").show(); /* Show input for public collection */
         $(".public-collection-dropoff").show(); /* Show input for dropoff collection */
         $(".public-collection-postal").hide(); /* Hide input for postal collection */
+        $("#councilLocation").hide(); /* Hide input for council name */
+        $("#councilLocation").prop("required", false); /* Remove required attribute for council location */
         $("#businessName").show(); /* Show input for business name */
+        $("#businessName").prop("required", true); /* Add required attribute for public location */
         $("#businessStreet").prop("required", false); /* Remove required attribute for public address */
         $("#businessTown").prop("required", false); /* Remove required attribute for public address */
         $("#businessCounty").prop("required", false); /* Remove required attribute for public address */
@@ -139,7 +144,10 @@ function(){
         $(".public-collection").show(); /* Show input for public collection */
         $(".public-collection-dropoff").show(); /* Show input for dropoff collection */
         $(".public-collection-postal").hide(); /* Hide input for postal collection */
+        $("#councilLocation").show(); /* Show input for council name */
+        $("#councilLocation").prop("required", true); /* Add required attribute for council location */
         $("#businessName").hide(); /* Hide input for business name */
+        $("#businessName").prop("required", false); /* Remove required attribute for public location */
         $("#businessStreet").prop("required", false); /* Remove required attribute for public address */
         $("#businessTown").prop("required", false); /* Remove required attribute for public address */
         $("#businessCounty").prop("required", false); /* Remove required attribute for public address */
@@ -151,7 +159,10 @@ function(){
         $(".public-collection-postal").hide(); /* Hide input for postal collection */
         $(".public-collection-address").show(); /* Show input for dropoff address */
         $(".postal-county").hide(); /* Hide input for postal county */
+        $("#councilLocation").hide(); /* Hide input for council name */
+        $("#councilLocation").prop("required", false); /* Remove required attribute for council location */
         $("#businessName").show(); /* Show input for business name */
+        $("#businessName").prop("required", true); /* Add required attribute for public location */
         $("#businessStreet").prop("required", true); /* Add required attribute for public address */
         $("#businessTown").prop("required", true); /* Add required attribute for public address */
         $("#businessCounty").prop("required", false); /* Remove required attribute for public address */

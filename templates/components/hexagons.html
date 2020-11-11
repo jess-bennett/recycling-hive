@@ -40,8 +40,7 @@
             {% for collection in collections_dict_public if collection.typeOfWaste == selected_item %}
             <li>
                 <div class="hexagon hexagon-dark" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
-                    <p class="hexagon-text">{{ collection.localNational.title() }} -
-                        {% if collection.localNational == "local" %}{{ collection.town }}{% else %}{{ collection.postalDropoff.title() }}{% endif %}</p>
+                    <p class="hexagon-text">{% if collection.collectionType == "local-council" %}Local - Council{% elif collection.collectionType == "local-other" %}Local - {{collection.town}}{% elif collection.collectionType == "national-postal"%}National - Postal{% elif collection.collectionType == "national-dropoff"%}National - Drop-off{% endif %}</p>
                 </div>
             </li>
             {% endfor %}

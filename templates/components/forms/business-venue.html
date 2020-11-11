@@ -15,7 +15,7 @@
                             name="councilLocation">
                             <option value="" selected disabled>Select council location</option>
                             {% for collection in council_collection %}
-                            <option value="{{ council_collection.councilCollection }}">
+                            <option value="{{ collection.councilCollection }}">
                                 {{ collection.councilCollection }}
                             </option>
                             {% for hrc in collection.householdRecyclingCentres %}
