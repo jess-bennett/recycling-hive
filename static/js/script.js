@@ -31,7 +31,6 @@ $("#password, #confirm-password").on("keyup", function() {
   } else
     $("#password-match").html("Passwords do not match").css("color",
       "#8C0A06");
-  stopSubmission();
 });
 
 /* Prevent submission if passwords do not match on Registration page */

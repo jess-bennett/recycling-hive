@@ -1676,6 +1676,35 @@ def get_recycling_collector(collector_type):
                  "collectionType": "local-council"}).sort("councilLocation"))
             private_collector = None
     
+    # Get list of members addresses for collection card groups
+    private_collector_locations = list(mongo.db.hiveMembers.aggregate([
+        {"$match": {"hive": ObjectId(session["hive"])}},
+        {
+         "$lookup": {
+            "from": "itemCollections",
+            "localField": "_id",
+            "foreignField": "memberID",
+            "as": "itemCollections"
+         },
+        },
+        {"$unwind": "$itemCollections"},
+        {
+         "$lookup": {
+            "from": "collectionLocations",
+            "localField": "itemCollections.locationID",
+            "foreignField": "_id",
+            "as": "collectionLocations"
+         },
+        },
+        {"$unwind": "$collectionLocations"},
+        {"$group": {
+             "_id": "$collectionLocations._id",
+             "memberID": {"$first": "$_id"},
+             "nickname": {"$first": "$collectionLocations.nickname"}
+             }
+             },
+        {"$sort": {"nickname": 1}}
+        ]))
     # Create new dictionary of members and their collections
     private_collector_dict = list(mongo.db.hiveMembers.aggregate([
         {"$match": {"hive": ObjectId(session["hive"])}},
@@ -1718,6 +1747,7 @@ def get_recycling_collector(collector_type):
         {"$project": {
          "categoryName": "$itemCategory.categoryName",
          "typeOfWaste": "$recyclableItems.typeOfWaste",
+         "nickname": "$collectionLocations.nickname",
          "street": "$collectionLocations.street",
          "town": "$collectionLocations.town",
          "postcode": "$collectionLocations.postcode",
@@ -1763,6 +1793,7 @@ def get_recycling_collector(collector_type):
         "pages/hive-collector.html",
         selected_collector_type=selected_collector_type,
         private_collector=private_collector,
+        private_collector_locations=private_collector_locations,
         private_collector_dict=private_collector_dict,
         local_council_collector=local_council_collector,
         local_council_collector_dict=local_council_collector_dict,
