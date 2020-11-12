@@ -288,10 +288,10 @@ def hive_management(username):
         {"hive": ObjectId(session["hive"]), "approvedCollection": False}))
     # Get list of all members for member details
     members = list(mongo.db.hiveMembers.find(
-        {"hive": ObjectId(session["hive"])}))
+        {"hive": ObjectId(session["hive"])}).sort("username"))
     # Get list of members with location and/or collection details
     worker_bees = list(mongo.db.hiveMembers.find(
-            {"hive": ObjectId(session["hive"]), "isWorkerBee": True}))
+            {"hive": ObjectId(session["hive"]), "isWorkerBee": True}).sort("username"))
     # Check if worker bees have locations saved by
     # creating unnested list for jinja
     members_locations = list(mongo.db.collectionLocations.find(
