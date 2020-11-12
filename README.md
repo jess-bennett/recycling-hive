@@ -131,7 +131,7 @@ I decided to go for a 'handwritten' style of font for the entirety of the site. 
 
 I chose fairly typical colours for a site revolving around recycling and the environment, based on a recycling image that I particularly liked from [here](https://blog.ferrovial.com/en/2016/11/recycling-began-when-greeks-discovered-landfills/)
 
-The highlighted row is the main colour used throughout, with buttons and flash messages using varying shades of the same colour. Font colour was an off-black and in the vast majority of cases, was placed over an off-whie background for improved readibility.
+The highlighted row is the main colour used throughout, with buttons and flash messages using varying shades of the same colour. Font colour was an off-black (#333) and in the vast majority of cases, was placed over an off-white (#fafafa) background for improved readibility.
 
 ![Site Colours](/wireframes/site-colours.jpg)
 

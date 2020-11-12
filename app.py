@@ -222,7 +222,6 @@ def login():
         # check if user exists in db
         existing_user = mongo.db.hiveMembers.find_one(
             {"email": request.form.get("email").lower()})
-
         if existing_user:
             # ensure hashed password matches user input
             if check_password_hash(
