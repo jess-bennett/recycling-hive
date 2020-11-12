@@ -89,7 +89,7 @@ rubbish from landfill.
     * As a user I want to be able to easily find what items I can recycle locally, and where
     * As a user I want to be able to make suggestions about items that can be recycled nationally
 
-<em><strong>C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete</em>
+<em><strong>CRUD = C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete</em>
 
 ### :earth_africa: Scope Plane
 ---
@@ -108,12 +108,15 @@ rubbish from landfill.
 **Site access**
 | Collection             | QB Access         | WB Access                  | BB Access            |
 |------------------------|-------------------|----------------------------|----------------------|
-| Hive collection        | :x:               | :x:                        | :x:                  |
-| Member collection      | CRUD for own Hive | CRUD for own profile       | CRUD for own profile |
-| Location collection    | CRUD for own Hive | CRUD for own location(s)   | R                    |
-| Item collection        | CRUD for own Hive | CRUD for own collection(s) | R                    |
-| Recyclables collection | CR                | CR                         | R                    |
-| Category collection    | CR                | CR                         | R                    |
+| hives                  | :x:               | :x:                        | :x:                  |
+| hiveMembers            | RUD for own Hive  | CRUD for own profile       | CRUD for own profile |
+| collectionLocations    | RUD for own Hive  | CRUD for own location(s)   | R                    |
+| itemCollections        | CRUD for own Hive | CRUD for own collection(s) | R                    |
+| publicCollections      | CRU               | CR                         | CR                   |
+| firstCollection        | RUD for own Hive  | :x:                        | C                    |
+| itemCategory           | CR                | CR                         | CR                   |
+| recyclableItems        | CR                | CR                         | CR                   |
+
 
 ### :rainbow: Surface Plane/Design Choices
 ---
@@ -128,7 +131,7 @@ I decided to go for a 'handwritten' style of font for the entirety of the site. 
 
 I chose fairly typical colours for a site revolving around recycling and the environment, based on a recycling image that I particularly liked from [here](https://blog.ferrovial.com/en/2016/11/recycling-began-when-greeks-discovered-landfills/)
 
-The highlighted row is the main colour used throughout, with buttons and flash messages using varying shades of the same colour. Font colour was an off-black and in the vast majority of cases, was placed over an off-whie background for improved readibility.
+The highlighted row is the main colour used throughout, with buttons and flash messages using varying shades of the same colour. Font colour was an off-black (#333) and in the vast majority of cases, was placed over an off-white (#fafafa) background for improved readibility.
 
 ![Site Colours](/wireframes/site-colours.jpg)
 
@@ -220,30 +223,30 @@ However, as the site grew more complex, so did my database design. I ended up wi
 
 The key changes were:
 
-* hives
+#### hives
  * Added securityQuestion field so that each new Hive could set their own question for registration
 
-* hiveMembers
+#### hiveMembers
  * Added fields to store registration responses to security and marketing questions
  * Added approvedMember field to block parts of the site from the member until their registration has been approved
 
-* itemCategory/typeOfWaste
+#### itemCategory/typeOfWaste
  * Added _lower fields to both to allow for easier matching on newly added documents - to avoid duplication
 
-* collectionLocations
+#### collectionLocations
  * Removed hiveID field as this is covered by the memberID
  * Added nickname and nickname_lower fields to allow a member to store more than one location (e.g. Home/Work) and easily distinguish between the two
 
-* itemCollections
+#### itemCollections
  * Removed isNational field as this is now covered by the new 'publicCollections' collection
 
-* firstCollection
+#### firstCollection
  * This is a new, temporary collection for storage of the first collection a member adds.\
  Its purpose is to allow the Queen Bee(s) to check all information given, before comitting it to the permanent 'itemCollections' collection.\
  By putting it in its own collection (rather than having a boolean field in 'itemCollections' to indicate a first collection), there was less searching required to find relevant
  documents for Queen Bee approval on the Hive Management page.
 
-* publicCollections
+#### publicCollections
  * This is another new collection to store details of public collections. I felt putting these details in a separate collection (rather than using the 'isNational' boolean field
  I had originally planned on), was a more straightforward approach as some of the data fields needed for this collection were slightly different.
 
@@ -253,6 +256,16 @@ is not lost.
 
 ### :crystal_ball: Future Developments
 ---
+
+As this site is intended to be used by my local community, and potentially other communities in the future, there is a lot more that I would like to do with it.\
+At this stage, I have had to make some difficult decisions about when to stop working on it so that I can actually submit it.\
+It will definitely be an ongoing project and some ideas I am already thinking about are:
+
+* Changing the 'Find a Hive' page to include a searchable map - if there are enough Hives set up to warrant this.
+* Creating the 'Be Inspired' page to showcase alternatives to single-use products, and promote sites with a similar ethos
+* Adding a forum/messaging system so that members of a Hive can communicate with each other
+* Including additional information in the hive collection modals - for example, a telephone number/email address field for relevant cases
+* Adding a search facility to find recyclable items more quickly
 
 ## :construction: Development Process
 
@@ -280,6 +293,18 @@ is not lost.
 
 ### :computer: External Sources Used
 ---
+
+* Honeycomb background
+ * The effect for the header/footer was adapted from code taken from [here](https://projects.verou.me/css3patterns/#honeycomb)
+
+* Hexagon grid layout
+ * This layout was adapted (with some difficulty!) from the code and tutorial on [Codesmite.com](https://www.codesmite.com/article/how-to-create-pure-css-hexagonal-grids)
+
+* Email
+ * The JS required to send emails through the contact form was from [EmailJS.com](https://www.emailjs.com/)
+
+* Password validation
+ * The password validation JS was adapted from an explanation given on [Stackoverflow.com](https://stackoverflow.com/questions/21727317/how-to-check-confirm-password-field-in-form-without-reloading-page/21727518)
 
 ### :bug: Bugs
 ---
@@ -364,20 +389,55 @@ to enable my 'if statement'.
 
 I am still not convinced that this is the most elegant solution, but it was the best I was able to come up with for this issue!
 
-
 ### :deciduous_tree: Branches
 ---
 
+The majority of the build was carried out in a Development branch with additional sub-branches being pulled through as work was completed. 
+
+Prior to testing, all working code was pulled through into the Master branch and amends from testing feedback have all been pulled directly into the Master branch from sub-branches.
+
 ## :test_tube: Testing  
+
+Throughout the build, all functions were continually tested as new functionality was added. This was carried out with the help of Google Dev Tools to ensure that new features worked and displayed as expected on mobile, tablet and desktop views.
+
+Once the majority of the site was built, I turned to user testing.
+
+### :people_holding_hands: Peer Tests
+---
+The first stage of external testing was carried out by my family.
+
+They were given an explanation on how their data would be used within the site:
+
+[Data explanation](/testing/testing_instructions.jpg)
+
+They each also had specific instructions relating to a user-story to ensure that all functions were fully tested.
+
+[Queen Bee instructions](/testing/testing_instructions_jane.pdf)
+[Worker Bee instructions](/testing/testing_instructions_tom.pdf)
+[Busy Bee instructions](/testing/testing_instructions_chris.pdf)
+
+Feedback from this was good with no suggestions for change from Jane or Chris.
+
+Tom had some suggestions which are shown on the [Testing Feedback document](/testing/testing_feedback.pdf).
+
+Having acted on the feedback from the Peer Tests I moved onto Target User Tests.
 
 ### :raising_hand: Target User Tests
 ---
 
-### :people_holding_hands: Peer Tests
----
+These tests were conducted by volunteers from the Facebook group that inspired this project. In total, there were 6 testers.
 
-### :sparkle: Jasmine Tests
----
+They were given the same data explanation as the peer testers:
+[Data explanation](/testing/testing_instructions.pdf)
+
+Both Jenny and Hannah encountered an error message which was not picked up by the Python error handler. Fortuntately, they screenshotted the error so I was able to 
+confirm that it was caused by some work I was doing whilst they were testing. The error has not happened since.
+
+Otherwise, feedback was very positive, with some suggestions for cosmetic/functional improvements:
+[Testing Feedback document](/testing/testing_feedback.pdf)
+
+The majority of the feedback was acted upon (highlighted in green on the document) and improvements were made to the site. All of the suggestions were very good, but time constraints have meant that I cannot implement all of them.
+Those that are not being put in place now, have been put in the [Future Developments](#crystal_ball-future-developments) section of this README.
 
 ### :memo: Manual Tests
 ---

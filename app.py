@@ -172,7 +172,7 @@ def register(hive):
 
         if existing_user:
             flash("Email already exists")
-            return redirect(url_for("register"))
+            return redirect(url_for("register", hive=hive))
 
         register = {
             "username": request.form.get("username"),
@@ -209,11 +209,19 @@ def register(hive):
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if session.get("user"):
+        if session["user"] == "demo@demo.com":
+            # Remove session variables for Demo login
+            session.pop("user")
+            session.pop("username")
+            session.pop("user_id")
+            session.pop("hive")
+            session.pop("member_type")
+            return render_template("pages/login.html", page_id="login")
     if request.method == "POST":
         # check if user exists in db
         existing_user = mongo.db.hiveMembers.find_one(
             {"email": request.form.get("email").lower()})
-
         if existing_user:
             # ensure hashed password matches user input
             if check_password_hash(
@@ -279,10 +287,11 @@ def hive_management(username):
         {"hive": ObjectId(session["hive"]), "approvedCollection": False}))
     # Get list of all members for member details
     members = list(mongo.db.hiveMembers.find(
-        {"hive": ObjectId(session["hive"])}))
+        {"hive": ObjectId(session["hive"])}).sort("username"))
     # Get list of members with location and/or collection details
     worker_bees = list(mongo.db.hiveMembers.find(
-            {"hive": ObjectId(session["hive"]), "isWorkerBee": True}))
+            {"hive": ObjectId(
+                session["hive"]), "isWorkerBee": True}).sort("username"))
     # Check if worker bees have locations saved by
     # creating unnested list for jinja
     members_locations = list(mongo.db.collectionLocations.find(
@@ -631,11 +640,11 @@ def profile(username):
             },
             {"$unwind": "$itemCategory"},
             {"$project": {
-             "localNational": 1,
-             "postalDropoff": 1,
+             "collectionType": 1,
              "categoryName": "$itemCategory.categoryName",
              "typeOfWaste": "$recyclableItems.typeOfWaste",
              "businessName": 1,
+             "councilLocation": 1,
              "street": 1,
              "town": 1,
              "county": 1,
@@ -850,6 +859,8 @@ def add_new_collection():
     # get user"s location details from db for location card
     locations = list(mongo.db.collectionLocations.find(
         {"memberID": user_id}).sort("nickname"))
+    council_collection = list(mongo.db.hives.find(
+        {"_id": ObjectId(session["hive"])}))
     # Check whether user has submitted first collection for approval
     if mongo.db.firstCollection.find_one(
             {"memberID": ObjectId(user_id)}):
@@ -859,6 +870,7 @@ def add_new_collection():
     return render_template("pages/add-collection.html",
                            categories=categories, items_dict=items_dict,
                            locations=locations, hive=session["hive"],
+                           council_collection=council_collection,
                            member_type=session["member_type"],
                            awaiting_approval=awaiting_approval)
 
@@ -1014,24 +1026,73 @@ def add_public_collection():
         charityScheme = request.form.get("charityScheme")
         if charityScheme == "":
             charityScheme = "-"
-        public_collection = {
-            "hive": ObjectId(session["hive"]),
-            "localNational": request.form.get("localNational"),
-            "postalDropoff": request.form.get("postalDropoff"),
-            "username": username,
-            "memberID": user_id,
-            "businessName": request.form.get("businessName"),
-            "street": request.form.get("businessStreet"),
-            "town": request.form.get("businessTown"),
-            "county": request.form.get("businessCounty"),
-            "postcode": request.form.get("businessPostcode"),
-            "categoryName": category_name,
-            "typeOfWaste": type_of_waste,
-            "conditionNotes": request.form.get("conditionNotes"),
-            "charityScheme": charityScheme,
-            "approvedCollection": False,
-            "dateAdded": datetime.now().strftime("%d %b %Y")
-        }
+        if request.form.get("localNational") == "local":
+            if request.form.get("councilOther") == "council":
+                public_collection = {
+                 "hive": ObjectId(session["hive"]),
+                 "collectionType": "local-council",
+                 "username": username,
+                 "memberID": user_id,
+                 "councilLocation": request.form.get("councilLocation"),
+                 "councilLocation_lower": request.form.get(
+                     "councilLocation").lower().replace(" ", "_"),
+                 "categoryName": category_name,
+                 "typeOfWaste": type_of_waste,
+                 "conditionNotes": request.form.get("conditionNotes"),
+                 "charityScheme": charityScheme,
+                 "approvedCollection": False,
+                 "dateAdded": datetime.now().strftime("%d %b %Y")
+                }
+            if request.form.get("councilOther") == "other":
+                public_collection = {
+                 "hive": ObjectId(session["hive"]),
+                 "collectionType": "local-other",
+                 "username": username,
+                 "memberID": user_id,
+                 "businessName": request.form.get("businessName"),
+                 "street": request.form.get("businessStreet"),
+                 "town": request.form.get("businessTown"),
+                 "postcode": request.form.get("businessPostcode"),
+                 "categoryName": category_name,
+                 "typeOfWaste": type_of_waste,
+                 "conditionNotes": request.form.get("conditionNotes"),
+                 "charityScheme": charityScheme,
+                 "approvedCollection": False,
+                 "dateAdded": datetime.now().strftime("%d %b %Y")
+                }
+        if request.form.get("localNational") == "national":
+            if request.form.get("postalDropoff") == "postal":
+                public_collection = {
+                 "hive": ObjectId(session["hive"]),
+                 "collectionType": "national-postal",
+                 "username": username,
+                 "memberID": user_id,
+                 "businessName": request.form.get("businessName"),
+                 "street": request.form.get("businessStreet"),
+                 "town": request.form.get("businessTown"),
+                 "county": request.form.get("businessCounty"),
+                 "postcode": request.form.get("businessPostcode"),
+                 "categoryName": category_name,
+                 "typeOfWaste": type_of_waste,
+                 "conditionNotes": request.form.get("conditionNotes"),
+                 "charityScheme": charityScheme,
+                 "approvedCollection": False,
+                 "dateAdded": datetime.now().strftime("%d %b %Y")
+                }
+            if request.form.get("postalDropoff") == "dropoff":
+                public_collection = {
+                 "hive": ObjectId(session["hive"]),
+                 "collectionType": "national-dropoff",
+                 "username": username,
+                 "memberID": user_id,
+                 "businessName": request.form.get("businessName"),
+                 "categoryName": category_name,
+                 "typeOfWaste": type_of_waste,
+                 "conditionNotes": request.form.get("conditionNotes"),
+                 "charityScheme": charityScheme,
+                 "approvedCollection": False,
+                 "dateAdded": datetime.now().strftime("%d %b %Y")
+                }
         mongo.db.publicCollections.insert_one(public_collection)
         flash("Public collection sent for approval")
         return redirect(url_for("add_new_collection"))
@@ -1141,7 +1202,8 @@ def get_recycling_categories():
     # Get categories in public collections
     categories_dict_public = list(mongo.db.publicCollections.aggregate([
             {"$match": {"approvedCollection": True, "$or": [{"hive": ObjectId(
-                session["hive"])}, {"localNational": "national"}]}},
+                session["hive"])}, {"collectionType": "national-postal"},
+                {"collectionType": "national-dropoff"}]}},
             {
              "$lookup": {
                 "from": "recyclableItems",
@@ -1219,7 +1281,8 @@ def get_recycling_items(category_id):
             mongo.db.publicCollections.aggregate([
                 {"$match": {"approvedCollection": True,
                  "$or": [{"hive": ObjectId(
-                  session["hive"])}, {"localNational": "national"}]}},
+                  session["hive"])}, {"collectionType": "national-postal"},
+                  {"collectionType": "national-dropoff"}]}},
                 {
                  "$lookup": {
                   "from": "recyclableItems",
@@ -1281,7 +1344,8 @@ def get_recycling_items(category_id):
             mongo.db.publicCollections.aggregate([
                 {"$match": {"approvedCollection": True,
                  "$or": [{"hive": ObjectId(
-                  session["hive"])}, {"localNational": "national"}]}},
+                  session["hive"])}, {"collectionType": "national-postal"},
+                  {"collectionType": "national-dropoff"}]}},
                 {
                  "$lookup": {
                   "from": "recyclableItems",
@@ -1346,7 +1410,8 @@ def get_recycling_items(category_id):
     categories_dict_public = list(mongo.db.publicCollections.aggregate(
         [{"$match": {"approvedCollection": True,
           "$or": [{"hive": ObjectId(session["hive"])},
-                  {"localNational": "national"}]}},
+                  {"collectionType": "national-postal"},
+                  {"collectionType": "national-dropoff"}]}},
             {
              "$lookup": {
                 "from": "recyclableItems",
@@ -1426,7 +1491,8 @@ def get_recycling_collections(item_id):
     recycling_items_dict_public = list(mongo.db.publicCollections.aggregate(
         [{"$match": {"approvedCollection": True,
           "$or": [{"hive": ObjectId(session["hive"])},
-                  {"localNational": "national"}]}},
+                  {"collectionType": "national-postal"},
+                  {"collectionType": "national-dropoff"}]}},
             {
              "$lookup": {
               "from": "recyclableItems",
@@ -1506,7 +1572,8 @@ def get_recycling_collections(item_id):
     collections_dict_public = list(mongo.db.publicCollections.aggregate(
         [{"$match": {"approvedCollection": True,
           "$or": [{"hive": ObjectId(session["hive"])},
-                  {"localNational": "national"}]}},
+                  {"collectionType": "national-postal"},
+                  {"collectionType": "national-dropoff"}]}},
             {
              "$lookup": {
               "from": "recyclableItems",
@@ -1526,10 +1593,10 @@ def get_recycling_collections(item_id):
             },
             {"$unwind": "$itemCategory"},
             {"$project": {
-             "localNational": 1,
-             "postalDropoff": 1,
+             "collectionType": 1,
              "categoryName": "$itemCategory.categoryName",
              "typeOfWaste": "$recyclableItems.typeOfWaste",
+             "councilLocation": 1,
              "businessName": 1,
              "street": 1,
              "town": 1,
@@ -1550,40 +1617,117 @@ def get_recycling_collections(item_id):
         page_id="collections")
 
 
-@app.route("/hive/members/<member_type>")
+@app.route("/hive/collector/<collector_type>")
 @approval_required
-def get_recycling_members(member_type):
-    if member_type == "view-all":
-        # Get selected member type for dropdown
-        selected_member_type = "Select a Member Group"
-        # Get members that match the selected type for
-        # # hexagon headers
-        member_group = list(mongo.db.hiveMembers.find(
-            {"hive": ObjectId(session["hive"])}).sort("username"))
+def get_recycling_collector(collector_type):
+    if collector_type == "view-all":
+        # Get selected collector type for dropdown
+        selected_collector_type = "Select a Collection Type"
+        # Get all private collectors for
+        # hexagon headers
+        private_collector = list(mongo.db.itemCollections.aggregate([
+            {
+             "$lookup": {
+                "from": "hiveMembers",
+                "localField": "memberID",
+                "foreignField": "_id",
+                "as": "hiveMembers"
+             },
+            },
+            {"$unwind": "$hiveMembers"},
+            {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+            {"$group": {
+             "_id": "$hiveMembers._id",
+             "username": {"$first": "$hiveMembers.username"}
+             }
+             },
+            {"$sort": {"username": 1}}
+            ]))
+        # Get all local council collectors for hexagon headers
+        local_council_collector = list(
+                mongo.db.publicCollections.aggregate([
+                    {"$match": {"hive": ObjectId(
+                        session["hive"]), "approvedCollection": True,
+                        "collectionType": "local-council"}},
+                    {"$group": {
+                     "_id": "$councilLocation_lower",
+                     "councilLocation": {"$first": "$councilLocation"}
+                     }
+                     },
+                    {"$sort": {"_id": 1}}
+                    ]))
     else:
         # Get selected member type for dropdown
-        selected_member_type = member_type
+        selected_collector_type = collector_type
         # Get members that match the selected type for
         # # hexagon headers
-        if member_type == "Queen Bee":
-            member_group = list(mongo.db.hiveMembers.find(
-                {"hive": ObjectId(session["hive"]),
-                 "isQueenBee": True}).sort("username"))
-        elif member_type == "Worker Bee":
-            member_group = list(mongo.db.hiveMembers.find(
-                {"hive": ObjectId(session["hive"]),
-                 "isQueenBee": False, "isWorkerBee": True}).sort("username"))
-        elif member_type == "Busy Bee":
-            member_group = list(mongo.db.hiveMembers.find(
-                {"hive": ObjectId(session["hive"]),
-                 "isQueenBee": False, "isWorkerBee": False}).sort("username"))
-    # Check if member has collection
-    members_collection = list(mongo.db.itemCollections.find(
-        {}, {"memberID": 1, "_id": 0}))
-    members_collection_values = list(
-        [document["memberID"] for document in members_collection])
+        if collector_type == "Worker Bee":
+            private_collector = list(mongo.db.itemCollections.aggregate([
+             {
+              "$lookup": {
+                "from": "hiveMembers",
+                "localField": "memberID",
+                "foreignField": "_id",
+                "as": "hiveMembers"
+              },
+             },
+             {"$unwind": "$hiveMembers"},
+             {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+             {"$group": {
+              "_id": "$hiveMembers._id",
+              "username": {"$first": "$hiveMembers.username"}
+              }
+              },
+             {"$sort": {"username": 1}}
+            ]))
+            local_council_collector = None
+        elif collector_type == "Local Council":
+            local_council_collector = list(
+                mongo.db.publicCollections.aggregate([
+                    {"$match": {"hive": ObjectId(
+                        session["hive"]), "approvedCollection": True,
+                        "collectionType": "local-council"}},
+                    {"$group": {
+                     "_id": "$councilLocation_lower",
+                     "councilLocation": {"$first": "$councilLocation"}
+                     }
+                     },
+                    {"$sort": {"_id": 1}}
+                    ]))
+            private_collector = None
+    # Get list of members addresses for collection card groups
+    private_collector_locations = list(mongo.db.hiveMembers.aggregate([
+        {"$match": {"hive": ObjectId(session["hive"])}},
+        {
+         "$lookup": {
+            "from": "itemCollections",
+            "localField": "_id",
+            "foreignField": "memberID",
+            "as": "itemCollections"
+         },
+        },
+        {"$unwind": "$itemCollections"},
+        {
+         "$lookup": {
+            "from": "collectionLocations",
+            "localField": "itemCollections.locationID",
+            "foreignField": "_id",
+            "as": "collectionLocations"
+         },
+        },
+        {"$unwind": "$collectionLocations"},
+        {"$group": {
+             "_id": "$collectionLocations._id",
+             "memberID": {"$first": "$_id"},
+             "street": {"$first": "$collectionLocations.street"},
+             "town": {"$first": "$collectionLocations.town"},
+             "postcode": {"$first": "$collectionLocations.postcode"}
+             }
+         },
+        {"$sort": {"nickname": 1}}
+        ]))
     # Create new dictionary of members and their collections
-    members_dict = list(mongo.db.hiveMembers.aggregate([
+    private_collector_dict = list(mongo.db.hiveMembers.aggregate([
         {"$match": {"hive": ObjectId(session["hive"])}},
         {
          "$lookup": {
@@ -1624,6 +1768,7 @@ def get_recycling_members(member_type):
         {"$project": {
          "categoryName": "$itemCategory.categoryName",
          "typeOfWaste": "$recyclableItems.typeOfWaste",
+         "locationID": "$collectionLocations._id",
          "street": "$collectionLocations.street",
          "town": "$collectionLocations.town",
          "postcode": "$collectionLocations.postcode",
@@ -1633,11 +1778,49 @@ def get_recycling_members(member_type):
          },
         {"$sort": {"categoryName": 1, "typeOfWaste": 1}}
         ]))
+    local_council_collector_dict = list(mongo.db.publicCollections.aggregate(
+        [{"$match": {"hive": ObjectId(
+            session["hive"]), "approvedCollection": True,
+                     "collectionType": "local-council"}},
+            {
+             "$lookup": {
+              "from": "recyclableItems",
+              "localField": "itemID",
+              "foreignField": "_id",
+              "as": "recyclableItems"
+             },
+            },
+            {"$unwind": "$recyclableItems"},
+            {
+            "$lookup": {
+                "from": "itemCategory",
+                "localField": "recyclableItems.categoryID",
+                "foreignField": "_id",
+                "as": "itemCategory"
+            },
+            },
+            {"$unwind": "$itemCategory"},
+            {"$project": {
+             "_id": "$councilLocation_lower",
+             "collectionType": 1,
+             "categoryName": "$itemCategory.categoryName",
+             "typeOfWaste": "$recyclableItems.typeOfWaste",
+             "councilLocation": 1,
+             "id": 1,
+             "conditionNotes": 1,
+             "charityScheme": 1
+             }
+             }
+         ]))
     return render_template(
-        "pages/hive-member.html",
-        selected_member_type=selected_member_type,
-        member_group=member_group, members_dict=members_dict,
-        members_collection_values=members_collection_values, page_id="members")
+        "pages/hive-collector.html",
+        selected_collector_type=selected_collector_type,
+        private_collector=private_collector,
+        private_collector_locations=private_collector_locations,
+        private_collector_dict=private_collector_dict,
+        local_council_collector=local_council_collector,
+        local_council_collector_dict=local_council_collector_dict,
+        page_id="collector")
 
 
 @app.route("/contact")

@@ -8,9 +8,9 @@
       <div class="col-md-10 offset-md-1">
         <div class="card">
           <div class="card-header green-background text-center">
-            <h4 class="mb-0">
+            <h5 class="mb-0">
               <i class="fas fa-plus"></i> Add New Collection
-            </h4>
+            </h5>
           </div>
           <div class="card-body">
             <div class="row text-right">
@@ -25,21 +25,26 @@
 
               <div class="public-collection public-collection-radios">
                 <!-- Additional questions for public collection -->
-                <div class="public-collection-radio-one">
-                    {% include "components/forms/local-national.html" %}
+                <div id="public-collection-radio-one">
+                  {% include "components/forms/local-national.html" %}
                 </div>
-                <div class="public-collection-radio-two">
-                    {% include "components/forms/postal-dropoff.html" %}
+                <div id="public-collection-radio-two">
+                  {% include "components/forms/council-other.html" %}
+                </div>
+                <div id="public-collection-radio-three">
+                  {% include "components/forms/postal-dropoff.html" %}
                 </div>
               </div>
-                
-              <h5 id="awaiting-approval-text" class="warning-text">Your first private collection is awaiting approval.<br>
-              Once it has been approved, you will be able to add further private collections without needing approval.</h5>
+
+              <h5 id="awaiting-approval-text" class="warning-text">Your first
+                private collection is awaiting approval.<br>
+                Once it has been approved, you will be able to add further
+                private collections without needing approval.</h5>
               <div class="private-collection">
                 <!-- Question and instruction text for private collection -->
                 {% if session["member_type"] == "Busy Bee" %}
                 <h5 class="warning-text">You are submitting your first private
-                collection for approval.</h5>
+                  collection for approval.</h5>
                 {% endif %}
                 {% if awaiting_approval == False %}
                 <p class="warning-text">NB. Adding a private collection to the
@@ -56,14 +61,16 @@
                 </div>
                 {% endif %}
               </div>
-
               <div class="public-collection">
                 <!-- Question and instruction text for public collection -->
-                <p class="warning-text national-collection">NB. National collections are visible to
-                  members of all hives (not just yours). For this reason, the
+                <p class="warning-text national-collection">NB. National
+                  collections are visible to
+                  members of all Hives (not just yours). For this reason, the
                   collection is sent to the Queen Bee(s) for approval before it
                   is committed to the database.</p>
-                <p class="warning-text local-collection">NB. Local collections are sent to the Queen Bee(s) for approval before being committed to the database to avoid duplication.</p>
+                <p class="warning-text local-collection">NB. Local collections
+                  are sent to the Queen Bee(s) for approval before being
+                  committed to the database to avoid duplication.</p>
                 <div class="row">
                   <div class="col">
                     <h5><i class="fas fa-recycle"></i> What is being collected?
@@ -71,12 +78,10 @@
                   </div>
                 </div>
               </div>
-
               <div class="private-collection public-collection">
                 <!-- Type of waste/category input for all collections -->
                 {% include "components/forms/type-of-waste.html" %}
               </div>
-
               <div class="private-collection">
                 <!-- Location question and input for private collections -->
                 <div class="row">
@@ -93,9 +98,8 @@
                 {% endif %}
                 {% include "components/forms/private-location.html" %}
               </div>
-
               <div class="public-collection">
-              <!-- Location question and input for public collections -->
+                <!-- Location question and input for public collections -->
                 <div class="row">
                   <div class="col public-collection-dropoff">
                     <h5><i class="fas fa-building"></i> Where is this being
@@ -108,26 +112,24 @@
                 </div>
                 {% include "components/forms/business-venue.html" %}
               </div>
-
               <div class="private-collection public-collection">
-              <!-- Condition/charity question and input for all collections -->
+                <!-- Condition/charity question and input for all collections -->
                 <div class="row">
-                    <div class="col">
+                  <div class="col">
                     <h5><i class="fas fa-align-left"></i> What do people need to
-                        know about this collection?</h5>
-                    </div>
+                      know about this collection?</h5>
+                  </div>
                 </div>
                 {% include "components/forms/condition-notes.html" %}
                 <!-- Charity -->
                 <div class="row">
-                    <div class="col">
+                  <div class="col">
                     <h5><i class="fas fa-hand-holding-heart"></i> Is this
-                        collection for a charitable cause?</h5>
-                    </div>
+                      collection for a charitable cause?</h5>
+                  </div>
                 </div>
                 {% include "components/forms/charity-scheme.html" %}
               </div>
-
               <div class="modal-footer private-collection public-collection">
                 {% include "components/forms/submit-buttons.html" %}
               </div>

@@ -1,0 +1,32 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10 offset-md-1 text-center">
+      <div class="card-header text-center green-background space-below">
+        <h5>Search by:</h5>
+      </div>
+      <div class="row">
+        <div class="col-4 col-md-4 space-below">
+          <a href="{{ url_for('get_recycling_categories') }}" type="button"
+            id="btn-faq-about"
+            class="btn btn-outline-primary col btn-faq {% if active_item == 'categories' %}active{% endif %}">
+            Category
+          </a>
+        </div>
+        <div class="col-4 col-md-4 space-below">
+          <a href="{{ url_for('get_recycling_items', category_id='view-all') }}"
+            type="button" id="btn-faq-troubleshooting"
+            class="btn btn-outline-primary col btn-faq {% if active_item == 'items' %}active{% endif %}">
+            Item
+          </a>
+        </div>
+        <div class="col-4 col-md-4 space-below">
+          <a href="{{ url_for('get_recycling_collector', collector_type='view-all') }}"
+            type="button" id="btn-faq-general"
+            class="btn btn-outline-primary col btn-faq {% if active_item == 'collector' %}active{% endif %}">
+            Collection
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

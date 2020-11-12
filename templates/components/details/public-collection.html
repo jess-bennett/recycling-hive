@@ -1,56 +1,66 @@
-          <h5>{% if collection.localNational == "local" %}Local Collection{% elif (collection.localNational == "national") and (collection.postalDropoff == "dropoff") %} National Collection {% elif (collection.localNational == "national") and (collection.postalDropoff == "postal") %}National Postal Collection{% endif %}</h5>
-          {% if page_id == "management" %}<h6>submitted by {{ collection.username }}</h6>{% endif %}
-          <div class="form-row">
-                  <!-- Category -->
-                  <div class="form-group col-md-6">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-category.html" %}
-                      <p class="form-control item-display">{{ collection.categoryName }}</p>
-                    </div>
-                  </div>
-                  <!-- Type of waste -->
-                  <div class="form-group col-md-6">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-waste.html" %}
-                      <p class="form-control item-display">{{ collection.typeOfWaste }}</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-row">
-                    <!-- Business Name -->
-                  <div class="form-group col-md-6">
-                    <div class="input-group mb-2">
-					<div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info"
-						title="Business/Venue Name">
-						<div class="input-group-text"><i class="fas fa-sign"></i>
-						</div>
-					</div>
-                      <p class="form-control item-display">{{ collection.businessName }}</p>
-                    </div>
-                  </div>
-                <!-- Location -->
-                    {% if collection.postalDropoff != "dropoff" %}
-                    <div class="form-group col-md-6">
-                    <div class="input-group mb-2">
-                        {% include "components/tooltips/tooltip-address.html" %}
-                        <p class="form-control item-display">{{ collection.street }},
-                        {{ collection.town }}, {% if collection.postalDropoff == "postal" %}{{ collection.county }},{% endif %} {{ collection.postcode }}
-                        </p>
-                    </div>
-                    </div>
-                    {% endif %}
-                </div>
-                <!-- Condition notes -->
-                <div class="form-group">
-                  <div class="input-group mb-2">
-                    {% include "components/tooltips/tooltip-notes.html" %}
-                    <p class="form-control item-display">{{ collection.conditionNotes }}</p>
-                  </div>
-                </div>
-                <!-- Charity Scheme -->
-                  <div class="form-group">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-charity.html" %}
-                      <p class="form-control item-display">{{ collection.charityScheme }}</p>
-                    </div>
-                  </div>
+<h5>{% if collection.collectionType == "local-council" %}Local Collection -
+  Council{% elif collection.collectionType == "local-other" %}Local
+  Collection{% elif collection.collectionType == "national-postal" %} National
+  Collection - Postal{% elif collection.collectionType == "national-dropoff" %}
+  National Collection - Drop-off{% endif %}</h5>
+{% if page_id == "management" %}<h6>submitted by {{ collection.username }}</h6>
+{% endif %}
+<div class="form-row">
+  <!-- Category -->
+  <div class="form-group col-md-6">
+    <div class="input-group mb-2">
+      {% include "components/tooltips/tooltip-category.html" %}
+      <p class="form-control item-display">{{ collection.categoryName }}</p>
+    </div>
+  </div>
+  <!-- Type of waste -->
+  <div class="form-group col-md-6">
+    <div class="input-group mb-2">
+      {% include "components/tooltips/tooltip-waste.html" %}
+      <p class="form-control item-display">{{ collection.typeOfWaste }}</p>
+    </div>
+  </div>
+</div>
+<div class="form-row">
+  <!-- Business Name -->
+  <div class="form-group col-md-6">
+    <div class="input-group mb-2">
+      <div class="input-group-prepend" data-toggle="tooltip"
+        data-placement="top" data-type="info" title="Business/Venue Name">
+        <div class="input-group-text"><i class="fas fa-sign"></i>
+        </div>
+      </div>
+
+      <p class="form-control item-display">
+        {% if collection.collectionType != "local-council" %}{{ collection.businessName }}{% else %}{{ collection.councilLocation }}{% endif %}
+      </p>
+    </div>
+  </div>
+  <!-- Location -->
+  {% if collection.collectionType != "local-council" and collection.collectionType != "national-dropoff" %}
+  <div class="form-group col-md-6">
+    <div class="input-group mb-2">
+      {% include "components/tooltips/tooltip-address.html" %}
+      <p class="form-control item-display">{{ collection.street }},
+        {{ collection.town }},
+        {% if collection.collectionType == "national-postal" %}{{ collection.county }},{% endif %}
+        {{ collection.postcode }}
+      </p>
+    </div>
+  </div>
+  {% endif %}
+</div>
+<!-- Condition notes -->
+<div class="form-group">
+  <div class="input-group mb-2">
+    {% include "components/tooltips/tooltip-notes.html" %}
+    <p class="form-control item-display">{{ collection.conditionNotes }}</p>
+  </div>
+</div>
+<!-- Charity Scheme -->
+<div class="form-group">
+  <div class="input-group mb-2">
+    {% include "components/tooltips/tooltip-charity.html" %}
+    <p class="form-control item-display">{{ collection.charityScheme }}</p>
+  </div>
+</div>

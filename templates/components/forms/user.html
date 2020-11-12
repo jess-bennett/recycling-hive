@@ -4,10 +4,10 @@
       <div class="card">
         <div class="card-header text-center green-background">
           {% if page_id == "register" %}
-          <a href="{{ url_for('find_a_hive') }}"  class="col-1 offset-11 btn-delete"><i
-                        class="fas fa-times-circle" data-toggle="tooltip"
-                        data-placement="top" data-type="info"
-                        title="Pick another hive"></i></a>
+          <a href="{{ url_for('find_a_hive') }}"
+            class="col-1 offset-11 btn-delete"><i class="fas fa-times-circle"
+              data-toggle="tooltip" data-placement="top" data-type="info"
+              title="Pick another Hive"></i></a>
           <h4>Register</h4>
           <h5>You are applying to join the {{ hive }} Hive</h5>
           {% elif page_id == "login" %}
@@ -65,14 +65,14 @@
                 <div class="input-group-text"><i class="fas fa-lock"></i></div>
               </div>
               <input type="password" class="form-control" id="confirm-password"
-                name="confirm-password" placeholder="Confirm Password"
-                required>
+                name="confirm-password" placeholder="Confirm Password" required>
               <small id="password-match" class="form-text col-12"></small>
             </div>
           </div>
           <!-- Security Question -->
           <div class="form-group row">
-            <label class="sr-only" for="securityQuestion">{{ security_question }}</label>
+            <label class="sr-only"
+              for="securityQuestion">{{ security_question }}</label>
             <div class="input-group mb-2">
               {% include "components/tooltips/tooltip-security.html" %}
               <textarea class="form-control" id="securityQuestion"
@@ -98,11 +98,11 @@
             <div class="input-group mb-2">
               {% include "components/tooltips/tooltip-postcode.html" %}
               <input type="text" class="form-control" id="postcode"
-                name="postcode"
-                placeholder="Your Postcode" aria-describedby="postcode-explanation"
-                minlength="5" required>
-                <small id="postcode-explanation" class="form-text col-12">
-                Your postcode will not appear on the site and is only used to help us understand where our members are.
+                name="postcode" placeholder="Your Postcode"
+                aria-describedby="postcode-explanation" minlength="5" required>
+              <small id="postcode-explanation" class="form-text col-12">
+                Your postcode will not appear on the site and is only used to
+                help us understand where our members are.
               </small>
             </div>
           </div>
@@ -110,7 +110,8 @@
           <!-- Submit -->
           <div class="form-group row">
             <button class="btn btn-outline-primary col"
-              type="submit">{% if page_id == "register" %}Register{% elif page_id == "login" %}Log In{% endif %}</button>
+              type="submit">{% if page_id == "register" %}Register{% elif page_id == "login" %}Log
+              In{% endif %}</button>
           </div>
         </form>
       </div>

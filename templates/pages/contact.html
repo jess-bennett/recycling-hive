@@ -2,70 +2,72 @@
 {% block content %}
 <!-- JS for sending email -->
 <script type="text/javascript"
-        src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js">
+  src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js">
 </script>
 <div id="contact-flash" class="flashes">
-            <h4>Your email has been sent!</h4>
+  <h4>Your email has been sent!</h4>
 </div>
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-10 offset-md-1">
       <div class="card">
         <div class="card-header text-center green-background">
-          <h4>Contact Recycling Hive</h4>
+          <h5>Contact Recycling Hive</h5>
         </div>
-        <form id="contact-form" class="card-body" onsubmit="return sendMail(this);">
+        <form id="contact-form" class="card-body"
+          onsubmit="return sendMail(this);">
           <!-- Name -->
           <div class="form-group row">
-          <div class="form-group col-md-6">
-            <label class="sr-only" for="name">Name</label>
-            <div class="input-group mb-2">
-              {% include "components/tooltips/tooltip-name.html" %}
-              <input type="text" class="form-control" id="name"
-                name="name" placeholder="Name" minlength="3" required>
+            <div class="form-group col-md-6">
+              <label class="sr-only" for="name">Name</label>
+              <div class="input-group mb-2">
+                {% include "components/tooltips/tooltip-name.html" %}
+                <input type="text" class="form-control" id="name" name="name"
+                  placeholder="Name" minlength="3" required>
+              </div>
             </div>
-          </div>
-          <!-- Email -->
-          <div class="form-group col-md-6">
-            <label class="sr-only" for="email">Email</label>
-            <div class="input-group mb-2">
-              {% include "components/tooltips/tooltip-email.html" %}
-              <input type="email" class="form-control" id="email" name="email"
-                placeholder="email" required>
+            <!-- Email -->
+            <div class="form-group col-md-6">
+              <label class="sr-only" for="email">Email</label>
+              <div class="input-group mb-2">
+                {% include "components/tooltips/tooltip-email.html" %}
+                <input type="email" class="form-control" id="email" name="email"
+                  placeholder="email" required>
+              </div>
             </div>
-          </div>
           </div>
           <!-- Subject -->
           <div class="form-group">
             <label class="sr-only" for="subject">Subject</label>
-		<div class="input-group mb-2">
-			<div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info" title="Subject">
-				<div class="input-group-text"><i class="fas fa-question-circle"></i>
-				</div>
-			</div>
-			<input type="text" class="form-control" id="subject"
-                name="subject"
-                placeholder="Subject"
-                minlength="2" required>
-		</div>
+            <div class="input-group mb-2">
+              <div class="input-group-prepend" data-toggle="tooltip"
+                data-placement="top" data-type="info" title="Subject">
+                <div class="input-group-text"><i
+                    class="fas fa-question-circle"></i>
+                </div>
+              </div>
+              <input type="text" class="form-control" id="subject"
+                name="subject" placeholder="Subject" minlength="2" required>
+            </div>
           </div>
           <!-- Message -->
           <div class="form-group">
             <label class="sr-only" for="message">Your message</label>
             <div class="input-group mb-2">
-			<div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info" title="Your message">
-				<div class="input-group-text"><i class="fas fa-envelope-open-text"></i>
-				</div>
-			</div>
-              <textarea class="form-control" id="message"
-                name="message" placeholder="Your message"
-                minlength="4" required></textarea>
+              <div class="input-group-prepend" data-toggle="tooltip"
+                data-placement="top" data-type="info" title="Your message">
+                <div class="input-group-text"><i
+                    class="fas fa-envelope-open-text"></i>
+                </div>
+              </div>
+              <textarea class="form-control" id="message" name="message"
+                placeholder="Your message" minlength="4" required></textarea>
             </div>
           </div>
           <!-- Submit -->
           <div class="form-group">
-            <button class="btn btn-outline-primary col"
-              type="submit">Send Message</button>
+            <button class="btn btn-outline-primary col" type="submit">Send
+              Message</button>
           </div>
         </form>
       </div>

@@ -1,70 +1,64 @@
 <div class="form-row">
-	<!-- Membership -->
-	<div class="form-group col-md">
-		<div class="input-group mb-2">
-			<div class="input-group-prepend" data-toggle="tooltip" data-placement="top" data-type="info"
-				title="Membership">
-				<div class="input-group-text">
-                    {% if page_id == "management" %}
-                        {% if member.isQueenBee == True %}<i
-                                class="fas fa-crown"></i>
-                        {% elif member.isWorkerBee == True%}<i
-                                class="fas fa-hard-hat"></i>
-                        {% else %}<i
-                                class="fas fa-user"></i>
-                        {% endif %}
-                    {% else %}
-                        {% if member_type == "Queen Bee" %}<i
-                                class="fas fa-crown"></i>
-                        {% elif member_type == "Worker Bee" %}<i
-                                class="fas fa-hard-hat"></i>
-                        {% elif member_type == "Busy Bee" %}<i
-                                class="fas fa-user"></i>
-                        {% endif %}
-                    {% endif %}
-				</div>
-			</div>
-			<p class="form-control item-display">
-            {% if page_id == "management" %}
-                {% if member.isQueenBee == True %}
-                        Queen Bee
-                {% elif member.isWorkerBee == True%}
-                        Worker Bee
-                {% else %}
-                        Busy Bee
-                {% endif %}
-            {% else %}
-                You are currently a {{ member_type }}
-            {% endif %}
-			</p>
-		</div>
-	</div>
+  <!-- Membership -->
+  <div class="form-group col-md">
+    <div class="input-group mb-2">
+      <div class="input-group-prepend" data-toggle="tooltip"
+        data-placement="top" data-type="info" title="Membership">
+        <div class="input-group-text">
+          {% if page_id == "management" %}
+          {% if member.isQueenBee == True %}<i class="fas fa-crown"></i>
+          {% elif member.isWorkerBee == True%}<i class="fas fa-hard-hat"></i>
+          {% else %}<i class="fas fa-user"></i>
+          {% endif %}
+          {% else %}
+          {% if member_type == "Queen Bee" %}<i class="fas fa-crown"></i>
+          {% elif member_type == "Worker Bee" %}<i class="fas fa-hard-hat"></i>
+          {% elif member_type == "Busy Bee" %}<i class="fas fa-user"></i>
+          {% endif %}
+          {% endif %}
+        </div>
+      </div>
+      <p class="form-control item-display">
+        {% if page_id == "management" %}
+        {% if member.isQueenBee == True %}
+        Queen Bee
+        {% elif member.isWorkerBee == True%}
+        Worker Bee
+        {% else %}
+        Busy Bee
+        {% endif %}
+        {% else %}
+        You are currently a {{ member_type }}
+        {% endif %}
+      </p>
+    </div>
+  </div>
 </div>
 <div class="form-row">
-	<!-- Username -->
-	<div class="form-group col-md-6">
-		<div class="input-group mb-2">
-			{% include "components/tooltips/tooltip-name.html" %}
-			<p class="form-control item-display">
-                {% if page_id == "management" %}
-                    {{ member.username }}
-                {% else %}
-                    {{ username }}
-                {% endif %}
-            </p>
-		</div>
-	</div>
-	<!-- Email -->
-	<div class="form-group col-md-6">
-		<div class="input-group mb-2">
-			{% include "components/tooltips/tooltip-email.html" %}
-			<p class="form-control item-display">
-                {% if page_id == "management" %}
-                    {{ member.email }}
-                {% else %}
-                    {{ email }}
-                {% endif %}
-            </p>
-		</div>
-	</div>
+  <!-- Username -->
+  <div class="form-group col-md-6">
+    <div class="input-group mb-2">
+      {% include "components/tooltips/tooltip-name.html" %}
+      <p class="form-control item-display">
+        {% if page_id == "management" %}
+        {{ member.username }}
+        {% else %}
+        {{ username }}
+        {% endif %}
+      </p>
+    </div>
+  </div>
+  <!-- Email -->
+  <div class="form-group col-md-6">
+    <div class="input-group mb-2">
+      {% include "components/tooltips/tooltip-email.html" %}
+      <p class="form-control item-display">
+        {% if page_id == "management" %}
+        {{ member.email }}
+        {% else %}
+        {{ email }}
+        {% endif %}
+      </p>
+    </div>
+  </div>
 </div>

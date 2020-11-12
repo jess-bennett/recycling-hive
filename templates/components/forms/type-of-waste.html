@@ -1,73 +1,70 @@
 <div id="form-type-of-waste" class="form-row">
-	<!-- Item Category -->
-	<div class="form-group col-md-6">
-		<label class="sr-only" for="input-itemCategory">Item
-                            Category</label>
-		<div class="input-group mb-2">
-			{% include "components/tooltips/tooltip-category.html" %}
-			<input type="text" class="form-control" id="input-itemCategory"
-                            name="input-itemCategory" placeholder="Item Category"
-                            disabled>
-            <input type="text" class="form-control" id="form-itemCategory"
-                            name="itemCategory" placeholder="Item Category"
-                            >
-			<select class="form-control" id="select-itemCategory"
-                            name="select-itemCategory">
-                            <option value="" selected disabled>Item Category</option>
-                            {% for category in categories %}
-                            <option value="{{ category.categoryName }}">
-                                {{ category.categoryName }}
-                            </option>
-                            {% endfor %}
-                            <option class="internal-link">Add New Item Category...</option>
-                            </select>
-			<small id="instructions-addItemCategory"
-                            class="form-text col-12 warning-text">
-                            Please ensure that you are not duplicating a Category that
-                            already appears in the dropdown menu.<br>
-                            The Category that you add here will be accessible by other
-                            users, so should be fairly general (e.g. 'dental care'
-                            <strong>not</strong> 'toothbrush',) and should
-                            <strong>not</strong> include any notes that are relevant to
-                            your collection (e.g. 'Must be washed' does not belong here!).
-                            </small>
-		</div>
-	</div>
-	<!-- Type of Waste -->
-	<div class="form-group col-md-6">
+  <!-- Item Category -->
+  <div class="form-group col-md-6">
+    <label class="sr-only" for="input-itemCategory">Item
+      Category</label>
+    <div class="input-group mb-2">
+      {% include "components/tooltips/tooltip-category.html" %}
+      <input type="text" class="form-control" id="input-itemCategory"
+        name="input-itemCategory" placeholder="Item Category" disabled>
+      <input type="text" class="form-control" id="form-itemCategory"
+        name="itemCategory" placeholder="Item Category">
+      <select class="form-control" id="select-itemCategory"
+        name="select-itemCategory">
+        <option value="" selected disabled>Item Category</option>
+        {% for category in categories %}
+        <option value="{{ category.categoryName }}">
+          {{ category.categoryName }}
+        </option>
+        {% endfor %}
+        <option class="internal-link">Add New Item Category...</option>
+      </select>
+      <small id="instructions-addItemCategory"
+        class="form-text col-12 warning-text">
+        Please ensure that you are not duplicating a Category that
+        already appears in the dropdown menu.<br>
+        The Category that you add here will be accessible by other
+        users, so should be fairly general (e.g. 'dental care'
+        <strong>not</strong> 'toothbrush',) and should
+        <strong>not</strong> include any notes that are relevant to
+        your collection (e.g. 'Must be washed' does not belong here!).
+      </small>
+    </div>
+  </div>
+  <!-- Type of Waste -->
+  <div class="form-group col-md-6">
 
-		<label class="sr-only" for="select-typeOfWaste">Type of
-                            Waste</label>
-		<div class="input-group mb-2">
-			{% include "components/tooltips/tooltip-waste.html" %}
-			<input type="text" class="form-control" id="input-typeOfWaste"
-                            name="input-typeOfWaste" placeholder="Type of Waste"
-                            minlength="2">
-			<select class="form-control" id="select-typeOfWaste"
-                            name="typeOfWaste" required>
-                            <option value="" selected disabled>Type of Waste</option>
-                            {% for category in categories %}
-                            <optgroup label="{{ category.categoryName }}">
-                            {% for item in items_dict if item.itemCategory.categoryName == category.categoryName  %}
-                            <option data-id="{{ item.itemCategory.categoryName }}"
-                                value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}
-                            </option>
-                            {% endfor %}
-                            </optgroup>
-                            {% endfor %}
-                            <option class="internal-link">Add New Type of Waste...</option>
-                            </select>
-			<small id="instructions-addTypeOfWaste"
-                            class="form-text col-12 warning-text">
-                            Please ensure that you are not duplicating a Type of Waste
-                            that already appears in the dropdown menu.<br>
-                            The Type of Waste that you add here will be accessible by
-                            other users, so should be specific (e.g. 'toothbrush'
-                            <strong>not</strong> 'dental care',) and should
-                            <strong>not</strong> include any notes that are relevant to
-                            your
-                            collection (e.g. 'Must be washed' does not belong here!).
-                            </small>
-		</div>
-	</div>
+    <label class="sr-only" for="select-typeOfWaste">Type of
+      Waste</label>
+    <div class="input-group mb-2">
+      {% include "components/tooltips/tooltip-waste.html" %}
+      <input type="text" class="form-control" id="input-typeOfWaste"
+        name="input-typeOfWaste" placeholder="Type of Waste" minlength="2">
+      <select class="form-control" id="select-typeOfWaste" name="typeOfWaste"
+        required>
+        <option value="" selected disabled>Type of Waste</option>
+        {% for category in categories %}
+        <optgroup label="{{ category.categoryName }}">
+          {% for item in items_dict if item.itemCategory.categoryName == category.categoryName  %}
+          <option data-id="{{ item.itemCategory.categoryName }}"
+            value="{{ item.typeOfWaste }}">{{ item.typeOfWaste }}
+          </option>
+          {% endfor %}
+        </optgroup>
+        {% endfor %}
+        <option class="internal-link">Add New Type of Waste...</option>
+      </select>
+      <small id="instructions-addTypeOfWaste"
+        class="form-text col-12 warning-text">
+        Please ensure that you are not duplicating a Type of Waste
+        that already appears in the dropdown menu.<br>
+        The Type of Waste that you add here will be accessible by
+        other users, so should be specific (e.g. 'toothbrush'
+        <strong>not</strong> 'dental care',) and should
+        <strong>not</strong> include any notes that are relevant to
+        your
+        collection (e.g. 'Must be washed' does not belong here!).
+      </small>
+    </div>
+  </div>
 </div>
