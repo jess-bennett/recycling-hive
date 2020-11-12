@@ -294,6 +294,18 @@ It will definitely be an ongoing project and some ideas I am already thinking ab
 ### :computer: External Sources Used
 ---
 
+* Honeycomb background
+ * The effect for the header/footer was adapted from code taken from [here](https://projects.verou.me/css3patterns/#honeycomb)
+
+* Hexagon grid layout
+ * This layout was adapted (with some difficulty!) from the code and tutorial on [Codesmite.com](https://www.codesmite.com/article/how-to-create-pure-css-hexagonal-grids)
+
+* Email
+ * The JS required to send emails through the contact form was from [EmailJS.com](https://www.emailjs.com/)
+
+* Password validation
+ * The password validation JS was adapted from an explanation given on [Stackoverflow.com](https://stackoverflow.com/questions/21727317/how-to-check-confirm-password-field-in-form-without-reloading-page/21727518)
+
 ### :bug: Bugs
 ---
 #### Bug 1
@@ -380,16 +392,52 @@ I am still not convinced that this is the most elegant solution, but it was the 
 ### :deciduous_tree: Branches
 ---
 
+The majority of the build was carried out in a Development branch with additional sub-branches being pulled through as work was completed. 
+
+Prior to testing, all working code was pulled through into the Master branch and amends from testing feedback have all been pulled directly into the Master branch from sub-branches.
+
 ## :test_tube: Testing  
+
+Throughout the build, all functions were continually tested as new functionality was added. This was carried out with the help of Google Dev Tools to ensure that new features worked and displayed as expected on mobile, tablet and desktop views.
+
+Once the majority of the site was built, I turned to user testing.
+
+### :people_holding_hands: Peer Tests
+---
+The first stage of external testing was carried out by my family.
+
+They were given an explanation on how their data would be used within the site:
+
+[Data explanation](/testing/testing_instructions.jpg)
+
+They each also had specific instructions relating to a user-story to ensure that all functions were fully tested.
+
+[Queen Bee instructions](/testing/testing_instructions_jane.pdf)
+[Worker Bee instructions](/testing/testing_instructions_tom.pdf)
+[Busy Bee instructions](/testing/testing_instructions_chris.pdf)
+
+Feedback from this was good with no suggestions for change from Jane or Chris.
+
+Tom had some suggestions which are shown on the [Testing Feedback document](/testing/testing_feedback.pdf).
+
+Having acted on the feedback from the Peer Tests I moved onto Target User Tests.
 
 ### :raising_hand: Target User Tests
 ---
 
-### :people_holding_hands: Peer Tests
----
+These tests were conducted by volunteers from the Facebook group that inspired this project. In total, there were 6 testers.
 
-### :sparkle: Jasmine Tests
----
+They were given the same data explanation as the peer testers:
+[Data explanation](/testing/testing_instructions.pdf)
+
+Both Jenny and Hannah encountered an error message which was not picked up by the Python error handler. Fortuntately, they screenshotted the error so I was able to 
+confirm that it was caused by some work I was doing whilst they were testing. The error has not happened since.
+
+Otherwise, feedback was very positive, with some suggestions for cosmetic/functional improvements:
+[Testing Feedback document](/testing/testing_feedback.pdf)
+
+The majority of the feedback was acted upon (highlighted in green on the document) and improvements were made to the site. All of the suggestions were very good, but time constraints have meant that I cannot implement all of them.
+Those that are not being put in place now, have been put in the [Future Developments](#crystal_ball-future-developments) section of this README.
 
 ### :memo: Manual Tests
 ---
