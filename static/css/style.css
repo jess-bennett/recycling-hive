@@ -74,6 +74,10 @@ span.internal-link {
   margin-bottom: 1.5rem;
 }
 
+.flashes h4 {
+  font-size: 1.2rem;
+}
+
 .notification-bar {
   text-align: right;
   background-color: #f1f3b8;
@@ -353,6 +357,10 @@ footer a:hover {
 
   .card-header>h5 {
     font-size: 1.3rem;
+  }
+
+  .flashes h4 {
+    font-size: 1.5rem;
   }
 
   .notification-bar {
