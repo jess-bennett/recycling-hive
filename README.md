@@ -461,9 +461,10 @@ Manual testing was carried out on all devices available to me:
     * Opera 
 
 All tests produced good results with the following exceptions:
+TBC
 
-
-Full testing-frame can be found [here](/testing/manual-testing.pdf)
+Full testing-frame can be found [here](/testing/testing-frame.pdf)
+TBC
 
 ### :heavy_check_mark: Online Validators
 ---
@@ -546,5 +547,23 @@ echo web: python3 app.py > Procfile
 ### :movie_camera: Media
 ---
 
+Images for Home Page navigation grid were taken from [Font Awesome's SVGs](https://github.com/FortAwesome/Font-Awesome/tree/master/svgs/regular)
+
 ### :trophy: Acknowledgements
 ---
+I would like to thank the following people for their help and support with this project:
+
+:recycle: Firstly, it has to be the entire 'Thatcham & Newbury plastic free, recycling & zero waste uk' Facebook group
+The work of the group members was the sole inspiration behind this project and the knowledge that is shared there is an inspiration!
+
+:recycle: Following this, I would like to thank the group moderators for their advice and support before starting this project:
+Jana Karstova Little, Jacky Akam, Jenny Kirby and Paula Smalley
+
+:recycle: With another special mention to the group members who kindly volunteered to help with testing - and went far above and beyond what I expected in terms of feedback:
+Hannah Marsh, Jenny Kirby, Jo Hands, Linda Mary, Merlin (Georgia!) Jackson and Nikki Coome
+
+:star: My husband, Tom - for being a very patient and encouraging site-tester and brain-storming partner. Also for endless hours at the park with Eddie so I could work!
+
+:star: My parents, Jane & Chris - for their patience and encouragement as site-testers.
+
+:star: Never forgetting my incredibly dedicated mentor, Simen. The tips and advice on improving my code are always appreciated!
