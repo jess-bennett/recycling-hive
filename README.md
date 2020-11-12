@@ -28,8 +28,6 @@ Recycling Hive is a place for community members to find out what they can recycl
 \
               [:bug: Bugs](#bug-bugs)\
 \
-              [:broom: Clean-Up](#broom-clean-up)\
-\
               [:deciduous_tree: Branches](#deciduous_tree-branches)\
 \
 [:test_tube: Testing](#test_tube-testing)\
@@ -37,8 +35,6 @@ Recycling Hive is a place for community members to find out what they can recycl
               [:raising_hand: Target-User Tests](#raising_hand-target-user-tests)\
 \
               [:people_holding_hands: Peer Tests](#people_holding_hands-peer-tests)\
-\
-              [:sparkle: Jasmine Tests](#sparkle-jasmine-tests)\
 \
               [:memo: Manual Tests](#memo-manual-tests)\
 \
@@ -310,7 +306,7 @@ It will definitely be an ongoing project and some ideas I am already thinking ab
 
 * Favicon
     * Generated using [Favicon.io](https://favicon.io/)
-    
+
 ### :bug: Bugs
 ---
 #### Bug 1
@@ -405,7 +401,7 @@ Prior to testing, all working code was pulled through into the Master branch and
 
 Throughout the build, all functions were continually tested as new functionality was added. This was carried out with the help of Google Dev Tools to ensure that new features worked and displayed as expected on mobile, tablet and desktop views.
 
-Once the majority of the site was built, I turned to user testing.
+Once the majority of the site was built, I turned to user testing. The user tests were designed to not only test aesthetics and functionality, but also the database and whether data was committed correctly.
 
 ### :people_holding_hands: Peer Tests
 ---
@@ -539,7 +535,7 @@ echo web: python3 app.py > Procfile
 |--------------|------------------------------------------------------------|
 | IP           | 0.0.0.0                                                    |
 | MONGO_DBNAME | <your_mongo_dbname>                                        |
-| MONGO_URI    | mongodb+srv://<your_username>:M0ng0DB@<your_cluster_name>.6abok.mongodb.net/<your_database_name>?retryWrites=true&w=majority |
+| MONGO_URI    | mongodb+srv://<your_username>:M0ng0DB@<your_cluster_name>.<br>6abok.mongodb.net/<your_database_name>?retryWrites=true&w=majority |
 | PORT         | 5000                                                       |
 | SECRET_KEY   | <your_secret_key>                                          |
 

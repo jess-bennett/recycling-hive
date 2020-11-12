@@ -7,35 +7,35 @@
     <div class="col-md-10 offset-md-1">
       <div class="card-header text-center green-background space-below">
         {% if is_queen_bee %}
-        <div class="notification-bar row">
-          <a href="{{ url_for('hive_management', username=session['username']) }}"
+        {% if unapproved_members or first_collections or unapproved_member_collections %}<div class="notification-bar">
+          {% if unapproved_members %}<a href="{{ url_for('hive_management', username=session['username']) }}"
             class="col-2 offset-6 col-md-1 offset-md-9 warning-text"><i
-              class="{% if unapproved_members %}fas fa-user{% endif %}"
+              class="fas fa-user"
               data-toggle="tooltip" data-placement="top" data-type="info"
-              title="{{ unapproved_members|length }} member(s) waiting for Membership to be approved"></i></a>
-          <a href="{{ url_for('hive_management', username=session['username']) }}"
+              title="{{ unapproved_members|length }} member(s) waiting for Membership to be approved"></i></a>{% endif %}
+          {% if first_collections %}<a href="{{ url_for('hive_management', username=session['username']) }}"
             class="col-2 col-md-1 warning-text"><i
-              class="{% if first_collections %}fas fa-hard-hat{% endif %}"
+              class="fas fa-hard-hat"
               data-toggle="tooltip" data-placement="top" data-type="info"
-              title="{{ first_collections|length }} member(s) waiting for Worker Bee approval"></i></a>
-          <a href="{{ url_for('hive_management', username=session['username']) }}"
+              title="{{ first_collections|length }} member(s) waiting for Worker Bee approval"></i></a>{% endif %}
+          {% if unapproved_member_collections %}<a href="{{ url_for('hive_management', username=session['username']) }}"
             class="col-2 col-md-1 warning-text"><i
-              class="{% if unapproved_member_collections %}fas fa-building{% endif %}"
+              class="fas fa-building"
               data-toggle="tooltip" data-placement="top" data-type="info"
-              title="{{ unapproved_member_collections|length }} public collection(s) waiting to be approved"></i></a>
-        </div>
+              title="{{ unapproved_member_collections|length }} public collection(s) waiting to be approved"></i></a>{% endif %}
+        </div>{% endif %}
         {% endif %}
-        <div class="notification-bar row space-below">
-          <i class="col-2 offset-6 col-md-1 offset-md-9 warning-text {% if approved_member == False%}fas fa-user-slash{% endif %}"
+        {% if approved_member == False or awaiting_approval or public_approval %}<div class="notification-bar space-below">
+          {% if approved_member == False%}<i class="col-2 offset-6 col-md-1 offset-md-9 warning-text fas fa-user-slash"
             data-toggle="tooltip" data-placement="top" data-type="info"
-            title="Currently waiting for Membership to be approved"></i>
-          <i class="col-2 col-md-1 warning-text {% if awaiting_approval %}fas fa-hard-hat{% endif %}"
+            title="Currently waiting for Membership to be approved"></i>{% endif %}
+          {% if awaiting_approval %}<i class="col-2 col-md-1 warning-text fas fa-hard-hat"
             data-toggle="tooltip" data-placement="top" data-type="info"
-            title="Currently waiting for Worker Bee approval"></i>
-          <i class="col-2 col-md-1 warning-text {% if public_approval %}fas fa-globe-europe{% endif %}"
+            title="Currently waiting for Worker Bee approval"></i>{% endif %}
+          {% if public_approval %}<i class="col-2 col-md-1 warning-text fas fa-globe-europe"
             data-toggle="tooltip" data-placement="top" data-type="info"
-            title="{{ unapproved_collections|length }} public collection(s) to be approved"></i>
-        </div>
+            title="{{ unapproved_collections|length }} public collection(s) to be approved"></i>{% endif %}
+        </div>{% endif %}
         {% if username == False %}
         <h3>Welcome to the Recycling Hive</h3>
         {% else %}
