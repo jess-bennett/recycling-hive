@@ -514,7 +514,7 @@ os.environ.setdefault("MONGO_DBNAME", "<your_mongo_dbname>")
 python3 app.py
 ```
 
-### Cloning Recycling Hive :recycle: to Heroku
+### Deploying Recycling Hive :recycle: to Heroku
 
 1. Create a requirements.txt file by typing the following into your CLI:
 ```

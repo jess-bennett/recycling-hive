@@ -20,6 +20,31 @@ app.secret_key = os.environ.get("SECRET_KEY")
 mongo = PyMongo(app)
 
 
+# Functions
+def combine_dictionaries(dict1, dict2):
+    for item in dict1:
+        if item not in dict2:
+            dict2.append(item)
+            dict2
+            dict2
+    return dict2
+
+
+def pop_variables():
+    session.pop("user")
+    session.pop("username")
+    session.pop("user_id")
+    session.pop("hive")
+    session.pop("member_type")
+    return
+
+
+def check_existing_category(field, value):
+    mongo.db.itemCategory.find_one(
+                {field: value})
+
+
+# Wraps
 def login_required(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -72,6 +97,7 @@ def queen_bee_required(f):
     return wrap
 
 
+# Routes
 @app.route("/")
 def home():
     try:
@@ -149,11 +175,7 @@ def find_a_hive():
     if session.get("user"):
         if session["user"] == "demo@demo.com":
             # Remove session variables for Demo login
-            session.pop("user")
-            session.pop("username")
-            session.pop("user_id")
-            session.pop("hive")
-            session.pop("member_type")
+            pop_variables()
             return render_template("pages/find-a-hive.html", hives=hives)
 
     return render_template("pages/find-a-hive.html", hives=hives)
@@ -212,11 +234,7 @@ def login():
     if session.get("user"):
         if session["user"] == "demo@demo.com":
             # Remove session variables for Demo login
-            session.pop("user")
-            session.pop("username")
-            session.pop("user_id")
-            session.pop("hive")
-            session.pop("member_type")
+            pop_variables()
             return render_template("pages/login.html", page_id="login")
     if request.method == "POST":
         # check if user exists in db
@@ -446,9 +464,9 @@ def approve_private_collection_request(collection_id):
                 {"nickname_lower": first_collection["nickname"].lower(
                 )})["_id"]
         # Check whether category exists and either add or get ID
-        existing_category = mongo.db.itemCategory.find_one(
-                {"categoryName_lower": first_collection["categoryName"].lower(
-                )})
+        existing_category = check_existing_category(
+            "categoryName_lower", first_collection["categoryName"].lower(
+                ))
         if existing_category:
             category_id = existing_category["_id"]
         else:
@@ -504,9 +522,9 @@ def approve_public_collection_request(collection_id):
         public_collection = mongo.db.publicCollections.find_one(
             {"_id": ObjectId(collection_id)})
         # Check whether category exists and either add or get ID
-        existing_category = mongo.db.itemCategory.find_one(
-                {"categoryName_lower": public_collection["categoryName"].lower(
-                )})
+        existing_category = check_existing_category(
+            "categoryName_lower", public_collection["categoryName"].lower(
+                ))
         if existing_category:
             category_id = existing_category["_id"]
         else:
@@ -885,9 +903,9 @@ def add_private_collection():
         # Post method for adding a new category and type of waste
         if "newItemCategory" in request.form:
             # Check whether category already exists
-            existing_category = mongo.db.itemCategory.find_one(
-                {"categoryName_lower": request.form.get(
-                    "newItemCategory").lower()})
+            existing_category = check_existing_category(
+                "categoryName_lower", request.form.get(
+                    "newItemCategory").lower())
 
             if existing_category:
                 flash("Category already exists")
@@ -1833,11 +1851,7 @@ def contact():
 def logout():
     # remove user from session cookies
     flash("Log Out Successful!")
-    session.pop("user")
-    session.pop("username")
-    session.pop("user_id")
-    session.pop("hive")
-    session.pop("member_type")
+    pop_variables()
     return redirect(url_for("home"))
 
 
@@ -1845,15 +1859,6 @@ def logout():
 def faqs():
 
     return render_template("pages/faq.html")
-
-
-def combine_dictionaries(dict1, dict2):
-    for item in dict1:
-        if item not in dict2:
-            dict2.append(item)
-            dict2
-            dict2
-    return dict2
 
 
 @app.errorhandler(404)
