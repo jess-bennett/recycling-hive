@@ -640,11 +640,11 @@ def profile(username):
             },
             {"$unwind": "$itemCategory"},
             {"$project": {
-             "localNational": 1,
-             "postalDropoff": 1,
+             "collectionType": 1,
              "categoryName": "$itemCategory.categoryName",
              "typeOfWaste": "$recyclableItems.typeOfWaste",
              "businessName": 1,
+             "councilLocation": 1,
              "street": 1,
              "town": 1,
              "county": 1,
@@ -1800,6 +1800,7 @@ def get_recycling_collector(collector_type):
             },
             {"$unwind": "$itemCategory"},
             {"$project": {
+             "_id": "$councilLocation_lower",
              "collectionType": 1,
              "categoryName": "$itemCategory.categoryName",
              "typeOfWaste": "$recyclableItems.typeOfWaste",

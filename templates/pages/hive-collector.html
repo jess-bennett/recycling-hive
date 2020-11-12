@@ -66,7 +66,7 @@
 
       <div class="modal-body">
                 {% for collection in local_council_collector_dict if collection._id == collector._id %}
-                    {% include "components/details/public-collection.html" %}
+                    {% include "components/details/public-collection-all.html" %}
                 <hr class="green-line">
                 {% endfor %}
       <div class="modal-footer">

@@ -25,17 +25,12 @@
 						<div class="input-group-text"><i class="fas fa-sign"></i>
 						</div>
 					</div>
-                      {% if collection.businessName %}    
-                      <p class="form-control item-display">{{ collection.businessName }}</p>
-                      {% elif collection.councilLocation %}
-                      <p class="form-control item-display">{{ collection.councilLocation }}</p>
-                      {% endif %}
+                         
+                      <p class="form-control item-display">{% if collection.collectionType != "local-council" %}{{ collection.businessName }}{% else %}{{ collection.councilLocation }}{% endif %}</p>
                     </div>
                   </div>
                 <!-- Location -->
-                    {% if collection.collectionType == "local-council" %}
-                    {% elif collection.collectionType == "national-dropoff" %}
-                    {% else %}
+                    {% if collection.collectionType != "local-council" and collection.collectionType != "national-dropoff" %}
                     <div class="form-group col-md-6">
                     <div class="input-group mb-2">
                         {% include "components/tooltips/tooltip-address.html" %}
