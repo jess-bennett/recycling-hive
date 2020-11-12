@@ -9,7 +9,7 @@ body {
 }
 
 span.internal-link {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .internal-link {
@@ -55,7 +55,6 @@ span.internal-link {
   background-size: 40px 60px;
 }
 
-
 .dropdown-item:focus,
 .dropdown-item:hover {
   color: #333;
@@ -64,8 +63,8 @@ span.internal-link {
 }
 
 .dropdown-menu {
-    max-height: 80vh;
-    overflow-y: auto;
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .flashes {
@@ -76,11 +75,11 @@ span.internal-link {
 }
 
 .notification-bar {
-    text-align: right;
-    background-color: #f1f3b8;
-    color: #8C0A06;
-    padding: 0.5rem;
-    font-size: 1rem;
+  text-align: right;
+  background-color: #f1f3b8;
+  color: #8C0A06;
+  padding: 0.5rem;
+  font-size: 1rem;
 }
 
 /* Register */
@@ -129,12 +128,12 @@ span.internal-link {
   padding: 0.75rem;
 }
 
-.green-background > * {
-    margin-bottom: 0;
+.green-background>* {
+  margin-bottom: 0;
 }
 
 .green-line {
-    background-color: #bdc312;
+  background-color: #bdc312;
 }
 
 .img-membership {
@@ -170,9 +169,9 @@ span.internal-link {
 }
 
 a.btn-delete:hover {
-    color: #3a5c2d;
-    border: none;
-    text-decoration: none;
+  color: #3a5c2d;
+  border: none;
+  text-decoration: none;
 }
 
 .warning-text {
@@ -215,7 +214,6 @@ small.warning-text {
   margin-bottom: 2rem;
 }
 
-
 .page-selected {
   background-color: #3a5c2d;
   color: #fafafa
@@ -230,7 +228,7 @@ small.warning-text {
 }
 
 .grid-blank {
-    margin-top: 5rem;
+  margin-top: 5rem;
 }
 
 .btn-link {
@@ -262,19 +260,19 @@ small.warning-text {
 }
 
 .form-control.item-display {
-    height: 100%;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
+  height: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Cards */
 
-.card-header > h3 {
-    font-size: 1.3rem;
+.card-header>h3 {
+  font-size: 1.3rem;
 }
 
-.card-header > h5 {
-    font-size: 1rem;
+.card-header>h5 {
+  font-size: 1rem;
 }
 
 /* Modals */
@@ -283,17 +281,11 @@ small.warning-text {
 }
 
 .modal-title {
-    color: #3a5c2d;
+  color: #3a5c2d;
 }
 
 .modal-footer {
   padding: 1rem 0;
-}
-
-@media (min-width: 576px) {
-  .modal-dialog {
-    max-width: 70%;
-  }
 }
 
 /* Footer */
@@ -309,7 +301,6 @@ footer {
   margin-top: 3rem;
   padding-top: 0.5rem;
 }
-
 
 footer a {
   text-decoration: none;
@@ -331,29 +322,40 @@ footer a:hover {
   background-color: #333;
 }
 
-
 /* Media queries */
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 70%;
+  }
+}
+
 @media screen and (min-width: 992px) {
-    footer {
-  font-size: 1.8rem;
-    }
+  footer {
+    font-size: 1.8rem;
+  }
+
   .navbar-nav .nav-link {
     padding-bottom: 0rem;
   }
+
   .hexagon-text {
-      font-size: 1.5rem;
+    font-size: 1.5rem;
   }
 
   .btn-outline-primary {
     font-size: 1.3rem;
-}
-.card-header > h3 {
+  }
+
+  .card-header>h3 {
     font-size: 1.75rem;
-}
-.card-header > h5 {
+  }
+
+  .card-header>h5 {
     font-size: 1.3rem;
-}
-.notification-bar {
+  }
+
+  .notification-bar {
     font-size: 1.2rem;
-}
+  }
 }
