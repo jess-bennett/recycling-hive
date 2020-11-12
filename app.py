@@ -291,7 +291,8 @@ def hive_management(username):
         {"hive": ObjectId(session["hive"])}).sort("username"))
     # Get list of members with location and/or collection details
     worker_bees = list(mongo.db.hiveMembers.find(
-            {"hive": ObjectId(session["hive"]), "isWorkerBee": True}).sort("username"))
+            {"hive": ObjectId(
+                session["hive"]), "isWorkerBee": True}).sort("username"))
     # Check if worker bees have locations saved by
     # creating unnested list for jinja
     members_locations = list(mongo.db.collectionLocations.find(
@@ -1663,22 +1664,22 @@ def get_recycling_collector(collector_type):
         # # hexagon headers
         if collector_type == "Worker Bee":
             private_collector = list(mongo.db.itemCollections.aggregate([
-            {
-             "$lookup": {
+             {
+              "$lookup": {
                 "from": "hiveMembers",
                 "localField": "memberID",
                 "foreignField": "_id",
                 "as": "hiveMembers"
+              },
              },
-            },
-            {"$unwind": "$hiveMembers"},
-            {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
-            {"$group": {
-             "_id": "$hiveMembers._id",
-             "username": {"$first": "$hiveMembers.username"}
-             }
-             },
-            {"$sort": {"username": 1}}
+             {"$unwind": "$hiveMembers"},
+             {"$match": {"hiveMembers.hive": ObjectId(session["hive"])}},
+             {"$group": {
+              "_id": "$hiveMembers._id",
+              "username": {"$first": "$hiveMembers.username"}
+              }
+              },
+             {"$sort": {"username": 1}}
             ]))
             local_council_collector = None
         elif collector_type == "Local Council":
@@ -1723,7 +1724,7 @@ def get_recycling_collector(collector_type):
              "town": {"$first": "$collectionLocations.town"},
              "postcode": {"$first": "$collectionLocations.postcode"}
              }
-             },
+         },
         {"$sort": {"nickname": 1}}
         ]))
     # Create new dictionary of members and their collections
@@ -1779,7 +1780,8 @@ def get_recycling_collector(collector_type):
         {"$sort": {"categoryName": 1, "typeOfWaste": 1}}
         ]))
     local_council_collector_dict = list(mongo.db.publicCollections.aggregate(
-        [{"$match": {"hive": ObjectId(session["hive"]), "approvedCollection": True,
+        [{"$match": {"hive": ObjectId(
+            session["hive"]), "approvedCollection": True,
                      "collectionType": "local-council"}},
             {
              "$lookup": {

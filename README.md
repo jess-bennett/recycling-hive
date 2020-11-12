@@ -89,7 +89,7 @@ rubbish from landfill.
     * As a user I want to be able to easily find what items I can recycle locally, and where
     * As a user I want to be able to make suggestions about items that can be recycled nationally
 
-<em><strong>C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete</em>
+<em><strong>CRUD = C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete</em>
 
 ### :earth_africa: Scope Plane
 ---
@@ -108,12 +108,15 @@ rubbish from landfill.
 **Site access**
 | Collection             | QB Access         | WB Access                  | BB Access            |
 |------------------------|-------------------|----------------------------|----------------------|
-| Hive collection        | :x:               | :x:                        | :x:                  |
-| Member collection      | CRUD for own Hive | CRUD for own profile       | CRUD for own profile |
-| Location collection    | CRUD for own Hive | CRUD for own location(s)   | R                    |
-| Item collection        | CRUD for own Hive | CRUD for own collection(s) | R                    |
-| Recyclables collection | CR                | CR                         | R                    |
-| Category collection    | CR                | CR                         | R                    |
+| hives                  | :x:               | :x:                        | :x:                  |
+| hiveMembers            | RUD for own Hive  | CRUD for own profile       | CRUD for own profile |
+| collectionLocations    | RUD for own Hive  | CRUD for own location(s)   | R                    |
+| itemCollections        | CRUD for own Hive | CRUD for own collection(s) | R                    |
+| publicCollections      | CRU               | CR                         | CR                   |
+| firstCollection        | RUD for own Hive  | :x:                        | C                    |
+| itemCategory           | CR                | CR                         | CR                   |
+| recyclableItems        | CR                | CR                         | CR                   |
+
 
 ### :rainbow: Surface Plane/Design Choices
 ---

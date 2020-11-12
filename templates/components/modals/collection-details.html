@@ -1,10 +1,10 @@
 {% for collection in collections_dict_private if collection.typeOfWaste == selected_item %}
-<div class="modal fade" id="modal-collection-{{ collection._id }}" tabindex="-1"
-  role="dialog" aria-labelledby="modal-collection-title" aria-hidden="true">
+<div class="modal fade" id="modal-collection-private-{{ collection._id }}" tabindex="-1"
+  role="dialog" aria-labelledby="modal-collection-private-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-collection-title">Collection
+        <h4 class="modal-title w-100" id="modal-collection-private-title">Collection
           details for {{ collection.hiveMembers }}</h4>
 
         <button type="button" class="close" data-dismiss="modal"
@@ -27,12 +27,12 @@
 {% endfor %}
 
 {% for collection in collections_dict_public if collection.typeOfWaste == selected_item %}
-<div class="modal fade" id="modal-collection-{{ collection._id }}" tabindex="-1"
-  role="dialog" aria-labelledby="modal-collection-title" aria-hidden="true">
+<div class="modal fade" id="modal-collection-public-{{ collection._id }}" tabindex="-1"
+  role="dialog" aria-labelledby="modal-collection-public-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-collection-title">Collection
+        <h4 class="modal-title w-100" id="modal-collection-public-title">Collection
           details for
           {% if collection.collectionType == "local-council" %}{{ collection.councilLocation }}{% else %}{{ collection.businessName }}{% endif %}
         </h4>
