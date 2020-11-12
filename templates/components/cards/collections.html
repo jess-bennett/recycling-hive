@@ -1,41 +1,44 @@
 <!-- Collections card -->
-          <div class="card">
-            <div class="card-header green-background btn btn-link collapsed text-left" id="headingCollections" data-toggle="collapse"
-                  data-target="#collapseCollections" aria-expanded="false"
-                  aria-controls="collapseCollections">
-              <h5 class="mb-0">
-                  <i class="fas fa-recycle"></i> <strong>Your
-                    Collections</strong>
-              </h5>
-            </div>
-            <div id="collapseCollections" class="collapse"
-              aria-labelledby="headingCollections" data-parent="#accordion">
-              <div class="card-body">
-                {% if collections_dict %}
-                {% for collection in collections_dict %}
-                <hr class="green-line">
-                {% include "components/details/collection.html" %}
-                <!-- Amend collection -->
-                <div class="container-fluid">
-                  <div class="row">
-                    <div id="delete-collection"
-                      class="btn col-2 col-md-1 offset-8 offset-md-10 text-right" data-toggle="modal"
-                      data-target="#modal-delete-collection-{{ collection._id }}"><i
-                        class="fas fa-trash-alt btn-delete" data-toggle="tooltip"
-                        data-placement="top" data-type="info"
-                        title="Delete"></i></div>
-                    <div id="amend-collection" class="btn col-2 col-md-1 text-right" data-toggle="modal"
-                      data-target="#modal-edit-collection-{{ collection._id }}">
-                      <i class="fas fa-edit btn-edit" data-toggle="tooltip" data-placement="top"
-                      data-type="info" title="Edit"></i>
-                    </div>
-                  </div>
-                </div>
-                {% endfor %}
-                {% else %}
-                <p><strong>You do not currently have any collections saved! You
-                    can <a href="{{ url_for('add_new_collection') }}" class="internal-link">Add Collection</a> here.</strong></p>
-                {% endif %}
-              </div>
-            </div>
+<div class="card">
+  <div class="card-header green-background btn btn-link collapsed text-left"
+    id="headingCollections" data-toggle="collapse"
+    data-target="#collapseCollections" aria-expanded="false"
+    aria-controls="collapseCollections">
+    <h5 class="mb-0">
+      <i class="fas fa-recycle"></i> <strong>Your
+        Collections</strong>
+    </h5>
+  </div>
+  <div id="collapseCollections" class="collapse"
+    aria-labelledby="headingCollections" data-parent="#accordion">
+    <div class="card-body">
+      {% if collections_dict %}
+      {% for collection in collections_dict %}
+      <hr class="green-line">
+      {% include "components/details/collection.html" %}
+      <!-- Amend collection -->
+      <div class="container-fluid">
+        <div class="row">
+          <div id="delete-collection"
+            class="btn col-2 col-md-1 offset-8 offset-md-10 text-right"
+            data-toggle="modal"
+            data-target="#modal-delete-collection-{{ collection._id }}"><i
+              class="fas fa-trash-alt btn-delete" data-toggle="tooltip"
+              data-placement="top" data-type="info" title="Delete"></i></div>
+          <div id="amend-collection" class="btn col-2 col-md-1 text-right"
+            data-toggle="modal"
+            data-target="#modal-edit-collection-{{ collection._id }}">
+            <i class="fas fa-edit btn-edit" data-toggle="tooltip"
+              data-placement="top" data-type="info" title="Edit"></i>
           </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p><strong>You do not currently have any collections saved! You
+          can <a href="{{ url_for('add_new_collection') }}"
+            class="internal-link">Add Collection</a> here.</strong></p>
+      {% endif %}
+    </div>
+  </div>
+</div>

@@ -7,78 +7,9 @@
 {% include "components/navigation/dropdown.html" %}
 
 <div id="collector-layout">
-    {% include "components/hexagons.html" %}
+  {% include "components/hexagons.html" %}
 </div>
-<!-- Collection details modal -->
-{% if private_collector %}
-{% for collector in private_collector %}
-<div class="modal fade" id="modal-private-collection-{{ collector._id }}" tabindex="-1" role="dialog"
-  aria-labelledby="modal-collection-title" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-private-collection-title">All
-          Collections for {{ collector.username }}</h4>
 
-        <button type="button" class="close" data-dismiss="modal"
-          aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-                {% for location in private_collector_locations if location.memberID == collector._id  %}
-				<!-- Location -->
-                <div class="green-background space-below">
-				<h5><i class="fas fa-home"></i> {{ location.street }}, {{ location.town }}, {{ location.postcode }}</h5>
-			    </div>
-                {% for collection in private_collector_dict if collection.locationID == location._id %}
-                    {% include "components/details/collection-all.html" %}
-                <hr class="green-line">
-                {% endfor %}
-                {% endfor %}
-                <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary"
-        data-dismiss="modal">Close</button>
-    </div>
-              </div>
-            </div>
-      </div>
-    </div>
-{% endfor %}
-{% endif %}
-
-{% if local_council_collector %}
-{% for collector in local_council_collector %}
-<div class="modal fade" id="modal-council-collection-{{ collector._id }}" tabindex="-1"
-  role="dialog" aria-labelledby="modal-collection-title" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-council-collection-title">All
-          Collections for {{ collector.councilLocation }}</h4>
-
-        <button type="button" class="close" data-dismiss="modal"
-          aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-
-      <div class="modal-body">
-                {% for collection in local_council_collector_dict if collection._id == collector._id %}
-                    {% include "components/details/public-collection-all.html" %}
-                <hr class="green-line">
-                {% endfor %}
-      <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary"
-        data-dismiss="modal">Close</button>
-    </div>
-      </div>
-    
-    </div>
-  </div>
-</div>
-{% endfor %}
-{% endif %}
+{% include "components/modals/collection-details-all.html" %}
 
 {% endblock %}

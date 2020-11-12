@@ -9,11 +9,12 @@
         <div id="accordion">
           <!-- Details card -->
           <div class="card">
-            <div class="card-header green-background btn btn-link text-left" id="headingProfile" data-toggle="collapse"
-                  data-target="#collapseProfile" aria-expanded="true"
-                  aria-controls="collapseProfile">
+            <div class="card-header green-background btn btn-link text-left"
+              id="headingProfile" data-toggle="collapse"
+              data-target="#collapseProfile" aria-expanded="true"
+              aria-controls="collapseProfile">
               <h5 class="mb-0">
-                  <i class="fas fa-user"></i> <strong>Your Details</strong>
+                <i class="fas fa-user"></i> <strong>Your Details</strong>
               </h5>
             </div>
             <div id="collapseProfile" class="collapse show"
@@ -25,13 +26,14 @@
                 <div class="container-fluid">
                   <div class="row">
                     <div id="delete-profile"
-                      class="btn col-2 col-md-1 offset-8 offset-md-10 text-right" data-toggle="modal"
-                      data-target="#modal-delete-profile"><i
-                        class="fas fa-trash-alt btn-delete" data-toggle="tooltip"
-                        data-placement="top" data-type="info"
-                        title="Delete"></i></div>
-                    <div id="amend-profile" class="btn col-2 col-md-1 text-right"
-                      data-toggle="modal" data-target="#modal-edit-profile"><i
+                      class="btn col-2 col-md-1 offset-8 offset-md-10 text-right"
+                      data-toggle="modal" data-target="#modal-delete-profile"><i
+                        class="fas fa-trash-alt btn-delete"
+                        data-toggle="tooltip" data-placement="top"
+                        data-type="info" title="Delete"></i></div>
+                    <div id="amend-profile"
+                      class="btn col-2 col-md-1 text-right" data-toggle="modal"
+                      data-target="#modal-edit-profile"><i
                         class="fas fa-edit btn-edit" data-toggle="tooltip"
                         data-placement="top" data-type="info" title="Edit"></i>
                     </div>
@@ -40,33 +42,41 @@
               </div>
             </div>
           </div>
-          
+
           <!-- Activity card -->
           {% if member_type == "Busy Bee" %}
           <div class="card">
-          {% endif %}
-          <div class="card-header green-background space-below">
-            <h5 id="hive-activity" class="mb-0">
-              <strong>Your Hive Activity</strong>
-            </h5>
-          </div>
-          {% if member_type == "Busy Bee" %}
-          <div class="card-body">
-            {% if awaiting_approval %}
-            <h5 class="warning-text">Your first private collection is awaiting approval.<br>
-              Once it has been approved, you will be able to add further private collections without needing approval.</h5>
-            {% else %}
-            <p>As a Busy Bee, you are not able to add private collection points for the Hive yet.<br>
-            To become a Worker Bee, please go to <a href="{{ url_for('add_new_collection') }}" class="internal-link">Add Collection</a> and add your location and details for your first private collection. Once this has been approved
-            by the Queen Bee(s), you will be able to add more locations and collections without waiting for approval.</p>
             {% endif %}
-          </div>
+            <div class="card-header green-background space-below">
+              <h5 id="hive-activity" class="mb-0">
+                <strong>Your Hive Activity</strong>
+              </h5>
+            </div>
+            {% if member_type == "Busy Bee" %}
+            <div class="card-body">
+              {% if awaiting_approval %}
+              <h5 class="warning-text">Your first private collection is awaiting
+                approval.<br>
+                Once it has been approved, you will be able to add further
+                private collections without needing approval.</h5>
+              {% else %}
+              <p>As a Busy Bee, you are not able to add private collection
+                points for the Hive yet.<br>
+                To become a Worker Bee, please go to <a
+                  href="{{ url_for('add_new_collection') }}"
+                  class="internal-link">Add Collection</a> and add your location
+                and details for your first private collection. Once this has
+                been approved
+                by the Queen Bee(s), you will be able to add more locations and
+                collections without waiting for approval.</p>
+              {% endif %}
+            </div>
           </div>
           {% else %}
           {% include "components/cards/locations.html" %}
           {% include "components/cards/collections.html" %}
           {% endif %}
-          
+
           {% include "components/cards/awaiting-approval.html" %}
         </div>
       </div>
@@ -79,7 +89,7 @@
 {% include "components/modals/delete.html" %}
 
 {% if member_type != "Busy Bee" %}
-    {% include "components/modals/add-location.html" %}
+{% include "components/modals/add-location.html" %}
 {% endif %}
 
 {% endblock %}

@@ -1,58 +1,59 @@
 <div class="heading-buttons">
-  
   <div class="dropdown">
     {% if page_id == "categories" %}
-        <button class="space-holder">
-        </button>
+    <button class="space-holder">
+    </button>
     {% endif %}
     {% if page_id == "collections" %}
-		<button class="btn btn-outline-primary col space-below dropdown-toggle"
-		      type="button" data-toggle="dropdown"
-		      aria-haspopup="true" aria-expanded="false">
-		      {{ selected_item }}
-		    </button>
-		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			{% for item in recycling_items_dict %}
-			<a class="dropdown-item"
-				href="{{ url_for('get_recycling_collections', item_id=item._id) }}">{{ item.typeOfWaste }}</a>
-			{% endfor %}
-		</div>
+    <button class="btn btn-outline-primary col space-below dropdown-toggle"
+      type="button" data-toggle="dropdown" aria-haspopup="true"
+      aria-expanded="false">
+      {{ selected_item }}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      {% for item in recycling_items_dict %}
+      <a class="dropdown-item"
+        href="{{ url_for('get_recycling_collections', item_id=item._id) }}">{{ item.typeOfWaste }}</a>
+      {% endfor %}
+    </div>
     {% endif %}
     {% if page_id == "items" %}
-		<button class="btn btn-outline-primary col space-below dropdown-toggle"
-		      type="button" data-toggle="dropdown"
-		      aria-haspopup="true" aria-expanded="false">
-		      {{ selected_category }}
-		    </button>
-		<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			<a class="dropdown-item" href="{{ url_for('get_recycling_items', category_id='view-all') }}">View
-				all</a>
-			{% for category in categories_dict %}
-			<a class="dropdown-item"
-				href="{{ url_for('get_recycling_items', category_id=category._id) }}">{{ category.categoryName }}</a>
-			{% endfor %}
-		</div>
+    <button class="btn btn-outline-primary col space-below dropdown-toggle"
+      type="button" data-toggle="dropdown" aria-haspopup="true"
+      aria-expanded="false">
+      {{ selected_category }}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item"
+        href="{{ url_for('get_recycling_items', category_id='view-all') }}">View
+        all</a>
+      {% for category in categories_dict %}
+      <a class="dropdown-item"
+        href="{{ url_for('get_recycling_items', category_id=category._id) }}">{{ category.categoryName }}</a>
+      {% endfor %}
+    </div>
     {% endif %}
     {% if page_id == "collector" %}
-        <button class="btn btn-outline-primary col space-below dropdown-toggle"
-        type="button" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        {% if selected_collector_type == "Worker Bee"%}<i class="fas fa-hard-hat"></i>
-        {% elif selected_collector_type == "Local Council"%}<i
-            class="fas fa-building"></i>
-        {% endif %}{{ selected_collector_type }}
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item"
-            href="{{ url_for('get_recycling_collector', collector_type='view-all') }}">View
-            all</a>
-        <a class="dropdown-item"
-            href="{{ url_for('get_recycling_collector', collector_type='Worker Bee') }}"><i
-            class="fas fa-hard-hat"></i> Worker Bee</a>
-        <a class="dropdown-item"
-            href="{{ url_for('get_recycling_collector', collector_type='Local Council') }}"><i
-            class="fas fa-building"></i> Local Council</a>
-        </div>
+    <button class="btn btn-outline-primary col space-below dropdown-toggle"
+      type="button" data-toggle="dropdown" aria-haspopup="true"
+      aria-expanded="false">
+      {% if selected_collector_type == "Worker Bee"%}<i
+        class="fas fa-hard-hat"></i>
+      {% elif selected_collector_type == "Local Council"%}<i
+        class="fas fa-building"></i>
+      {% endif %}{{ selected_collector_type }}
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+      <a class="dropdown-item"
+        href="{{ url_for('get_recycling_collector', collector_type='view-all') }}">View
+        all</a>
+      <a class="dropdown-item"
+        href="{{ url_for('get_recycling_collector', collector_type='Worker Bee') }}"><i
+          class="fas fa-hard-hat"></i> Worker Bee</a>
+      <a class="dropdown-item"
+        href="{{ url_for('get_recycling_collector', collector_type='Local Council') }}"><i
+          class="fas fa-building"></i> Local Council</a>
+    </div>
     {% endif %}
   </div>
 </div>

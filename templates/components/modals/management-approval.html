@@ -1,11 +1,13 @@
 <!-- Delete member request modal -->
 {% for member in unapproved_members %}
-<div class="modal fade" id="modal-delete-member-request-{{ member._id }}" tabindex="-1" role="dialog"
+<div class="modal fade" id="modal-delete-member-request-{{ member._id }}"
+  tabindex="-1" role="dialog"
   aria-labelledby="modal-delete-member-request-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-delete-member-request-title">Delete
+        <h4 class="modal-title w-100" id="modal-delete-member-request-title">
+          Delete
           Request for {{ member.username }}</h4>
 
         <button type="button" class="close" data-dismiss="modal"
@@ -18,14 +20,16 @@
           action="{{ url_for('delete_member_request', member_id=member._id) }}">
           <p class="warning-text">Are you sure you want to delete this
             request?<br>
-            This will deny {{ member.username }} access to your Hive. However, they will be free to make a future request to join.
+            This will deny {{ member.username }} access to your Hive. However,
+            they will be free to make a future request to join.
           <p>
             <!-- Submit -->
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary"
               data-dismiss="modal">Cancel</button>
-            <button id="submit-delete-member-request" class="btn btn-outline-primary"
-              type="submit" name="submit-delete-member-request">Delete Member
+            <button id="submit-delete-member-request"
+              class="btn btn-outline-primary" type="submit"
+              name="submit-delete-member-request">Delete Member
               Request!</button>
           </div>
         </form>
@@ -37,12 +41,14 @@
 
 <!-- Approve member request modal -->
 {% for member in unapproved_members %}
-<div class="modal fade" id="modal-approve-member-request-{{ member._id }}" tabindex="-1" role="dialog"
+<div class="modal fade" id="modal-approve-member-request-{{ member._id }}"
+  tabindex="-1" role="dialog"
   aria-labelledby="modal-approve-member-request-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-approve-member-request-title">Approve Member
+        <h4 class="modal-title w-100" id="modal-approve-member-request-title">
+          Approve Member
           Request for {{ member.username }}</h4>
 
         <button type="button" class="close" data-dismiss="modal"
@@ -55,14 +61,16 @@
           action="{{ url_for('approve_member_request', member_id=member._id) }}">
           <p class="warning-text">Are you sure you want to approve this Member
             Request?<br>
-            This will allow {{ member.username }} access to your Hive and the collection locations shown within.
+            This will allow {{ member.username }} access to your Hive and the
+            collection locations shown within.
           <p>
             <!-- Submit -->
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary"
               data-dismiss="modal">Cancel</button>
-            <button id="submit-approve-member-request" class="btn btn-outline-primary"
-              type="submit" name="submit-approve-member-request">Approve Member
+            <button id="submit-approve-member-request"
+              class="btn btn-outline-primary" type="submit"
+              name="submit-approve-member-request">Approve Member
               Request!</button>
           </div>
         </form>
@@ -74,8 +82,10 @@
 
 <!-- Delete collection request modal -->
 {% for collection in first_collections %}
-<div class="modal fade" id="modal-delete-private-collection-request-{{ collection._id }}" tabindex="-1" role="dialog"
-  aria-labelledby="modal-delete-collection-title" aria-hidden="true">
+<div class="modal fade"
+  id="modal-delete-private-collection-request-{{ collection._id }}"
+  tabindex="-1" role="dialog" aria-labelledby="modal-delete-collection-title"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
@@ -90,16 +100,20 @@
       <div class="modal-body">
         <form name="delete-request" class="card-body"
           action="{{ url_for('delete_private_collection_request', collection_id=collection._id) }}">
-          <p class="warning-text">Are you sure you want to delete this Worker Bee
+          <p class="warning-text">Are you sure you want to delete this Worker
+            Bee
             request?<br>
-            This will deny {{ collection.username }} 'Worker Bee' status and they will not be able to submit new collections without approval. However, they will be free to make a future request for approval.
+            This will deny {{ collection.username }} 'Worker Bee' status and
+            they will not be able to submit new collections without approval.
+            However, they will be free to make a future request for approval.
           <p>
             <!-- Submit -->
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary"
               data-dismiss="modal">Cancel</button>
-            <button id="submit-delete-collection" class="btn btn-outline-primary"
-              type="submit" name="submit-delete-collection">Delete Worker Bee
+            <button id="submit-delete-collection"
+              class="btn btn-outline-primary" type="submit"
+              name="submit-delete-collection">Delete Worker Bee
               Request!</button>
           </div>
         </form>
@@ -111,12 +125,16 @@
 
 <!-- Approve collection request modal -->
 {% for collection in first_collections %}
-<div class="modal fade" id="modal-approve-private-collection-request-{{ collection._id }}" tabindex="-1" role="dialog"
-  aria-labelledby="modal-approve-private-collection-request-title" aria-hidden="true">
+<div class="modal fade"
+  id="modal-approve-private-collection-request-{{ collection._id }}"
+  tabindex="-1" role="dialog"
+  aria-labelledby="modal-approve-private-collection-request-title"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-approve-private-collection-request-title">Approve Worker Bee
+        <h4 class="modal-title w-100"
+          id="modal-approve-private-collection-request-title">Approve Worker Bee
           Request for {{ collection.username }}</h4>
 
         <button type="button" class="close" data-dismiss="modal"
@@ -125,18 +143,23 @@
         </button>
       </div>
       <div class="modal-body">
-        <form name="approve-private-collection-request" class="card-body" method="POST"
+        <form name="approve-private-collection-request" class="card-body"
+          method="POST"
           action="{{ url_for('approve_private_collection_request', collection_id=collection._id) }}">
-          <p class="warning-text">Are you sure you want to approve this Worker Bee
+          <p class="warning-text">Are you sure you want to approve this Worker
+            Bee
             Request?<br>
-            This will give {{ collection.username }} 'Worker Bee' status and they will be able to submit new collections without future approval.
+            This will give {{ collection.username }} 'Worker Bee' status and
+            they will be able to submit new collections without future approval.
           <p>
             <!-- Submit -->
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary"
               data-dismiss="modal">Cancel</button>
-            <button id="submit-approve-private-collection-request" class="btn btn-outline-primary"
-              type="submit" name="submit-approve-private-collection-request">Approve Worker Bee
+            <button id="submit-approve-private-collection-request"
+              class="btn btn-outline-primary" type="submit"
+              name="submit-approve-private-collection-request">Approve Worker
+              Bee
               Request!</button>
           </div>
         </form>
@@ -148,12 +171,17 @@
 
 <!-- Approve public collection request modal -->
 {% for collection in unapproved_collections %}
-<div class="modal fade" id="modal-approve-public-collection-request-{{ collection._id }}" tabindex="-1" role="dialog"
-  aria-labelledby="modal-approve-public-collection-request-title" aria-hidden="true">
+<div class="modal fade"
+  id="modal-approve-public-collection-request-{{ collection._id }}"
+  tabindex="-1" role="dialog"
+  aria-labelledby="modal-approve-public-collection-request-title"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-approve-public-collection-request-title">Approve Public Collection for {{ collection.typeOfWaste}}</h4>
+        <h4 class="modal-title w-100"
+          id="modal-approve-public-collection-request-title">Approve Public
+          Collection for {{ collection.typeOfWaste}}</h4>
 
         <button type="button" class="close" data-dismiss="modal"
           aria-label="Close">
@@ -161,17 +189,23 @@
         </button>
       </div>
       <div class="modal-body">
-        <form name="approve-public-collection-request" class="card-body" method="POST"
+        <form name="approve-public-collection-request" class="card-body"
+          method="POST"
           action="{{ url_for('approve_public_collection_request', collection_id=collection._id) }}">
-          <p class="warning-text">Are you sure you want to approve this Public Collection?<br>
-            Local collections will become visible to all members of your Hive, and National collections will become visible to all members of <strong>all</strong> Hives.
+          <p class="warning-text">Are you sure you want to approve this Public
+            Collection?<br>
+            Local collections will become visible to all members of your Hive,
+            and National collections will become visible to all members of
+            <strong>all</strong> Hives.
           <p>
             <!-- Submit -->
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary"
               data-dismiss="modal">Cancel</button>
-            <button id="submit-approve-public-collection-request" class="btn btn-outline-primary"
-              type="submit" name="submit-approve-public-collection-request">Approve Public Collection!</button>
+            <button id="submit-approve-public-collection-request"
+              class="btn btn-outline-primary" type="submit"
+              name="submit-approve-public-collection-request">Approve Public
+              Collection!</button>
           </div>
         </form>
       </div>

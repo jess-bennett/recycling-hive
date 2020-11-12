@@ -1,76 +1,86 @@
 <ul id="grid" class="clr">
-    {% if page_id == "categories" %}
-        {% for category in categories_dict %}
-        <li>
-        <a href="{{ url_for('get_recycling_items', category_id=category._id) }}">
-            <div class="hexagon">
-            <p class="hexagon-text">{{ category.categoryName }}</p>
-            </div>
-        </a>
-        </li>
-        {% endfor %}
-    {% endif %}
-    {% if page_id == "items" %}
-            {% for recycling_item in recycling_items_dict %}
-            <li>
-                <a href="{{ url_for('get_recycling_collections', item_id=recycling_item._id) }}">
-                    <div class="hexagon hexagon-medium">
-                        <p class="hexagon-text">{{ recycling_item.typeOfWaste }}</p>
-                    </div>
-                </a>
-            </li>
-            {% endfor %}
-    {% endif %}
-    {% if page_id == "collections" %}
-            {% for collection in collections_dict_private if collection.typeOfWaste == selected_item %}
-            <li>
-                <div class="hexagon" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
-                    <p class="hexagon-text"><i class="fas fa-hard-hat"></i> <strong>{{ collection.hiveMembers }}</strong><br>{{ collection.town }}</p>
-                </div>
-            </li>
-            {% endfor %}
-            {% for collection in collections_dict_public if collection.typeOfWaste == selected_item %}
-            {% if collection.collectionType.startswith("local") %}
-            <li>
-                <div class="hexagon hexagon-medium" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
-                    <p class="hexagon-text"><i class="fas fa-building"></i> {% if collection.collectionType == "local-council" %}<strong>{{ collection.councilLocation }}</strong>{% elif collection.collectionType == "local-other" %}<strong>{{ collection.businessName }}</strong><br>{{collection.town}}{% endif %}</p>
-                </div>
-            </li>
-            {% elif collection.collectionType.startswith("national") %}
-            <li>
-                <div class="hexagon hexagon-dark" data-toggle="modal" data-target="#modal-collection-{{ collection._id }}">
-                    <p class="hexagon-text"><i class="fas fa-city"></i> {% if collection.collectionType == "national-postal"%}<strong>{{ collection.businessName }}</strong><br>Postal{% elif collection.collectionType == "national-dropoff"%}<strong>{{ collection.businessName }}</strong><br>Drop-off{% endif %}</p>
-                </div>
-            </li>
-            {% endif %}
-            {% endfor %}
-    {% endif %}
-    {% if page_id == "collector" %}
-        {% if private_collector %}
-		{% for collector in private_collector %}
-		<li>
-			<div class="hexagon"
-				data-toggle="modal" data-target="#modal-private-collection-{{ collector._id }}">
-				<p
-					class="hexagon-text ">
-					<i class="fas fa-hard-hat"></i> <strong>{{ collector.username }}</strong>
-				</p>
-			</div>
-		</li>
-		{% endfor %}
-        {% endif %}
-        {% if local_council_collector %}
-        {% for collector in local_council_collector %}
-		<li>
-			<div class="hexagon hexagon-medium"
-				data-toggle="modal" data-target="#modal-council-collection-{{ collector._id }}">
-				<p
-					class="hexagon-text ">
-					<i class="fas fa-building"></i> <strong>{{ collector.councilLocation }}</strong>
-				</p>
-			</div>
-		</li>
-		{% endfor %}
-        {% endif %}
-    {% endif %}
-  </ul>
+  {% if page_id == "categories" %}
+  {% for category in categories_dict %}
+  <li>
+    <a href="{{ url_for('get_recycling_items', category_id=category._id) }}">
+      <div class="hexagon">
+        <p class="hexagon-text">{{ category.categoryName }}</p>
+      </div>
+    </a>
+  </li>
+  {% endfor %}
+  {% endif %}
+  {% if page_id == "items" %}
+  {% for recycling_item in recycling_items_dict %}
+  <li>
+    <a
+      href="{{ url_for('get_recycling_collections', item_id=recycling_item._id) }}">
+      <div class="hexagon hexagon-medium">
+        <p class="hexagon-text">{{ recycling_item.typeOfWaste }}</p>
+      </div>
+    </a>
+  </li>
+  {% endfor %}
+  {% endif %}
+  {% if page_id == "collections" %}
+  {% for collection in collections_dict_private if collection.typeOfWaste == selected_item %}
+  <li>
+    <div class="hexagon" data-toggle="modal"
+      data-target="#modal-collection-{{ collection._id }}">
+      <p class="hexagon-text"><i class="fas fa-hard-hat"></i>
+        <strong>{{ collection.hiveMembers }}</strong><br>{{ collection.town }}
+      </p>
+    </div>
+  </li>
+  {% endfor %}
+  {% for collection in collections_dict_public if collection.typeOfWaste == selected_item %}
+  {% if collection.collectionType.startswith("local") %}
+  <li>
+    <div class="hexagon hexagon-medium" data-toggle="modal"
+      data-target="#modal-collection-{{ collection._id }}">
+      <p class="hexagon-text"><i class="fas fa-building"></i>
+        {% if collection.collectionType == "local-council" %}<strong>{{ collection.councilLocation }}</strong>{% elif collection.collectionType == "local-other" %}<strong>{{ collection.businessName }}</strong><br>{{collection.town}}{% endif %}
+      </p>
+    </div>
+  </li>
+  {% elif collection.collectionType.startswith("national") %}
+  <li>
+    <div class="hexagon hexagon-dark" data-toggle="modal"
+      data-target="#modal-collection-{{ collection._id }}">
+      <p class="hexagon-text"><i class="fas fa-city"></i>
+        {% if collection.collectionType == "national-postal"%}<strong>{{ collection.businessName }}</strong><br>Postal{% elif collection.collectionType == "national-dropoff"%}<strong>{{ collection.businessName }}</strong><br>Drop-off{% endif %}
+      </p>
+    </div>
+  </li>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% if page_id == "collector" %}
+  {% if private_collector %}
+  {% for collector in private_collector %}
+  <li>
+    <div class="hexagon" data-toggle="modal"
+      data-target="#modal-private-collection-{{ collector._id }}">
+      <p class="hexagon-text ">
+        <i class="fas fa-hard-hat"></i>
+        <strong>{{ collector.username }}</strong>
+      </p>
+    </div>
+  </li>
+  {% endfor %}
+  {% endif %}
+  {% if local_council_collector %}
+  {% for collector in local_council_collector %}
+  <li>
+    <div class="hexagon hexagon-medium" data-toggle="modal"
+      data-target="#modal-council-collection-{{ collector._id }}">
+      <p class="hexagon-text ">
+        <i class="fas fa-building"></i>
+        <strong>{{ collector.councilLocation }}</strong>
+      </p>
+    </div>
+  </li>
+  {% endfor %}
+  {% endif %}
+  {% endif %}
+</ul>

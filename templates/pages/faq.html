@@ -2,319 +2,443 @@
 {% block content %}
 
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-10 offset-md-1">
-			<div class="card-header text-center green-background space-below">
-				<h3>FAQs</h3>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-10 offset-md-1 text-center">
-			<h5>Can't find the answer you're looking for? <a href="{{ url_for('contact') }}" class="internal-link">Get in touch!</a></h5>
-		</div>
-	</div>
-    <div class="row">
-		<div class="col-md-10 offset-md-1 text-center">
-            <div class="row">
-                <div class="col-6 col-md-3 space-below">
-                    <button type="button" id="btn-faq-about"
-                                class="btn btn-outline-primary col btn-faq active">About
-                    </button>
-                </div>
-                <div class="col-6 col-md-3 space-below">
-                    <button type="button" id="btn-faq-how-to"
-                                class="btn btn-outline-primary col btn-faq">How to
-                     </button>
-                </div>
-                <div class="col-6 col-md-3 space-below">
-                    <button type="button" id="btn-faq-troubleshooting"
-                                class="btn btn-outline-primary col btn-faq">Troubleshooting
-                     </button>
-                </div>
-                <div class="col-6 col-md-3 space-below">
-                    <button type="button" id="btn-faq-general"
-                                class="btn btn-outline-primary col btn-faq">General
-                     </button>
-                </div>
-            </div>
-		</div>
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <div class="card-header text-center green-background space-below">
+        <h3>FAQs</h3>
+      </div>
     </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10 offset-md-1 text-center">
+      <h5>Can't find the answer you're looking for? <a
+          href="{{ url_for('contact') }}" class="internal-link">Get in
+          touch!</a></h5>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-10 offset-md-1 text-center">
+      <div class="row">
+        <div class="col-6 col-md-3 space-below">
+          <button type="button" id="btn-faq-about"
+            class="btn btn-outline-primary col btn-faq active">About
+          </button>
+        </div>
+        <div class="col-6 col-md-3 space-below">
+          <button type="button" id="btn-faq-how-to"
+            class="btn btn-outline-primary col btn-faq">How to
+          </button>
+        </div>
+        <div class="col-6 col-md-3 space-below">
+          <button type="button" id="btn-faq-troubleshooting"
+            class="btn btn-outline-primary col btn-faq">Troubleshooting
+          </button>
+        </div>
+        <div class="col-6 col-md-3 space-below">
+          <button type="button" id="btn-faq-general"
+            class="btn btn-outline-primary col btn-faq">General
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-10 offset-md-1">
-			<div id="accordion-faq-about" class="accordion-faq">
-				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingOne" data-toggle="collapse"
-                        data-target="#collapseOne" aria-expanded="false"
-                        aria-controls="collapseOne">
-						<h5 class="mb-0">
-                        <strong>What is Recycling Hive (the long version)?</strong>
-						</h5>
-					</div>
-					<div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion-faq-about">
-						<div class="card-body">
-							<p>Recycling Hive is an idea born from a local Facebook community – filled with recycling
-								heroes!</p>
-							<p>
-								Any of us that care about the environment and sustainability know that recycling is NOT
-								the first answer: Rethink, repair, refuse, repurpose, reduce, re-use, recycle.
-								But, it is still an important step in trying to undo the damage we have already done and
-								avoid further damage to our planet.
-								But recycling isn't always that easy.</p>
-							<p>
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <div id="accordion-faq-about" class="accordion-faq">
+        <div class="card">
+          <div
+            class="card-header green-background btn btn-link collapsed text-left"
+            id="headingOne" data-toggle="collapse" data-target="#collapseOne"
+            aria-expanded="false" aria-controls="collapseOne">
+            <h5 class="mb-0">
+              <strong>What is Recycling Hive (the long version)?</strong>
+            </h5>
+          </div>
+          <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+            data-parent="#accordion-faq-about">
+            <div class="card-body">
+              <p>Recycling Hive is an idea born from a local Facebook community
+                – filled with recycling
+                heroes!</p>
+              <p>
+                Any of us that care about the environment and sustainability
+                know that recycling is NOT
+                the first answer: Rethink, repair, refuse, repurpose, reduce,
+                re-use, recycle.
+                But, it is still an important step in trying to undo the damage
+                we have already done and
+                avoid further damage to our planet.
+                But recycling isn't always that easy.</p>
+              <p>
 
-								Most local authorities still have a long way to go with regards to what they accept, and
-								there are a lot of rules which must be adhered to if you want to be sure the contents of your recycling
-								bin doesn’t end up going to landfill because of contamination. <em>Should lids be left on plastic bottles? Depends where you live!</em></p>
-							<p>
+                Most local authorities still have a long way to go with regards
+                to what they accept, and
+                there are a lot of rules which must be adhered to if you want to
+                be sure the contents of your recycling
+                bin doesn’t end up going to landfill because of contamination.
+                <em>Should lids be left on plastic bottles? Depends where you
+                  live!</em></p>
+              <p>
 
-								Local recycling communities can be a godsend, thanks to caring individuals who collect various recyclables and send them in the right direction -
-								charities, Terracycle, additional council-run facilities and even repurposing (to name a
-								few).</p>
-							<p>
-								But working out what goes where can be the tricky part! Our local group ended up
-								with a very unwieldy spreadsheet (frequently updated by some amazing volunteers). The
-								problem was, scanning through the spreadsheet became a time-consuming job, and keeping
-								it up-to-date as people started new collections or stopped old collections was a
-								minefield.</p>
-							<p>
+                Local recycling communities can be a godsend, thanks to caring
+                individuals who collect various recyclables and send them in the
+                right direction -
+                charities, Terracycle, additional council-run facilities and
+                even repurposing (to name a
+                few).</p>
+              <p>
+                But working out what goes where can be the tricky part! Our
+                local group ended up
+                with a very unwieldy spreadsheet (frequently updated by some
+                amazing volunteers). The
+                problem was, scanning through the spreadsheet became a
+                time-consuming job, and keeping
+                it up-to-date as people started new collections or stopped old
+                collections was a
+                minefield.</p>
+              <p>
 
-								This is where Recycling Hive comes in!</p>
-							<p>
+                This is where Recycling Hive comes in!</p>
+              <p>
 
-								I (Jess Bennett) wanted to find a way to pay back my lovely recycling community for all
-								their hard work – and as a new software development student, the idea for this site came
-								about.</p>
-							<p>
+                I (Jess Bennett) wanted to find a way to pay back my lovely
+                recycling community for all
+                their hard work – and as a new software development student, the
+                idea for this site came
+                about.</p>
+              <p>
 
-								In its initial stages, it will just serve our local community – but the hope for the
-								future is that the site can be adopted by other local Hives across the UK!</p>
-						</div>
-					</div>
-				</div>
-				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingTwo" data-toggle="collapse"
-                        data-target="#collapseTwo" aria-expanded="false"
-                        aria-controls="collapseTwo">
-						<h5 class="mb-0">
-                        <strong>What is Recycling Hive (the short version)?</strong>
-						</h5>
-					</div>
-					<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion-faq-about">
-						<div class="card-body">
-							<p>Recycling Hive is a place to check out what can be recycled locally to you - above and beyond what your council
-                            refuse service collects.</p>
-                            <p>It is a service that relies entirely on being updated by the local community.</p>
-							
-						</div>
-					</div>
-				</div>
-				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingThree" data-toggle="collapse"
-                        data-target="#collapseThree" aria-expanded="false"
-                        aria-controls="collapseThree">
-						<h5 class="mb-0">
-                        <strong>Who is in my Hive?</strong>
-						</h5>
-					</div>
-					<div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion-faq-about">
-						<div class="card-body">
-                            <p><em>You don't need to know all of this to use the site - but in case you're interested...</em></p>
-							<p>Your Hive is made up of several different community members:</p>
-							<p><strong>Queen Bees</strong><br>
-                                Your Hive will have one or more Queen Bees. In some cases
-								too many queen bees for your typical hive, perhaps – but this is about spreading the
-								workload! Our bees also have jobs, families and hobbies to attend to.</p>
-								<p>The role of the Queen Bee is to accept new membership requests, and approve new
-								recycling locations. They will have decided the criteria that must be met before accepting
-								a new member - local addresses are displayed on the site, so they might have some questions
-                                to check that you really <strong>are</strong> local before being
-								accepted!</p>
-							<p><strong>Worker Bees</strong><br>
-                                There will (hopefully) be many, many workers in your Hive.
-								These are the
-								local heroes who happily accept your recycling and send it off to the right place. They
-								work incredibly hard so be good to them!</p>
-							<p><strong>Busy Bees</strong><br> 
-                                That’s most of us here! Busy bees are vital for this
-								community effort. They collect all their recyclables, keep them clean and organised (following the notes given by the Worker Bees to the letter),
-								before delivering them to the Worker Bees for dispatch!
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
-            <div id="accordion-faq-how-to" class="accordion-faq">
-				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingFour" data-toggle="collapse"
-                        data-target="#collapseFour" aria-expanded="false"
-                        aria-controls="collapseFour">
-						<h5 class="mb-0">
-                        <strong>Why can't I find a Hive near me?</strong>
-						</h5>
-					</div>
-					<div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion-faq-how-to">
-						<div class="card-body">
-							<p>It may well be that there isn’t one set up in your area. If you would like to set up your
-								own recycling Hive, please <a href="{{ url_for('contact') }}" class="internal-link">contact me</a> to discuss
-								how
-								to go about it.
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingFive" data-toggle="collapse"
-                        data-target="#collapseFive" aria-expanded="false"
-                        aria-controls="collapseFive">
-						<h5 class="mb-0">
-                        <strong>How do I actually use this site?</strong>
-						</h5>
-					</div>
-					<div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion-faq-how-to">
-						<div class="card-body">
-							<p>The hope is that the site has been designed to be user-friendly and self-explanatory.
-								But, the best laid plans...
-							</p>
-							<p>If you're really not liking how it works, then <a href="{{ url_for('contact') }}" class="internal-link">let me
-									have your suggestions</a> and I'll see what I can do.</p>
-							<p>In the meantime, here are a few pointers:</p>
-							<p><strong>How do I find an item to recycle?</strong><br>
-                            Head to the <a href="{{ url_for('get_recycling_categories') }}" class="internal-link">Hive</a>
-								and get browsing! You can look by category (e.g. Food/drink packaging) or item (e.g.
-								Crisp packets) and then see who is collecting
-								that item in your area. Can't find what you're looking for? Sounds like no-one in your
-								Hive is collecting it. Why don't you start a collection?
-							</p>
-							<p><strong>What else can I drop off to a Worker Bee?</strong><br>
-                            If you're already on your way to drop off some recycling, why not make the journey even more worthwhile and see what else you could be taking there?<br>
-                            Once you're in the <a href="{{ url_for('get_recycling_categories') }}"
-									class="internal-link">Hive</a>, just go to <a
-									href="{{ url_for('get_recycling_collector', collector_type='view-all') }}"
-									class="internal-link">Hive Members</a> and click on a name to see all the items they currently accept.
-							</p>
-                            <p><strong>What are the different collection types?</strong><br>
-                            It can take some getting used to, but once it's clear, it makes adding and finding collections easier for all of us. So, without further ado, this is how the collections are split:</p>
-                            <ul>
-                                <li>Private</li>
-                                <dl>These are collections which are undertaken by an individual - a Worker Bee in your Hive. They are responsible for collecting and dispatching the recyclable item.
-                                The collection address is usually their home or work. They do all of this voluntarily and it's hard work - so please make sure you follow the condition notes they give to the letter.
-                                In particular, please make sure the items you drop off to them are clean and don't have bits of food stuck to them!</dl>
-                                <li>Public</li>
-                                <dl>These collections belong to a business/company or similar and are available to be used by basically everyone (depending on location). They are further split down into:</dl>
-                                <ul>
-                                    <li>Local</li>
-                                    <dl>These collections are suitable for members of your Hive only. These collections are split into:</dl>
-                                    <ul>
-                                        <li>Council-run</li>
-                                        <dl>This type of collection is strictly limited to your local kerbside recycling service and local Household Recycling Centres (HRCs).</dl>
-                                        <li>Other</li>
-                                        <dl>This is everything else locally - it might be a local business for example.</dl>
-                                    </ul>
-                                    <li>National</li>
-                                    <dl>These collections are <em>potentially</em> suitable for members of any Hive across the UK. Once again, they are split into:</dl>
-                                    <ul>
-                                        <li>Postal</li>
-                                        <dl>Hopefully self-explanatory - this is for items that should be sent to the collector by post.</dl>
-                                        <li>Drop-off</li>
-                                        <dl>Finally, these items can be dropped off at a local branch, nationwide. An example of this is Specsavers, who take old spectacles to be recycled, at any of their stores nationally.</dl>
-                                    </ul>
-                                </ul>
-                            </ul>
-                            <p>This all might seem a bit mind-blowing laid out like this. But I promise you, it will make perfect sense as you start to use the site.</p>
-                            <p><strong>How do I add a collection?</strong><br>
-                            When you first join the site, you are automatically a 'Busy Bee'. To become a 'Worker Bee' (a member with private recycling collections), you just need to add your first collection from the 
-                            <a href="{{ url_for('add_new_collection') }}" class="internal-link">Add Collection page</a>. Once that's been approved by a Queen Bee, you're free to add as many collections
-                            as you want, without waiting for further approval.</p>
-
-                            <p>Anyone can add a public collection - you don't need to be a Worker Bee to do so. As these collections are displayed to <strong>all</strong> Hives (not just your own), <strong>and/or</strong> are prone to
-                            duplication by different members, they are first checked and approved by a Queen Bee, before being committed to the database. To add one, just go to the <a href="{{ url_for('add_new_collection') }}" class="internal-link">Add Collection page</a>
-                            and follow the instructions there.</p>
-
-                            <p><strong>What if I don't want to put my address on here?</strong><br>
-                            The registration process has been designed to encourage only local people to join and your address will only be visible to those that have registered to be 
-                            part of your local community. However, it is a website and it's understandable if you don't feel comfortable
-                            sharing your address here.<br>
-                            If this is the case, then you can put what you want in the address fields (although they do all need to be filled in). For example, you could put:<br>
-                            <strong>Street:</strong> Please call/text on 07123 456 789 for collection address.<br>
-                            <strong>Town:</strong> Newbury<br>
-                            <strong>Postcode:</strong> XXX XXX<br>
-                            </p>
-						</div>
-					</div>
-				</div>
+                In its initial stages, it will just serve our local community –
+                but the hope for the
+                future is that the site can be adopted by other local Hives
+                across the UK!</p>
             </div>
-            <div id="accordion-faq-troubleshooting" class="accordion-faq">
-				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingSix" data-toggle="collapse"
-                        data-target="#collapseSix" aria-expanded="false"
-                        aria-controls="collapseSix">
-						<h5 class="mb-0">
-                        <strong>I've just registered to join my local Hive, but it's not letting me search...</strong>
-						</h5>
-					</div>
-					<div id="collapseSix" class="collapse" aria-labelledby="headingSix" data-parent="#accordion-faq-troubleshooting">
-						<div class="card-body">
-							<p>Once you've registered, the answers you gave in your form (not including your password)
-								are sent to your Queen Bee(s) to be reviewed.
-								They'll do a quick check to make sure you're local to them and are here for the right
-								reasons before approving (or denying) your request to join.</p>
-							<p>It should only take a couple of days, but you might have to be patient. Unfortunately the
-								Recycling Hive does not currently have a messaging system
-								for you to follow this up. However, it is designed to be used alongside another
-								community portal (such as a Facebook group), so hopefully you'll be
-								able to get in touch with them that way if it's taking too long.
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingSeven" data-toggle="collapse"
-                        data-target="#collapseSeven" aria-expanded="false"
-                        aria-controls="collapseSeven">
-						<h5 class="mb-0">
-                        <strong>I registered to join, but now when I try to log in my username/password isn't recognised...</strong>
-						</h5>
-					</div>
-					<div id="collapseSeven" class="collapse" aria-labelledby="headingSeven" data-parent="#accordion-faq-troubleshooting">
-						<div class="card-body">
-							<p>Could it be that you're entering your login details incorrectly? Have another go, or <a
-									href="{{ url_for('contact') }}" class="internal-link">get in touch</a> if you think this might be the case.
-							</p>
-							<p>The other possiblity (more likely if you've never been able to use the 'Search Hive'
-								function) is that your request to join
-								has been denied. I don't know why they would deny you... Are you here for the right
-								reasons? Are your intentions good? Are you sure?! If you're seriously confused, just use the link above to get in touch and I'll do my best to help.
-							</p>
-						</div>
-					</div>
-				</div>
+          </div>
+        </div>
+        <div class="card">
+          <div
+            class="card-header green-background btn btn-link collapsed text-left"
+            id="headingTwo" data-toggle="collapse" data-target="#collapseTwo"
+            aria-expanded="false" aria-controls="collapseTwo">
+            <h5 class="mb-0">
+              <strong>What is Recycling Hive (the short version)?</strong>
+            </h5>
+          </div>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+            data-parent="#accordion-faq-about">
+            <div class="card-body">
+              <p>Recycling Hive is a place to check out what can be recycled
+                locally to you - above and beyond what your council
+                refuse service collects.</p>
+              <p>It is a service that relies entirely on being updated by the
+                local community.</p>
+
             </div>
-            <div id="accordion-faq-general" class="accordion-faq">
-				<div class="card">
-					<div class="card-header green-background btn btn-link collapsed text-left" id="headingEight" data-toggle="collapse"
-                        data-target="#collapseEight" aria-expanded="false"
-                        aria-controls="collapseEight">
-						<h5 class="mb-0">
-                        <strong>I don't like the colour scheme you've used on your site (and other complaints)...</strong>
-						</h5>
-					</div>
-					<div id="collapseEight" class="collapse" aria-labelledby="headingEight" data-parent="#accordion-faq-general">
-						<div class="card-body">
-							<p>Well, that is a shame – no one likes criticism!! But in all seriousness, if you do have
-								any feedback on this site (colour schemes or otherwise!) then please, please do let me
-								know <a href="{{ url_for('contact') }}" class="internal-link">here</a>. All ideas will be seriously considered –
-								the
-								site is only as good as the people who use it!
-							</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+          </div>
+        </div>
+        <div class="card">
+          <div
+            class="card-header green-background btn btn-link collapsed text-left"
+            id="headingThree" data-toggle="collapse"
+            data-target="#collapseThree" aria-expanded="false"
+            aria-controls="collapseThree">
+            <h5 class="mb-0">
+              <strong>Who is in my Hive?</strong>
+            </h5>
+          </div>
+          <div id="collapseThree" class="collapse"
+            aria-labelledby="headingThree" data-parent="#accordion-faq-about">
+            <div class="card-body">
+              <p><em>You don't need to know all of this to use the site - but in
+                  case you're interested...</em></p>
+              <p>Your Hive is made up of several different community members:
+              </p>
+              <p><strong>Queen Bees</strong><br>
+                Your Hive will have one or more Queen Bees. In some cases
+                too many queen bees for your typical hive, perhaps – but this is
+                about spreading the
+                workload! Our bees also have jobs, families and hobbies to
+                attend to.</p>
+              <p>The role of the Queen Bee is to accept new membership requests,
+                and approve new
+                recycling locations. They will have decided the criteria that
+                must be met before accepting
+                a new member - local addresses are displayed on the site, so
+                they might have some questions
+                to check that you really <strong>are</strong> local before being
+                accepted!</p>
+              <p><strong>Worker Bees</strong><br>
+                There will (hopefully) be many, many workers in your Hive.
+                These are the
+                local heroes who happily accept your recycling and send it off
+                to the right place. They
+                work incredibly hard so be good to them!</p>
+              <p><strong>Busy Bees</strong><br>
+                That’s most of us here! Busy bees are vital for this
+                community effort. They collect all their recyclables, keep them
+                clean and organised (following the notes given by the Worker
+                Bees to the letter),
+                before delivering them to the Worker Bees for dispatch!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="accordion-faq-how-to" class="accordion-faq">
+        <div class="card">
+          <div
+            class="card-header green-background btn btn-link collapsed text-left"
+            id="headingFour" data-toggle="collapse" data-target="#collapseFour"
+            aria-expanded="false" aria-controls="collapseFour">
+            <h5 class="mb-0">
+              <strong>Why can't I find a Hive near me?</strong>
+            </h5>
+          </div>
+          <div id="collapseFour" class="collapse" aria-labelledby="headingFour"
+            data-parent="#accordion-faq-how-to">
+            <div class="card-body">
+              <p>It may well be that there isn’t one set up in your area. If you
+                would like to set up your
+                own recycling Hive, please <a href="{{ url_for('contact') }}"
+                  class="internal-link">contact me</a> to discuss
+                how
+                to go about it.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div
+            class="card-header green-background btn btn-link collapsed text-left"
+            id="headingFive" data-toggle="collapse" data-target="#collapseFive"
+            aria-expanded="false" aria-controls="collapseFive">
+            <h5 class="mb-0">
+              <strong>How do I actually use this site?</strong>
+            </h5>
+          </div>
+          <div id="collapseFive" class="collapse" aria-labelledby="headingFive"
+            data-parent="#accordion-faq-how-to">
+            <div class="card-body">
+              <p>The hope is that the site has been designed to be user-friendly
+                and self-explanatory.
+                But, the best laid plans...
+              </p>
+              <p>If you're really not liking how it works, then <a
+                  href="{{ url_for('contact') }}" class="internal-link">let me
+                  have your suggestions</a> and I'll see what I can do.</p>
+              <p>In the meantime, here are a few pointers:</p>
+              <p><strong>How do I find an item to recycle?</strong><br>
+                Head to the <a href="{{ url_for('get_recycling_categories') }}"
+                  class="internal-link">Hive</a>
+                and get browsing! You can look by category (e.g. Food/drink
+                packaging) or item (e.g.
+                Crisp packets) and then see who is collecting
+                that item in your area. Can't find what you're looking for?
+                Sounds like no-one in your
+                Hive is collecting it. Why don't you start a collection?
+              </p>
+              <p><strong>What else can I drop off to a Worker Bee?</strong><br>
+                If you're already on your way to drop off some recycling, why
+                not make the journey even more worthwhile and see what else you
+                could be taking there?<br>
+                Once you're in the <a
+                  href="{{ url_for('get_recycling_categories') }}"
+                  class="internal-link">Hive</a>, just go to <a
+                  href="{{ url_for('get_recycling_collector', collector_type='view-all') }}"
+                  class="internal-link">Hive Members</a> and click on a name to
+                see all the items they currently accept.
+              </p>
+              <p><strong>What are the different collection types?</strong><br>
+                It can take some getting used to, but once it's clear, it makes
+                adding and finding collections easier for all of us. So, without
+                further ado, this is how the collections are split:</p>
+              <ul>
+                <li>Private</li>
+                <dl>These are collections which are undertaken by an individual
+                  - a Worker Bee in your Hive. They are responsible for
+                  collecting and dispatching the recyclable item.
+                  The collection address is usually their home or work. They do
+                  all of this voluntarily and it's hard work - so please make
+                  sure you follow the condition notes they give to the letter.
+                  In particular, please make sure the items you drop off to them
+                  are clean and don't have bits of food stuck to them!</dl>
+                <li>Public</li>
+                <dl>These collections belong to a business/company or similar
+                  and are available to be used by basically everyone (depending
+                  on location). They are further split down into:</dl>
+                <ul>
+                  <li>Local</li>
+                  <dl>These collections are suitable for members of your Hive
+                    only. These collections are split into:</dl>
+                  <ul>
+                    <li>Council-run</li>
+                    <dl>This type of collection is strictly limited to your
+                      local kerbside recycling service and local Household
+                      Recycling Centres (HRCs).</dl>
+                    <li>Other</li>
+                    <dl>This is everything else locally - it might be a local
+                      business for example.</dl>
+                  </ul>
+                  <li>National</li>
+                  <dl>These collections are <em>potentially</em> suitable for
+                    members of any Hive across the UK. Once again, they are
+                    split into:</dl>
+                  <ul>
+                    <li>Postal</li>
+                    <dl>Hopefully self-explanatory - this is for items that
+                      should be sent to the collector by post.</dl>
+                    <li>Drop-off</li>
+                    <dl>Finally, these items can be dropped off at a local
+                      branch, nationwide. An example of this is Specsavers, who
+                      take old spectacles to be recycled, at any of their stores
+                      nationally.</dl>
+                  </ul>
+                </ul>
+              </ul>
+              <p>This all might seem a bit mind-blowing laid out like this. But
+                I promise you, it will make perfect sense as you start to use
+                the site.</p>
+              <p><strong>How do I add a collection?</strong><br>
+                When you first join the site, you are automatically a 'Busy
+                Bee'. To become a 'Worker Bee' (a member with private recycling
+                collections), you just need to add your first collection from
+                the
+                <a href="{{ url_for('add_new_collection') }}"
+                  class="internal-link">Add Collection page</a>. Once that's
+                been approved by a Queen Bee, you're free to add as many
+                collections
+                as you want, without waiting for further approval.
+              </p>
+
+              <p>Anyone can add a public collection - you don't need to be a
+                Worker Bee to do so. As these collections are displayed to
+                <strong>all</strong> Hives (not just your own),
+                <strong>and/or</strong> are prone to
+                duplication by different members, they are first checked and
+                approved by a Queen Bee, before being committed to the database.
+                To add one, just go to the <a
+                  href="{{ url_for('add_new_collection') }}"
+                  class="internal-link">Add Collection page</a>
+                and follow the instructions there.</p>
+
+              <p><strong>What if I don't want to put my address on
+                  here?</strong><br>
+                The registration process has been designed to encourage only
+                local people to join and your address will only be visible to
+                those that have registered to be
+                part of your local community. However, it is a website and it's
+                understandable if you don't feel comfortable
+                sharing your address here.<br>
+                If this is the case, then you can put what you want in the
+                address fields (although they do all need to be filled in). For
+                example, you could put:<br>
+                <strong>Street:</strong> Please call/text on 07123 456 789 for
+                collection address.<br>
+                <strong>Town:</strong> Newbury<br>
+                <strong>Postcode:</strong> XXX XXX<br>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="accordion-faq-troubleshooting" class="accordion-faq">
+        <div class="card">
+          <div
+            class="card-header green-background btn btn-link collapsed text-left"
+            id="headingSix" data-toggle="collapse" data-target="#collapseSix"
+            aria-expanded="false" aria-controls="collapseSix">
+            <h5 class="mb-0">
+              <strong>I've just registered to join my local Hive, but it's not
+                letting me search...</strong>
+            </h5>
+          </div>
+          <div id="collapseSix" class="collapse" aria-labelledby="headingSix"
+            data-parent="#accordion-faq-troubleshooting">
+            <div class="card-body">
+              <p>Once you've registered, the answers you gave in your form (not
+                including your password)
+                are sent to your Queen Bee(s) to be reviewed.
+                They'll do a quick check to make sure you're local to them and
+                are here for the right
+                reasons before approving (or denying) your request to join.</p>
+              <p>It should only take a couple of days, but you might have to be
+                patient. Unfortunately the
+                Recycling Hive does not currently have a messaging system
+                for you to follow this up. However, it is designed to be used
+                alongside another
+                community portal (such as a Facebook group), so hopefully you'll
+                be
+                able to get in touch with them that way if it's taking too long.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div
+            class="card-header green-background btn btn-link collapsed text-left"
+            id="headingSeven" data-toggle="collapse"
+            data-target="#collapseSeven" aria-expanded="false"
+            aria-controls="collapseSeven">
+            <h5 class="mb-0">
+              <strong>I registered to join, but now when I try to log in my
+                username/password isn't recognised...</strong>
+            </h5>
+          </div>
+          <div id="collapseSeven" class="collapse"
+            aria-labelledby="headingSeven"
+            data-parent="#accordion-faq-troubleshooting">
+            <div class="card-body">
+              <p>Could it be that you're entering your login details
+                incorrectly? Have another go, or <a
+                  href="{{ url_for('contact') }}" class="internal-link">get in
+                  touch</a> if you think this might be the case.
+              </p>
+              <p>The other possiblity (more likely if you've never been able to
+                use the 'Search Hive'
+                function) is that your request to join
+                has been denied. I don't know why they would deny you... Are you
+                here for the right
+                reasons? Are your intentions good? Are you sure?! If you're
+                seriously confused, just use the link above to get in touch and
+                I'll do my best to help.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="accordion-faq-general" class="accordion-faq">
+        <div class="card">
+          <div
+            class="card-header green-background btn btn-link collapsed text-left"
+            id="headingEight" data-toggle="collapse"
+            data-target="#collapseEight" aria-expanded="false"
+            aria-controls="collapseEight">
+            <h5 class="mb-0">
+              <strong>I don't like the colour scheme you've used on your site
+                (and other complaints)...</strong>
+            </h5>
+          </div>
+          <div id="collapseEight" class="collapse"
+            aria-labelledby="headingEight" data-parent="#accordion-faq-general">
+            <div class="card-body">
+              <p>Well, that is a shame – no one likes criticism!! But in all
+                seriousness, if you do have
+                any feedback on this site (colour schemes or otherwise!) then
+                please, please do let me
+                know <a href="{{ url_for('contact') }}"
+                  class="internal-link">here</a>. All ideas will be seriously
+                considered –
+                the
+                site is only as good as the people who use it!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

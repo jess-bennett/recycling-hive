@@ -1,9 +1,10 @@
-<div class="modal fade" id="modal-about" tabindex="-1"
-  role="dialog" aria-labelledby="modal-about" aria-hidden="true">
+<div class="modal fade" id="modal-about" tabindex="-1" role="dialog"
+  aria-labelledby="modal-about" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-about-title">About the Recycling Hive</h4>
+        <h4 class="modal-title w-100" id="modal-about-title">About the Recycling
+          Hive</h4>
 
         <button type="button" class="close" data-dismiss="modal"
           aria-label="Close">
@@ -12,19 +13,28 @@
       </div>
 
       <div class="modal-body text-center">
-        <p><strong>Recycling Hive is a place to check out what can be recycled locally to you - above and beyond what your council
+        <p><strong>Recycling Hive is a place to check out what can be recycled
+            locally to you - above and beyond what your council
             refuse service collects.</strong></p>
-        <p><strong>It is a service that relies entirely on being updated by the local community - i.e. the other members of your Hive.</strong></p>
-        <p>If you're here to find out what you can recycle locally, just head straight to <a href="{{ url_for('get_recycling_categories') }}" class="internal-link">Search Hive</a> and get browsing!</p>
-        <p>Or, if you're a local recycling collector, then visiting <a href="{{ url_for('add_new_collection') }}" class="internal-link">Add Collection</a> will allow you to get started telling everyone what you can take from them.</p>
-        <p>If you're looking for a more in-depth explanation, then the <a href="{{ url_for('faqs') }}" class="internal-link">FAQs</a> have got you covered.</p>
-        
-      <div class="modal-footer">
-    <button type="button" class="btn btn-outline-primary"
-        data-dismiss="modal">Close</button>
-    </div>
+        <p><strong>It is a service that relies entirely on being updated by the
+            local community - i.e. the other members of your Hive.</strong></p>
+        <p>If you're here to find out what you can recycle locally, just head
+          straight to <a href="{{ url_for('get_recycling_categories') }}"
+            class="internal-link">Search Hive</a> and get browsing!</p>
+        <p>Or, if you're a local recycling collector, then visiting <a
+            href="{{ url_for('add_new_collection') }}" class="internal-link">Add
+            Collection</a> will allow you to get started telling everyone what
+          you can take from them.</p>
+        <p>If you're looking for a more in-depth explanation, then the <a
+            href="{{ url_for('faqs') }}" class="internal-link">FAQs</a> have got
+          you covered.</p>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-primary"
+            data-dismiss="modal">Close</button>
+        </div>
       </div>
-    
+
     </div>
   </div>
 </div>

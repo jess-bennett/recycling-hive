@@ -1,87 +1,97 @@
 <!-- Worker Bee requests -->
-          <div class="card" id="workerbee-requests">
-            <div class="card-header green-background btn btn-link collapsed text-left" id="headingWorkerBeeRequests" data-toggle="collapse"
-                  data-target="#collapseWorkerBeeRequests" aria-expanded="false"
-                  aria-controls="collapseWorkerBeeRequests">
-                  <h5><i class="fas fa-hard-hat"></i> <strong>Worker Bee Requests</strong></h5>
-                  <h6>{{first_collections|length}} current request(s)</h6>
-            </div>
-            <div id="collapseWorkerBeeRequests" class="collapse" aria-labelledby="headingWorkerBeeRequests"
-              data-parent="#accordion">
-              <div class="card-body">
-                {% if first_collections %}
-                {% for collection in first_collections %}
-                <hr class="green-line">
-                <div class="form-row">
-                  <!-- Username -->
-                  <div class="form-group col-md-6">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-name.html" %}
-                      <p class="form-control item-display">{{ collection.username }}</p>
-                    </div>
-                  </div>
-                  <!-- Address -->
-                  <div class="form-group col-md-6">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-address.html" %}
-                      <p class="form-control item-display">{{ collection.street }}, {{ collection.town }}, {{ collection.postcode }}</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <!-- Category -->
-                  <div class="form-group col-md-6">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-category.html" %}
-                      <p class="form-control item-display">{{ collection.categoryName }}</p>
-                    </div>
-                  </div>
-                  <!-- Type of waste -->
-                  <div class="form-group col-md-6">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-waste.html" %}
-                      <p class="form-control item-display">{{ collection.typeOfWaste }}</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <!-- Condition Notes -->
-                  <div class="form-group col">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-notes.html" %}
-                      <p class="form-control item-display">{{ collection.conditionNotes }}</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-row">
-                  <!-- Charity Scheme -->
-                  <div class="form-group col">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-charity.html" %}
-                      <p class="form-control item-display">{{ collection.charityScheme }}</p>
-                    </div>
-                  </div>
-                </div>
-                <!-- Approve/deny collection -->
-                <div class="container-fluid">
-                  <div class="row">
-                    <div id="deny-collection"
-                      class="btn col-2 col-md-1 offset-8 offset-md-10 text-right" data-toggle="modal"
-                      data-target="#modal-delete-private-collection-request-{{ collection._id }}"><i
-                        class="fas fa-times-circle btn-delete" data-toggle="tooltip"
-                        data-placement="top" data-type="info"
-                        title="Delete collection"></i></div>
-                    <div id="approve-collection" class="btn col-2 col-md-1 text-right"
-                      data-toggle="modal" data-target="#modal-approve-private-collection-request-{{ collection._id }}"><i
-                        class="fas fa-check-circle btn-edit" data-toggle="tooltip"
-                        data-placement="top" data-type="info" title="Approve collection"></i>
-                    </div>
-                  </div>
-                </div>
-                {% endfor %}
-                {% else %}
-                <p><strong>There are no current Worker Bee Requests</strong></p>
-                {% endif %}
-              </div>
-            </div>
+<div class="card" id="workerbee-requests">
+  <div class="card-header green-background btn btn-link collapsed text-left"
+    id="headingWorkerBeeRequests" data-toggle="collapse"
+    data-target="#collapseWorkerBeeRequests" aria-expanded="false"
+    aria-controls="collapseWorkerBeeRequests">
+    <h5><i class="fas fa-hard-hat"></i> <strong>Worker Bee Requests</strong>
+    </h5>
+    <h6>{{first_collections|length}} current request(s)</h6>
+  </div>
+  <div id="collapseWorkerBeeRequests" class="collapse"
+    aria-labelledby="headingWorkerBeeRequests" data-parent="#accordion">
+    <div class="card-body">
+      {% if first_collections %}
+      {% for collection in first_collections %}
+      <hr class="green-line">
+      <div class="form-row">
+        <!-- Username -->
+        <div class="form-group col-md-6">
+          <div class="input-group mb-2">
+            {% include "components/tooltips/tooltip-name.html" %}
+            <p class="form-control item-display">{{ collection.username }}</p>
           </div>
+        </div>
+        <!-- Address -->
+        <div class="form-group col-md-6">
+          <div class="input-group mb-2">
+            {% include "components/tooltips/tooltip-address.html" %}
+            <p class="form-control item-display">{{ collection.street }},
+              {{ collection.town }}, {{ collection.postcode }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <!-- Category -->
+        <div class="form-group col-md-6">
+          <div class="input-group mb-2">
+            {% include "components/tooltips/tooltip-category.html" %}
+            <p class="form-control item-display">{{ collection.categoryName }}
+            </p>
+          </div>
+        </div>
+        <!-- Type of waste -->
+        <div class="form-group col-md-6">
+          <div class="input-group mb-2">
+            {% include "components/tooltips/tooltip-waste.html" %}
+            <p class="form-control item-display">{{ collection.typeOfWaste }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <!-- Condition Notes -->
+        <div class="form-group col">
+          <div class="input-group mb-2">
+            {% include "components/tooltips/tooltip-notes.html" %}
+            <p class="form-control item-display">{{ collection.conditionNotes }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <!-- Charity Scheme -->
+        <div class="form-group col">
+          <div class="input-group mb-2">
+            {% include "components/tooltips/tooltip-charity.html" %}
+            <p class="form-control item-display">{{ collection.charityScheme }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Approve/deny collection -->
+      <div class="container-fluid">
+        <div class="row">
+          <div id="deny-collection"
+            class="btn col-2 col-md-1 offset-8 offset-md-10 text-right"
+            data-toggle="modal"
+            data-target="#modal-delete-private-collection-request-{{ collection._id }}">
+            <i class="fas fa-times-circle btn-delete" data-toggle="tooltip"
+              data-placement="top" data-type="info"
+              title="Delete collection"></i></div>
+          <div id="approve-collection" class="btn col-2 col-md-1 text-right"
+            data-toggle="modal"
+            data-target="#modal-approve-private-collection-request-{{ collection._id }}">
+            <i class="fas fa-check-circle btn-edit" data-toggle="tooltip"
+              data-placement="top" data-type="info"
+              title="Approve collection"></i>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p><strong>There are no current Worker Bee Requests</strong></p>
+      {% endif %}
+    </div>
+  </div>
+</div>

@@ -1,71 +1,75 @@
 <!-- Membership requests -->
-          <div class="card" id="membership-requests">
-            <div class="card-header green-background btn btn-link collapsed text-left" id="headingMembershipRequests" data-toggle="collapse"
-                  data-target="#collapseMembershipRequests" aria-expanded="false"
-                  aria-controls="collapseMembershipRequests">
-                  <h5><i class="fas fa-user"></i> <strong>Membership Requests </strong></h5>
-                  <h6>{{unapproved_members|length}} current request(s)</h6>
-            </div>
-            <div id="collapseMembershipRequests" class="collapse" aria-labelledby="headingMembershipRequests"
-              data-parent="#accordion">
-              <div class="card-body">
-                {% if unapproved_members %}
-                {% for member in unapproved_members %}
-                <hr class="green-line">
-                <div class="form-row">
-                  <!-- Username -->
-                  <div class="form-group col-md-6">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-name.html" %}
-                      <p class="form-control item-display">{{ member.username }}</p>
-                    </div>
-                  </div>
-                  <!-- Email -->
-                  <div class="form-group col-md-6">
-                    <div class="input-group mb-2">
-                      {% include "components/tooltips/tooltip-email.html" %}
-                      <p class="form-control item-display">{{ member.email }}</p>
-                    </div>
-                  </div>
-                </div>
-                <!-- Security question -->
-                <div class="form-row">
-                    <div class="form-group col-md">
-                        <div class="input-group mb-2">
-                        {% include "components/tooltips/tooltip-security.html" %}
-                        <p class="form-control item-display">{{ member.securityQuestion }}</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Marketing -->
-                <div class="form-row">
-                    <div class="form-group col-md">
-                        <div class="input-group mb-2">
-                        {% include "components/tooltips/tooltip-marketing.html" %}
-                        <p class="form-control item-display">{{ member.marketing }}</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Approve/deny request -->
-                <div class="container-fluid">
-                  <div class="row">
-                    <div id="delete-request"
-                      class="btn col-2 col-md-1 offset-8 offset-md-10 text-right" data-toggle="modal"
-                      data-target="#modal-delete-member-request-{{ member._id }}"><i
-                        class="fas fa-times-circle btn-delete" data-toggle="tooltip"
-                        data-placement="top" data-type="info"
-                        title="Delete request"></i></div>
-                    <div id="approve-request" class="btn col-2 col-md-1 text-right"
-                      data-toggle="modal" data-target="#modal-approve-member-request-{{ member._id }}"><i
-                        class="fas fa-check-circle btn-edit" data-toggle="tooltip"
-                        data-placement="top" data-type="info" title="Approve request"></i>
-                    </div>
-                  </div>
-                </div>
-                {% endfor %}
-                {% else %}
-                <p><strong>There are no current Membership Requests</strong></p>
-                {% endif %}
-              </div>
-            </div>
+<div class="card" id="membership-requests">
+  <div class="card-header green-background btn btn-link collapsed text-left"
+    id="headingMembershipRequests" data-toggle="collapse"
+    data-target="#collapseMembershipRequests" aria-expanded="false"
+    aria-controls="collapseMembershipRequests">
+    <h5><i class="fas fa-user"></i> <strong>Membership Requests </strong></h5>
+    <h6>{{unapproved_members|length}} current request(s)</h6>
+  </div>
+  <div id="collapseMembershipRequests" class="collapse"
+    aria-labelledby="headingMembershipRequests" data-parent="#accordion">
+    <div class="card-body">
+      {% if unapproved_members %}
+      {% for member in unapproved_members %}
+      <hr class="green-line">
+      <div class="form-row">
+        <!-- Username -->
+        <div class="form-group col-md-6">
+          <div class="input-group mb-2">
+            {% include "components/tooltips/tooltip-name.html" %}
+            <p class="form-control item-display">{{ member.username }}</p>
           </div>
+        </div>
+        <!-- Email -->
+        <div class="form-group col-md-6">
+          <div class="input-group mb-2">
+            {% include "components/tooltips/tooltip-email.html" %}
+            <p class="form-control item-display">{{ member.email }}</p>
+          </div>
+        </div>
+      </div>
+      <!-- Security question -->
+      <div class="form-row">
+        <div class="form-group col-md">
+          <div class="input-group mb-2">
+            {% include "components/tooltips/tooltip-security.html" %}
+            <p class="form-control item-display">{{ member.securityQuestion }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Marketing -->
+      <div class="form-row">
+        <div class="form-group col-md">
+          <div class="input-group mb-2">
+            {% include "components/tooltips/tooltip-marketing.html" %}
+            <p class="form-control item-display">{{ member.marketing }}</p>
+          </div>
+        </div>
+      </div>
+      <!-- Approve/deny request -->
+      <div class="container-fluid">
+        <div class="row">
+          <div id="delete-request"
+            class="btn col-2 col-md-1 offset-8 offset-md-10 text-right"
+            data-toggle="modal"
+            data-target="#modal-delete-member-request-{{ member._id }}"><i
+              class="fas fa-times-circle btn-delete" data-toggle="tooltip"
+              data-placement="top" data-type="info" title="Delete request"></i>
+          </div>
+          <div id="approve-request" class="btn col-2 col-md-1 text-right"
+            data-toggle="modal"
+            data-target="#modal-approve-member-request-{{ member._id }}"><i
+              class="fas fa-check-circle btn-edit" data-toggle="tooltip"
+              data-placement="top" data-type="info" title="Approve request"></i>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+      {% else %}
+      <p><strong>There are no current Membership Requests</strong></p>
+      {% endif %}
+    </div>
+  </div>
+</div>
