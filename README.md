@@ -223,30 +223,30 @@ However, as the site grew more complex, so did my database design. I ended up wi
 
 The key changes were:
 
-* hives
+#### hives
  * Added securityQuestion field so that each new Hive could set their own question for registration
 
-* hiveMembers
+#### hiveMembers
  * Added fields to store registration responses to security and marketing questions
  * Added approvedMember field to block parts of the site from the member until their registration has been approved
 
-* itemCategory/typeOfWaste
+#### itemCategory/typeOfWaste
  * Added _lower fields to both to allow for easier matching on newly added documents - to avoid duplication
 
-* collectionLocations
+#### collectionLocations
  * Removed hiveID field as this is covered by the memberID
  * Added nickname and nickname_lower fields to allow a member to store more than one location (e.g. Home/Work) and easily distinguish between the two
 
-* itemCollections
+#### itemCollections
  * Removed isNational field as this is now covered by the new 'publicCollections' collection
 
-* firstCollection
+#### firstCollection
  * This is a new, temporary collection for storage of the first collection a member adds.\
  Its purpose is to allow the Queen Bee(s) to check all information given, before comitting it to the permanent 'itemCollections' collection.\
  By putting it in its own collection (rather than having a boolean field in 'itemCollections' to indicate a first collection), there was less searching required to find relevant
  documents for Queen Bee approval on the Hive Management page.
 
-* publicCollections
+#### publicCollections
  * This is another new collection to store details of public collections. I felt putting these details in a separate collection (rather than using the 'isNational' boolean field
  I had originally planned on), was a more straightforward approach as some of the data fields needed for this collection were slightly different.
 
@@ -256,6 +256,16 @@ is not lost.
 
 ### :crystal_ball: Future Developments
 ---
+
+As this site is intended to be used by my local community, and potentially other communities in the future, there is a lot more that I would like to do with it.\
+At this stage, I have had to make some difficult decisions about when to stop working on it so that I can actually submit it.\
+It will definitely be an ongoing project and some ideas I am already thinking about are:
+
+* Changing the 'Find a Hive' page to include a searchable map - if there are enough Hives set up to warrant this.
+* Creating the 'Be Inspired' page to showcase alternatives to single-use products, and promote sites with a similar ethos
+* Adding a forum/messaging system so that members of a Hive can communicate with each other
+* Including additional information in the hive collection modals - for example, a telephone number/email address field for relevant cases
+* Adding a search facility to find recyclable items more quickly
 
 ## :construction: Development Process
 
