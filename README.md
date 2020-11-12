@@ -98,7 +98,7 @@ rubbish from landfill.
 
 | Membership | Approval                                                   | Notes                                                                                                                                           |
 |------------|------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------|
-| SuperUser  | N/A                                                        | The SU is the site owner - and the person responsible for the Mongo DB                                                                                                                   |
+| SuperUser  | N/A                                                        | The SU is the site owner - and the person responsible for the Mongo DB                                                                          |
 | Queen Bees | First person to request a Hive location is given QB access | A current QB can request additional QBs (up to a max of 4 per Hive) to the SU                                                                   |
 |            |                                                            | QBs cannot be deleted. A request must be made to the SU to first demote them and the profile can then be kept (as WB or BB) or deleted entirely |
 |            |                                                            | If a Hive has only one QB, they must find and approve another QB before they can be removed                                                     |
@@ -289,23 +289,28 @@ It will definitely be an ongoing project and some ideas I am already thinking ab
 * [GitHub](https://github.com/)
 * [Gitpod](https://gitpod.io/)
 * [Heroku](https://heroku.com/)
+* [MongoDB](https://www.mongodb.com/)
+* [Favicon.io](https://favicon.io/)
 
 
 ### :computer: External Sources Used
 ---
 
 * Honeycomb background
- * The effect for the header/footer was adapted from code taken from [here](https://projects.verou.me/css3patterns/#honeycomb)
+    * The effect for the header/footer was adapted from code taken from [here](https://projects.verou.me/css3patterns/#honeycomb)
 
 * Hexagon grid layout
- * This layout was adapted (with some difficulty!) from the code and tutorial on [Codesmite.com](https://www.codesmite.com/article/how-to-create-pure-css-hexagonal-grids)
+    * This layout was adapted (with some difficulty!) from the code and tutorial on [Codesmite.com](https://www.codesmite.com/article/how-to-create-pure-css-hexagonal-grids)
 
 * Email
- * The JS required to send emails through the contact form was from [EmailJS.com](https://www.emailjs.com/)
+    * The JS required to send emails through the contact form was from [EmailJS.com](https://www.emailjs.com/)
 
 * Password validation
- * The password validation JS was adapted from an explanation given on [Stackoverflow.com](https://stackoverflow.com/questions/21727317/how-to-check-confirm-password-field-in-form-without-reloading-page/21727518)
+    * The password validation JS was adapted from an explanation given on [Stackoverflow.com](https://stackoverflow.com/questions/21727317/how-to-check-confirm-password-field-in-form-without-reloading-page/21727518)
 
+* Favicon
+    * Generated using [Favicon.io](https://favicon.io/)
+    
 ### :bug: Bugs
 ---
 #### Bug 1
@@ -408,12 +413,12 @@ The first stage of external testing was carried out by my family.
 
 They were given an explanation on how their data would be used within the site:
 
-[Data explanation](/testing/testing_instructions.jpg)
+<img src="testing/testing_instructions.jpg" alt="Data explanation" width="400">
 
 They each also had specific instructions relating to a user-story to ensure that all functions were fully tested.
 
-[Queen Bee instructions](/testing/testing_instructions_jane.pdf)
-[Worker Bee instructions](/testing/testing_instructions_tom.pdf)
+[Queen Bee instructions](/testing/testing_instructions_jane.pdf)\
+[Worker Bee instructions](/testing/testing_instructions_tom.pdf)\
 [Busy Bee instructions](/testing/testing_instructions_chris.pdf)
 
 Feedback from this was good with no suggestions for change from Jane or Chris.
@@ -434,7 +439,7 @@ Both Jenny and Hannah encountered an error message which was not picked up by th
 confirm that it was caused by some work I was doing whilst they were testing. The error has not happened since.
 
 Otherwise, feedback was very positive, with some suggestions for cosmetic/functional improvements:
-[Testing Feedback document](/testing/testing_feedback.pdf)
+![Testing Feedback document](/testing/testing_feedback.jpg)
 
 The majority of the feedback was acted upon (highlighted in green on the document) and improvements were made to the site. All of the suggestions were very good, but time constraints have meant that I cannot implement all of them.
 Those that are not being put in place now, have been put in the [Future Developments](#crystal_ball-future-developments) section of this README.
@@ -468,6 +473,77 @@ Full testing-frame can be found [here](/testing/manual-testing.pdf)
 ---
 
 ## :flight_departure: Deployment 
+
+Recycling Hive :recycle: was developed in [Gitpod](https://gitpod.io/), hosted on [GitHub](https://github.com/) and deployed to [Heroku](https://heroku.com/)
+
+### Cloning Recycling Hive :recycle: from GitHub
+
+You will need to recreate the database in [MongoDB](https://www.mongodb.com/)
+
+1. Clone the Recycling Hive :recycle: repository by downloading it from [here](https://github.com/jess-bennett/recycling-hive),
+or if you have Git installed you can type the following into the CLI:
+```
+git clone https://github.com/jess-bennett/recycling-hive
+```
+
+2. Within the new folder, type the following into the CLI:
+```
+python3 -m .venv venv
+```
+
+3. And initialise the environment with:
+```
+.venv\bin\activate 
+```
+
+4. Install the necessary requirements from the requirements.txt file:
+```
+pip3 -r requirements.txt
+```
+
+5. Create a file named 'env.py' with the structure below and replace the SECRET_KEY, MONGO_URI and MONGO_DBNAME with your own values
+```
+import os
+
+os.environ.setdefault("IP", "0.0.0.0")
+os.environ.setdefault("PORT", "5000")
+os.environ.setdefault("SECRET_KEY", "<your_secret_key>")
+os.environ.setdefault("MONGO_URI", "<your_mongo_uri>")
+os.environ.setdefault("MONGO_DBNAME", "<your_mongo_dbname>")
+```
+
+6. The application can now be run using:
+```
+python3 app.py
+```
+
+### Cloning Recycling Hive :recycle: to Heroku
+
+1. Create a requirements.txt file by typing the following into your CLI:
+```
+pip3 freeze > requirements.txt
+```
+
+2. Create a Procfile:
+```
+echo web: python3 app.py > Procfile
+```
+
+3. Once these files have been pushed to your repository, create a new app on the Heroku Dashboard
+
+4. Change the deployment method to Github and ensure the app is connected and automatic deploys are enabled (if you wish)
+
+5. In Settings, set the Config Vars as follows:
+
+| Key          | Value                                                      |
+|--------------|------------------------------------------------------------|
+| IP           | 0.0.0.0                                                    |
+| MONGO_DBNAME | <your_mongo_dbname>                                        |
+| MONGO_URI    | mongodb+srv://<your_username>:M0ng0DB@<your_cluster_name>.6abok.mongodb.net/<your_database_name>?retryWrites=true&w=majority |
+| PORT         | 5000                                                       |
+| SECRET_KEY   | <your_secret_key>                                          |
+
+6. Deploy the app from the Heroku dashboard and open the app
 
 ## :clapper: Credits
 

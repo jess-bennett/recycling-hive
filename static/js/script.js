@@ -36,7 +36,6 @@ $(document).ready(function() {
 
 /* REGISTER.HTML */
 
-/* https://stackoverflow.com/questions/21727317/how-to-check-confirm-password-field-in-form-without-reloading-page/21727518 */
 /* Check passwords match on Registration page */
 $("#password, #confirm-password").on("keyup", function() {
   if ($("#password").val() == $("#confirm-password").val()) {
