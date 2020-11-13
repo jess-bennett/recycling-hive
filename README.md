@@ -85,7 +85,6 @@ rubbish from landfill.
     * As a user I want to be able to easily find what items I can recycle locally, and where
     * As a user I want to be able to make suggestions about items that can be recycled nationally
 
-<em><strong>CRUD = C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete</em>
 
 ### :earth_africa: Scope Plane
 ---
@@ -113,6 +112,7 @@ rubbish from landfill.
 | itemCategory           | CR                | CR                         | CR                   |
 | recyclableItems        | CR                | CR                         | CR                   |
 
+<em><strong>CRUD = C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete</em>
 
 ### :rainbow: Surface Plane/Design Choices
 ---
