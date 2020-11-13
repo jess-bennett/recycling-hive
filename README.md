@@ -469,6 +469,8 @@ TBC
 ### :heavy_check_mark: Online Validators
 ---
 
+TBC
+
 ## :flight_departure: Deployment 
 
 Recycling Hive :recycle: was developed in [Gitpod](https://gitpod.io/), hosted on [GitHub](https://github.com/) and deployed to [Heroku](https://heroku.com/)
@@ -498,7 +500,7 @@ python3 -m .venv venv
 pip3 -r requirements.txt
 ```
 
-5. Create a file named 'env.py' with the structure below and replace the SECRET_KEY, MONGO_URI and MONGO_DBNAME with your own values
+5. Create a file named 'env.py' with the structure below and replace the SECRET_KEY, MONGO_URI, MONGO_DBNAME and DEMO_ID* with your own values
 ```
 import os
 
@@ -507,7 +509,9 @@ os.environ.setdefault("PORT", "5000")
 os.environ.setdefault("SECRET_KEY", "<your_secret_key>")
 os.environ.setdefault("MONGO_URI", "<your_mongo_uri>")
 os.environ.setdefault("MONGO_DBNAME", "<your_mongo_dbname>")
+os.environ.setdefault("DEMO_ID", "<your_demo_id>")
 ```
+<em>*The Demo_ID should be the _id of a hiveMember using fictitious details</em>
 
 6. The application can now be run using:
 ```
@@ -536,9 +540,10 @@ echo web: python3 app.py > Procfile
 |--------------|------------------------------------------------------------|
 | IP           | 0.0.0.0                                                    |
 | MONGO_DBNAME | <your_mongo_dbname>                                        |
-| MONGO_URI    | mongodb+srv://<your_username>:M0ng0DB@<your_cluster_name>.<br>6abok.mongodb.net/<your_database_name>?retryWrites=true&w=majority |
+| MONGO_URI    | mongodb+srv://<your_username>:<your_password>@<your_cluster_name>.<br>6abok.mongodb.net/<your_database_name>?retryWrites=true&w=majority |
 | PORT         | 5000                                                       |
 | SECRET_KEY   | <your_secret_key>                                          |
+| DEMO_ID      | <your_demo_id>                                          |
 
 6. Deploy the app from the Heroku dashboard and open the app
 

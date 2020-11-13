@@ -104,7 +104,7 @@ def home():
         username = session["username"]
         user_id = ObjectId(session["user_id"])
         # Check if demo login and if so, assign Demo hive name
-        if user_id == ObjectId("5fa43cf801329c2053c8067f"):
+        if user_id == ObjectId(os.environ.get("DEMO_ID")):
             hive_name = "Demo"
         else:
             hive_name = mongo.db.hives.find_one(
