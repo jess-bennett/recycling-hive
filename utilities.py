@@ -10,39 +10,6 @@ app = Flask(__name__)
 mongo = PyMongo(app)
 
 
-def combine_dictionaries(dict1, dict2):
-    '''
-    Combine public and private dictionaries into one
-    '''
-    for item in dict1:
-        if item not in dict2:
-            dict2.append(item)
-            dict2
-            dict2
-    return dict2
-
-
-def pop_variables():
-    '''
-    Remove all session variables
-    '''
-    session.pop("user")
-    session.pop("username")
-    session.pop("user_id")
-    session.pop("hive")
-    session.pop("member_type")
-    return
-
-
-def check_existing_category(field, value):
-    '''
-    Check whether category already exists
-    '''
-    mongo.db.itemCategory.find_one(
-                {field: value})
-    return
-
-
 # Wraps
 def login_required(f):
     '''
@@ -103,6 +70,40 @@ def queen_bee_required(f):
             return f(*args, **kwargs)
         else:
             flash("This page is only accessible to Queen Bees")
-            return redirect(url_for("profile", username=session["username"]))
+            return redirect(url_for("home"))
 
     return wrap
+
+
+# Functions
+def combine_dictionaries(dict1, dict2):
+    '''
+    Combine public and private dictionaries into one
+    '''
+    for item in dict1:
+        if item not in dict2:
+            dict2.append(item)
+            dict2
+            dict2
+    return dict2
+
+
+def pop_variables():
+    '''
+    Remove all session variables
+    '''
+    session.pop("user")
+    session.pop("username")
+    session.pop("user_id")
+    session.pop("hive")
+    session.pop("member_type")
+    return
+
+
+def check_existing_category(field, value):
+    '''
+    Check whether category already exists
+    '''
+    mongo.db.itemCategory.find_one(
+                {field: value})
+    return

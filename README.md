@@ -28,6 +28,8 @@ Recycling Hive is a place for community members to find out what they can recycl
 \
               [:bug: Bugs](#bug-bugs)\
 \
+              [:broom: Refactoring](#broom-refactoring)\
+\
               [:deciduous_tree: Branches](#deciduous_tree-branches)\
 \
 [:test_tube: Testing](#test_tube-testing)\
@@ -389,6 +391,12 @@ Flask route, which contained all the member IDs with collections. I was then abl
 to enable my 'if statement'.
 
 I am still not convinced that this is the most elegant solution, but it was the best I was able to come up with for this issue!
+
+### :broom: Refactoring
+---
+As my app.py file grew quite large and unwieldy, I needed to do some refactoring to ensure everything was in the right place, and to try and keep my code as DRY as possible.
+
+To do this, I created a utilities.py file and moved any helper functions there.
 
 ### :deciduous_tree: Branches
 ---

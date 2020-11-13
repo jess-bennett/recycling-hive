@@ -6,7 +6,7 @@ from flask import (
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
-from utilities.py import *
+import utilities as util
 if os.path.exists("env.py"):
     import env
 
@@ -16,7 +16,6 @@ app = Flask(__name__)
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 app.secret_key = os.environ.get("SECRET_KEY")
-DEBUG = os.environ.get("DEBUG")
 DEMO_ID = os.environ.get("DEMO_ID")
 
 mongo = PyMongo(app)
@@ -100,7 +99,7 @@ def find_a_hive():
     if session.get("user"):
         if session["user"] == "demo@demo.com":
             # Remove session variables for Demo login
-            pop_variables()
+            util.pop_variables()
             return render_template("pages/find-a-hive.html", hives=hives)
 
     return render_template("pages/find-a-hive.html", hives=hives)
@@ -159,7 +158,7 @@ def login():
     if session.get("user"):
         if session["user"] == "demo@demo.com":
             # Remove session variables for Demo login
-            pop_variables()
+            util.pop_variables()
             return render_template("pages/auth.html", page_id="login")
     if request.method == "POST":
         # check if user exists in db
@@ -217,7 +216,7 @@ def demo():
 
 
 @app.route("/hive-management/<username>")
-@queen_bee_required
+@util.queen_bee_required
 def hive_management(username):
     # Get list of members waiting for approval
     unapproved_members = list(mongo.db.hiveMembers.find(
@@ -340,7 +339,7 @@ def hive_management(username):
 
 
 @app.route("/hive-management/delete-member-request/<member_id>")
-@queen_bee_required
+@util.queen_bee_required
 def delete_member_request(member_id):
     mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
     flash("Membership request has been successfully deleted")
@@ -348,7 +347,7 @@ def delete_member_request(member_id):
 
 
 @app.route("/hive-management/approve-member-request/<member_id>")
-@queen_bee_required
+@util.queen_bee_required
 def approve_member_request(member_id):
     filter = {"_id": ObjectId(member_id)}
     approve = {"$set": {"approvedMember": True}}
@@ -359,7 +358,7 @@ def approve_member_request(member_id):
 
 @app.route("/hive-management/delete-private-collection-request\
     /<collection_id>")
-@queen_bee_required
+@util.queen_bee_required
 def delete_private_collection_request(collection_id):
     mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
     flash("Worker Bee request has been successfully deleted")
@@ -369,7 +368,7 @@ def delete_private_collection_request(collection_id):
 @app.route("/hive-management/approve-private-collection-request/\
     <collection_id>",
            methods=["GET", "POST"])
-@queen_bee_required
+@util.queen_bee_required
 def approve_private_collection_request(collection_id):
     if request.method == "POST":
         first_collection = mongo.db.firstCollection.find_one(
@@ -389,7 +388,7 @@ def approve_private_collection_request(collection_id):
                 {"nickname_lower": first_collection["nickname"].lower(
                 )})["_id"]
         # Check whether category exists and either add or get ID
-        existing_category = check_existing_category(
+        existing_category = util.check_existing_category(
             "categoryName_lower", first_collection["categoryName"].lower(
                 ))
         if existing_category:
@@ -441,13 +440,13 @@ def approve_private_collection_request(collection_id):
 
 @app.route("/hive-management/approve-public-collection-request/\
     <collection_id>", methods=["GET", "POST"])
-@queen_bee_required
+@util.queen_bee_required
 def approve_public_collection_request(collection_id):
     if request.method == "POST":
         public_collection = mongo.db.publicCollections.find_one(
             {"_id": ObjectId(collection_id)})
         # Check whether category exists and either add or get ID
-        existing_category = check_existing_category(
+        existing_category = util.check_existing_category(
             "categoryName_lower", public_collection["categoryName"].lower(
                 ))
         if existing_category:
@@ -493,7 +492,7 @@ def approve_public_collection_request(collection_id):
 
 
 @app.route("/profile/<username>")
-@login_required
+@util.login_required
 def profile(username):
     # grab the session user"s details from db
     user_id = ObjectId(session["user_id"])
@@ -619,8 +618,8 @@ def profile(username):
 
 
 @app.route("/<route>/profile/edit/<member_id>", methods=["GET", "POST"])
-@login_required
-@no_demo
+@util.login_required
+@util.no_demo
 def edit_profile(route, member_id):
     # Post method for editing user details
     if request.method == "POST":
@@ -655,8 +654,8 @@ def edit_profile(route, member_id):
 
 
 @app.route("/<route>/profile/delete/<member_id>")
-@login_required
-@no_demo
+@util.login_required
+@util.no_demo
 def delete_profile(route, member_id):
     mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
     mongo.db.collectionLocations.remove({"memberID": ObjectId(member_id)})
@@ -673,8 +672,8 @@ def delete_profile(route, member_id):
 
 
 @app.route("/add-new-location", methods=["GET", "POST"])
-@login_required
-@no_demo
+@util.login_required
+@util.no_demo
 def add_new_location():
     user_id = ObjectId(session["user_id"])
     if request.method == "POST":
@@ -702,8 +701,8 @@ def add_new_location():
 
 
 @app.route("/<route>/edit-location/<location_id>", methods=["GET", "POST"])
-@login_required
-@no_demo
+@util.login_required
+@util.no_demo
 def edit_location(route, location_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(location_id)}
@@ -725,8 +724,8 @@ def edit_location(route, location_id):
 
 
 @app.route("/<route>/delete-location/<location_id>")
-@login_required
-@no_demo
+@util.login_required
+@util.no_demo
 def delete_location(route, location_id):
     mongo.db.collectionLocations.remove({"_id": ObjectId(location_id)})
     mongo.db.itemCollections.remove({"locationID": ObjectId(location_id)})
@@ -742,8 +741,8 @@ def delete_location(route, location_id):
 
 
 @app.route("/add-first-collection", methods=["GET", "POST"])
-@login_required
-@no_demo
+@util.login_required
+@util.no_demo
 def add_first_collection():
     user_id = ObjectId(session["user_id"])
     username = session["username"]
@@ -780,7 +779,7 @@ def add_first_collection():
 
 
 @app.route("/add-new-collection")
-@login_required
+@util.login_required
 def add_new_collection():
     # Get user ID for locations
     user_id = ObjectId(session["user_id"])
@@ -819,8 +818,8 @@ def add_new_collection():
 
 
 @app.route("/add-new-collection/private", methods=["GET", "POST"])
-@login_required
-@no_demo
+@util.login_required
+@util.no_demo
 def add_private_collection():
     # Get user ID for adding collection
     user_id = ObjectId(session["user_id"])
@@ -828,7 +827,7 @@ def add_private_collection():
         # Post method for adding a new category and type of waste
         if "newItemCategory" in request.form:
             # Check whether category already exists
-            existing_category = check_existing_category(
+            existing_category = util.check_existing_category(
                 "categoryName_lower", request.form.get(
                     "newItemCategory").lower())
 
@@ -952,8 +951,8 @@ def add_private_collection():
 
 
 @app.route("/add-new-collection/public", methods=["GET", "POST"])
-@login_required
-@no_demo
+@util.login_required
+@util.no_demo
 def add_public_collection():
     user_id = ObjectId(session["user_id"])
     username = session["username"]
@@ -1042,8 +1041,8 @@ def add_public_collection():
 
 
 @app.route("/<route>/edit-collection/<collection_id>", methods=["GET", "POST"])
-@login_required
-@no_demo
+@util.login_required
+@util.no_demo
 def edit_collection(route, collection_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(collection_id)}
@@ -1069,8 +1068,8 @@ def edit_collection(route, collection_id):
 
 
 @app.route("/<route>/delete-collection/<collection_id>")
-@login_required
-@no_demo
+@util.login_required
+@util.no_demo
 def delete_collection(route, collection_id):
     mongo.db.itemCollections.remove({"_id": ObjectId(collection_id)})
     if route == "profile":
@@ -1085,8 +1084,8 @@ def delete_collection(route, collection_id):
 
 
 @app.route("/<route>/delete-public-collection-submission/<collection_id>")
-@login_required
-@no_demo
+@util.login_required
+@util.no_demo
 def delete_public_collection_submission(route, collection_id):
     mongo.db.publicCollections.remove({"_id": ObjectId(collection_id)})
     if route == "profile":
@@ -1103,7 +1102,7 @@ def delete_public_collection_submission(route, collection_id):
 
 
 @app.route("/hive")
-@approval_required
+@util.approval_required
 def get_recycling_categories():
     # Get categories in private collections
     categories_dict_private = list(mongo.db.itemCollections.aggregate([
@@ -1173,7 +1172,7 @@ def get_recycling_categories():
             {"$sort": {"categoryName": 1}}
             ]))
     # Combine lists
-    categories_dict = list(combine_dictionaries(
+    categories_dict = list(util.combine_dictionaries(
         categories_dict_private, categories_dict_public))
     categories_dict.sort(key=lambda x: x["categoryName"])
     return render_template(
@@ -1183,7 +1182,7 @@ def get_recycling_categories():
 
 
 @app.route("/hive/items/<category_id>")
-@approval_required
+@util.approval_required
 def get_recycling_items(category_id):
     if category_id == "view-all":
         # Get selected category for dropdown
@@ -1243,7 +1242,7 @@ def get_recycling_items(category_id):
                 {"$sort": {"typeOfWaste": 1}}
             ]))
         # Combine lists
-        recycling_items_dict = list(combine_dictionaries(
+        recycling_items_dict = list(util.combine_dictionaries(
             recycling_items_dict_private, recycling_items_dict_public))
         recycling_items_dict.sort(key=lambda x: x["typeOfWaste"])
     else:
@@ -1308,7 +1307,7 @@ def get_recycling_items(category_id):
                 {"$sort": {"typeOfWaste": 1}}
             ]))
         # Combine lists
-        recycling_items_dict = list(combine_dictionaries(
+        recycling_items_dict = list(util.combine_dictionaries(
             recycling_items_dict_private, recycling_items_dict_public))
         recycling_items_dict.sort(key=lambda x: x["typeOfWaste"])
     # Get list of categories for dropdown menu
@@ -1381,7 +1380,7 @@ def get_recycling_items(category_id):
             {"$sort": {"categoryName": 1}}
          ]))
     # Combine lists
-    categories_dict = list(combine_dictionaries(
+    categories_dict = list(util.combine_dictionaries(
         categories_dict_private, categories_dict_public))
     categories_dict.sort(key=lambda x: x["categoryName"])
     return render_template(
@@ -1392,7 +1391,7 @@ def get_recycling_items(category_id):
 
 
 @app.route("/hive/collections/<item_id>")
-@approval_required
+@util.approval_required
 def get_recycling_collections(item_id):
     if item_id == "view-all":
         # Get selected item for dropdown
@@ -1453,7 +1452,7 @@ def get_recycling_collections(item_id):
             {"$sort": {"typeOfWaste": 1}}
          ]))
     # Combine lists
-    recycling_items_dict = list(combine_dictionaries(
+    recycling_items_dict = list(util.combine_dictionaries(
         recycling_items_dict_private, recycling_items_dict_public))
     recycling_items_dict.sort(key=lambda x: x["typeOfWaste"])
     # Create new dictionary of recyclable items and their
@@ -1561,7 +1560,7 @@ def get_recycling_collections(item_id):
 
 
 @app.route("/hive/collector/<collector_type>")
-@approval_required
+@util.approval_required
 def get_recycling_collector(collector_type):
     if collector_type == "view-all":
         # Get selected collector type for dropdown
@@ -1776,7 +1775,7 @@ def contact():
 def logout():
     # remove user from session cookies
     flash("Log Out Successful!")
-    pop_variables()
+    util.pop_variables()
     return redirect(url_for("home"))
 
 
@@ -1794,4 +1793,5 @@ def page_not_found(e):
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
-            port=int(os.environ.get("PORT")))
+            port=int(os.environ.get("PORT")),
+            debug=os.environ.get("DEBUG"))
