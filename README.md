@@ -525,16 +525,11 @@ python3 app.py
 pip3 freeze > requirements.txt
 ```
 
-2. Create a Procfile:
-```
-echo web: python3 app.py > Procfile
-```
+2. Push to your repository, create a new app on the Heroku Dashboard
 
-3. Once these files have been pushed to your repository, create a new app on the Heroku Dashboard
+3. Change the deployment method to Github and ensure the app is connected and automatic deploys are enabled (if you wish)
 
-4. Change the deployment method to Github and ensure the app is connected and automatic deploys are enabled (if you wish)
-
-5. In Settings, set the Config Vars as follows:
+4. In Settings, set the Config Vars as follows:
 
 | Key          | Value                                                      |
 |--------------|------------------------------------------------------------|
@@ -545,7 +540,7 @@ echo web: python3 app.py > Procfile
 | SECRET_KEY   | <your_secret_key>                                          |
 | DEMO_ID      | <your_demo_id>                                          |
 
-6. Deploy the app from the Heroku dashboard and open the app
+5. Deploy the app from the Heroku dashboard and open the app
 
 ## :clapper: Credits
 
@@ -571,4 +566,4 @@ Hannah Marsh, Jenny Kirby, Jo Hands, Linda Mary, Merlin (Georgia!) Jackson and N
 
 :star: My parents, Jane & Chris - for their patience and encouragement as site-testers.
 
-:star: Never forgetting my incredibly dedicated mentor, Simen. The tips and advice on improving my code are always appreciated!
+:star: Never forgetting my incredibly dedicated mentor, [Simen](https://www.linkedin.com/in/simendaehlin/). The tips and advice on improving my code are always appreciated!
