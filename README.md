@@ -479,6 +479,8 @@ Recycling Hive :recycle: was developed in [Gitpod](https://gitpod.io/), hosted o
 
 You will need to recreate the database in [MongoDB](https://www.mongodb.com/)
 
+<strong>The following instructions are for a Windows OS only.</strong>
+
 1. Clone the Recycling Hive :recycle: repository by downloading it from [here](https://github.com/jess-bennett/recycling-hive),
 or if you have Git installed you can type the following into the CLI:
 ```
@@ -492,7 +494,7 @@ python3 -m .venv venv
 
 3. And initialise the environment with:
 ```
-.venv\bin\activate 
+.venv\Scripts\activate 
 ```
 
 4. Install the necessary requirements from the requirements.txt file:
