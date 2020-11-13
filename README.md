@@ -479,7 +479,7 @@ Recycling Hive :recycle: was developed in [Gitpod](https://gitpod.io/), hosted o
 
 You will need to recreate the database in [MongoDB](https://www.mongodb.com/)
 
-<strong>The following instructions are for a Windows OS only.</strong>
+<strong>The following instructions are for a Windows OS only. Please consult your OS for python commands.</strong>
 
 1. Clone the Recycling Hive :recycle: repository by downloading it from [here](https://github.com/jess-bennett/recycling-hive),
 or if you have Git installed you can type the following into the CLI:

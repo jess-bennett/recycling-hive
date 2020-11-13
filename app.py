@@ -16,6 +16,8 @@ app = Flask(__name__)
 app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 app.secret_key = os.environ.get("SECRET_KEY")
+DEBUG = os.environ.get("DEBUG")
+DEMO_ID = os.environ.get("DEMO_ID")
 
 mongo = PyMongo(app)
 
@@ -104,7 +106,7 @@ def home():
         username = session["username"]
         user_id = ObjectId(session["user_id"])
         # Check if demo login and if so, assign Demo hive name
-        if user_id == ObjectId(os.environ.get("DEMO_ID")):
+        if user_id == ObjectId(DEMO_ID):
             hive_name = "Demo"
         else:
             hive_name = mongo.db.hives.find_one(
@@ -223,9 +225,9 @@ def register(hive):
             {"email": session["user"]})["hive"])
         session["member_type"] = "Busy Bee"
         flash("Registration Successful!")
-        return redirect(url_for("home", username=session["username"]))
+        return redirect(url_for("home"))
 
-    return render_template("pages/register.html", page_id="register",
+    return render_template("pages/auth.html", page_id="register",
                            security_question=security_question, hive=hive)
 
 
@@ -235,7 +237,7 @@ def login():
         if session["user"] == "demo@demo.com":
             # Remove session variables for Demo login
             pop_variables()
-            return render_template("pages/login.html", page_id="login")
+            return render_template("pages/auth.html", page_id="login")
     if request.method == "POST":
         # check if user exists in db
         existing_user = mongo.db.hiveMembers.find_one(
@@ -276,7 +278,7 @@ def login():
             flash("Incorrect email and/or password")
             return redirect(url_for("login"))
 
-    return render_template("pages/login.html", page_id="login")
+    return render_template("pages/auth.html", page_id="login")
 
 
 @app.route("/demo")
@@ -1869,5 +1871,4 @@ def page_not_found(e):
 
 if __name__ == "__main__":
     app.run(host=os.environ.get("IP"),
-            port=int(os.environ.get("PORT")),
-            debug=True)
+            port=int(os.environ.get("PORT")))
