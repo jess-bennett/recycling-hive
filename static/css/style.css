@@ -296,7 +296,7 @@ small.warning-text {
 footer {
   font-size: 1.2rem;
   min-height: 3rem;
-  color: #333;
+  color: #3a5c2d;
   position: fixed;
   left: 0;
   bottom: 0;
@@ -312,7 +312,7 @@ footer a {
 }
 
 footer a:hover {
-  color: #3a5c2d;
+  color: #bdc312;
 }
 
 .footer-text {
