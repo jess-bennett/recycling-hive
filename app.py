@@ -353,7 +353,7 @@ def approve_private_collection_request(collection_id):
         existing_category = helper.check_existing_category(
             first_collection["categoryName"].lower())
         if existing_category:
-            category_id = existing_category["_id"]
+            category_id = existing_category
         else:
             new_category = {
                 "categoryName": first_collection["categoryName"],
@@ -365,7 +365,7 @@ def approve_private_collection_request(collection_id):
         existing_type_of_waste = helper.check_existing_item(
             first_collection["typeOfWaste"].lower(), category_id)
         if existing_type_of_waste:
-            item_id = existing_type_of_waste["_id"]
+            item_id = existing_type_of_waste
         else:
             new_item = {
                 "typeOfWaste": first_collection["typeOfWaste"],
@@ -406,7 +406,7 @@ def approve_public_collection_request(collection_id):
         existing_category = helper.check_existing_category(
             public_collection["categoryName"].lower())
         if existing_category:
-            category_id = existing_category["_id"]
+            category_id = existing_category
         else:
             new_category = {
                 "categoryName": public_collection["categoryName"],
@@ -418,7 +418,7 @@ def approve_public_collection_request(collection_id):
         existing_type_of_waste = helper.check_existing_item(
             public_collection["typeOfWaste"].lower(), category_id)
         if existing_type_of_waste:
-            item_id = existing_type_of_waste["_id"]
+            item_id = existing_type_of_waste
         else:
             new_item = {
                 "typeOfWaste": public_collection["typeOfWaste"],

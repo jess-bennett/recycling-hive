@@ -161,19 +161,25 @@ def check_existing_category(value):
     '''
     Check whether field/value already exists
     '''
-    mongo.db.itemCategory.find_one(
-                {"categoryName_lower": value})
-    return
+    existing_category = mongo.db.itemCategory.find_one(
+                {"categoryName_lower": value})["_id"]
+    if existing_category:
+        return existing_category
+    else:
+        return False
 
 
 def check_existing_item(value1, value2):
     '''
     Check whether item already exists
     '''
-    mongo.db.recyclableItems.find_one(
+    existing_item = mongo.db.recyclableItems.find_one(
                 {"typeOfWaste_lower": value1,
-                 "categoryID": value2})
-    return
+                 "categoryID": value2})["_id"]
+    if existing_item:
+        return existing_item
+    else:
+        return False
 
 
 def get_user_locations(user_id):
