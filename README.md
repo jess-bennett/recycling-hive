@@ -398,6 +398,11 @@ As my app.py file grew quite large and unwieldy, I needed to do some refactoring
 
 To do this, I created a utilities.py file and moved any helper functions there.
 
+For now, I have just done this for anywhere that there were large duplications of code. This has resulted in a reduction in the app.py file of 530 lines of code.
+
+In future, I would make more use of a utilities file and ensure that only logic-based/routing code is kept in the app.py file.
+
+
 ### :deciduous_tree: Branches
 ---
 
