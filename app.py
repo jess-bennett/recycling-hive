@@ -48,7 +48,7 @@ def home():
             approved_member = True
         else:
             approved_member = False
-        if mongo.db.firstCollection.find_one({"memberID": ObjectId(user_id)}):
+        if helper.awaiting_approval(user_id):
             awaiting_approval = True
         else:
             awaiting_approval = False
@@ -516,11 +516,8 @@ def profile(username):
         {"$sort": {"categoryName": 1, "typeOfWaste": 1}}
         ]))
     unapproved_collections = helper.get_unapproved_public(user_id)
-    # Create new dictionary of approved public collections from this member
-    # for public collections card
     collections_dict_public = list(mongo.db.publicCollections.aggregate(
-        [{"$match": {"approvedCollection": True,
-          "addedBy": user_id}},
+        [{"$match": {"addedBy": user_id}},
             {
              "$lookup": {
               "from": "recyclableItems",
@@ -558,8 +555,7 @@ def profile(username):
             {"$sort": {"dateAdded": -1}}
          ]))
     # Check whether user has submitted first collection for approval
-    if mongo.db.firstCollection.find_one(
-            {"memberID": ObjectId(user_id)}):
+    if helper.awaiting_approval(user_id):
         awaiting_approval = True
     else:
         awaiting_approval = False
@@ -761,8 +757,7 @@ def add_new_collection():
     council_collection = list(mongo.db.hives.find(
         {"_id": ObjectId(session["hive"])}))
     # Check whether user has submitted first collection for approval
-    if mongo.db.firstCollection.find_one(
-            {"memberID": ObjectId(user_id)}):
+    if helper.awaiting_approval(user_id):
         awaiting_approval = True
     else:
         awaiting_approval = False

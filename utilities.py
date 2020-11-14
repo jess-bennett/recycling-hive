@@ -191,3 +191,12 @@ def get_unapproved_public(user_id):
     unapproved_public_collections = list(mongo.db.publicCollections.find(
             {"memberID": user_id}).sort("businessName"))
     return unapproved_public_collections
+
+
+def awaiting_approval(user_id):
+    '''
+    Check whether user has first collection awaiting approval
+    '''
+    awaiting_approval = list(mongo.db.firstCollection.find_one(
+            {"memberID": user_id}))
+    return awaiting_approval
