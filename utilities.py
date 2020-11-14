@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from functools import wraps
 from flask import (
     Flask, flash, redirect, request, session, url_for)
@@ -200,3 +201,65 @@ def awaiting_approval(user_id):
     awaiting_approval = list(mongo.db.firstCollection.find_one(
             {"memberID": user_id}))
     return awaiting_approval
+
+
+def add_new_category():
+    '''
+    Add new category and return its ID
+    '''
+    new_category = {
+        "categoryName": request.form.get("newItemCategory"),
+        "categoryName_lower": request.form.get(
+            "newItemCategory").lower()
+    }
+    mongo.db.itemCategory.insert_one(new_category)
+    category_id = mongo.db.itemCategory.find_one(
+            {"categoryName_lower": request.form.get(
+                "newItemCategory").lower()})["_id"]
+    return category_id
+
+
+def add_new_item_(category_id):
+    '''
+    Add new item and return its ID
+    '''
+    new_type_of_waste = {
+        "typeOfWaste": request.form.get("newTypeOfWaste"),
+        "typeOfWaste_lower": request.form.get(
+            "newTypeOfWaste").lower(),
+        "categoryID": category_id
+    }
+    mongo.db.recyclableItems.insert_one(new_type_of_waste)
+    item_id = mongo.db.recyclableItems.find_one(
+            {"typeOfWaste_lower": request.form.get(
+                "newTypeOfWaste").lower()})["_id"]
+    return item_id
+
+
+def default_charity_scheme():
+    '''
+    Check charity scheme and replace with '-' if null
+    '''
+    charityScheme = request.form.get("charityScheme")
+    if charityScheme == "":
+        charityScheme = "-"
+    return charityScheme
+
+
+def new_private_collection(item_id, charityScheme, user_id):
+    '''
+    Add new collection details to db
+    '''
+    new_collection = {
+        "itemID": item_id,
+        "conditionNotes": request.form.get("conditionNotes"),
+        "charityScheme": charityScheme,
+        "memberID": user_id,
+        "locationID": mongo.db.collectionLocations.find_one(
+            {"nickname_lower": request.form.get("locationID").lower(),
+                "memberID": user_id})["_id"],
+        "dateAdded": datetime.now().strftime("%d %b %Y")
+    }
+    mongo.db.itemCollections.insert_one(new_collection)
+    flash("New collection added")
+    return
