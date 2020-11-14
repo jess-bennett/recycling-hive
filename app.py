@@ -405,6 +405,7 @@ def approve_public_collection_request(collection_id):
             {"_id": ObjectId(collection_id)})
         existing_category = helper.check_existing_category(
             public_collection["categoryName"].lower())
+        print(existing_category)
         if existing_category:
             category_id = existing_category
         else:
