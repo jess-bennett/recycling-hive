@@ -200,7 +200,10 @@ def awaiting_approval(user_id):
     '''
     awaiting_approval = list(mongo.db.firstCollection.find_one(
             {"memberID": user_id}))
-    return awaiting_approval
+    if awaiting_approval:
+        return True
+    else:
+        return False
 
 
 def add_new_category():
@@ -219,7 +222,7 @@ def add_new_category():
     return category_id
 
 
-def add_new_item_(category_id):
+def add_new_item(category_id):
     '''
     Add new item and return its ID
     '''
@@ -230,9 +233,7 @@ def add_new_item_(category_id):
         "categoryID": category_id
     }
     mongo.db.recyclableItems.insert_one(new_type_of_waste)
-    item_id = mongo.db.recyclableItems.find_one(
-            {"typeOfWaste_lower": request.form.get(
-                "newTypeOfWaste").lower()})["_id"]
+    item_id = new_type_of_waste._id
     return item_id
 
 
@@ -240,10 +241,10 @@ def default_charity_scheme():
     '''
     Check charity scheme and replace with '-' if null
     '''
-    charityScheme = request.form.get("charityScheme")
-    if charityScheme == "":
-        charityScheme = "-"
-    return charityScheme
+    charity_scheme = request.form.get("charityScheme")
+    if charity_scheme == "":
+        charity_scheme = "-"
+    return charity_scheme
 
 
 def new_private_collection(item_id, charityScheme, user_id):
@@ -262,4 +263,31 @@ def new_private_collection(item_id, charityScheme, user_id):
     }
     mongo.db.itemCollections.insert_one(new_collection)
     flash("New collection added")
+    return
+
+
+def new_public_collection(collection_type, username,
+                          user_id, category_name,
+                          type_of_waste, charity_scheme):
+    '''
+    Add new collection details to db
+    '''
+    public_collection = {
+        "hive": ObjectId(session["hive"]),
+        "collectionType": collection_type,
+        "username": username,
+        "memberID": user_id,
+        "businessName": request.form.get("businessName"),
+        "street": request.form.get("businessStreet"),
+        "town": request.form.get("businessTown"),
+        "postcode": request.form.get("businessPostcode"),
+        "categoryName": category_name,
+        "typeOfWaste": type_of_waste,
+        "conditionNotes": request.form.get("conditionNotes"),
+        "charityScheme": charity_scheme,
+        "approvedCollection": False,
+        "dateAdded": datetime.now().strftime("%d %b %Y")
+    }
+    mongo.db.publicCollections.insert_one(public_collection)
+    flash("Public collection sent for approval")
     return

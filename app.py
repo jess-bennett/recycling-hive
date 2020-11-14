@@ -48,10 +48,8 @@ def home():
             approved_member = True
         else:
             approved_member = False
-        if helper.awaiting_approval(user_id):
-            awaiting_approval = True
-        else:
-            awaiting_approval = False
+        awaiting_approval = helper.awaiting_approval(user_id)
+        print("ONE:",  awaiting_approval)
         if helper.get_unapproved_public(user_id):
             public_approval = True
         else:
@@ -721,9 +719,7 @@ def add_first_collection():
             type_of_waste = request.form.get("newTypeOfWaste")
         else:
             type_of_waste = request.form.get("typeOfWaste")
-        charityScheme = request.form.get("charityScheme")
-        if charityScheme == "":
-            charityScheme = "-"
+        charity_scheme = helper.default_charity_scheme()
         first_collection = {
             "hive": ObjectId(session["hive"]),
             "memberID": user_id,
@@ -735,7 +731,7 @@ def add_first_collection():
             "categoryName": category_name,
             "typeOfWaste": type_of_waste,
             "conditionNotes": request.form.get("conditionNotes"),
-            "charityScheme": charityScheme,
+            "charityScheme": charity_scheme,
             "dateAdded": datetime.now().strftime("%d %b %Y")
         }
         mongo.db.firstCollection.insert_one(first_collection)
@@ -800,9 +796,9 @@ def add_private_collection():
             if existing_type_of_waste:
                 flash("Type of Waste already exists for this category")
                 return redirect(url_for("add_new_collection"))
-            item_id = helper.add_new_item_(category_id)
-            charityScheme = helper.default_charity_scheme()
-            helper.new_private_collection(item_id, charityScheme, user_id)
+            item_id = helper.add_new_item(category_id)
+            charity_scheme = helper.default_charity_scheme()
+            helper.new_private_collection(item_id, charity_scheme, user_id)
 
             return redirect(url_for("get_recycling_collections",
                                     item_id=item_id))
@@ -816,12 +812,12 @@ def add_private_collection():
             if existing_type_of_waste:
                 flash("Type of Waste already exists for this category")
                 return redirect(url_for("add_new_collection"))
-            item_id = helper.add_new_item_(
+            item_id = helper.add_new_item(
                 mongo.db.itemCategory.find_one(
                     {"categoryName_lower": request.form.get(
                         "itemCategory").lower()})["_id"])
-            charityScheme = helper.default_charity_scheme()
-            helper.new_private_collection(item_id, charityScheme, user_id)
+            charity_scheme = helper.default_charity_scheme()
+            helper.new_private_collection(item_id, charity_scheme, user_id)
 
             return redirect(url_for("get_recycling_collections",
                                     item_id=item_id))
@@ -830,8 +826,8 @@ def add_private_collection():
             item_id = mongo.db.recyclableItems.find_one(
                     {"typeOfWaste_lower": request.form.get(
                         "typeOfWaste").lower()})["_id"]
-            charityScheme = helper.default_charity_scheme()
-            helper.new_private_collection(item_id, charityScheme, user_id)
+            charity_scheme = helper.default_charity_scheme()
+            helper.new_private_collection(item_id, charity_scheme, user_id)
 
             return redirect(url_for("get_recycling_collections",
                                     item_id=item_id))
@@ -852,9 +848,7 @@ def add_public_collection():
             type_of_waste = request.form.get("newTypeOfWaste")
         else:
             type_of_waste = request.form.get("typeOfWaste")
-        charityScheme = request.form.get("charityScheme")
-        if charityScheme == "":
-            charityScheme = "-"
+        charity_scheme = helper.default_charity_scheme()
         if request.form.get("localNational") == "local":
             if request.form.get("councilOther") == "council":
                 public_collection = {
@@ -868,27 +862,14 @@ def add_public_collection():
                  "categoryName": category_name,
                  "typeOfWaste": type_of_waste,
                  "conditionNotes": request.form.get("conditionNotes"),
-                 "charityScheme": charityScheme,
+                 "charityScheme": charity_scheme,
                  "approvedCollection": False,
                  "dateAdded": datetime.now().strftime("%d %b %Y")
                 }
             if request.form.get("councilOther") == "other":
-                public_collection = {
-                 "hive": ObjectId(session["hive"]),
-                 "collectionType": "local-other",
-                 "username": username,
-                 "memberID": user_id,
-                 "businessName": request.form.get("businessName"),
-                 "street": request.form.get("businessStreet"),
-                 "town": request.form.get("businessTown"),
-                 "postcode": request.form.get("businessPostcode"),
-                 "categoryName": category_name,
-                 "typeOfWaste": type_of_waste,
-                 "conditionNotes": request.form.get("conditionNotes"),
-                 "charityScheme": charityScheme,
-                 "approvedCollection": False,
-                 "dateAdded": datetime.now().strftime("%d %b %Y")
-                }
+                helper.new_public_collection("local-other", username,
+                                             user_id, category_name,
+                                             type_of_waste, charity_scheme)
         if request.form.get("localNational") == "national":
             if request.form.get("postalDropoff") == "postal":
                 public_collection = {
@@ -904,7 +885,7 @@ def add_public_collection():
                  "categoryName": category_name,
                  "typeOfWaste": type_of_waste,
                  "conditionNotes": request.form.get("conditionNotes"),
-                 "charityScheme": charityScheme,
+                 "charityScheme": charity_scheme,
                  "approvedCollection": False,
                  "dateAdded": datetime.now().strftime("%d %b %Y")
                 }
@@ -918,7 +899,7 @@ def add_public_collection():
                  "categoryName": category_name,
                  "typeOfWaste": type_of_waste,
                  "conditionNotes": request.form.get("conditionNotes"),
-                 "charityScheme": charityScheme,
+                 "charityScheme": charity_scheme,
                  "approvedCollection": False,
                  "dateAdded": datetime.now().strftime("%d %b %Y")
                 }
@@ -933,12 +914,12 @@ def add_public_collection():
 def edit_collection(route, collection_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(collection_id)}
-        charityScheme = request.form.get("editCharity")
-        if charityScheme == "":
-            charityScheme = "-"
+        charity_scheme = request.form.get("editCharity")
+        if charity_scheme == "":
+            charity_scheme = "-"
         edit_collection = {"$set":
                            {"conditionNotes": request.form.get("editNotes"),
-                            "charityScheme": charityScheme,
+                            "charityScheme": charity_scheme,
                             "locationID": ObjectId(
                                 request.form.get("editLocation"))}}
         mongo.db.itemCollections.update(filter, edit_collection)
