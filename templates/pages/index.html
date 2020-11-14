@@ -26,15 +26,15 @@
         </div>{% endif %}
         {% endif %}
         {% if approved_member == False or awaiting_approval or public_approval %}<div class="notification-bar space-below">
-          {% if approved_member == False%}<i class="col-2 offset-6 col-md-1 offset-md-9 warning-text fas fa-user-slash"
+          {% if approved_member == False%}<span class="col-2 offset-6 col-md-1 offset-md-9 warning-text"><i class="fas fa-user-slash"
             data-toggle="tooltip" data-placement="top" data-type="info"
-            title="Currently waiting for Membership to be approved"></i>{% endif %}
-          {% if awaiting_approval %}<i class="col-2 col-md-1 warning-text fas fa-hard-hat"
+            title="Currently waiting for Membership to be approved"></i></span>{% endif %}
+          {% if awaiting_approval %}<span class="col-2 col-md-1 warning-text"><i class="fas fa-hard-hat"
             data-toggle="tooltip" data-placement="top" data-type="info"
-            title="Currently waiting for Worker Bee approval"></i>{% endif %}
-          {% if public_approval %}<i class="col-2 col-md-1 warning-text fas fa-globe-europe"
+            title="Currently waiting for Worker Bee approval"></i></span>{% endif %}
+          {% if public_approval %}<span class="col-2 col-md-1 warning-text"><i class="fas fa-globe-europe"
             data-toggle="tooltip" data-placement="top" data-type="info"
-            title="{{ unapproved_collections|length }} public collection(s) to be approved"></i>{% endif %}
+            title="{{ unapproved_collections|length }} public collection(s) to be approved"></i></span>{% endif %}
         </div>{% endif %}
         {% if username == False %}
         <h3>Welcome to the Recycling Hive</h3>
