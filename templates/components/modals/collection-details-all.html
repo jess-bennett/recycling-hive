@@ -17,7 +17,7 @@
       <div class="modal-body">
         {% for location in private_collector_locations if location.memberID == collector._id  %}
         <!-- Location -->
-        <div class="green-background space-below">
+        <div class="card-header green-background space-below">
           <h5><i class="fas fa-home"></i> {{ location.street }},
             {{ location.town }}, {{ location.postcode }}</h5>
         </div>

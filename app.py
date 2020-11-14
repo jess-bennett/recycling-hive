@@ -6,7 +6,7 @@ from flask import (
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
-import utilities as util
+import utilities as helper
 if os.path.exists("env.py"):
     import env
 
@@ -17,6 +17,7 @@ app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
 app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
 app.secret_key = os.environ.get("SECRET_KEY")
 DEMO_ID = os.environ.get("DEMO_ID")
+DEMO_HIVE = os.environ.get("DEMO_HIVE")
 
 mongo = PyMongo(app)
 
@@ -24,56 +25,45 @@ mongo = PyMongo(app)
 # Routes
 @app.route("/")
 def home():
+    '''
+    Get variables for homepage notifications: whether user is Demo, QueenBee,
+    Approved etc and whether they are waiting for any collections to be
+    approved
+    '''
     try:
         username = session["username"]
         user_id = ObjectId(session["user_id"])
-        # Check if demo login and if so, assign Demo hive name
         if user_id == ObjectId(DEMO_ID):
             hive_name = "Demo"
         else:
             hive_name = mongo.db.hives.find_one(
                 {"_id": ObjectId(session["hive"])})["name"]
-        # Check whether queen bee
         if mongo.db.hiveMembers.find_one(
                 {"_id": user_id, "isQueenBee": True}):
             is_queen_bee = True
         else:
             is_queen_bee = False
-        # Check whether approved member
         if mongo.db.hiveMembers.find_one(
                 {"_id": ObjectId(session["user_id"]), "approvedMember": True}):
             approved_member = True
         else:
             approved_member = False
-        # Check whether waiting for worker bee approval
         if mongo.db.firstCollection.find_one({"memberID": ObjectId(user_id)}):
             awaiting_approval = True
         else:
             awaiting_approval = False
-        # Check whether has public collections to be approved
         if mongo.db.publicCollections.find_one(
                 {"memberID": ObjectId(user_id)}):
             public_approval = True
         else:
             public_approval = False
-        # Get list of public collections to be approved
         unapproved_collections = list(mongo.db.publicCollections.find(
             {"memberID": ObjectId(user_id),
              "approvedCollection": False}).sort("businessName"))
-        # Get lists of waiting approvals for Queen Bee notification bar
         if is_queen_bee:
-            # Get list of members waiting for approval
-            unapproved_members = list(mongo.db.hiveMembers.find(
-                    {"hive": ObjectId(session["hive"]),
-                     "approvedMember": False}))
-            # Get list of members waiting for Worker Bee status
-            first_collections = list(mongo.db.firstCollection.find(
-                {"hive": ObjectId(session["hive"])}))
-            # Get list of unapproved public collections
-            unapproved_member_collections = list(
-                mongo.db.publicCollections.find(
-                    {"hive": ObjectId(session["hive"]),
-                     "approvedCollection": False}))
+            unapproved_members = helper.get_unapproved_members()
+            first_collections = helper.get_first_collections()
+            unapproved_member_collections = helper.get_unapproved_collections()
         else:
             unapproved_members = None
             first_collections = None
@@ -95,11 +85,14 @@ def home():
 
 @app.route("/register")
 def find_a_hive():
+    '''
+    List hives that can be joined
+    '''
     hives = mongo.db.hives.find()
     if session.get("user"):
         if session["user"] == "demo@demo.com":
             # Remove session variables for Demo login
-            util.pop_variables()
+            helper.pop_variables()
             return render_template("pages/find-a-hive.html", hives=hives)
 
     return render_template("pages/find-a-hive.html", hives=hives)
@@ -107,22 +100,23 @@ def find_a_hive():
 
 @app.route("/register/<hive>", methods=["GET", "POST"])
 def register(hive):
+    '''
+    Add registration details to db if not existing user
+    '''
     security_question = mongo.db.hives.find_one(
             {"name": hive})["securityQuestion"]
     hive_id = mongo.db.hives.find_one(
             {"name": hive})["_id"]
     if request.method == "POST":
-        # check whether email already exists in db
         existing_user = mongo.db.hiveMembers.find_one(
             {"email": request.form.get("email").lower()})
-
         if existing_user:
             flash("Email already exists")
             return redirect(url_for("register", hive=hive))
-
+        user = request.form.get("email")
         register = {
             "username": request.form.get("username"),
-            "email": request.form.get("email").lower(),
+            "email": user.lower(),
             "password": generate_password_hash(request.form.get("password")),
             "securityQuestion": request.form.get("securityQuestion"),
             "marketing": request.form.get("marketing"),
@@ -134,18 +128,7 @@ def register(hive):
         }
         mongo.db.hiveMembers.insert_one(register)
 
-        # put the new user into "session" cookie
-        session["user"] = request.form.get("email")
-        # grab the session user's username for named messages
-        session["username"] = mongo.db.hiveMembers.find_one(
-            {"email": session["user"]})["username"]
-        # grab the session user's id for unique identification
-        session["user_id"] = str(mongo.db.hiveMembers.find_one(
-            {"email": session["user"]})["_id"])
-        # grab the session user's hive for relevant content
-        session["hive"] = str(mongo.db.hiveMembers.find_one(
-            {"email": session["user"]})["hive"])
-        session["member_type"] = "Busy Bee"
+        helper.set_session_variables(user, "Busy Bee")
         flash("Registration Successful!")
         return redirect(url_for("home"))
 
@@ -155,48 +138,38 @@ def register(hive):
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    '''
+    Check user details match db and assign session variables
+    '''
     if session.get("user"):
         if session["user"] == "demo@demo.com":
-            # Remove session variables for Demo login
-            util.pop_variables()
+            helper.pop_variables()
             return render_template("pages/auth.html", page_id="login")
     if request.method == "POST":
-        # check if user exists in db
         existing_user = mongo.db.hiveMembers.find_one(
             {"email": request.form.get("email").lower()})
         if existing_user:
-            # ensure hashed password matches user input
             if check_password_hash(
                     existing_user["password"], request.form.get("password")):
-                session["user"] = existing_user["email"]
-                # grab the session user's username for named messages
-                session["username"] = mongo.db.hiveMembers.find_one(
-                    {"email": session["user"]})["username"]
-                # grab the session user's id for unique identification
-                session["user_id"] = str(mongo.db.hiveMembers.find_one(
-                    {"email": session["user"]})["_id"])
-                # grab the session user's hive for relevant content
-                session["hive"] = str(mongo.db.hiveMembers.find_one(
-                    {"email": session["user"]})["hive"])
-                # Get users member type for page access
+                user = existing_user["email"]
+                user_id = str(mongo.db.hiveMembers.find_one(
+                    {"email": user})["_id"])
                 if mongo.db.hiveMembers.find_one(
-                        {"_id": ObjectId(session["user_id"]),
+                        {"_id": ObjectId(user_id),
                          "isQueenBee": True}):
-                    session["member_type"] = "Queen Bee"
+                    member_type = "Queen Bee"
                 elif mongo.db.hiveMembers.find_one(
-                        {"_id": ObjectId(session["user_id"]),
+                        {"_id": ObjectId(user_id),
                          "isWorkerBee": True}):
-                    session["member_type"] = "Worker Bee"
+                    member_type = "Worker Bee"
                 else:
-                    session["member_type"] = "Busy Bee"
+                    member_type = "Busy Bee"
+                helper.set_session_variables(user, member_type)
                 return redirect(url_for("home"))
             else:
-                # invalid password match
                 flash("Incorrect email and/or password")
                 return redirect(url_for("login"))
-
         else:
-            # email doesn"t exist
             flash("Incorrect email and/or password")
             return redirect(url_for("login"))
 
@@ -205,42 +178,33 @@ def login():
 
 @app.route("/demo")
 def demo():
-    # Set demo values for session items
+    '''
+    Set demo values for session items
+    '''
     session["user"] = "demo@demo.com"
     session["username"] = "Demo User"
-    session["user_id"] = str(mongo.db.hiveMembers.find_one(
-        {"email": session["user"]})["_id"])
-    session["hive"] = "5f9ebcd7764cbc485a65cb82"
+    session["user_id"] = str(DEMO_ID)
+    session["hive"] = str(DEMO_HIVE)
     session["member_type"] = "Busy Bee"
     return redirect(url_for("home"))
 
 
 @app.route("/hive-management/<username>")
-@util.queen_bee_required
+@helper.queen_bee_required
 def hive_management(username):
-    # Get list of members waiting for approval
-    unapproved_members = list(mongo.db.hiveMembers.find(
-            {"hive": ObjectId(session["hive"]), "approvedMember": False}))
-    # Get list of members waiting for Worker Bee status
-    first_collections = list(mongo.db.firstCollection.find(
-        {"hive": ObjectId(session["hive"])}))
-    # Get list of unapproved public collections
-    unapproved_collections = list(mongo.db.publicCollections.find(
-        {"hive": ObjectId(session["hive"]), "approvedCollection": False}))
-    # Get list of all members for member details
+    '''
+    Get values for page requests/management
+    '''
+    unapproved_members = helper.get_unapproved_members()
+    first_collections = helper.get_first_collections()
+    unapproved_collections = helper.get_unapproved_collections()
     members = list(mongo.db.hiveMembers.find(
         {"hive": ObjectId(session["hive"])}).sort("username"))
-    # Get list of members with location and/or collection details
     worker_bees = list(mongo.db.hiveMembers.find(
             {"hive": ObjectId(
                 session["hive"]), "isWorkerBee": True}).sort("username"))
-    # Check if worker bees have locations saved by
-    # creating unnested list for jinja
-    members_locations = list(mongo.db.collectionLocations.find(
-        {}, {"memberID": 1, "_id": 0}))
-    members_location_values = list(
-        [document["memberID"] for document in members_locations])
-    # Get list of locations for location details
+    members_location_values = helper.create_unnested_list(
+        "collectionLocations")
     locations_dict = list(mongo.db.collectionLocations.aggregate([
             {
              "$lookup": {
@@ -264,12 +228,8 @@ def hive_management(username):
              },
             {"$sort": {"hiveMembers": 1}}
             ]))
-    # Check if worker bees have collections saved by
-    # creating unnested list for jinja
-    members_collections = list(mongo.db.itemCollections.find(
-        {}, {"memberID": 1, "_id": 0}))
-    members_collection_values = list(
-        [document["memberID"] for document in members_collections])
+    members_collection_values = helper.create_unnested_list(
+        "itemCollections")
     # Get list of collections for collection details
     collections_dict = list(mongo.db.itemCollections.aggregate([
             {
@@ -339,7 +299,7 @@ def hive_management(username):
 
 
 @app.route("/hive-management/delete-member-request/<member_id>")
-@util.queen_bee_required
+@helper.queen_bee_required
 def delete_member_request(member_id):
     mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
     flash("Membership request has been successfully deleted")
@@ -347,7 +307,7 @@ def delete_member_request(member_id):
 
 
 @app.route("/hive-management/approve-member-request/<member_id>")
-@util.queen_bee_required
+@helper.queen_bee_required
 def approve_member_request(member_id):
     filter = {"_id": ObjectId(member_id)}
     approve = {"$set": {"approvedMember": True}}
@@ -358,7 +318,7 @@ def approve_member_request(member_id):
 
 @app.route("/hive-management/delete-private-collection-request\
     /<collection_id>")
-@util.queen_bee_required
+@helper.queen_bee_required
 def delete_private_collection_request(collection_id):
     mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
     flash("Worker Bee request has been successfully deleted")
@@ -368,7 +328,7 @@ def delete_private_collection_request(collection_id):
 @app.route("/hive-management/approve-private-collection-request/\
     <collection_id>",
            methods=["GET", "POST"])
-@util.queen_bee_required
+@helper.queen_bee_required
 def approve_private_collection_request(collection_id):
     if request.method == "POST":
         first_collection = mongo.db.firstCollection.find_one(
@@ -388,7 +348,7 @@ def approve_private_collection_request(collection_id):
                 {"nickname_lower": first_collection["nickname"].lower(
                 )})["_id"]
         # Check whether category exists and either add or get ID
-        existing_category = util.check_existing_category(
+        existing_category = helper.check_existing_category(
             "categoryName_lower", first_collection["categoryName"].lower(
                 ))
         if existing_category:
@@ -440,13 +400,13 @@ def approve_private_collection_request(collection_id):
 
 @app.route("/hive-management/approve-public-collection-request/\
     <collection_id>", methods=["GET", "POST"])
-@util.queen_bee_required
+@helper.queen_bee_required
 def approve_public_collection_request(collection_id):
     if request.method == "POST":
         public_collection = mongo.db.publicCollections.find_one(
             {"_id": ObjectId(collection_id)})
         # Check whether category exists and either add or get ID
-        existing_category = util.check_existing_category(
+        existing_category = helper.check_existing_category(
             "categoryName_lower", public_collection["categoryName"].lower(
                 ))
         if existing_category:
@@ -492,7 +452,7 @@ def approve_public_collection_request(collection_id):
 
 
 @app.route("/profile/<username>")
-@util.login_required
+@helper.login_required
 def profile(username):
     # grab the session user"s details from db
     user_id = ObjectId(session["user_id"])
@@ -618,8 +578,8 @@ def profile(username):
 
 
 @app.route("/<route>/profile/edit/<member_id>", methods=["GET", "POST"])
-@util.login_required
-@util.no_demo
+@helper.login_required
+@helper.no_demo
 def edit_profile(route, member_id):
     # Post method for editing user details
     if request.method == "POST":
@@ -654,8 +614,8 @@ def edit_profile(route, member_id):
 
 
 @app.route("/<route>/profile/delete/<member_id>")
-@util.login_required
-@util.no_demo
+@helper.login_required
+@helper.no_demo
 def delete_profile(route, member_id):
     mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
     mongo.db.collectionLocations.remove({"memberID": ObjectId(member_id)})
@@ -672,8 +632,8 @@ def delete_profile(route, member_id):
 
 
 @app.route("/add-new-location", methods=["GET", "POST"])
-@util.login_required
-@util.no_demo
+@helper.login_required
+@helper.no_demo
 def add_new_location():
     user_id = ObjectId(session["user_id"])
     if request.method == "POST":
@@ -701,8 +661,8 @@ def add_new_location():
 
 
 @app.route("/<route>/edit-location/<location_id>", methods=["GET", "POST"])
-@util.login_required
-@util.no_demo
+@helper.login_required
+@helper.no_demo
 def edit_location(route, location_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(location_id)}
@@ -724,8 +684,8 @@ def edit_location(route, location_id):
 
 
 @app.route("/<route>/delete-location/<location_id>")
-@util.login_required
-@util.no_demo
+@helper.login_required
+@helper.no_demo
 def delete_location(route, location_id):
     mongo.db.collectionLocations.remove({"_id": ObjectId(location_id)})
     mongo.db.itemCollections.remove({"locationID": ObjectId(location_id)})
@@ -741,8 +701,8 @@ def delete_location(route, location_id):
 
 
 @app.route("/add-first-collection", methods=["GET", "POST"])
-@util.login_required
-@util.no_demo
+@helper.login_required
+@helper.no_demo
 def add_first_collection():
     user_id = ObjectId(session["user_id"])
     username = session["username"]
@@ -779,7 +739,7 @@ def add_first_collection():
 
 
 @app.route("/add-new-collection")
-@util.login_required
+@helper.login_required
 def add_new_collection():
     # Get user ID for locations
     user_id = ObjectId(session["user_id"])
@@ -818,8 +778,8 @@ def add_new_collection():
 
 
 @app.route("/add-new-collection/private", methods=["GET", "POST"])
-@util.login_required
-@util.no_demo
+@helper.login_required
+@helper.no_demo
 def add_private_collection():
     # Get user ID for adding collection
     user_id = ObjectId(session["user_id"])
@@ -827,7 +787,7 @@ def add_private_collection():
         # Post method for adding a new category and type of waste
         if "newItemCategory" in request.form:
             # Check whether category already exists
-            existing_category = util.check_existing_category(
+            existing_category = helper.check_existing_category(
                 "categoryName_lower", request.form.get(
                     "newItemCategory").lower())
 
@@ -951,8 +911,8 @@ def add_private_collection():
 
 
 @app.route("/add-new-collection/public", methods=["GET", "POST"])
-@util.login_required
-@util.no_demo
+@helper.login_required
+@helper.no_demo
 def add_public_collection():
     user_id = ObjectId(session["user_id"])
     username = session["username"]
@@ -1041,8 +1001,8 @@ def add_public_collection():
 
 
 @app.route("/<route>/edit-collection/<collection_id>", methods=["GET", "POST"])
-@util.login_required
-@util.no_demo
+@helper.login_required
+@helper.no_demo
 def edit_collection(route, collection_id):
     if request.method == "POST":
         filter = {"_id": ObjectId(collection_id)}
@@ -1068,8 +1028,8 @@ def edit_collection(route, collection_id):
 
 
 @app.route("/<route>/delete-collection/<collection_id>")
-@util.login_required
-@util.no_demo
+@helper.login_required
+@helper.no_demo
 def delete_collection(route, collection_id):
     mongo.db.itemCollections.remove({"_id": ObjectId(collection_id)})
     if route == "profile":
@@ -1084,8 +1044,8 @@ def delete_collection(route, collection_id):
 
 
 @app.route("/<route>/delete-public-collection-submission/<collection_id>")
-@util.login_required
-@util.no_demo
+@helper.login_required
+@helper.no_demo
 def delete_public_collection_submission(route, collection_id):
     mongo.db.publicCollections.remove({"_id": ObjectId(collection_id)})
     if route == "profile":
@@ -1102,7 +1062,7 @@ def delete_public_collection_submission(route, collection_id):
 
 
 @app.route("/hive")
-@util.approval_required
+@helper.approval_required
 def get_recycling_categories():
     # Get categories in private collections
     categories_dict_private = list(mongo.db.itemCollections.aggregate([
@@ -1172,7 +1132,7 @@ def get_recycling_categories():
             {"$sort": {"categoryName": 1}}
             ]))
     # Combine lists
-    categories_dict = list(util.combine_dictionaries(
+    categories_dict = list(helper.combine_dictionaries(
         categories_dict_private, categories_dict_public))
     categories_dict.sort(key=lambda x: x["categoryName"])
     return render_template(
@@ -1182,7 +1142,7 @@ def get_recycling_categories():
 
 
 @app.route("/hive/items/<category_id>")
-@util.approval_required
+@helper.approval_required
 def get_recycling_items(category_id):
     if category_id == "view-all":
         # Get selected category for dropdown
@@ -1242,7 +1202,7 @@ def get_recycling_items(category_id):
                 {"$sort": {"typeOfWaste": 1}}
             ]))
         # Combine lists
-        recycling_items_dict = list(util.combine_dictionaries(
+        recycling_items_dict = list(helper.combine_dictionaries(
             recycling_items_dict_private, recycling_items_dict_public))
         recycling_items_dict.sort(key=lambda x: x["typeOfWaste"])
     else:
@@ -1307,7 +1267,7 @@ def get_recycling_items(category_id):
                 {"$sort": {"typeOfWaste": 1}}
             ]))
         # Combine lists
-        recycling_items_dict = list(util.combine_dictionaries(
+        recycling_items_dict = list(helper.combine_dictionaries(
             recycling_items_dict_private, recycling_items_dict_public))
         recycling_items_dict.sort(key=lambda x: x["typeOfWaste"])
     # Get list of categories for dropdown menu
@@ -1380,7 +1340,7 @@ def get_recycling_items(category_id):
             {"$sort": {"categoryName": 1}}
          ]))
     # Combine lists
-    categories_dict = list(util.combine_dictionaries(
+    categories_dict = list(helper.combine_dictionaries(
         categories_dict_private, categories_dict_public))
     categories_dict.sort(key=lambda x: x["categoryName"])
     return render_template(
@@ -1391,7 +1351,7 @@ def get_recycling_items(category_id):
 
 
 @app.route("/hive/collections/<item_id>")
-@util.approval_required
+@helper.approval_required
 def get_recycling_collections(item_id):
     if item_id == "view-all":
         # Get selected item for dropdown
@@ -1452,7 +1412,7 @@ def get_recycling_collections(item_id):
             {"$sort": {"typeOfWaste": 1}}
          ]))
     # Combine lists
-    recycling_items_dict = list(util.combine_dictionaries(
+    recycling_items_dict = list(helper.combine_dictionaries(
         recycling_items_dict_private, recycling_items_dict_public))
     recycling_items_dict.sort(key=lambda x: x["typeOfWaste"])
     # Create new dictionary of recyclable items and their
@@ -1560,7 +1520,7 @@ def get_recycling_collections(item_id):
 
 
 @app.route("/hive/collector/<collector_type>")
-@util.approval_required
+@helper.approval_required
 def get_recycling_collector(collector_type):
     if collector_type == "view-all":
         # Get selected collector type for dropdown
@@ -1775,7 +1735,7 @@ def contact():
 def logout():
     # remove user from session cookies
     flash("Log Out Successful!")
-    util.pop_variables()
+    helper.pop_variables()
     return redirect(url_for("home"))
 
 

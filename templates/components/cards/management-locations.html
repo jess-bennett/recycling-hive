@@ -14,9 +14,11 @@
       {% if locations_dict %}
       {% for member in worker_bees %}
       {% if member._id in members_location_values %}
-      <h6><strong>{{ member.username }}'s Locations</strong></h6>
-      {% for location in locations_dict if location.hiveMembersID == member._id %}
+        <div class="card-header green-background">
+          <h6><strong>{{ member.username }}'s Locations</strong></h6>
+        </div>
       <hr>
+      {% for location in locations_dict if location.hiveMembersID == member._id %}
       {% include "components/details/location.html" %}
       <!-- Amend location -->
       <div class="container-fluid">
@@ -35,8 +37,8 @@
           </div>
         </div>
       </div>
-      {% endfor %}
       <hr class="green-line">
+      {% endfor %}
       {% endif %}
       {% endfor %}
       {% else %}

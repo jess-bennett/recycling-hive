@@ -1,11 +1,17 @@
+import os
 from functools import wraps
 from flask import (
-    Flask, flash, redirect, session, url_for)
+    Flask, flash, redirect, request, session, url_for)
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
-
+if os.path.exists("env.py"):
+    import env
 
 app = Flask(__name__)
+
+app.config["MONGO_DBNAME"] = os.environ.get("MONGO_DBNAME")
+app.config["MONGO_URI"] = os.environ.get("MONGO_URI")
+app.secret_key = os.environ.get("SECRET_KEY")
 
 mongo = PyMongo(app)
 
@@ -76,6 +82,56 @@ def queen_bee_required(f):
 
 
 # Functions
+def set_session_variables(user, member_type):
+    '''
+    Set session variables
+    '''
+    session["user"] = user
+    session["username"] = mongo.db.hiveMembers.find_one(
+        {"email": session["user"]})["username"]
+    session["user_id"] = str(mongo.db.hiveMembers.find_one(
+        {"email": session["user"]})["_id"])
+    session["hive"] = str(mongo.db.hiveMembers.find_one(
+        {"email": session["user"]})["hive"])
+    session["member_type"] = member_type
+    return
+
+
+def get_unapproved_members():
+    '''
+    List members waiting for membership approval
+    '''
+    unapproved_members = list(mongo.db.hiveMembers.find(
+            {"hive": ObjectId(session["hive"]), "approvedMember": False}))
+    return unapproved_members
+
+
+def get_first_collections():
+    '''
+    List all first collections waiting for approval
+    '''
+    first_collections = list(mongo.db.firstCollection.find(
+        {"hive": ObjectId(session["hive"])}))
+    return first_collections
+
+
+def get_unapproved_collections():
+    '''
+    List all public collections waiting for approval
+    '''
+    unapproved_collections = list(mongo.db.publicCollections.find(
+        {"hive": ObjectId(session["hive"]), "approvedCollection": False}))
+    return unapproved_collections
+
+
+def create_unnested_list(collection):
+    original_list = list(mongo.db[collection].find(
+        {}, {"memberID": 1, "_id": 0}))
+    unnested_list = list(
+        [document["memberID"] for document in original_list])
+    return unnested_list
+
+
 def combine_dictionaries(dict1, dict2):
     '''
     Combine public and private dictionaries into one
