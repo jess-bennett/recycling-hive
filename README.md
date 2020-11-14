@@ -28,6 +28,8 @@ Recycling Hive is a place for community members to find out what they can recycl
 \
               [:bug: Bugs](#bug-bugs)\
 \
+              [:broom: Refactoring](#broom-refactoring)\
+\
               [:deciduous_tree: Branches](#deciduous_tree-branches)\
 \
 [:test_tube: Testing](#test_tube-testing)\
@@ -70,22 +72,21 @@ rubbish from landfill.
 ### :books: User Stories
 ---
 * :woman: **Site Owner**
-    * As a user I want a site that can be easily replicated for different Hives across the UK
-    * As a user I want minimal ongoing maintenance work - the majority should be undertaken by the Queen Bees (admin) of each Hive
+    * <strong>As a user</strong> I want a site that can be easily replicated for different Hives across the UK
+    * <strong>As a user</strong> I want minimal ongoing maintenance work - the majority should be undertaken by the Queen Bees (admin) of each Hive
 
 * :honeybee: **Queen Bee**
-    * As a user I want to be able to maintain the membership database, with full CRUD accessibility
-    * As a user I want to be notified when one of my Worker Bees adds or updates a recycling locations
-    * As a user I want to have full CRUD accessibility over all recycling locations within my Hive
+    * <strong>As a user</strong> I want to be able to maintain the membership database, with full CRUD accessibility
+    * <strong>As a user</strong> I want to be notified when one of my Worker Bees adds or updates a recycling locations
+    * <strong>As a user</strong> I want to have full CRUD accessibility over all recycling locations within my Hive
 
 * :honeybee: **Worker Bee**
-    * As a user I want to have full CRUD accessibility over the recycling locations that I add to the Hive
+    * <strong>As a user</strong> I want to have full CRUD accessibility over the recycling locations that I add to the Hive
 
 * :honeybee: **Busy Bee**
-    * As a user I want to be able to easily find what items I can recycle locally, and where
-    * As a user I want to be able to make suggestions about items that can be recycled nationally
+    * <strong>As a user</strong> I want to be able to easily find what items I can recycle locally, and where
+    * <strong>As a user</strong> I want to be able to make suggestions about items that can be recycled nationally
 
-<em><strong>CRUD = C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete</em>
 
 ### :earth_africa: Scope Plane
 ---
@@ -113,6 +114,7 @@ rubbish from landfill.
 | itemCategory           | CR                | CR                         | CR                   |
 | recyclableItems        | CR                | CR                         | CR                   |
 
+<em><strong>CRUD = C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, <strong>D</strong>elete</em>
 
 ### :rainbow: Surface Plane/Design Choices
 ---
@@ -135,7 +137,7 @@ The highlighted row is the main colour used throughout, with buttons and flash m
 ---
 The site was designed with a mobile-first approach. 
 
-[Wireframe document can be seen here](/wireframes/data-centric-wireframe.pdf)
+[Wireframe document can be seen here](/wireframes/wireframe.pdf)
 
 
 :bulb: **Deviation from wireframe**
@@ -390,6 +392,20 @@ to enable my 'if statement'.
 
 I am still not convinced that this is the most elegant solution, but it was the best I was able to come up with for this issue!
 
+### :broom: Refactoring
+---
+As my app.py file grew quite large and unwieldy, I needed to do some refactoring to ensure everything was in the right place, and to try and keep my code as DRY as possible.
+
+To do this, I created a utilities.py file and moved any helper functions there.
+
+For now, I have just done this for anywhere that there were large duplications of code. This has resulted in a reduction in the app.py file of 530 lines of code.
+
+In future, I would make more use of a utilities file and ensure that only logic-based/routing code is kept in the app.py file.
+
+A further improvement would be to reduce some of the repeated code in my various components. For example, tooltips and modals. However, I have decided against refactoring this as I 
+am reluctant to undo too much of the work I have already done. This is something I will take forward into my next project.
+
+
 ### :deciduous_tree: Branches
 ---
 
@@ -469,6 +485,8 @@ TBC
 ### :heavy_check_mark: Online Validators
 ---
 
+TBC
+
 ## :flight_departure: Deployment 
 
 Recycling Hive :recycle: was developed in [Gitpod](https://gitpod.io/), hosted on [GitHub](https://github.com/) and deployed to [Heroku](https://heroku.com/)
@@ -476,6 +494,8 @@ Recycling Hive :recycle: was developed in [Gitpod](https://gitpod.io/), hosted o
 ### Cloning Recycling Hive :recycle: from GitHub
 
 You will need to recreate the database in [MongoDB](https://www.mongodb.com/)
+
+<strong>The following instructions are for a Windows OS only. Please consult your OS for python commands.</strong>
 
 1. Clone the Recycling Hive :recycle: repository by downloading it from [here](https://github.com/jess-bennett/recycling-hive),
 or if you have Git installed you can type the following into the CLI:
@@ -490,7 +510,7 @@ python3 -m .venv venv
 
 3. And initialise the environment with:
 ```
-.venv\bin\activate 
+.venv\Scripts\activate 
 ```
 
 4. Install the necessary requirements from the requirements.txt file:
@@ -498,7 +518,7 @@ python3 -m .venv venv
 pip3 -r requirements.txt
 ```
 
-5. Create a file named 'env.py' with the structure below and replace the SECRET_KEY, MONGO_URI and MONGO_DBNAME with your own values
+5. Create a file named 'env.py' with the structure below and replace the SECRET_KEY, MONGO_URI, MONGO_DBNAME and DEMO_ID* with your own values
 ```
 import os
 
@@ -507,40 +527,38 @@ os.environ.setdefault("PORT", "5000")
 os.environ.setdefault("SECRET_KEY", "<your_secret_key>")
 os.environ.setdefault("MONGO_URI", "<your_mongo_uri>")
 os.environ.setdefault("MONGO_DBNAME", "<your_mongo_dbname>")
+os.environ.setdefault("DEMO_ID", "<your_demo_id>")
 ```
+<em>*The Demo_ID should be the _id of a hiveMember using fictitious details</em>
 
 6. The application can now be run using:
 ```
 python3 app.py
 ```
 
-### Cloning Recycling Hive :recycle: to Heroku
+### Deploying Recycling Hive :recycle: to Heroku
 
 1. Create a requirements.txt file by typing the following into your CLI:
 ```
 pip3 freeze > requirements.txt
 ```
 
-2. Create a Procfile:
-```
-echo web: python3 app.py > Procfile
-```
+2. Push to your repository, create a new app on the Heroku Dashboard
 
-3. Once these files have been pushed to your repository, create a new app on the Heroku Dashboard
+3. Change the deployment method to Github and ensure the app is connected and automatic deploys are enabled (if you wish)
 
-4. Change the deployment method to Github and ensure the app is connected and automatic deploys are enabled (if you wish)
-
-5. In Settings, set the Config Vars as follows:
+4. In Settings, set the Config Vars as follows:
 
 | Key          | Value                                                      |
 |--------------|------------------------------------------------------------|
 | IP           | 0.0.0.0                                                    |
 | MONGO_DBNAME | <your_mongo_dbname>                                        |
-| MONGO_URI    | mongodb+srv://<your_username>:M0ng0DB@<your_cluster_name>.<br>6abok.mongodb.net/<your_database_name>?retryWrites=true&w=majority |
+| MONGO_URI    | mongodb+srv://<your_username>:<your_password>@<your_cluster_name>.<br>6abok.mongodb.net/<your_database_name>?retryWrites=true&w=majority |
 | PORT         | 5000                                                       |
 | SECRET_KEY   | <your_secret_key>                                          |
+| DEMO_ID      | <your_demo_id>                                          |
 
-6. Deploy the app from the Heroku dashboard and open the app
+5. Deploy the app from the Heroku dashboard and open the app
 
 ## :clapper: Credits
 
@@ -566,4 +584,4 @@ Hannah Marsh, Jenny Kirby, Jo Hands, Linda Mary, Merlin (Georgia!) Jackson and N
 
 :star: My parents, Jane & Chris - for their patience and encouragement as site-testers.
 
-:star: Never forgetting my incredibly dedicated mentor, Simen. The tips and advice on improving my code are always appreciated!
+:star: Never forgetting my incredibly dedicated mentor, [Simen](https://www.linkedin.com/in/simendaehlin/). The tips and advice on improving my code are always appreciated!

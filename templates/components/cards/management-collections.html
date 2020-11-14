@@ -14,9 +14,11 @@
       {% if collections_dict %}
       {% for member in worker_bees %}
       {% if member._id in members_collection_values %}
-      <h6><strong>{{ member.username }}'s Collections</strong></h6>
+        <div class="card-header green-background">
+          <h6><strong>{{ member.username }}'s Collections</strong></h6>
+        </div>
+      <hr>
       {% for collection in collections_dict if collection.hiveMembersID == member._id %}
-      <hr class="green-line">
       {% include "components/details/collection.html" %}
       <!-- Amend collection -->
       <div class="container-fluid">
@@ -35,6 +37,7 @@
           </div>
         </div>
       </div>
+      <hr class="green-line">
       {% endfor %}
       {% endif %}
       {% endfor %}
