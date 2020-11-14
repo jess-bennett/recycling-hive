@@ -72,20 +72,20 @@ rubbish from landfill.
 ### :books: User Stories
 ---
 * :woman: **Site Owner**
-    * As a user I want a site that can be easily replicated for different Hives across the UK
-    * As a user I want minimal ongoing maintenance work - the majority should be undertaken by the Queen Bees (admin) of each Hive
+    * <strong>As a user</strong> I want a site that can be easily replicated for different Hives across the UK
+    * <strong>As a user</strong> I want minimal ongoing maintenance work - the majority should be undertaken by the Queen Bees (admin) of each Hive
 
 * :honeybee: **Queen Bee**
-    * As a user I want to be able to maintain the membership database, with full CRUD accessibility
-    * As a user I want to be notified when one of my Worker Bees adds or updates a recycling locations
-    * As a user I want to have full CRUD accessibility over all recycling locations within my Hive
+    * <strong>As a user</strong> I want to be able to maintain the membership database, with full CRUD accessibility
+    * <strong>As a user</strong> I want to be notified when one of my Worker Bees adds or updates a recycling locations
+    * <strong>As a user</strong> I want to have full CRUD accessibility over all recycling locations within my Hive
 
 * :honeybee: **Worker Bee**
-    * As a user I want to have full CRUD accessibility over the recycling locations that I add to the Hive
+    * <strong>As a user</strong> I want to have full CRUD accessibility over the recycling locations that I add to the Hive
 
 * :honeybee: **Busy Bee**
-    * As a user I want to be able to easily find what items I can recycle locally, and where
-    * As a user I want to be able to make suggestions about items that can be recycled nationally
+    * <strong>As a user</strong> I want to be able to easily find what items I can recycle locally, and where
+    * <strong>As a user</strong> I want to be able to make suggestions about items that can be recycled nationally
 
 
 ### :earth_africa: Scope Plane
@@ -137,7 +137,7 @@ The highlighted row is the main colour used throughout, with buttons and flash m
 ---
 The site was designed with a mobile-first approach. 
 
-[Wireframe document can be seen here](/wireframes/data-centric-wireframe.pdf)
+[Wireframe document can be seen here](/wireframes/wireframe.pdf)
 
 
 :bulb: **Deviation from wireframe**
@@ -401,6 +401,9 @@ To do this, I created a utilities.py file and moved any helper functions there.
 For now, I have just done this for anywhere that there were large duplications of code. This has resulted in a reduction in the app.py file of 530 lines of code.
 
 In future, I would make more use of a utilities file and ensure that only logic-based/routing code is kept in the app.py file.
+
+A further improvement would be to reduce some of the repeated code in my various components. For example, tooltips and modals. However, I have decided against refactoring this as I 
+am reluctant to undo too much of the work I have already done. This is something I will take forward into my next project.
 
 
 ### :deciduous_tree: Branches
