@@ -156,10 +156,38 @@ def pop_variables():
     return
 
 
-def check_existing_category(field, value):
+def check_existing_category(value):
     '''
-    Check whether category already exists
+    Check whether field/value already exists
     '''
     mongo.db.itemCategory.find_one(
-                {field: value})
+                {"categoryName_lower": value})
     return
+
+
+def check_existing_item(value1, value2):
+    '''
+    Check whether item already exists
+    '''
+    mongo.db.recyclableItems.find_one(
+                {"typeOfWaste_lower": value1,
+                 "categoryID": value2})
+    return
+
+
+def get_user_locations(user_id):
+    '''
+    Get list of users locations
+    '''
+    locations = list(mongo.db.collectionLocations.find(
+        {"memberID": user_id}).sort("nickname"))
+    return locations
+
+
+def get_unapproved_public(user_id):
+    '''
+    Get list of unapproved public collections
+    '''
+    unapproved_public_collections = list(mongo.db.publicCollections.find(
+            {"memberID": user_id}).sort("businessName"))
+    return unapproved_public_collections

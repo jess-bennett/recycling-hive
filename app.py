@@ -52,14 +52,11 @@ def home():
             awaiting_approval = True
         else:
             awaiting_approval = False
-        if mongo.db.publicCollections.find_one(
-                {"memberID": ObjectId(user_id)}):
+        if helper.get_unapproved_public(user_id):
             public_approval = True
         else:
             public_approval = False
-        unapproved_collections = list(mongo.db.publicCollections.find(
-            {"memberID": ObjectId(user_id),
-             "approvedCollection": False}).sort("businessName"))
+        unapproved_collections = helper.get_unapproved_public(user_id)
         if is_queen_bee:
             unapproved_members = helper.get_unapproved_members()
             first_collections = helper.get_first_collections()
@@ -230,7 +227,6 @@ def hive_management(username):
             ]))
     members_collection_values = helper.create_unnested_list(
         "itemCollections")
-    # Get list of collections for collection details
     collections_dict = list(mongo.db.itemCollections.aggregate([
             {
              "$lookup": {
@@ -301,6 +297,9 @@ def hive_management(username):
 @app.route("/hive-management/delete-member-request/<member_id>")
 @helper.queen_bee_required
 def delete_member_request(member_id):
+    '''
+    Delete new member from database
+    '''
     mongo.db.hiveMembers.remove({"_id": ObjectId(member_id)})
     flash("Membership request has been successfully deleted")
     return redirect(url_for("hive_management", username=session["username"]))
@@ -309,6 +308,9 @@ def delete_member_request(member_id):
 @app.route("/hive-management/approve-member-request/<member_id>")
 @helper.queen_bee_required
 def approve_member_request(member_id):
+    '''
+    Approve new member in database
+    '''
     filter = {"_id": ObjectId(member_id)}
     approve = {"$set": {"approvedMember": True}}
     mongo.db.hiveMembers.update(filter, approve)
@@ -320,6 +322,9 @@ def approve_member_request(member_id):
     /<collection_id>")
 @helper.queen_bee_required
 def delete_private_collection_request(collection_id):
+    '''
+    Remove first collection from database
+    '''
     mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
     flash("Worker Bee request has been successfully deleted")
     return redirect(url_for("hive_management", username=session["username"]))
@@ -330,11 +335,13 @@ def delete_private_collection_request(collection_id):
            methods=["GET", "POST"])
 @helper.queen_bee_required
 def approve_private_collection_request(collection_id):
+    '''
+    Approve collection and add details to the db
+    '''
     if request.method == "POST":
         first_collection = mongo.db.firstCollection.find_one(
             {"_id": ObjectId(collection_id)})
         member_id = first_collection["memberID"]
-        # Add location
         new_location = {
             "nickname": first_collection["nickname"],
             "nickname_lower": first_collection["nickname"].lower(),
@@ -347,10 +354,8 @@ def approve_private_collection_request(collection_id):
         location_id = mongo.db.collectionLocations.find_one(
                 {"nickname_lower": first_collection["nickname"].lower(
                 )})["_id"]
-        # Check whether category exists and either add or get ID
         existing_category = helper.check_existing_category(
-            "categoryName_lower", first_collection["categoryName"].lower(
-                ))
+            first_collection["categoryName"].lower())
         if existing_category:
             category_id = existing_category["_id"]
         else:
@@ -388,7 +393,6 @@ def approve_private_collection_request(collection_id):
         }
         mongo.db.itemCollections.insert_one(new_collection)
         mongo.db.firstCollection.remove({"_id": ObjectId(collection_id)})
-        # Give user Worker Bee status
         filter = {"_id": ObjectId(member_id)}
         is_worker_bee = {"$set": {"isWorkerBee": True}}
         mongo.db.hiveMembers.update(filter, is_worker_bee)
@@ -402,13 +406,14 @@ def approve_private_collection_request(collection_id):
     <collection_id>", methods=["GET", "POST"])
 @helper.queen_bee_required
 def approve_public_collection_request(collection_id):
+    '''
+    Approve public collection and add details to the db
+    '''
     if request.method == "POST":
         public_collection = mongo.db.publicCollections.find_one(
             {"_id": ObjectId(collection_id)})
-        # Check whether category exists and either add or get ID
         existing_category = helper.check_existing_category(
-            "categoryName_lower", public_collection["categoryName"].lower(
-                ))
+            public_collection["categoryName"].lower())
         if existing_category:
             category_id = existing_category["_id"]
         else:
@@ -420,10 +425,8 @@ def approve_public_collection_request(collection_id):
             category_id = mongo.db.itemCategory.find_one(
                 {"categoryName_lower": public_collection["categoryName"].lower(
                 )})["_id"]
-        # Check whether type of waste exists and either add or get ID
-        existing_type_of_waste = mongo.db.recyclableItems.find_one(
-                {"typeOfWaste_lower": public_collection["typeOfWaste"].lower(),
-                    "categoryID": category_id})
+        existing_type_of_waste = helper.check_existing_item(
+            public_collection["typeOfWaste"].lower(), category_id)
         if existing_type_of_waste:
             item_id = existing_type_of_waste["_id"]
         else:
@@ -436,7 +439,6 @@ def approve_public_collection_request(collection_id):
             item_id = mongo.db.recyclableItems.find_one(
                 {"typeOfWaste_lower": public_collection["typeOfWaste"].lower(
                 )})["_id"]
-        # Update collection
         filter = {"_id": ObjectId(collection_id)}
         collection_updates = {"$set": {"itemID": item_id,
                               "approvedCollection": True},
@@ -454,13 +456,12 @@ def approve_public_collection_request(collection_id):
 @app.route("/profile/<username>")
 @helper.login_required
 def profile(username):
-    # grab the session user"s details from db
+    '''
+    Get details needed for populating profile page
+    '''
     user_id = ObjectId(session["user_id"])
     email = session["user"]
-    # get user"s location details from db for location card
-    locations = list(mongo.db.collectionLocations.find(
-        {"memberID": user_id}).sort("nickname"))
-    # Create new dictionary of collections for collection card
+    locations = helper.get_user_locations(user_id)
     collections_dict = list(mongo.db.itemCollections.aggregate([
         {"$match": {"memberID": user_id}},
         {
@@ -514,10 +515,7 @@ def profile(username):
          },
         {"$sort": {"categoryName": 1, "typeOfWaste": 1}}
         ]))
-    # Get list of unapproved public collections for public collection card
-    unapproved_collections = list(mongo.db.publicCollections.find(
-        {"memberID": user_id,
-         "approvedCollection": False}).sort("businessName"))
+    unapproved_collections = helper.get_unapproved_public(user_id)
     # Create new dictionary of approved public collections from this member
     # for public collections card
     collections_dict_public = list(mongo.db.publicCollections.aggregate(
@@ -759,8 +757,7 @@ def add_new_collection():
         {"$sort": {"typeOfWaste": 1}}
         ]))
     # get user"s location details from db for location card
-    locations = list(mongo.db.collectionLocations.find(
-        {"memberID": user_id}).sort("nickname"))
+    locations = helper.get_user_locations(user_id)
     council_collection = list(mongo.db.hives.find(
         {"_id": ObjectId(session["hive"])}))
     # Check whether user has submitted first collection for approval
@@ -788,8 +785,7 @@ def add_private_collection():
         if "newItemCategory" in request.form:
             # Check whether category already exists
             existing_category = helper.check_existing_category(
-                "categoryName_lower", request.form.get(
-                    "newItemCategory").lower())
+                request.form.get("newItemCategory").lower())
 
             if existing_category:
                 flash("Category already exists")
