@@ -40,7 +40,7 @@ Recycling Hive is a place for community members to find out what they can recycl
 \
               [:memo: Manual Tests](#memo-manual-tests)\
 \
-              [:heavy_check_mark: W3C Tests](#heavy_check_mark-w3c-tests)\
+              [:heavy_check_mark: Online Validators](#heavy_check_mark-online-validators)\
 \
               [:rotating_light: Lighthouse Tests](#rotating_light-lighthouse-tests)\
 \
