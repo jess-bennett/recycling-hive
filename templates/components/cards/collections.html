@@ -1,7 +1,7 @@
 <!-- Collections card -->
 <div class="card">
   <div class="card-header green-background btn btn-link collapsed text-left"
-    id="headingCollections" data-toggle="collapse"
+    role="dialog" id="headingCollections" data-toggle="collapse"
     data-target="#collapseCollections" aria-expanded="false"
     aria-controls="collapseCollections">
     <h5 class="mb-0">
@@ -19,13 +19,12 @@
       <!-- Amend collection -->
       <div class="container-fluid">
         <div class="row">
-          <div id="delete-collection"
-            class="btn col-2 col-md-1 offset-8 offset-md-10 text-right"
+          <div class="btn col-2 col-md-1 offset-8 offset-md-10 text-right"
             data-toggle="modal"
             data-target="#modal-delete-collection-{{ collection._id }}"><i
               class="fas fa-trash-alt btn-delete" data-toggle="tooltip"
               data-placement="top" data-type="info" title="Delete"></i></div>
-          <div id="amend-collection" class="btn col-2 col-md-1 text-right"
+          <div class="btn col-2 col-md-1 text-right"
             data-toggle="modal"
             data-target="#modal-edit-collection-{{ collection._id }}">
             <i class="fas fa-edit btn-edit" data-toggle="tooltip"

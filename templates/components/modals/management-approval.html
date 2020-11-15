@@ -27,8 +27,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary"
               data-dismiss="modal">Cancel</button>
-            <button id="submit-delete-member-request"
-              class="btn btn-outline-primary" type="submit"
+            <button class="btn btn-outline-primary" type="submit"
               name="submit-delete-member-request">Delete Member
               Request!</button>
           </div>
@@ -84,12 +83,12 @@
 {% for collection in first_collections %}
 <div class="modal fade"
   id="modal-delete-private-collection-request-{{ collection._id }}"
-  tabindex="-1" role="dialog" aria-labelledby="modal-delete-collection-title"
+  tabindex="-1" role="dialog" aria-labelledby="modal-delete-collection-{{ collection._id }}-title"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-delete-collection-title">Delete
+        <h4 class="modal-title w-100" id="modal-delete-collection-{{ collection._id }}-title">Delete
           Worker Bee Request for {{ collection.username }}</h4>
 
         <button type="button" class="close" data-dismiss="modal"
@@ -111,8 +110,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary"
               data-dismiss="modal">Cancel</button>
-            <button id="submit-delete-collection"
-              class="btn btn-outline-primary" type="submit"
+            <button class="btn btn-outline-primary" type="submit"
               name="submit-delete-collection">Delete Worker Bee
               Request!</button>
           </div>

@@ -1,7 +1,8 @@
 {% extends "layout/base.html" %}
 {% block content %}
+
 <!-- JS for sending email -->
-<script type="text/javascript"
+<script
   src="https://cdn.jsdelivr.net/npm/emailjs-com@2/dist/email.min.js">
 </script>
 <div id="contact-flash" class="flashes">
@@ -76,4 +77,5 @@
 </div>
 <!-- JS for sending email -->
 <script src="{{ url_for('static', filename='js/email.js') }}"></script>
+
 {% endblock %}
