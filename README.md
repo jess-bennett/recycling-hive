@@ -79,7 +79,7 @@ rubbish from landfill.
 
 * :honeybee: **Queen Bee**
     * <strong>As a user</strong> I want to be able to maintain the membership database, with full CRUD accessibility
-    * <strong>As a user</strong> I want to be notified when one of my Worker Bees adds or updates a recycling locations
+    * <strong>As a user</strong> I want to be notified when one of my Worker Bees adds or updates a recycling location
     * <strong>As a user</strong> I want to have full CRUD accessibility over all recycling locations within my Hive
 
 * :honeybee: **Worker Bee**
@@ -131,7 +131,7 @@ I decided to go for a 'handwritten' style of font for the entirety of the site. 
 
 I chose fairly typical colours for a site revolving around recycling and the environment, based on a recycling image that I particularly liked from [here](https://blog.ferrovial.com/en/2016/11/recycling-began-when-greeks-discovered-landfills/)
 
-The highlighted row is the main colour used throughout, with buttons and flash messages using varying shades of the same colour. Font colour was an off-black (#333) and in the vast majority of cases, was placed over an off-white (#fafafa) background for improved readibility.
+The highlighted row is the main colour used throughout, with buttons and flash messages using varying shades of the same colour. Font colour was an off-black (#333) and in the vast majority of cases, was placed over an off-white (#fafafa) background for improved readability.
 
 ![Site Colours](/wireframes/site-colours.jpg)
 
@@ -204,7 +204,7 @@ This page was added despite not being on the original wireframe as I wanted a wa
 needed a way to tell me!
 
 #### Hive Management
-My initial plan was for the Queen Bee(s) to do all of their admin within the original site pages. So for each collection displayed on the main Hive pages, they would have access to edit/delete buttons
+My initial plan was for the Queen Bee(s) to do all of their admin within the original site pages. So, for each collection displayed on the main Hive pages, they would have access to edit/delete buttons
 to make any necessary amends. However, I soon realised that as the collections grow, it will get harder and harder to maintain without a central page for administration. 
 Once I had decided to add this page, I used it as a place for all Queen Bee activity - accepting/deleting members, promoting to Worker Bee, accepting public collections...
 
@@ -242,12 +242,12 @@ The key changes were:
 
 #### firstCollection
  * This is a new, temporary collection for storage of the first collection a member adds.\
- Its purpose is to allow the Queen Bee(s) to check all information given, before comitting it to the permanent 'itemCollections' collection.\
- By putting it in its own collection (rather than having a boolean field in 'itemCollections' to indicate a first collection), there was less searching required to find relevant
+ Its purpose is to allow the Queen Bee(s) to check all information given, before committing it to the permanent 'itemCollections' collection.\
+ By putting it in its own collection (rather than having a Boolean field in 'itemCollections' to indicate a first collection), there was less searching required to find relevant
  documents for Queen Bee approval on the Hive Management page.
 
 #### publicCollections
- * This is another new collection to store details of public collections. I felt putting these details in a separate collection (rather than using the 'isNational' boolean field
+ * This is another new collection to store details of public collections. I felt putting these details in a separate collection (rather than using the 'isNational' Boolean field
  I had originally planned on), was a more straightforward approach as some of the data fields needed for this collection were slightly different.
 
 
@@ -274,7 +274,7 @@ It will definitely be an ongoing project and some ideas I am already thinking ab
 **Languages**
 * [CSS](https://developer.mozilla.org/en-US/docs/Web/CSS)
 * [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML)
-* [Javascript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+* [JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 * [Python](https://www.python.org/)
 
 **Libraries & Frameworks**
@@ -326,7 +326,7 @@ set the button's visibility to hidden.
 
 #### Bug 2
 Less of a bug, and more of a complex solution to an issue...
-I was suprised to find that there was no easy solution to displaying text if a jinja 'for loop' was empty.\
+I was surprised to find that there was no easy solution to displaying text if a jinja 'for loop' was empty.\
 Essentially, on the hive members page, I wanted to display a list of all of the collections relevant to the selected member. 
 The 'for loop' worked perfectly to display their data, but for members without a collection, the list was blank. In this scenario I wanted
 to display some text to signify to the user that this was not an error, but instead that there were no collections to display. 
@@ -449,7 +449,7 @@ These tests were conducted by volunteers from the Facebook group that inspired t
 They were given the same data explanation as the peer testers:
 [Data explanation](/testing/testing_instructions.pdf)
 
-Both Jenny and Hannah encountered an error message which was not picked up by the Python error handler. Fortuntately, they screenshotted the error so I was able to 
+Both Jenny and Hannah encountered an error message which was not picked up by the Python error handler. Fortunately, they screenshotted the error so I was able to 
 confirm that it was caused by some work I was doing whilst they were testing. The error has not happened since.
 
 Otherwise, feedback was very positive, with some suggestions for cosmetic/functional improvements:
@@ -573,7 +573,7 @@ pip3 freeze > requirements.txt
 
 2. Push to your repository, create a new app on the Heroku Dashboard
 
-3. Change the deployment method to Github and ensure the app is connected and automatic deploys are enabled (if you wish)
+3. Change the deployment method to GitHub and ensure the app is connected and automatic deploys are enabled (if you wish)
 
 4. In Settings, set the Config Vars as follows:
 
