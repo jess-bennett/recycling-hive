@@ -300,7 +300,8 @@ It will definitely be an ongoing project and some ideas I am already thinking ab
     * The effect for the header/footer was adapted from code taken from [here](https://projects.verou.me/css3patterns/#honeycomb)
 
 * Hexagon grid layout
-    * This layout was adapted (with some difficulty!) from the code and tutorial on [Codesmite.com](https://www.codesmite.com/article/how-to-create-pure-css-hexagonal-grids)
+    * This layout was adapted (with some difficulty!) from the code and tutorial on [Codesmite.com](https://www.codesmite.com/article/how-to-create-pure-css-hexagonal-grids)\
+    The adapted (but largely original) is within the [hexagon.css](/static/css/hexagon.css) file.
 
 * Email
     * The JS required to send emails through the contact form was from [EmailJS.com](https://www.emailjs.com/)
@@ -498,7 +499,27 @@ Full testing-frame can be found [here](/testing/testing-frame.pdf)
 ### :heavy_check_mark: Online Validators
 ---
 
-TBC
+#### [JSHint](https://jshint.com/)
+
+The [script.js](/static/js/script.js) file was run through [JSHint.com](https://jshint.com/) and produced no errors.
+[email.js](/static/js/email.js) was not run through as it is an external source (see [External Sources](#computer-external-sources-used)).
+
+#### [W3C CSS Validator](http://jigsaw.w3.org/css-validator/)
+
+The [style.css](/static/css/style.css) file was run through [W3C CSS Validator](http://jigsaw.w3.org/css-validator/) and produced no errors.
+
+[hexagon.css](/static/css/hexagon.css) was not run through as it is an external source (see [External Sources](#computer-external-sources-used)).
+
+#### [W3C Markup Validation Service](https://validator.w3.org/)
+
+Due to the use of Jinja2 across the site, it was not possible to copy the code from each internal file to use as direct input on the [W3C Markup Validation Service](https://validator.w3.org/).
+
+Because the site is largely hidden from unregistered users, I also couldn't check via URI.
+
+Therefore, I used the source code shown in Google Dev Tools for direct input. 
+
+Initially there were quite a few errors. The vast majority of these were from duplicate title-IDs within modals that were being looped through by Jinja2. 
+These errors were all amended and no further errors remain.
 
 ### :rotating_light: Lighthouse Tests
 ---

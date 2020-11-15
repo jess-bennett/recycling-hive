@@ -117,7 +117,6 @@ span.internal-link {
 .btn-outline-primary:hover {
   color: #fafafa;
   background-color: #3a5c2d;
-  border-color: #3a5c2d;
 }
 
 .btn-outline-primary:not(:disabled):not(.disabled).active,
@@ -125,7 +124,6 @@ span.internal-link {
 .show>.btn-outline-primary.dropdown-toggle {
   color: #fafafa;
   background-color: #3a5c2d;
-  border-color: #3a5c2d;
 }
 
 /* Index */
@@ -195,30 +193,6 @@ small.warning-text {
 }
 
 /* Hive */
-
-.breadcrumb {
-  background-color: #bdc312;
-}
-
-.breadcrumb-item.active {
-  color: #333;
-  text-decoration: underline;
-}
-
-.breadcrumb-item+.breadcrumb-item::before {
-  color: #333;
-}
-
-.breadcrumb-item>a {
-  color: #333;
-  text-decoration: none;
-  background-color: transparent;
-  -webkit-text-decoration-skip: objects;
-}
-
-.breadcrumb-item>a:hover {
-  text-decoration: underline;
-}
 
 .page-switch {
   margin-bottom: 2rem;
