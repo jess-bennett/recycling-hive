@@ -275,6 +275,10 @@ small.warning-text {
   overflow-wrap: break-word;
 }
 
+.form-control {
+    -webkit-appearance:none;
+}
+
 /* Cards */
 
 .card-header>h3 {
