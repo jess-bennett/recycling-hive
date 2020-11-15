@@ -1,7 +1,7 @@
 <!-- Public Collections card -->
 <div class="card" id="awaiting-approval">
   <div class="card-header green-background btn btn-link collapsed text-left"
-    id="headingPublicCollection" data-toggle="collapse"
+    role="dialog" id="headingPublicCollection" data-toggle="collapse"
     data-target="#collapsePublicCollection" aria-expanded="false"
     aria-controls="collapsePublicCollection">
     <h5><i class="fas fa-building"></i> <strong>Public
@@ -25,8 +25,7 @@
       <div class="container-fluid">
         <div class="row">
           {% if page_id != "management" %}
-          <div id="delete-collection"
-            class="btn col-2 col-md-1 offset-10 offset-md-11 text-right"
+          <div class="btn col-2 col-md-1 offset-10 offset-md-11 text-right"
             data-toggle="modal"
             data-target="#modal-delete-public-collection-request-{{ collection._id }}">
             <i class="fas fa-times-circle btn-delete" data-toggle="tooltip"

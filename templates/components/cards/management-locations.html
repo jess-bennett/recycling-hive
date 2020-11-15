@@ -1,7 +1,7 @@
 <!-- Location details -->
 <div class="card" id="location-details">
   <div class="card-header green-background btn btn-link collapsed text-left"
-    id="headingLocations" data-toggle="collapse"
+    role="dialog" id="headingLocations" data-toggle="collapse"
     data-target="#collapseLocations" aria-expanded="false"
     aria-controls="collapseLocations">
     <h5 class="mb-0">
@@ -14,22 +14,21 @@
       {% if locations_dict %}
       {% for member in worker_bees %}
       {% if member._id in members_location_values %}
-        <div class="card-header green-background">
-          <h6><strong>{{ member.username }}'s Locations</strong></h6>
-        </div>
+      <div class="card-header green-background">
+        <h6><strong>{{ member.username }}'s Locations</strong></h6>
+      </div>
       <hr>
       {% for location in locations_dict if location.hiveMembersID == member._id %}
       {% include "components/details/location.html" %}
       <!-- Amend location -->
       <div class="container-fluid">
         <div class="row">
-          <div id="delete-location"
-            class="btn col-2 col-md-1 offset-8 offset-md-10 text-right"
+          <div class="btn col-2 col-md-1 offset-8 offset-md-10 text-right"
             data-toggle="modal"
             data-target="#modal-delete-location-{{ location._id }}"><i
               class="fas fa-trash-alt btn-delete" data-toggle="tooltip"
               data-placement="top" data-type="info" title="Delete"></i></div>
-          <div id="amend-location" class="btn col-2 col-md-1 text-right"
+          <div class="btn col-2 col-md-1 text-right"
             data-toggle="modal"
             data-target="#modal-edit-location-{{ location._id }}">
             <i class="fas fa-edit btn-edit" data-toggle="tooltip"

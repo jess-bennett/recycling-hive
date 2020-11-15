@@ -1,7 +1,7 @@
 <!-- Worker Bee requests -->
 <div class="card" id="workerbee-requests">
   <div class="card-header green-background btn btn-link collapsed text-left"
-    id="headingWorkerBeeRequests" data-toggle="collapse"
+    role="dialog" id="headingWorkerBeeRequests" data-toggle="collapse"
     data-target="#collapseWorkerBeeRequests" aria-expanded="false"
     aria-controls="collapseWorkerBeeRequests">
     <h5><i class="fas fa-hard-hat"></i> <strong>Worker Bee Requests</strong>
@@ -27,7 +27,8 @@
           <div class="input-group mb-2">
             {% include "components/tooltips/tooltip-address.html" %}
             <p class="form-control item-display">{{ collection.street }},
-              {{ collection.town }}, {{ collection.postcode }}</p>
+              {{ collection.town }}, {{ collection.postcode }}
+            </p>
           </div>
         </div>
       </div>
@@ -78,7 +79,8 @@
             data-target="#modal-delete-private-collection-request-{{ collection._id }}">
             <i class="fas fa-times-circle btn-delete" data-toggle="tooltip"
               data-placement="top" data-type="info"
-              title="Delete collection"></i></div>
+              title="Delete collection"></i>
+          </div>
           <div id="approve-collection" class="btn col-2 col-md-1 text-right"
             data-toggle="modal"
             data-target="#modal-approve-private-collection-request-{{ collection._id }}">

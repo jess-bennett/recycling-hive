@@ -33,7 +33,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary"
               data-dismiss="modal">Cancel</button>
-            <button id="submit-delete-profile" class="btn btn-outline-primary"
+            <button class="btn btn-outline-primary"
               type="submit" name="submit-delete-profile"
               {% if member_type == "Queen Bee" %} disabled {% endif %}>Delete
               Profile!</button>
@@ -47,11 +47,11 @@
 
 {% for member in members if page_id == "management" %}
 <div class="modal fade" id="modal-delete-member-{{ member._id }}" tabindex="-1"
-  role="dialog" aria-labelledby="modal-delete-member-title" aria-hidden="true">
+  role="dialog" aria-labelledby="modal-delete-member-{{ member._id }}-title" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-delete-member-title">Delete
+        <h4 class="modal-title w-100" id="modal-delete-member-{{ member._id }}-title">Delete
           {{ member.username }}'s Profile
         </h4>
 
@@ -73,7 +73,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary"
               data-dismiss="modal">Cancel</button>
-            <button id="submit-delete-member" class="btn btn-outline-primary"
+            <button class="btn btn-outline-primary"
               type="submit" name="submit-delete-member">Delete
               Member!</button>
           </div>
@@ -87,12 +87,12 @@
 {% for location in locations %}
 <!-- Delete location modal -->
 <div class="modal fade" id="modal-delete-location-{{ location._id }}"
-  tabindex="-1" role="dialog" aria-labelledby="modal-delete-location-title"
+  tabindex="-1" role="dialog" aria-labelledby="modal-delete-location-{{ location._id }}-title"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-delete-location-title">Delete
+        <h4 class="modal-title w-100" id="modal-delete-location-{{ location._id }}-title">Delete
           {{ location.nickname }}
           Location</h4>
 
@@ -113,7 +113,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary"
               data-dismiss="modal">Cancel</button>
-            <button id="submit-delete-location" class="btn btn-outline-primary"
+            <button class="btn btn-outline-primary"
               type="submit" name="submit-delete-location">Delete
               Location!</button>
           </div>
@@ -127,12 +127,12 @@
 {% for collection in collections_dict %}
 <!-- Delete collection modal -->
 <div class="modal fade" id="modal-delete-collection-{{ collection._id }}"
-  tabindex="-1" role="dialog" aria-labelledby="modal-delete-collection-title"
+  tabindex="-1" role="dialog" aria-labelledby="modal-delete-collection-{{ collection._id }}-title"
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header text-center">
-        <h4 class="modal-title w-100" id="modal-delete-collection-title">Delete
+        <h4 class="modal-title w-100" id="modal-delete-collection-{{ collection._id }}-title">Delete
           {{ collection.typeOfWaste }}
           Collection</h4>
 
@@ -151,8 +151,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary"
               data-dismiss="modal">Cancel</button>
-            <button id="submit-delete-collection"
-              class="btn btn-outline-primary" type="submit"
+            <button class="btn btn-outline-primary" type="submit"
               name="submit-delete-collection">Delete
               Collection!</button>
           </div>
@@ -191,8 +190,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-primary"
               data-dismiss="modal">Cancel</button>
-            <button id="submit-delete-public-collection"
-              class="btn btn-outline-primary" type="submit"
+            <button class="btn btn-outline-primary" type="submit"
               name="submit-delete-public-collection">Delete Public Collection
               Submission!</button>
           </div>

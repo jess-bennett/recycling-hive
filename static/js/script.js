@@ -320,9 +320,9 @@ $("select#locationID").change(function() {
   $("#locationAddress").attr("placeholder", selectedLocationID);
 });
 
-$("select#editLocation").change(function() {
+$("select.editLocation").change(function() {
   let selectedEditLocation = $(this).find(":selected").data("id");
-  $("#editLocationAddress").attr("placeholder", selectedEditLocation);
+  $(".editLocationAddress").attr("placeholder", selectedEditLocation);
 });
 
 /* HIVE-MANAGEMENT.HTML */

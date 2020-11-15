@@ -1,7 +1,7 @@
 <!-- Member details -->
 <div class="card" id="member-details">
   <div class="card-header green-background btn btn-link collapsed text-left"
-    id="headingMemberDetails" data-toggle="collapse"
+    role="dialog" id="headingMemberDetails" data-toggle="collapse"
     data-target="#collapseMemberDetails" aria-expanded="false"
     aria-controls="collapseMemberDetails">
     <h5 class="mb-0">
@@ -13,21 +13,20 @@
     <div class="card-body">
       {% if members %}
       {% for member in members %}
-        <div class="card-header green-background">
-          <h6><strong>{{ member.username }}'s Details</strong></h6>
-        </div>
+      <div class="card-header green-background">
+        <h6><strong>{{ member.username }}'s Details</strong></h6>
+      </div>
       <hr>
       {% include "components/details/member.html" %}
       <!-- Amend profile -->
       <div class="container-fluid">
         <div class="row">
-          <div id="delete-profile"
-            class="btn col-2 col-md-1 offset-8 offset-md-10 text-right"
+          <div class="btn col-2 col-md-1 offset-8 offset-md-10 text-right"
             data-toggle="modal"
             data-target="#modal-delete-member-{{ member._id }}"><i
               class="fas fa-trash-alt btn-delete" data-toggle="tooltip"
               data-placement="top" data-type="info" title="Delete"></i></div>
-          <div id="amend-profile" class="btn col-2 col-md-1 text-right"
+          <div class="btn col-2 col-md-1 text-right"
             data-toggle="modal"
             data-target="#modal-edit-member-{{ member._id }}"><i
               class="fas fa-edit btn-edit" data-toggle="tooltip"
