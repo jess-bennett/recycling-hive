@@ -479,10 +479,21 @@ Manual testing was carried out on all devices available to me:
     * Opera 
 
 All tests produced good results with the following exceptions:
-TBC
+* Text breakpoints on smaller devices
+    * On mobile view in particular, the text within the hexagons on the 'Search Hive' pages breaks mid-word if a '/' is used.\
+    Unfortunately, due to the nature of the data, it is likely that categories in particular will be set with a '/' to separate similar areas of recycling.
+    There was no obvious solution to this problem so it is currently being left as a slight flaw.
+
+* Dropdown select on Firefox
+    * On Firefox, the dropdown select box does not use the site font; rather a font set by Firefox. To me, it isn't particularly aesthetically pleasing. But there doesn't seemed
+    to be a way to remedy the problem and so it has been left as a minor issue.
+
+* Dropdown select on Safari
+    * The default display for dropdown select on Safari is not at all in keeping with the rest of the site. However, this is something that Safari users will presumably be used to.\
+    The main issue is that the optgroup is shown as a dark grey on a black background, which is very annoying. I have tried many solutions in CSS to fix this issue, but it doesn't seem
+    to have any effect. Regrettably, this is being left unsolved. 
 
 Full testing-frame can be found [here](/testing/testing-frame.pdf)
-TBC
 
 ### :heavy_check_mark: Online Validators
 ---
