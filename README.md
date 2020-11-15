@@ -42,6 +42,8 @@ Recycling Hive is a place for community members to find out what they can recycl
 \
               [:heavy_check_mark: W3C Tests](#heavy_check_mark-w3c-tests)\
 \
+              [:rotating_light: Lighthouse Tests](#rotating_light-lighthouse-tests)\
+\
 [:flight_departure: Deployment](#flight_departure-deployment)\
 \
 [:clapper: Credits](#clapper-credits)\
@@ -486,6 +488,21 @@ TBC
 ---
 
 TBC
+
+### :rotating_light: Lighthouse Tests
+---
+
+[Lighthouse Test results](/testing/lighthouse_tests.pdf)
+
+The results of the Lighthouse Tests were generally good. Some minor amends were made to the code following the first round of tests:
+* Moved tooltip text from div to anchor in footers for sr accessibility
+* Added noreferrer to external links for improved security
+* Added meta description
+
+Accessibility required improvement on some pages:
+* There were still some issues with the title text used in the footer links, despite it being there. No further amends were possible. 
+* Duplicate IDs were picked up in aria-labels, but I was unable to identify any duplicates and therefore could not make any improvements.
+
 
 ## :flight_departure: Deployment 
 
