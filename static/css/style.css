@@ -275,23 +275,9 @@ small.warning-text {
   overflow-wrap: break-word;
 }
 
-select {
-
--webkit-appearance: none; 
--moz-appearance: none;
-appearance: none;
-
--moz-border-radius: 3px;
--webkit-border-radius: 3px;
-border-radius: 3px;
-background: url(http://dropdown/arrow/url/) no-repeat;
-background-position: right center;
-background-color: #CCCCCC;
-color: #000000;
-border: 1px solid #000000;
-
-height:auto !important;
-
+select option, optgroup {
+    background: #fafafa;
+    color: #333;
 }
 
 /* Cards */
