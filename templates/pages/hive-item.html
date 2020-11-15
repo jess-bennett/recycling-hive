@@ -2,6 +2,10 @@
 {% set active_item = "items" %}
 {% block content %}
 
+{% if session.user == "demo@demo.com" %}<div class="flashes warning-text">
+  <h4>Please note: All data in the Demo Hive is entirely fictional.</h4>
+</div>{% endif %}
+
 {% include "components/navigation/view-options.html" %}
 
 {% include "components/navigation/dropdown.html" %}
